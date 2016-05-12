@@ -1,0 +1,36 @@
+{
+  "name": "mermaid-preview",
+  "displayName": "mermaid-preview",
+  "description": "Previews Mermaid diagrams",
+  "version": "0.0.1",
+  "publisher": "Vlad",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.previewMermaidDiagram"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.sayHello",
+        "title": "Hello World"
+      },
+      {
+        "command": "extension.previewMermaidDiagram",
+        "title": "Preview Mermaid Diagram"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "mermaid": "^0.5.8",
+    "vscode": "^0.11.0"
+  }
+}
