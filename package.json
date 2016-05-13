@@ -1,9 +1,9 @@
 {
-  "name": "mermaid-preview",
-  "displayName": "mermaid-preview",
-  "description": "Previews Mermaid diagrams",
-  "version": "0.0.1",
-  "publisher": "Vlad",
+  "name": "vscode-mermaid-preview",
+  "displayName": "Mermaid Preview",
+  "description": "Previews Mermaid diagrams in Visual Studio Code",
+  "version": "0.1.0",
+  "publisher": "vstirbu",
   "engines": {
     "vscode": "^1.0.0"
   },
@@ -17,10 +17,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.sayHello",
-        "title": "Hello World"
-      },
-      {
         "command": "extension.previewMermaidDiagram",
         "title": "Preview Mermaid Diagram"
       }
@@ -29,8 +25,10 @@
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
+  "dependencies": {
+    "mermaid": "^0.5.8"
+  },
   "devDependencies": {
-    "mermaid": "^0.5.8",
     "vscode": "^0.11.0"
   }
 }
