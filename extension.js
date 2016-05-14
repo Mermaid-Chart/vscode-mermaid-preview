@@ -35,15 +35,21 @@ function activate(context) {
             let editor = vscode.window.activeTextEditor;
             let text = editor.document.getText();
             let selStart = editor.document.offsetAt(editor.selection.anchor);
-            let propStart = text.lastIndexOf('<div', selStart);
+            let propStart = text.lastIndexOf('<div ', selStart);
+            let lastDivEnd = text.lastIndexOf('</div>', selStart);
             let propEnd = text.indexOf('</div>', selStart);
             
-            if (propStart === -1 || propEnd === -1) {
+            console.log(propStart, lastDivEnd);
+            
+            if ((propStart === -1 || propEnd === -1)||
+                (lastDivEnd !== -1 && propStart < lastDivEnd)) {
                 console.log("Cannot determine the rule's properties.");
+                this.graph = 'select a diagram...'
+            } else {
+                let graph = text.slice(propStart, propEnd + 6);
+                this.graph = graph;
             }
             
-            let graph = text.slice(propStart, propEnd + 6);
-            this.graph = graph;
             this._onDidChange.fire(uri);
         }
     }
@@ -67,11 +73,6 @@ function activate(context) {
             vscode.window.showErrorMessage(reason);
         });
     });
-    
-    vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
-        }, (reason) => {
-            vscode.window.showErrorMessage(reason);
-        });
     
     vscode.workspace.onDidChangeTextDocument((e) => {
         if (e.document === vscode.window.activeTextEditor.document) {

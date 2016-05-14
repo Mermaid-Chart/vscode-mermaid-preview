@@ -1,13 +1,13 @@
-# README
-## This is the README for your extension "mermaid-preview"
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+# Mermaid Preview
 
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
+Mermaid diagram previewer for Visual Studio Code
 
-### For more information
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## Usage
 
-**Enjoy!**
+0. Open a file containing Mermaid diagram
+0. Choose `Preview Mermaid Diagram`
+0. Move cursor inside the diagram
+
+![activate](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/activate.png)
+
+![usage](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/usage.png)
