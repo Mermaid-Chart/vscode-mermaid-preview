@@ -2,7 +2,7 @@
   "name": "vscode-mermaid-preview",
   "displayName": "Mermaid Preview",
   "description": "Previews Mermaid diagrams in Visual Studio Code",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -48,6 +48,6 @@
     "mermaid": "^0.5.8"
   },
   "devDependencies": {
-    "vscode": "^0.11.0"
+    "vscode": "^0.11.13"
   }
 }

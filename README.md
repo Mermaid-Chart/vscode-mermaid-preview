@@ -1,6 +1,10 @@
 # Mermaid Preview
 
-Mermaid diagram previewer for Visual Studio Code
+Mermaid diagram previewer for Visual Studio Code.
+
+[![](https://vsmarketplacebadge.apphb.com/version/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+[![](https://vsmarketplacebadge.apphb.com/installs/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+[![](https://vsmarketplacebadge.apphb.com/rating/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 
 ## Usage
 
@@ -11,3 +15,19 @@ Mermaid diagram previewer for Visual Studio Code
 ![activate](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/activate.png)
 
 ![usage](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/usage.png)
+
+## Customize diagrams
+
+You can customize the appearence of the previewed diagrams by setting the mermaid configuration in the workspace settings:
+
+```json
+{
+  "mermaid": {
+    "sequenceDiagram": {
+      "mirrorActors": false
+    }
+  }
+}
+```
+
+All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported. 

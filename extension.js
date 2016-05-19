@@ -13,17 +13,25 @@ function activate(context) {
         }
         
         provideTextDocumentContent (uri, token) {
+            const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
+            
             return `<!DOCTYPE html>
             <html>
             <head>
             <link href="${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css" rel="stylesheet">
-            <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js">
-            <script type="text/javascript">
-            mermaid.initialize({startOnLoad:true});
-            </script>
+            <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
             </head>
-            <body>
-            ${this.graph}
+            <body class="lightTheme">
+                <div class="mermaid-preview">
+                ${this.graph}
+                </div>
+                <script type="text/javascript">
+                    if (document.body.classList.contains('lightTheme')) {
+                    }
+                    mermaidAPI.initialize(JSON.parse('${config}'));
+                    
+                    mermaid.init(undefined, '.mermaid-preview')
+                </script>
             </body>`;
         }
         
@@ -46,7 +54,7 @@ function activate(context) {
                 console.log("Cannot determine the rule's properties.");
                 this.graph = 'select a diagram...'
             } else {
-                let graph = text.slice(propStart, propEnd + 6);
+                let graph = text.slice(propStart + 22, propEnd);
                 this.graph = graph;
             }
             
