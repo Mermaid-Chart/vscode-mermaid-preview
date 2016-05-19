@@ -21,7 +21,7 @@ function activate(context) {
             <link href="${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css" rel="stylesheet">
             <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
             </head>
-            <body class="lightTheme">
+            <body>
                 <div class="mermaid-preview">
                 ${this.graph}
                 </div>
