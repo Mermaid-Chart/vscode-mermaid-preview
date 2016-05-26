@@ -3,6 +3,8 @@
 const vscode = require('vscode');
 const mermaid = require('mermaid');
 
+const findDiagram = require('./find-diagram');
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -40,22 +42,17 @@ function activate(context) {
         }
         
         update (uri) {
-            let editor = vscode.window.activeTextEditor;
-            let text = editor.document.getText();
-            let selStart = editor.document.offsetAt(editor.selection.anchor);
-            let propStart = text.lastIndexOf('<div ', selStart);
-            let lastDivEnd = text.lastIndexOf('</div>', selStart);
-            let propEnd = text.indexOf('</div>', selStart);
+            const editor = vscode.window.activeTextEditor;
+            const text = editor.document.getText();
+            const selStart = editor.document.offsetAt(editor.selection.anchor);
             
-            console.log(propStart, lastDivEnd);
+            const graph = findDiagram(text, selStart);
             
-            if ((propStart === -1 || propEnd === -1)||
-                (lastDivEnd !== -1 && propStart < lastDivEnd)) {
+            if (graph) {
+                this.graph = graph;
+            } else {
                 console.log("Cannot determine the rule's properties.");
                 this.graph = 'select a diagram...'
-            } else {
-                let graph = text.slice(propStart + 22, propEnd);
-                this.graph = graph;
             }
             
             this._onDidChange.fire(uri);

@@ -16,6 +16,28 @@ Mermaid diagram previewer for Visual Studio Code.
 
 ![usage](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/usage.png)
 
+## Supported formats
+
+The plugin detects mermaid diagrams in the following formats:
+
+### HTML tag
+
+```html
+<div class="mermaid">
+sequenceDiagram
+  A-->B: Works!
+</div>
+```
+
+### Markdown fenced code
+
+<pre>
+```mermaid
+sequenceDiagram
+  A-->B: Works!
+```
+</pre>
+
 ## Customize diagrams
 
 You can customize the appearence of the previewed diagrams by setting the mermaid configuration in the workspace settings:
