@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const mermaid = require('mermaid');
+const _ = require('lodash');
 
 const findDiagram = require('./find-diagram');
 
@@ -12,6 +12,7 @@ function activate(context) {
         constructor () {
             this._onDidChange =  new vscode.EventEmitter();
             this.graph = '';
+            this.update = _.throttle(this.unthrottledUpdate, 250);
         }
         
         provideTextDocumentContent (uri, token) {
@@ -41,7 +42,7 @@ function activate(context) {
             return this._onDidChange.event;
         }
         
-        update (uri) {
+        unthrottledUpdate (uri) {
             const editor = vscode.window.activeTextEditor;
             const text = editor.document.getText();
             const selStart = editor.document.offsetAt(editor.selection.anchor);
