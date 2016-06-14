@@ -1,3 +1,7 @@
+# 0.3.1 / 2016-06-14
+
+* throttle preview update
+
 # 0.3.0 / 2016-05-26
 
 * added support for diagrams inside markdown fenced block
