@@ -1,3 +1,7 @@
+# 0.4.0 / 2016-07-08
+
+* added support for dark theme
+
 # 0.3.1 / 2016-06-14
 
 * throttle preview update

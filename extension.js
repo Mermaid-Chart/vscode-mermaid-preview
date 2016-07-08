@@ -14,14 +14,13 @@ function activate(context) {
             this.graph = '';
             this.update = _.throttle(this.unthrottledUpdate, 250);
         }
-        
+
         provideTextDocumentContent (uri, token) {
             const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
             
             return `<!DOCTYPE html>
             <html>
             <head>
-            <link href="${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css" rel="stylesheet">
             <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
             </head>
             <body>
@@ -29,8 +28,18 @@ function activate(context) {
                 ${this.graph}
                 </div>
                 <script type="text/javascript">
-                    if (document.body.classList.contains('lightTheme')) {
+                    var css = document.createElement('link');
+                    
+                    css.setAttribute('rel', 'stylesheet');
+                    css.setAttribute('type', 'text/css');
+                    
+                    if (document.body.classList.contains('vscode-dark')) {
+                        css.setAttribute('href', '${context.extensionPath}/node_modules/mermaid/dist/mermaid.dark.css');
+                    } else {
+                        css.setAttribute('href', '${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css');
                     }
+                    document.head.appendChild(css);
+                    
                     mermaidAPI.initialize(JSON.parse('${config}'));
                     
                     mermaid.init(undefined, '.mermaid-preview')
