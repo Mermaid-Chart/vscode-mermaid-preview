@@ -1,3 +1,7 @@
+# 0.4.1 / 2016-09-09
+
+* render arrowheads (#2)
+
 # 0.4.0 / 2016-07-08
 
 * added support for dark theme

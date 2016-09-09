@@ -24,7 +24,7 @@ function activate(context) {
             <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
             </head>
             <body>
-                <div class="mermaid-preview">
+                <div class="mermaid">
                 ${this.graph}
                 </div>
                 <script type="text/javascript">
@@ -39,10 +39,11 @@ function activate(context) {
                         css.setAttribute('href', '${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css');
                     }
                     document.head.appendChild(css);
+
+                    var cfg = JSON.parse('${config}');
+                    cfg.arrowMarkerAbsolute = true;
                     
-                    mermaidAPI.initialize(JSON.parse('${config}'));
-                    
-                    mermaid.init(undefined, '.mermaid-preview')
+                    mermaidAPI.initialize(cfg);
                 </script>
             </body>`;
         }
@@ -83,7 +84,7 @@ function activate(context) {
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
     let disposable = registerCommand('extension.previewMermaidDiagram', () => {
-        return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
+        return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'Mermaid Preview').then((success) => {
         }, (reason) => {
             vscode.window.showErrorMessage(reason);
         });
