@@ -40,10 +40,7 @@ function activate(context) {
                     }
                     document.head.appendChild(css);
 
-                    var cfg = JSON.parse('${config}');
-                    cfg.arrowMarkerAbsolute = true;
-                    
-                    mermaidAPI.initialize(cfg);
+                    mermaidAPI.initialize(JSON.parse('${config}'));
                 </script>
             </body>`;
         }
