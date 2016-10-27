@@ -59,6 +59,6 @@
     "mermaid": "^6.0.0"
   },
   "devDependencies": {
-    "vscode": "^1.0.1"
+    "vscode": "^1.0.2"
   }
 }
