@@ -5,72 +5,71 @@ const _ = require('lodash');
 
 const findDiagram = require('./find-diagram');
 
+class MermaidDocumentContentProvider {
+    constructor (context) {
+        this._onDidChange =  new vscode.EventEmitter();
+        this.graph = '';
+        this.update = _.throttle(this.unthrottledUpdate, 250);
+
+        this.context = context;
+    }
+
+    provideTextDocumentContent (uri, token) {
+        const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
+
+        return `<!DOCTYPE html>
+        <html>
+        <head>
+            <script src="${this.context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
+        </head>
+        <body>
+            <div class="mermaid">
+            ${this.graph}
+            </div>
+
+            <script type="text/javascript">
+                css = document.createElement('link');
+                style = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
+                
+                css.setAttribute('rel', 'stylesheet');
+                css.setAttribute('type', 'text/css');
+                css.setAttribute('href', '${this.context.extensionPath}/node_modules/mermaid/dist/mermaid.' + style + '.css');
+
+                document.head.appendChild(css);
+                mermaidAPI.initialize(JSON.parse('${config}'));
+            </script>
+        </body>`;
+    }
+    
+    get onDidChange () {
+        return this._onDidChange.event;
+    }
+    
+    unthrottledUpdate (uri) {
+        const editor = vscode.window.activeTextEditor;
+        const text = editor.document.getText();
+        const selStart = editor.document.offsetAt(editor.selection.anchor);
+        
+        const graph = findDiagram(text, selStart);
+        
+        if (graph) {
+            this.graph = graph;
+        } else {
+            console.log("Cannot determine the rule's properties.");
+            this.graph = 'select a diagram...'
+        }
+        
+        this._onDidChange.fire(uri);
+    }
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-    class MermaidDocumentContentProvider {
-        constructor () {
-            this._onDidChange =  new vscode.EventEmitter();
-            this.graph = '';
-            this.update = _.throttle(this.unthrottledUpdate, 250);
-        }
-
-        provideTextDocumentContent (uri, token) {
-            const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
-            
-            return `<!DOCTYPE html>
-            <html>
-            <head>
-            <script src="${context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
-            </head>
-            <body>
-                <div class="mermaid">
-                ${this.graph}
-                </div>
-                <script type="text/javascript">
-                    var css = document.createElement('link');
-                    
-                    css.setAttribute('rel', 'stylesheet');
-                    css.setAttribute('type', 'text/css');
-                    
-                    if (document.body.classList.contains('vscode-dark')) {
-                        css.setAttribute('href', '${context.extensionPath}/node_modules/mermaid/dist/mermaid.dark.css');
-                    } else {
-                        css.setAttribute('href', '${context.extensionPath}/node_modules/mermaid/dist/mermaid.forest.css');
-                    }
-                    document.head.appendChild(css);
-
-                    mermaidAPI.initialize(JSON.parse('${config}'));
-                </script>
-            </body>`;
-        }
-        
-        get onDidChange () {
-            return this._onDidChange.event;
-        }
-        
-        unthrottledUpdate (uri) {
-            const editor = vscode.window.activeTextEditor;
-            const text = editor.document.getText();
-            const selStart = editor.document.offsetAt(editor.selection.anchor);
-            
-            const graph = findDiagram(text, selStart);
-            
-            if (graph) {
-                this.graph = graph;
-            } else {
-                console.log("Cannot determine the rule's properties.");
-                this.graph = 'select a diagram...'
-            }
-            
-            this._onDidChange.fire(uri);
-        }
-    }
-    
     const registerCommand = vscode.commands.registerCommand;
     let previewUri = vscode.Uri.parse('mermaid-preview://authority/mermaid-preview');
     
-    let provider = new MermaidDocumentContentProvider();
+    let provider = new MermaidDocumentContentProvider(context);
     let registration = vscode.workspace.registerTextDocumentContentProvider('mermaid-preview', provider);
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
