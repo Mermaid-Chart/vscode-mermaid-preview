@@ -1,3 +1,8 @@
+# 0.4.2 / 2016-11-24
+
+* made arrowhead fix a configuration extension.
+* fixed #13
+
 # 0.4.1 / 2016-09-09
 
 * render arrowheads (#2)
