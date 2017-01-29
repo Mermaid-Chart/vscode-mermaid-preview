@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "lodash": "^4.16.6",
-    "mermaid": "^6.0.0"
+    "mermaid": "^7.0.0"
   },
   "devDependencies": {
     "vscode": "^1.0.3"
