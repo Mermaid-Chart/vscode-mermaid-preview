@@ -1,3 +1,7 @@
+# 0.4.3 / 2017-02-01
+
+* update dependencies to mermaid 7.0.0
+
 # 0.4.2 / 2016-11-24
 
 * made arrowhead fix a configuration extension.
