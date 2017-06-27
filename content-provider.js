@@ -1,3 +1,4 @@
+const path = require('path');
 const vscode = require('vscode');
 const _ = require('lodash');
 
@@ -14,12 +15,13 @@ module.exports = class MermaidDocumentContentProvider {
 
     provideTextDocumentContent (uri, token) {
         const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
+        const base = path.resolve(this.context.extensionPath, 'node_modules/mermaid/dist/mermaid');
 
         return `<!DOCTYPE html>
         <html>
         <head>
             <base href="">
-            <script src="${this.context.extensionPath}/node_modules/mermaid/dist/mermaid.min.js"></script>
+            <script src="${base}.min.js"></script>
         </head>
         <body>
             <script type="text/javascript">
@@ -28,7 +30,7 @@ module.exports = class MermaidDocumentContentProvider {
                 
                 css.setAttribute('rel', 'stylesheet');
                 // css.setAttribute('type', 'text/css');
-                css.setAttribute('href', '${this.context.extensionPath}/node_modules/mermaid/dist/mermaid.' + style + '.css');
+                css.setAttribute('href', '${base}.' + style + '.css');
 
                 document.body.appendChild(css);
             </script>
