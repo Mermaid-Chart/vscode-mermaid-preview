@@ -15,7 +15,7 @@ module.exports = class MermaidDocumentContentProvider {
 
     provideTextDocumentContent (uri, token) {
         const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
-        const base = path.resolve(this.context.extensionPath, 'node_modules/mermaid/dist/mermaid');
+        const base = this.context.asAbsolutePath('node_modules/mermaid/dist/mermaid');
 
         return `<!DOCTYPE html>
         <html>
