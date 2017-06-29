@@ -1,4 +1,3 @@
-const path = require('path');
 const vscode = require('vscode');
 const _ = require('lodash');
 const fileUrl = require('file-url');
