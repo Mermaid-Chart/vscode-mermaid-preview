@@ -1,6 +1,7 @@
 const path = require('path');
 const vscode = require('vscode');
 const _ = require('lodash');
+const fileUrl = require('file-url');
 
 const findDiagram = require('./find-diagram');
 
@@ -15,7 +16,7 @@ module.exports = class MermaidDocumentContentProvider {
 
     provideTextDocumentContent (uri, token) {
         const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
-        const base = this.context.asAbsolutePath('node_modules/mermaid/dist/mermaid');
+        const base = fileUrl(this.context.asAbsolutePath('node_modules/mermaid/dist/mermaid'));
 
         return `<!DOCTYPE html>
         <html>

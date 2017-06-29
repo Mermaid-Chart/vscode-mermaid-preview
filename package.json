@@ -55,6 +55,7 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
+    "file-url": "^2.0.2",
     "lodash": "^4.17.4",
     "mermaid": "^7.0.0"
   },
