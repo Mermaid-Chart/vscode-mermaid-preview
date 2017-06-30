@@ -1,3 +1,7 @@
+# 0.5.0 / 2017-06-30
+
+* Added FontAwesome (4.7) support
+
 # 0.4.4 / 2017-06-29
 
 * Convert mermaid resource path to a file URL for OS compatibility [FrodgE](https://github.com/FrodgE)

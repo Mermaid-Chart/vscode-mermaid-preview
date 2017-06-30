@@ -3,11 +3,11 @@ const _ = require('lodash');
 const fileUrl = require('file-url');
 
 const findDiagram = require('./find-diagram');
+const usesFontAwesome = require('./lib/uses-fontawesome');
 
 module.exports = class MermaidDocumentContentProvider {
     constructor (context) {
         this._onDidChange =  new vscode.EventEmitter();
-        this.graph = '';
         this.update = _.throttle(this.unthrottledUpdate, 250);
 
         this.context = context;
@@ -15,13 +15,17 @@ module.exports = class MermaidDocumentContentProvider {
 
     provideTextDocumentContent (uri, token) {
         const config = JSON.stringify(vscode.workspace.getConfiguration('mermaid'));
-        const base = fileUrl(this.context.asAbsolutePath('node_modules/mermaid/dist/mermaid'));
+        const mermaidBase = fileUrl(this.context.asAbsolutePath('node_modules/mermaid/dist/mermaid'));
+        const faBase = fileUrl(this.context.asAbsolutePath('node_modules/font-awesome/css/font-awesome.min.css'));
 
-        return `<!DOCTYPE html>
+        const faStyle = usesFontAwesome(this.graph) ? `<link rel="stylesheet" href="${faBase}">` : '';
+
+        const content = this.graph ? `<!DOCTYPE html>
         <html>
         <head>
             <base href="">
-            <script src="${base}.min.js"></script>
+            <script src="${mermaidBase}.min.js"></script>
+            ${faStyle}
         </head>
         <body>
             <script type="text/javascript">
@@ -30,7 +34,7 @@ module.exports = class MermaidDocumentContentProvider {
                 
                 css.setAttribute('rel', 'stylesheet');
                 // css.setAttribute('type', 'text/css');
-                css.setAttribute('href', '${base}.' + style + '.css');
+                css.setAttribute('href', '${mermaidBase}.' + style + '.css');
 
                 document.body.appendChild(css);
             </script>
@@ -42,7 +46,9 @@ module.exports = class MermaidDocumentContentProvider {
             <script type="text/javascript">
                 mermaidAPI.initialize(JSON.parse('${config}'));
             </script>
-        </body>`;
+        </body>` : 'select a diagram...';
+
+        return content;
     }
     
     get onDidChange () {
@@ -60,7 +66,7 @@ module.exports = class MermaidDocumentContentProvider {
             this.graph = graph;
         } else {
             console.log("Cannot determine the rule's properties.");
-            this.graph = 'select a diagram...'
+            this.graph = null;
         }
         
         this._onDidChange.fire(uri);
