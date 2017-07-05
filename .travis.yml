@@ -16,4 +16,5 @@ install:
   # - npm run vscode:prepublish
 
 script:
-  - npm test --silent
+  # - npm test --silent
+  - npm test
