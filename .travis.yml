@@ -7,7 +7,7 @@ node_js:
   - "node"
 
 os:
-  - osx
+  # - osx
   - linux
 
 before_install:
