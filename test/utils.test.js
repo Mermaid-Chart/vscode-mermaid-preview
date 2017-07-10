@@ -1,7 +1,5 @@
-const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-const _ = require('lodash');
 const vscode =  require('vscode');
 
 const findDiagram = require('../find-diagram');
