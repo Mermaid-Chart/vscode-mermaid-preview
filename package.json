@@ -52,7 +52,8 @@
     ]
   },
   "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
     "file-url": "^2.0.2",
