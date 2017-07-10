@@ -1,13 +1,13 @@
 language: node_js
 
-
 node_js:
   - "node"
+
+sudo: false
 
 matrix:
   include:
     - os: linux
-      sudo: false
       dist: trusty
     - os: osx
 
