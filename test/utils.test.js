@@ -1,6 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 const assert = require('assert');
 const _ = require('lodash');
+const vscode =  require('vscode');
 
 const findDiagram = require('../find-diagram');
 const usesFontawesome = require('../lib/uses-fontawesome');
@@ -8,55 +10,50 @@ const usesFontawesome = require('../lib/uses-fontawesome');
 suite('Utilities Tests', () => {
   const startFenced = '```mermaid';
   const startDived = '<div class="mermaid">';
-  const getContent = filename => {
-    return fs.readFileSync(__dirname + '/fixtures/' + filename).toString()
-  }
+
+  const getAbsoluteFilePath = filename => path.join(__dirname, 'fixtures', filename);
+
+  const openTextDocument = filename => vscode.workspace.openTextDocument(vscode.Uri.file(getAbsoluteFilePath(filename)));
 
   suite('findDiagram', () => {
-    test('Detects fenced diagram if cursor inside fence', () => {
-      const input = getContent('sequence.md');
-      const diagram = findDiagram(input, startFenced.length);
+    test('Detects fenced diagram if cursor inside fence', () =>
+      openTextDocument('sequence.md').then(document => {
+        assert.ok(findDiagram(document.getText(), startFenced.length));
+      })
+    );
 
-      assert.equal(_.isNil(diagram), false);
-    });
+    test('Does not detect fenced diagram if cursor outside fence', () =>
+      openTextDocument('sequence.md').then(document => {
+        assert.equal(findDiagram(document.getText(), 0), undefined);
+      })
+    );
 
-    test('Does not detect fenced diagram if cursor outside fence', () => {
-      const input = getContent('sequence.md');
-      const diagram = findDiagram(input, 0);
+    test('Detects <div> diagram if cursor inside tag', () =>
+      openTextDocument('sequence.html').then(document => {
+        assert.ok(findDiagram(document.getText(), startDived.length));
+      })
+    );
 
-      assert.equal(_.isNil(diagram), true);
-    });
-
-    test('Detects <div> diagram if cursor inside tag', () => {
-      const input = getContent('sequence.html');
-      const diagram = findDiagram(input, startDived.length);
-
-      assert.equal(_.isNil(diagram), false);
-    });
-
-    test('Does not detect <div> diagram if cursor outside tag', () => {
-      const input = getContent('sequence.html');
-      const diagram = findDiagram(input, 0);
-
-      assert.equal(_.isNil(diagram), true);
-    });
+    test('Does not detect <div> diagram if cursor outside tag', () => 
+      openTextDocument('sequence.html').then(document => {
+        assert.equal(findDiagram(document.getText(), 0), undefined);
+      })
+    );
   });
 
   suite('usesFontawesome', () => {
-    test('Detects if diagram uses Fontawesome', () => {
-      const input = getContent('font-awesome.md');
-      const diagram = findDiagram(input, startFenced.length);
-      const usesFa = usesFontawesome(diagram);
+    test('Detects if diagram uses Fontawesome', () =>
+      openTextDocument('font-awesome.md').then(document => {
+        const diagram = findDiagram(document.getText(), startFenced.length);
+        assert.equal(usesFontawesome(diagram), true);
+      })
+    );
 
-      assert.equal(usesFa, true);
-    });
-
-    test('Does not detect if diagram does not uses Fontawesome', () => {
-      const input = getContent('sequence.md');
-      const diagram = findDiagram(input, startFenced.length);
-      const usesFa = usesFontawesome(diagram);
-
-      assert.equal(usesFa, false);
-    });
+    test('Does not detect if diagram does not uses Fontawesome', () =>
+      openTextDocument('sequence.md').then(document => {
+        const diagram = findDiagram(document.getText(), startFenced.length);
+        assert.equal(usesFontawesome(diagram), false);
+      })
+    );
   });
 });
