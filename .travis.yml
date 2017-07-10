@@ -9,7 +9,7 @@ matrix:
   include:
     - os: linux
       dist: trusty
-    - os: osx
+    # - os: osx
 
 before_install:
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
