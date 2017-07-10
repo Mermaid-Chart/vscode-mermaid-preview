@@ -1,14 +1,15 @@
 language: node_js
 
-sudo: false
-dist: trusty
 
 node_js:
   - "node"
 
-os:
-  # - osx
-  - linux
+matrix:
+  include:
+    - os: linux
+      sudo: false
+      dist: trusty
+    - os: osx
 
 before_install:
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
