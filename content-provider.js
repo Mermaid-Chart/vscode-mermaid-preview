@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const _ = require('lodash');
 const fileUrl = require('file-url');
 
-const findDiagram = require('./find-diagram');
+const findDiagram = require('./lib/find-diagram');
 const usesFontAwesome = require('./lib/uses-fontawesome');
 
 module.exports = class MermaidDocumentContentProvider {

@@ -2,7 +2,7 @@ const path = require('path');
 const assert = require('assert');
 const vscode =  require('vscode');
 
-const findDiagram = require('../find-diagram');
+const findDiagram = require('../lib/find-diagram');
 const usesFontawesome = require('../lib/uses-fontawesome');
 
 suite('Utilities Tests', () => {
