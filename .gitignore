@@ -1,1 +1,7 @@
 node_modules
+_server
+server
+/fixtures
+media
+server
+.vscode
