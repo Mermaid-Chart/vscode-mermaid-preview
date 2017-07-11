@@ -1,5 +1,7 @@
 # Mermaid Preview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/vstirbu/vscode-mermaid-preview.svg)](https://greenkeeper.io/)
+
 Mermaid diagram previewer for Visual Studio Code.
 
 [![](https://vsmarketplacebadge.apphb.com/version/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
