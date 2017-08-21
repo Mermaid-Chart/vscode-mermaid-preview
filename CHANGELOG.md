@@ -1,3 +1,7 @@
+# 0.5.1 / 2017-08-21
+
+* updated mermaid dependency v7.0.4
+
 # 0.5.0 / 2017-06-30
 
 * Added FontAwesome (4.7) support
