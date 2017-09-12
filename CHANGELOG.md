@@ -1,3 +1,7 @@
+# 0.5.2 / 2017-09-12
+
+* updated mermaid dependency v7.0.17
+
 # 0.5.1 / 2017-08-21
 
 * updated mermaid dependency v7.0.4
