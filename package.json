@@ -2,7 +2,7 @@
   "name": "vscode-mermaid-preview",
   "displayName": "Mermaid Preview",
   "description": "Previews Mermaid diagrams in Visual Studio Code",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -23,7 +23,7 @@
     "uml"
   ],
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.15.0"
   },
   "categories": [
     "Other"
@@ -49,7 +49,12 @@
         "command": "extension.previewMermaidDiagram",
         "title": "Preview Mermaid Diagram"
       }
-    ]
+    ],
+    "markdown.previewScripts": [
+      "./node_modules/mermaid/dist/mermaid.min.js",
+      "./markdown-it-preview.js"
+    ],
+    "markdown.markdownItPlugins": true
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",

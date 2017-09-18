@@ -1,3 +1,7 @@
+# 0.6.0 / 2017-09-18
+
+* added preliminary support for previewing mermaid diagrams into default markdown previewer
+
 # 0.5.4 / 2017-09-18
 
 * fixed theme selection using new mermaid api
