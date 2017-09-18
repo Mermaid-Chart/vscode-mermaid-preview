@@ -28,23 +28,18 @@ module.exports = class MermaidDocumentContentProvider {
             ${faStyle}
         </head>
         <body>
-            <script type="text/javascript">
-                css = document.createElement('link');
-                style = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
-                
-                css.setAttribute('rel', 'stylesheet');
-                // css.setAttribute('type', 'text/css');
-                css.setAttribute('href', '${mermaidBase}.' + style + '.css');
-
-                document.body.appendChild(css);
-            </script>
-
             <div class="mermaid">
             ${this.graph}
             </div>
 
             <script type="text/javascript">
-                mermaidAPI.initialize(JSON.parse('${config}'));
+                const style = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
+
+                const config = JSON.parse('${config}');
+                config.startOnLoad = true;
+                config.theme = style;
+
+                mermaid.initialize(config);
             </script>
         </body>` : 'select a diagram...';
 

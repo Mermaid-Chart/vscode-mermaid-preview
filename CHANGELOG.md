@@ -1,3 +1,7 @@
+# 0.5.4 / 2017-09-18
+
+* fixed theme selection using new mermaid api
+
 # 0.5.3 / 2017-09-14
 
 * updated mermaid dependency v7.1.0
