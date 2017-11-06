@@ -41,6 +41,15 @@ sequenceDiagram
 ```
 </pre>
 
+### Standalone Mermaid files
+
+Files with extension ``.mmd`` with plain Mermaid diagram content:
+
+```
+sequenceDiagram
+  A-->B: Works!
+```
+
 ## Customize diagrams
 
 You can customize the appearence of the previewed diagrams by setting the mermaid configuration in the workspace settings:
@@ -55,4 +64,4 @@ You can customize the appearence of the previewed diagrams by setting the mermai
 }
 ```
 
-All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported. 
+All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported.
