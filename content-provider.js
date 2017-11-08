@@ -65,7 +65,9 @@ module.exports = class MermaidDocumentContentProvider {
     const text = editor.document.getText();
     const selStart = editor.document.offsetAt(editor.selection.anchor);
 
-    const graph = findDiagram(text, selStart);
+    const graph = /\.mmd$/.test(editor.document.fileName)
+      ? text
+      : findDiagram(text, selStart);
 
     if (graph) {
       this.graph = graph;
