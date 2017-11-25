@@ -18,6 +18,7 @@ module.exports = class MermaidDocumentContentProvider {
     const mermaidUrl = fileUrl(
       this.context.asAbsolutePath("node_modules/mermaid/dist/mermaid.min.js")
     );
+    const panzoomUrl = fileUrl(this.context.asAbsolutePath('node_modules/panzoom/dist/panzoom.min.js'));
     const svgPanZoomUrl = fileUrl(this.context.asAbsolutePath('node_modules/svg-pan-zoom/dist/svg-pan-zoom.min.js'));
     const faBase = fileUrl(
       this.context.asAbsolutePath(
@@ -35,7 +36,7 @@ module.exports = class MermaidDocumentContentProvider {
         <head>
             <base href="">
             <script src="${mermaidUrl}"></script>
-            <script src="${svgPanZoomUrl}"></script>
+            <script src="${panzoomUrl}"></script>
             ${faStyle}
         </head>
         <body class="vscode-body">
@@ -44,13 +45,22 @@ module.exports = class MermaidDocumentContentProvider {
             </div>
 
             <script type="text/javascript">
-                const style = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
+            const style = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
 
-                const config = JSON.parse('${config}');
-                config.startOnLoad = true;
-                config.theme = style;
+            const config = JSON.parse('${config}');
+            config.startOnLoad = true;
+            config.theme = style;
 
-                mermaid.initialize(config);
+            mermaid.initialize(config);
+
+            setTimeout(() => {
+              return;
+              const svg = document.getElementsByTagName('svg')[0];
+              const area = svg.getElementsByTagName('g')[0];
+              svg.setAttribute('width', '100%');
+              svg.setAttribute('height', '100%');
+              panzoom(area);
+            }, 100);
             </script>
         </body>`
       : "select a diagram...";
