@@ -1,3 +1,8 @@
+# 0.8.1 / 2017-11-25
+
+* flowcharts can be scrolled horisontally if diagram wider than pane
+* reverted pan and zoom as is not working well on retina displays
+
 # 0.8.0 / 2017-11-25
 
 * added pan and zoom support for the rendered diagram

@@ -38,8 +38,8 @@ module.exports = class MermaidDocumentContentProvider {
             <script src="${svgPanZoomUrl}"></script>
             ${faStyle}
         </head>
-        <body>
-            <div class="mermaid">
+        <body class="vscode-body">
+            <div class="mermaid" style="height: 100vh">
             ${this.graph}
             </div>
 
@@ -50,15 +50,7 @@ module.exports = class MermaidDocumentContentProvider {
                 config.startOnLoad = true;
                 config.theme = style;
 
-                mermaid.initialize(config, () => {
-                  console.log('rendered');
-                });
-                setTimeout(() => {
-                  const target = document.getElementsByTagName('svg')[0];
-                  const viewBox = target.getAttribute('viewBox');
-                  const spz = svgPanZoom(target);
-                  target.setAttribute('viewBox', viewBox);
-                }, 200);
+                mermaid.initialize(config);
             </script>
         </body>`
       : "select a diagram...";
