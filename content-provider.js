@@ -15,9 +15,10 @@ module.exports = class MermaidDocumentContentProvider {
 
   provideTextDocumentContent(uri, token) {
     const config = JSON.stringify(vscode.workspace.getConfiguration("mermaid"));
-    const mermaidBase = fileUrl(
-      this.context.asAbsolutePath("node_modules/mermaid/dist/mermaid")
+    const mermaidUrl = fileUrl(
+      this.context.asAbsolutePath("node_modules/mermaid/dist/mermaid.min.js")
     );
+    const svgPanZoomUrl = fileUrl(this.context.asAbsolutePath('node_modules/svg-pan-zoom/dist/svg-pan-zoom.min.js'));
     const faBase = fileUrl(
       this.context.asAbsolutePath(
         "node_modules/font-awesome/css/font-awesome.min.css"
@@ -33,7 +34,8 @@ module.exports = class MermaidDocumentContentProvider {
         <html>
         <head>
             <base href="">
-            <script src="${mermaidBase}.min.js"></script>
+            <script src="${mermaidUrl}"></script>
+            <script src="${svgPanZoomUrl}"></script>
             ${faStyle}
         </head>
         <body>
@@ -48,7 +50,15 @@ module.exports = class MermaidDocumentContentProvider {
                 config.startOnLoad = true;
                 config.theme = style;
 
-                mermaid.initialize(config);
+                mermaid.initialize(config, () => {
+                  console.log('rendered');
+                });
+                setTimeout(() => {
+                  const target = document.getElementsByTagName('svg')[0];
+                  const viewBox = target.getAttribute('viewBox');
+                  const spz = svgPanZoom(target);
+                  target.setAttribute('viewBox', viewBox);
+                }, 200);
             </script>
         </body>`
       : "select a diagram...";

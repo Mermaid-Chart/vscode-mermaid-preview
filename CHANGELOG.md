@@ -1,3 +1,11 @@
+# 0.8.0 / 2017-11-25
+
+* added pan and zoom support for the rendered diagram
+
+# 0.7.0 / 2017-11-08
+
+* Support for standalone Mermaid files .mmd [iiska](https://github.com/iiska)
+
 # 0.6.0 / 2017-09-18
 
 * added preliminary support for previewing mermaid diagrams into default markdown previewer
