@@ -18,7 +18,6 @@ module.exports = class MermaidDocumentContentProvider {
     const mermaidUrl = fileUrl(
       this.context.asAbsolutePath("node_modules/mermaid/dist/mermaid.min.js")
     );
-    const svgPanZoomUrl = fileUrl(this.context.asAbsolutePath('node_modules/svg-pan-zoom/dist/svg-pan-zoom.min.js'));
     const faBase = fileUrl(
       this.context.asAbsolutePath(
         "node_modules/font-awesome/css/font-awesome.min.css"
@@ -35,11 +34,14 @@ module.exports = class MermaidDocumentContentProvider {
         <head>
             <base href="">
             <script src="${mermaidUrl}"></script>
-            <script src="${svgPanZoomUrl}"></script>
             ${faStyle}
         </head>
         <body class="vscode-body">
             <div class="mermaid" style="height: 100vh">
+            ${this.graph}
+            </div>
+
+            <div class="mermaid" style="position: fixed; top: 0; left: 0; width: 75px; height: 50px; z-index: 100; display: block">
             ${this.graph}
             </div>
 

@@ -1,3 +1,7 @@
+# 0.8.2 / 2017-11-25
+
+* added a minimap of the diagram
+
 # 0.8.1 / 2017-11-25
 
 * flowcharts can be scrolled horisontally if diagram wider than pane
