@@ -1,3 +1,7 @@
+# 0.8.3 / 2018-02-09
+
+* added Mermaid language contribution
+
 # 0.8.2 / 2017-11-25
 
 * added a minimap of the diagram
