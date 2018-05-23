@@ -41,6 +41,15 @@ sequenceDiagram
 ```
 </pre>
 
+### HUGO shortcodes
+
+```html
+{{<mermaid attr="val">}}
+sequenceDiagram
+  A-->B: Works!
+{{</mermaid>}}
+```
+
 ### Standalone Mermaid files
 
 Files with extension ``.mmd`` with plain Mermaid diagram content:
