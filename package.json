@@ -29,7 +29,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.previewMermaidDiagram"
+    "onCommand:mermaidPreview.start"
   ],
   "main": "./extension",
   "contributes": {
@@ -58,8 +58,8 @@
     },
     "commands": [
       {
-        "command": "extension.previewMermaidDiagram",
-        "title": "Preview Mermaid Diagram"
+        "command": "mermaidPreview.start",
+        "title": "Preview Mermaid"
       }
     ],
     "markdown.previewScripts": [

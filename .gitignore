@@ -5,3 +5,4 @@ server
 media
 server
 .vscode
+package-lock.json
