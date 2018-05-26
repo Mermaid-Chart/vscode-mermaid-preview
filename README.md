@@ -50,6 +50,22 @@ sequenceDiagram
 {{</mermaid>}}
 ```
 
+### Sphinx directives
+
+```html
+.. mermaid::
+  :parameters: are optional
+
+  sequenceDiagram
+    A-->B: Works!
+```
+
+The plugin does not preview diagrams in external files:
+
+```html
+.. mermaid:: graphs/mygraph.mmd
+```
+
 ### Standalone Mermaid files
 
 Files with extension ``.mmd`` with plain Mermaid diagram content:

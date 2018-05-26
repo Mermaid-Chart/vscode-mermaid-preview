@@ -1,6 +1,7 @@
 const path = require('path');
 const assert = require('assert');
 const vscode =  require('vscode');
+const mermaid = require('mermaid');
 
 const findDiagram = require('../lib/find-diagram');
 const usesFontawesome = require('../lib/uses-fontawesome');
@@ -15,7 +16,7 @@ suite('Utilities Tests', () => {
   const openTextDocument = filename => vscode.workspace.openTextDocument(vscode.Uri.file(getAbsoluteFilePath(filename)));
 
   suite('findDiagram', () => {
-    suite('markdown', () => {
+    suite('markdown fenced code', () => {
       test('Detects fenced diagram if cursor inside fence', () =>
         openTextDocument('sequence.md').then(document => {
           assert.ok(findDiagram(document.getText(), startFenced.length));
@@ -43,7 +44,7 @@ suite('Utilities Tests', () => {
       );
     });
 
-    suite('hugo', () => {
+    suite('hugo shortcodes', () => {
       test('Detects hugo diagram if cursor inside tag', () =>
         openTextDocument('hugo.html').then(document => {
           assert.ok(findDiagram(document.getText(), startHugo.length));
@@ -57,6 +58,27 @@ suite('Utilities Tests', () => {
       );
     });
 
+    suite('sphinx directive', () => {
+      test('Detects diagram', () =>
+        openTextDocument('example.sphinx').then(document => {
+          assert.doesNotThrow(() =>
+            mermaid.parse(findDiagram(document.getText(), 25))
+        )})
+      );
+
+      test('Detects diagram with parameters', () =>
+        openTextDocument('example.sphinx').then(document => {
+          assert.doesNotThrow(() =>
+            mermaid.parse(findDiagram(document.getText(), 625))
+        )})
+      );
+
+      test('Does not detect diagram defined in externl file', () =>
+        openTextDocument('example.sphinx').then(document => {
+          assert.equal(findDiagram(document.getText(), 1113), undefined);
+        })
+      );
+    });
   });
 
   suite('usesFontawesome', () => {

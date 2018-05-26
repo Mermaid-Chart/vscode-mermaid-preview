@@ -1,0 +1,90 @@
+
+A diagram:
+
+.. mermaid::
+  sequenceDiagram
+      participant Alice
+      participant Bob
+      Alice->John: Hello John, how are you?
+      loop Healthcheck
+          John->John: Fight against hypochondria
+      end
+      Note right of John: Rational thoughts <br/>prevail...
+      John-->Alice: Great!
+      John->Bob: How about you?
+
+
+      Bob-->John: Jolly good!
+
+A random paragraph.
+
+A diagram with parameters (the parameters can't be considered as part of the mermaid markup):
+
+.. mermaid::
+    :alt: The image alternate text for HTML output
+    :align: center
+    :caption: Caption Text underneath the generated image
+
+    sequenceDiagram
+      participant Alice
+      participant Bob
+      Alice->John: Hello John, how are you?
+      loop Healthcheck
+          John->John: Fight against hypochondria
+      end
+      Note right of John: Rational thoughts <br/>prevail...
+      John-->Alice: Great!
+      John->Bob: How about you?
+
+
+
+      Bob-->John: Jolly good!
+
+A diagram on an external file. You might decide not to match it, as the file itself can be previewed easily:
+
+.. mermaid:: graphs/mygraph.mmd
+
+Another diagram on an external file. Now with parameters:
+
+.. mermaid:: graphs/mygraph.mmd
+    :alt: The image alternate text for HTML output
+    :align: center
+    :caption: Caption Text underneath the generated image
+
+Two diagrams one after the other. Should be matched separately. The file ends with no paragraph after the last diagram:
+
+.. mermaid::
+  sequenceDiagram
+      participant Alice
+      participant Bob
+      Alice->John: Hello John, how are you?
+      loop Healthcheck
+          John->John: Fight against hypochondria
+      end
+      Note right of John: Rational thoughts <br/>prevail...
+      John-->Alice: Great!
+      John->Bob: How about you?
+
+
+      Bob-->John: Jolly good!
+
+.. mermaid::
+    :go home:
+    :alt: The image alternate text for HTML output
+    :align: center
+    :caption: Caption Text underneath the generated image
+
+    sequenceDiagram
+      participant Alice
+      participant Bob
+      Alice->John: Hello John, how are you?
+      loop Healthcheck
+          John->John: Fight against hypochondria
+      end
+      Note right of John: Rational thoughts <br/>prevail...
+      John-->Alice: Great!
+      John->Bob: How about you?
+
+
+
+      Bob-->John: Jolly good!

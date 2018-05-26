@@ -1,3 +1,11 @@
+# 0.10.0 / 2018-05-26
+
+* added sphinx directive support
+
+# 0.9.0 / 2018-05-23
+
+* added hugo shortcodes support
+
 # 0.8.3 / 2018-02-09
 
 * added Mermaid language contribution
