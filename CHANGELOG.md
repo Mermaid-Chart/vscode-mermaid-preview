@@ -1,3 +1,8 @@
+# 0.10.1 / 2018-05-31
+
+* fixed loop text style in sequence diagrams
+* updated mermaid 8.0.0-rc8
+
 # 0.10.0 / 2018-05-26
 
 * added sphinx directive support

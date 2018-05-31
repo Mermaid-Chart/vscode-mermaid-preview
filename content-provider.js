@@ -52,6 +52,10 @@ module.exports = class MermaidDocumentContentProvider {
                 config.startOnLoad = true;
                 config.theme = style;
 
+                if (style == 'dark') {
+                  config.themeCSS = '.loopText tspan { fill: inherit; }';
+                }
+
                 mermaid.initialize(config);
             </script>
         </body>`
