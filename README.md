@@ -9,6 +9,8 @@
 
 [![](https://img.shields.io/badge/paypal-donate%20&#x2615;-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XUTSVST4DNTFC)
 
+The plugin enables live editing and visualization of [mermaid](https://mermaidjs.github.io) supported diagrams.
+
 ## Usage
 
 0. Open a file containing Mermaid diagram

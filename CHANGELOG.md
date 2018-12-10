@@ -1,3 +1,7 @@
+# 0.10.2 / 2018-12-10
+
+* added link to mermaid website.
+
 # 0.10.1 / 2018-05-31
 
 * fixed loop text style in sequence diagrams
