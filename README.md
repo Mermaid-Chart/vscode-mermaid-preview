@@ -11,6 +11,9 @@
 
 The plugin enables live editing and visualization of [mermaid](https://mermaidjs.github.io) supported diagrams.
 
+Related plugins:
+* [syntax highlighting](https://github.com/bpruitt-goddard/vscode-mermaid-syntax-highlight)
+
 ## Usage
 
 0. Open a file containing Mermaid diagram
