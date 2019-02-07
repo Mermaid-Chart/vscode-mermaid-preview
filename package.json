@@ -62,6 +62,23 @@
         "title": "Preview Mermaid"
       }
     ],
+    "grammars": [
+      {
+        "language": "mermaid",
+        "scopeName": "markdown.mermaid.codeblock",
+        "path": "./syntaxes/mermaid.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.mermaid.codeblock",
+        "path": "./syntaxes/mermaid.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.mermaid": "Mermaid"
+        }
+      }
+    ],
     "markdown.previewScripts": [
       "./node_modules/mermaid/dist/mermaid.min.js",
       "./markdown-it-preview.js"
