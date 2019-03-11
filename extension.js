@@ -9,6 +9,8 @@ function activate(context) {
   const registerCommand = vscode.commands.registerCommand;
 
   let command = registerCommand('mermaidPreview.start', () => {
+    const _disposables = [];
+
     const panel = vscode.window.createWebviewPanel(
       'mermaidPreview',
       'Mermaid Preview',
@@ -100,25 +102,44 @@ function activate(context) {
       });
     };
 
-    vscode.workspace.onDidChangeTextDocument(e => {
-      if (e.document === vscode.window.activeTextEditor.document) {
-        previewHandler();
-      }
-    });
+    vscode.workspace.onDidChangeTextDocument(
+      e => {
+        if (e.document === vscode.window.activeTextEditor.document) {
+          previewHandler();
+        }
+      },
+      null,
+      _disposables
+    );
 
-    vscode.workspace.onDidChangeConfiguration(e => {
-      panel.webview.html = getContent();
-    });
+    vscode.workspace.onDidChangeConfiguration(
+      e => {
+        panel.webview.html = getContent();
+      },
+      null,
+      _disposables
+    );
 
-    vscode.window.onDidChangeTextEditorSelection(e => {
-      if (e.textEditor === vscode.window.activeTextEditor) {
-        previewHandler();
-      }
-    });
+    vscode.window.onDidChangeTextEditorSelection(
+      e => {
+        if (e.textEditor === vscode.window.activeTextEditor) {
+          previewHandler();
+        }
+      },
+      null,
+      _disposables
+    );
 
     panel.onDidDispose(
       () => {
         console.log('panel closed');
+
+        while (_disposables.length) {
+          const item = _disposables.pop();
+          if (item) {
+            item.dispose();
+          }
+        }
       },
       null,
       context.subscriptions
@@ -145,5 +166,7 @@ function activate(context) {
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() {
+  console.log('deactivated');
+}
 exports.deactivate = deactivate;
