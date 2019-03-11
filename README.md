@@ -7,18 +7,19 @@
 [![Build Status](https://travis-ci.org/vstirbu/vscode-mermaid-preview.svg?branch=master)](https://travis-ci.org/vstirbu/vscode-mermaid-preview)
 [![Greenkeeper badge](https://badges.greenkeeper.io/vstirbu/vscode-mermaid-preview.svg)](https://greenkeeper.io/)
 
-[![](https://img.shields.io/badge/paypal-donate%20&#x2615;-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XUTSVST4DNTFC)
+[![](https://img.shields.io/badge/paypal-donate%20☕-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XUTSVST4DNTFC)
 
 The plugin enables live editing and visualization of [mermaid](https://mermaidjs.github.io) supported diagrams.
 
 Related plugins:
-* [syntax highlighting](https://github.com/bpruitt-goddard/vscode-mermaid-syntax-highlight)
+
+- [syntax highlighting](https://github.com/bpruitt-goddard/vscode-mermaid-syntax-highlight)
 
 ## Usage
 
 0. Open a file containing Mermaid diagram
-0. Choose `Preview Mermaid Diagram`
-0. Move cursor inside the diagram
+1. Choose `Preview Mermaid Diagram`
+1. Move cursor inside the diagram
 
 ![activate](https://raw.github.com/vstirbu/vscode-mermaid-preview/master/images/activate.png)
 
@@ -32,8 +33,7 @@ The plugin detects mermaid diagrams in the following formats:
 
 ```html
 <div class="mermaid">
-sequenceDiagram
-  A-->B: Works!
+  sequenceDiagram A-->B: Works!
 </div>
 ```
 
@@ -49,20 +49,13 @@ sequenceDiagram
 ### HUGO shortcodes
 
 ```html
-{{<mermaid attr="val">}}
-sequenceDiagram
-  A-->B: Works!
-{{</mermaid>}}
+{{<mermaid attr="val">}} sequenceDiagram A-->B: Works! {{</mermaid>}}
 ```
 
 ### Sphinx directives
 
 ```html
-.. mermaid::
-  :parameters: are optional
-
-  sequenceDiagram
-    A-->B: Works!
+.. mermaid:: :parameters: are optional sequenceDiagram A-->B: Works!
 ```
 
 The plugin does not preview diagrams in external files:
@@ -73,7 +66,7 @@ The plugin does not preview diagrams in external files:
 
 ### Standalone Mermaid files
 
-Files with extension ``.mmd`` with plain Mermaid diagram content:
+Files with extension `.mmd` with plain Mermaid diagram content:
 
 ```
 sequenceDiagram
@@ -81,6 +74,8 @@ sequenceDiagram
 ```
 
 ## Customize diagrams
+
+### Rendering
 
 You can customize the appearence of the previewed diagrams by setting the mermaid configuration in the workspace settings:
 
@@ -95,3 +90,18 @@ You can customize the appearence of the previewed diagrams by setting the mermai
 ```
 
 All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported.
+
+### Custom theme
+
+You can render the diagram using a custom theme by providing the following configuration properties:
+
+```json
+{
+  "mermaid": {
+    "theme": null,
+    "themeCSS": "the theme as string"
+  }
+}
+```
+
+:warning: The value `null` for `theme` disables the authomatic theme detection, so you are responsible for providing a proper theme in `themeCSS` for all diagrams used in the settings' scope.

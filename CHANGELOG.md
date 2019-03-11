@@ -2,6 +2,7 @@
 
 - transitioned from htmlPreview to webview
 - rerender on configuration change
+- apply user provided custom theme
 
 # 0.10.2 / 2018-12-10
 

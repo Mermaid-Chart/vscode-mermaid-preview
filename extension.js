@@ -51,7 +51,6 @@ function activate(context) {
     <script>
       const minimap = document.getElementById('minimap');
       const diagram = document.getElementById('diagram');
-      const theme = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
 
       window.addEventListener('message', event => {
         const message = event.data;
@@ -67,10 +66,17 @@ function activate(context) {
       
       const config = JSON.parse('${configString}');
       config.startOnLoad = false;
-      config.theme = theme;
-      
-      if (theme === 'dark') {
-        config.themeCSS = '.loopText tspan { fill: inherit; }';
+
+      if (config.theme !== null) {
+        const theme = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
+
+        config.theme = theme;
+        
+        if (theme === 'dark') {
+          config.themeCSS = '.loopText tspan { fill: inherit; }';
+        } else {
+          config.themeCSS = '';
+        }
       }
       
       mermaid.initialize(config);
