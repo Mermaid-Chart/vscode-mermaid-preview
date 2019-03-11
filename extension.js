@@ -19,17 +19,23 @@ function activate(context) {
     );
 
     const getContent = () => {
-      const mermaidPath = 'node_modules/mermaid/dist/mermaid.min.js';
-      const mermaidUrl = vscode.Uri.file(context.asAbsolutePath(mermaidPath)).with({
+      const mermaidLibPath = 'node_modules/mermaid/dist/mermaid.min.js';
+      const mermaidUrl = vscode.Uri.file(
+        context.asAbsolutePath(mermaidLibPath)
+      ).with({
         scheme: 'vscode-resource'
       });
 
-      const fsStylesheetPath = 'node_modules/font-awesome/css/font-awesome.min.css';
-      const faBase = vscode.Uri.file(context.asAbsolutePath(fsStylesheetPath)).with({
+      const fsStylesheetPath =
+        'node_modules/font-awesome/css/font-awesome.min.css';
+      const faBase = vscode.Uri.file(
+        context.asAbsolutePath(fsStylesheetPath)
+      ).with({
         scheme: 'vscode-resource'
       });
-      
-      return `<!DOCTYPE html>
+
+      return `
+<!DOCTYPE html>
 <html>
   <head>
     <base href="">
@@ -43,6 +49,7 @@ function activate(context) {
     <script>
       const minimap = document.getElementById('minimap');
       const diagram = document.getElementById('diagram');
+      const theme = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
 
       window.addEventListener('message', event => {
         const message = event.data;
@@ -58,46 +65,49 @@ function activate(context) {
 
       const config = {
         startOnLoad: false,
-        theme: 'forest'
+        theme
       };
       mermaid.initialize(config);
     </script>
   </body>
-</html>`;
+</html>
+`;
     };
 
     const previewHandler = () => {
       const editor = vscode.window.activeTextEditor;
       const text = editor.document.getText();
       const cursor = editor.document.offsetAt(editor.selection.anchor);
-      
+
       const diagram = findDiagram(text, cursor);
-      
+
       panel.webview.postMessage({
         diagram
       });
-    }
-    
+    };
+
     vscode.workspace.onDidChangeTextDocument(e => {
       if (e.document === vscode.window.activeTextEditor.document) {
         previewHandler();
       }
     });
-    
+
     vscode.window.onDidChangeTextEditorSelection(e => {
       if (e.textEditor === vscode.window.activeTextEditor) {
         previewHandler();
       }
     });
 
-    panel.onDidDispose(() => {
-      console.log('panel closed');
-      clearInterval(interval);
-    }, null, context.subscriptions);
-  
+    panel.onDidDispose(
+      () => {
+        console.log('panel closed');
+      },
+      null,
+      context.subscriptions
+    );
+
     panel.webview.html = getContent();
   });
-  
 
   context.subscriptions.push(command);
 
@@ -105,7 +115,7 @@ function activate(context) {
     extendMarkdownIt(md) {
       const highlight = md.options.highlight;
       md.options.highlight = (code, lang) => {
-        if (lang && lang.toLowerCase() === "mermaid") {
+        if (lang && lang.toLowerCase() === 'mermaid') {
           return `<div class="mermaid">${code}</div>`;
         }
         return highlight(code, lang);
