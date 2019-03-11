@@ -1,4 +1,4 @@
-# [UNPUBLISHED]
+# 0.11.0 / 2019-03-11
 
 - transitioned from htmlPreview to webview
 - rerender on configuration change
