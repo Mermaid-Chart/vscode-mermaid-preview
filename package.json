@@ -51,7 +51,7 @@
       "properties": {
         "mermaid.arrowMarkerAbsolute": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Fixes rendering arrowheads"
         }
       }

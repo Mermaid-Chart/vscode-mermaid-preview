@@ -19,6 +19,8 @@ function activate(context) {
     );
 
     const getContent = () => {
+      const config = vscode.workspace.getConfiguration('mermaid');
+      const configString = JSON.stringify(config);
       const mermaidLibPath = 'node_modules/mermaid/dist/mermaid.min.js';
       const mermaidUrl = vscode.Uri.file(
         context.asAbsolutePath(mermaidLibPath)
@@ -62,11 +64,15 @@ function activate(context) {
 
         mermaid.init();
       });
-
-      const config = {
-        startOnLoad: false,
-        theme
-      };
+      
+      const config = JSON.parse('${configString}');
+      config.startOnLoad = false;
+      config.theme = theme;
+      
+      if (theme === 'dark') {
+        config.themeCSS = '.loopText tspan { fill: inherit; }';
+      }
+      
       mermaid.initialize(config);
     </script>
   </body>
@@ -90,6 +96,10 @@ function activate(context) {
       if (e.document === vscode.window.activeTextEditor.document) {
         previewHandler();
       }
+    });
+
+    vscode.workspace.onDidChangeConfiguration(e => {
+      panel.webview.html = getContent();
     });
 
     vscode.window.onDidChangeTextEditorSelection(e => {
