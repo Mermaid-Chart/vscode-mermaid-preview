@@ -87,5 +87,8 @@
     "ignore": [
       "@types/node"
     ]
-  }
+  },
+  "extensionPack": [
+    "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
+  ]
 }
