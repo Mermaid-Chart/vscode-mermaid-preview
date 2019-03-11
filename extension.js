@@ -85,7 +85,9 @@ function activate(context) {
       const text = editor.document.getText();
       const cursor = editor.document.offsetAt(editor.selection.anchor);
 
-      const diagram = findDiagram(text, cursor);
+      const diagram = /\.mmd$/.test(editor.document.fileName)
+        ? text
+        : findDiagram(text, cursor);
 
       panel.webview.postMessage({
         diagram
