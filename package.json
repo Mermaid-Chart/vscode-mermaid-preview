@@ -2,7 +2,8 @@
   "name": "vscode-mermaid-preview",
   "displayName": "Mermaid Preview",
   "description": "Previews Mermaid diagrams in Visual Studio Code",
-  "version": "0.11.0",
+  "license": "MIT",
+  "version": "0.11.1",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -73,6 +74,7 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
+    "d3": "^4.13.0",
     "file-url": "^2.0.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",

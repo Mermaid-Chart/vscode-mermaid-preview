@@ -1,3 +1,7 @@
+# 0.11.1 / 2019-03-11
+
+- fixed peer dependencies
+
 # 0.11.0 / 2019-03-11
 
 - transitioned from htmlPreview to webview
