@@ -74,7 +74,7 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
-    "d3": "^4.13.0",
+    "d3": "^5.9.2",
     "file-url": "^2.0.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
