@@ -54,6 +54,10 @@ function activate(context) {
       const minimap = document.getElementById('minimap');
       const diagram = document.getElementById('diagram');
 
+      function recenter() {
+        diagram.firstChild.setAttribute('height', '100%');
+      }
+
       window.addEventListener('message', event => {
         const message = event.data;
 
@@ -64,6 +68,7 @@ function activate(context) {
         diagram.removeAttribute('data-processed');
 
         mermaid.init();
+        recenter();
       });
       
       const config = JSON.parse('${configString}');
@@ -82,6 +87,7 @@ function activate(context) {
       }
       
       mermaid.initialize(config);
+      recenter();
     </script>
   </body>
 </html>
