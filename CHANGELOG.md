@@ -1,5 +1,6 @@
-# [UNPUBLISHED]
+# 0.11.2 / 2019-03-29
 
+- center vertically graph diagrams
 - added extension pack containing: [syntax highlighting](https://marketplace.visualstudio.com/items?itemName=bpruitt-goddard.mermaid-markdown-syntax-highlighting)
 
 # 0.11.1 / 2019-03-11
