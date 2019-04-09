@@ -3,6 +3,7 @@
 [![](https://vsmarketplacebadge.apphb.com/version/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 [![](https://vsmarketplacebadge.apphb.com/installs/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 [![](https://vsmarketplacebadge.apphb.com/rating/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+[![](http://vsmarketplacebadge.apphb.com/trending-monthly/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 
 [![Build Status](https://travis-ci.org/vstirbu/vscode-mermaid-preview.svg?branch=master)](https://travis-ci.org/vstirbu/vscode-mermaid-preview)
 [![Greenkeeper badge](https://badges.greenkeeper.io/vstirbu/vscode-mermaid-preview.svg)](https://greenkeeper.io/)
