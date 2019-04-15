@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "d3": "^4.13.0",
-    "file-url": "^2.0.2",
+    "file-url": "^3.0.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
     "mermaid": "^8.0.0"
