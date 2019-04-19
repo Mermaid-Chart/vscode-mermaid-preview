@@ -1,6 +1,6 @@
 # Changelog
 
-## unpublished
+## 0.12.0 / 2019-04-19
 
 - added zoom and pan
 
