@@ -23,6 +23,10 @@ function activate(context) {
     const getContent = () => {
       const config = vscode.workspace.getConfiguration('mermaid');
       const configString = JSON.stringify(config);
+      const d3LibPath = 'node_modules/d3/build/d3.min.js';
+      const d3Url = vscode.Uri.file(context.asAbsolutePath(d3LibPath)).with({
+        scheme: 'vscode-resource'
+      });
       const mermaidLibPath = 'node_modules/mermaid/dist/mermaid.min.js';
       const mermaidUrl = vscode.Uri.file(
         context.asAbsolutePath(mermaidLibPath)
@@ -45,6 +49,7 @@ function activate(context) {
     <base href="">
     <link rel="stylesheet" href="${faBase}">
     <script src="${mermaidUrl}"></script>
+    <script src="${d3Url}"></script>
   </head>
   <body>
     <div id="diagram" class="mermaid" style="height: 100vh"></div>
@@ -55,7 +60,23 @@ function activate(context) {
       const diagram = document.getElementById('diagram');
 
       function recenter() {
-        diagram.firstChild.setAttribute('height', '100%');
+        if (diagram.firstChild) {
+          const element = d3.select(diagram.firstChild);
+          const { height, width } = element.node().getClientRects()[0];
+
+          diagram.firstChild.setAttribute('height', '100%');
+
+          const zoomHandler = d3
+            .zoom()
+            .translateExtent([[-200, -200], [width + 200, height + 200]])
+            .on('zoom', () => {
+              d3.event.sourceEvent && d3.event.sourceEvent.stopPropagation();
+
+              element.attr('transform', d3.event.transform);
+            });
+
+          element.call(zoomHandler).on('touchmove.zoom', null);
+        }
       }
 
       window.addEventListener('message', event => {
