@@ -105,4 +105,4 @@ You can render the diagram using a custom theme by providing the following confi
 }
 ```
 
-:warning: The value `null` for `theme` disables the authomatic theme detection, so you are responsible for providing a proper theme in `themeCSS` for all diagrams used in the settings' scope.
+:warning: The value `null` for `theme` disables the automatic theme detection, so you are responsible for providing a proper theme in `themeCSS` for all diagrams used in the settings' scope.
