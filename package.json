@@ -80,7 +80,7 @@
     "mermaid": "^8.1.0"
   },
   "devDependencies": {
-    "vscode": "^1.1.30"
+    "vscode": "^1.1.35"
   },
   "greenkeeper": {
     "ignore": [
