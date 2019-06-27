@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.1 / 2019-06-27
+
+- updated mermaid
+- added pipeline for publish on tag
+
 ## 0.12.0 / 2019-04-19
 
 - added zoom and pan

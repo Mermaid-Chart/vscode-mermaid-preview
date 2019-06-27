@@ -6,4 +6,5 @@ media
 server
 .vscode
 .vscode-test
+.envrc
 package-lock.json
