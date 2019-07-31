@@ -5,7 +5,6 @@
 [![](https://vsmarketplacebadge.apphb.com/rating/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 [![](https://vsmarketplacebadge.apphb.com/trending-monthly/vstirbu.vscode-mermaid-preview.svg)](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
 
-[![Build Status](https://travis-ci.org/vstirbu/vscode-mermaid-preview.svg?branch=master)](https://travis-ci.org/vstirbu/vscode-mermaid-preview)
 [![Greenkeeper badge](https://badges.greenkeeper.io/vstirbu/vscode-mermaid-preview.svg)](https://greenkeeper.io/)
 
 [![](https://img.shields.io/badge/paypal-donate%20☕-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XUTSVST4DNTFC)
