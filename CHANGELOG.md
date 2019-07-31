@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- added preview app to publishing pipeline
+
 ## 0.12.2 / 2019-07-22
 
 - updated mermaid (8.2.2)

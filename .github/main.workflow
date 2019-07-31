@@ -1,37 +1,49 @@
 workflow "Publish" {
-    on       = "push"
+  on       = "push"
 
-    resolves = [
-        "publish"
-    ]
+  resolves = [
+    "publish"
+  ]
 }
 
 action "tag-filter" {
-    uses = "actions/bin/filter@master"
-    args = "tag"
+  uses = "actions/bin/filter@master"
+  args = "tag"
 }
 
 action "install" {
-    uses  = "actions/npm@master"
+  uses  = "actions/npm@master"
 
-    args  = [
-        "install --unsafe-perm"
-    ]
+  args  = [
+    "install --unsafe-perm"
+  ]
 
-    needs = [
-        "tag-filter"
-    ]
+  needs = [
+    "tag-filter"
+  ]
+}
+
+action "build-previewer" {
+  uses  = "./previewer/actions/build"
+
+  needs = [
+    "tag-filter"
+  ]
+
+  args  = [
+  ]
 }
 
 action "publish" {
-    uses    = "lannonbr/vsce-action@master"
-    args    = "publish -p $VSCE_TOKEN"
+  uses    = "lannonbr/vsce-action@master"
+  args    = "publish -p $VSCE_TOKEN"
 
-    needs   = [
-        "install"
-    ]
+  needs   = [
+    "build-previewer",
+    "install"
+  ]
 
-    secrets = [
-        "VSCE_TOKEN"
-    ]
+  secrets = [
+    "VSCE_TOKEN"
+  ]
 }

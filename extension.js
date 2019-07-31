@@ -23,21 +23,17 @@ function activate(context) {
     const getContent = () => {
       const config = vscode.workspace.getConfiguration('mermaid');
       const configString = JSON.stringify(config);
-      const d3LibPath = 'node_modules/d3/build/d3.min.js';
-      const d3Url = vscode.Uri.file(context.asAbsolutePath(d3LibPath)).with({
-        scheme: 'vscode-resource'
-      });
-      const mermaidLibPath = 'node_modules/mermaid/dist/mermaid.min.js';
-      const mermaidUrl = vscode.Uri.file(
-        context.asAbsolutePath(mermaidLibPath)
+
+      const faBase = vscode.Uri.file(
+        context.asAbsolutePath(
+          'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
+        )
       ).with({
         scheme: 'vscode-resource'
       });
 
-      const fsStylesheetPath =
-        'node_modules/font-awesome/css/font-awesome.min.css';
-      const faBase = vscode.Uri.file(
-        context.asAbsolutePath(fsStylesheetPath)
+      const jsUrl = vscode.Uri.file(
+        context.asAbsolutePath('previewer/dist/index.js')
       ).with({
         scheme: 'vscode-resource'
       });
@@ -48,68 +44,10 @@ function activate(context) {
   <head>
     <base href="">
     <link rel="stylesheet" href="${faBase}">
-    <script src="${mermaidUrl}"></script>
-    <script src="${d3Url}"></script>
   </head>
   <body>
-    <div id="diagram" class="mermaid" style="height: 100vh"></div>
-
-    <div id="minimap" class="mermaid" style="position: fixed; top: 0; left: 0; width: 75px; height: 50px; z-index: 100; display: block"></div>
-    <script>
-      const minimap = document.getElementById('minimap');
-      const diagram = document.getElementById('diagram');
-
-      function recenter() {
-        if (diagram.firstChild) {
-          const element = d3.select(diagram.firstChild);
-          const { height, width } = element.node().getClientRects()[0];
-
-          diagram.firstChild.setAttribute('height', '100%');
-
-          const zoomHandler = d3
-            .zoom()
-            .translateExtent([[-200, -200], [width + 200, height + 200]])
-            .on('zoom', () => {
-              d3.event.sourceEvent && d3.event.sourceEvent.stopPropagation();
-
-              element.attr('transform', d3.event.transform);
-            });
-
-          element.call(zoomHandler).on('touchmove.zoom', null);
-        }
-      }
-
-      window.addEventListener('message', event => {
-        const message = event.data;
-
-        minimap.textContent = message.diagram;
-        minimap.removeAttribute('data-processed');
-        
-        diagram.textContent = message.diagram;
-        diagram.removeAttribute('data-processed');
-
-        mermaid.init();
-        recenter();
-      });
-      
-      const config = JSON.parse('${configString}');
-      config.startOnLoad = false;
-
-      if (config.theme !== null) {
-        const theme = document.body.classList.contains('vscode-dark') ? 'dark' : 'forest';
-
-        config.theme = theme;
-        
-        if (theme === 'dark') {
-          config.themeCSS = '.loopText tspan { fill: inherit; }';
-        } else {
-          config.themeCSS = '';
-        }
-      }
-      
-      mermaid.initialize(config);
-      recenter();
-    </script>
+    <div id="root"></div>
+    <script src="${jsUrl}" />
   </body>
 </html>
 `;
@@ -176,19 +114,6 @@ function activate(context) {
   });
 
   context.subscriptions.push(command);
-
-  return {
-    extendMarkdownIt(md) {
-      const highlight = md.options.highlight;
-      md.options.highlight = (code, lang) => {
-        if (lang && lang.toLowerCase() === 'mermaid') {
-          return `<div class="mermaid">${code}</div>`;
-        }
-        return highlight(code, lang);
-      };
-      return md;
-    }
-  };
 }
 exports.activate = activate;
 
