@@ -3,6 +3,8 @@
 ## Unreleased
 
 - added preview app to publishing pipeline
+- removed travis
+- remove mermaid processing in builtin markdown previewer
 
 ## 0.12.2 / 2019-07-22
 

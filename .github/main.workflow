@@ -25,9 +25,17 @@ action "install" {
 
 action "build-previewer" {
   uses  = "./previewer/actions/build"
+  args  = "cleanup"
 
   needs = [
     "tag-filter"
+  ]
+}
+
+action "build-previewer-local" {
+  uses  = "./previewer/actions/build"
+
+  needs = [
   ]
 
   args  = [

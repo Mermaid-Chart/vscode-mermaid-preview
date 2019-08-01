@@ -44,6 +44,9 @@ function activate(context) {
   <head>
     <base href="">
     <link rel="stylesheet" href="${faBase}">
+    <script>
+      const _config = JSON.parse('${configString}');
+    </script>
   </head>
   <body>
     <div id="root"></div>
