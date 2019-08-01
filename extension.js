@@ -45,7 +45,7 @@ function activate(context) {
     <base href="">
     <link rel="stylesheet" href="${faBase}">
     <script>
-      const _config = JSON.parse('${configString}');
+      window._config = JSON.parse('${configString}');
     </script>
   </head>
   <body>

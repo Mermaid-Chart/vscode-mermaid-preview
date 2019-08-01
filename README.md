@@ -91,16 +91,37 @@ You can customize the appearance of the previewed diagrams by setting the mermai
 
 All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported.
 
-### Custom theme
+### Theme handling
+
+#### Default values
+
+Based on the theme used in Visual Studio Code, the plugin default themes are: `forest` for _light_ and `dark` for _dark_. These values can be changed with the following settings:
+
+```json
+{
+  "mermaid.vscode.light": "one of default, forest, neutral, dark",
+  "mermaid.vscode.dark": "one of default, forest, neutral, dark"
+}
+```
+
+#### Overriding automatic light/dark selection
+
+Automatic theme selection can be changed with the following setting:
+
+```json
+{
+  "mermaid.theme": "one of default, forest, neutral, dark"
+}
+```
+
+#### Custom theme
 
 You can render the diagram using a custom theme by providing the following configuration properties:
 
 ```json
 {
-  "mermaid": {
-    "theme": null,
-    "themeCSS": "the theme as string"
-  }
+  "mermaid.theme": null,
+  "mermaid.themeCSS": "the theme as string"
 }
 ```
 

@@ -12,14 +12,19 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const initializeMermaid = () => {
-  const config = window._config || {};
+  const config = window._config || {
+    vscode: {
+      dark: 'dark',
+      light: 'forest'
+    }
+  };
 
   config.startOnLoad = false;
 
-  if (config.theme !== null) {
+  if (!['default', 'forest', 'dark', 'neutral', null].includes(config.theme)) {
     const theme = document.body.classList.contains('vscode-dark')
-      ? 'dark'
-      : 'forest';
+      ? config.vscode.dark
+      : config.vscode.light;
 
     config.theme = theme;
 
