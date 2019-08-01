@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Previews Mermaid diagrams in Visual Studio Code",
   "license": "MIT",
-  "version": "0.12.2",
+  "version": "1.0.0",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"

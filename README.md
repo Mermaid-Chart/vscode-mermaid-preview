@@ -77,7 +77,7 @@ sequenceDiagram
 
 ### Rendering
 
-You can customize the appearence of the previewed diagrams by setting the mermaid configuration in the workspace settings:
+You can customize the appearance of the previewed diagrams by setting the mermaid configuration in the workspace settings:
 
 ```json
 {

@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 / 2019-08-01
 
+- new preview app running in webview
 - added preview app to publishing pipeline
 - removed travis
 - remove mermaid processing in builtin markdown previewer
