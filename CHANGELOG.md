@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- improved rendering customization/theme handling
+- added configuration options
+
 ## 1.0.0 / 2019-08-01
 
 - new preview app running in webview

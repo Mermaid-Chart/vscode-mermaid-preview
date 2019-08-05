@@ -50,10 +50,189 @@
       "type": "object",
       "title": "Mermaid Preview configuration",
       "properties": {
+        "mermaid.vscode.dark": {
+          "type": "string",
+          "enum": [
+            "dark",
+            "default",
+            "forest",
+            "neutral"
+          ],
+          "default": "dark",
+          "description": "Default mermaid theme used for dark theme"
+        },
+        "mermaid.vscode.light": {
+          "type": "string",
+          "enum": [
+            "dark",
+            "default",
+            "forest",
+            "neutral"
+          ],
+          "default": "forest",
+          "description": "Default mermaid theme used for light theme"
+        },
+        "mermaid.theme": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "One of the themes bundled with mermaid: default, forest, dark, neutral. null disables theme"
+        },
+        "mermaid.themeCSS": {
+          "type": "string",
+          "description": "CSS stylesheet"
+        },
+        "mermaid.logLevel": {
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "default": 5,
+          "description": "This option decides the amount of logging to be used. debug: 1, info: 2, warn: 3, error: 4, fatal: (default) 5"
+        },
+        "mermaid.securityLevel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Sets the level of trust to be used on the parsed diagrams. true: (default) tags in text are encoded, click functionality is disabeled, false: tags in text are allowed, click functionality is enabled"
+        },
+        "mermaid.startOnLoad": {
+          "type": "boolean",
+          "default": false,
+          "description": "This options controls whether or mermaid starts when the page loads."
+        },
         "mermaid.arrowMarkerAbsolute": {
           "type": "boolean",
           "default": false,
           "description": "Fixes rendering arrowheads"
+        },
+        "mermaid.flowchart.htmlLabels": {
+          "type": "boolean",
+          "default": true,
+          "description": "Flag for setting whether or not a html tag should be used for rendering labels on the edges."
+        },
+        "mermaid.flowchart.curve": {
+          "type": "string",
+          "default": "linear"
+        },
+        "mermaid.sequence.diagramMarginX": {
+          "type": "number",
+          "default": 50,
+          "description": "Margin to the right and left of the sequence diagram"
+        },
+        "mermaid.sequence.diagramMarginY": {
+          "type": "number",
+          "default": 10,
+          "description": "Margin to the over and under the sequence diagram."
+        },
+        "mermaid.sequence.actorMargin": {
+          "type": "number",
+          "default": 50,
+          "description": "Margin between actors"
+        },
+        "mermaid.sequence.width": {
+          "type": "number",
+          "default": 150,
+          "description": "Width of actor boxes"
+        },
+        "mermaid.sequence.height": {
+          "type": "number",
+          "default": 65,
+          "description": "Height of actor boxes"
+        },
+        "mermaid.sequence.boxMargin": {
+          "type": "number",
+          "default": 10,
+          "description": "Margin around loop boxes"
+        },
+        "mermaid.sequence.boxTextMargin": {
+          "type": "number",
+          "default": 5,
+          "description": "Margin around the text in loop/alt/opt boxes"
+        },
+        "mermaid.sequence.noteMargin": {
+          "type": "number",
+          "default": 10,
+          "description": "Margin around notes"
+        },
+        "mermaid.sequence.messageMargin": {
+          "type": "number",
+          "default": 35,
+          "description": "Space between messages"
+        },
+        "mermaid.sequence.mirrorActors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mirror actors under diagram"
+        },
+        "mermaid.sequence.bottomMarginAdj": {
+          "type": "number",
+          "default": 1,
+          "description": "Prolongs the edge of the diagram downwards"
+        },
+        "mermaid.sequence.useMaxWidth": {
+          "type": "boolean",
+          "default": true,
+          "description": "When this flag is set the height and width is set to 100% and is then scaling with the available space if not the absolute space required is used"
+        },
+        "mermaid.sequence.rightAngles": {
+          "type": "boolean",
+          "default": false,
+          "description": "This will display arrows that start and begin at the same node as right angles, rather than a curve"
+        },
+        "mermaid.sequence.showSequenceNumbers": {
+          "type": "boolean",
+          "default": false,
+          "description": "This will show the node numbers"
+        },
+        "mermaid.gantt.titleTopMargin": {
+          "type": "number",
+          "default": 25,
+          "description": "Margin top for the text over the gantt diagram"
+        },
+        "mermaid.gantt.barHeight": {
+          "type": "number",
+          "default": 20,
+          "description": "Margin top for the text over the gantt diagram"
+        },
+        "mermaid.gantt.barGap": {
+          "type": "number",
+          "default": 4,
+          "description": "The margin between the different activities in the gantt diagram."
+        },
+        "mermaid.gantt.topPadding": {
+          "type": "number",
+          "default": 50,
+          "description": "Margin between title and gantt diagram and between axis and gantt diagram."
+        },
+        "mermaid.gantt.leftPadding": {
+          "type": "number",
+          "default": 75,
+          "description": "The space allocated for the section name to the left of the activities."
+        },
+        "mermaid.gantt.gridLineStartPadding": {
+          "type": "number",
+          "default": 35,
+          "description": "Vertical starting position of the grid lines."
+        },
+        "mermaid.gantt.fontSize": {
+          "type": "number",
+          "default": 11,
+          "description": "Font size."
+        },
+        "mermaid.gantt.numberSectionStyles": {
+          "type": "number",
+          "default": 4,
+          "description": "The number of alternating section styles."
+        },
+        "mermaid.gantt.axisFormat": {
+          "type": "string",
+          "default": "%Y-%m-%d",
+          "description": "Datetime format of the axis, this might need adjustment to match your locale and preferences."
         }
       }
     },

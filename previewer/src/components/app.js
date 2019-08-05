@@ -7,6 +7,8 @@ const App = () => {
   const [diagram, setDiagram] = useState(null);
 
   const handler = event => {
+    console.log('received message diagram:', event.data.diagram);
+
     setDiagram(event.data.diagram ? event.data.diagram.trim() : null);
   };
 

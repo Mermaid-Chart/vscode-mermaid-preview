@@ -5,4 +5,7 @@ test/**
 .envrc
 jsconfig.json
 vsc-extension-quickstart.md
+previewer/.cache
+previewer/dev
 previewer/node_modules
+previewer/src
