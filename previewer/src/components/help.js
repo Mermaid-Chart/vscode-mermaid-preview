@@ -2,7 +2,8 @@ import React from 'react';
 
 const content = `
 \`\`\`mermaid
-cursor must be here
+diagram is rendered when the
+cursor is inside the fence
 \`\`\`
 `;
 
