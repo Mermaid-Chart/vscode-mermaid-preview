@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 / 2019-08-05
 
 - improved rendering customization/theme handling
 - added configuration options
