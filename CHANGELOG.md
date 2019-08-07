@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 / 2019-08-07
+
+- bring font-awesome icon handling on par with mermaid online editor
+
 ## 1.1.0 / 2019-08-05
 
 - improved rendering customization/theme handling

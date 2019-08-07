@@ -73,6 +73,10 @@ sequenceDiagram
   A-->B: Works!
 ```
 
+## FontAwesome support
+
+The plugin aims to be on par with the [Mermaid Live Editor](https://github.com/mermaidjs/mermaid-live-editor) on handling Font Awesome icons.
+
 ## Customize diagrams
 
 ### Rendering

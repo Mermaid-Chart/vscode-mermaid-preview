@@ -9,10 +9,9 @@ npm install
 npm run build
 
 # Copy font-awesome files
-mkdir -p dist/vendor/font-awesome/css
-cp node_modules/font-awesome/css/font-awesome.min.css dist/vendor/font-awesome/css/
-cp node_modules/font-awesome/css/font-awesome.css.map dist/vendor/font-awesome/css/
-cp -r node_modules/font-awesome/fonts dist/vendor/font-awesome/
+mkdir -p dist/vendor/@fortawesome/fontawesome-free-webfonts
+cp -r node_modules/@fortawesome/fontawesome-free-webfonts/css/ dist/vendor/@fortawesome/fontawesome-free-webfonts
+cp -r node_modules/@fortawesome/fontawesome-free-webfonts/webfonts/ dist/vendor/@fortawesome/fontawesome-free-webfonts
 
 # Cleanup
 if [ $1 = "cleanup" ]; then
