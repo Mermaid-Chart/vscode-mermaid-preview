@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.x.0 / 2019-12-04
+
+- added support form state diagrams and pie charts via mermaid@8.4
+- publish workflow with actions
+
 ## 1.2.0 / 2019-08-07
 
 - bring font-awesome icon handling on par with mermaid online editor

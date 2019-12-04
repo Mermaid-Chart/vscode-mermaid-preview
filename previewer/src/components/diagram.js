@@ -24,7 +24,10 @@ const zoom = element => {
 
   const zoomHandler = d3
     .zoom()
-    .translateExtent([[-200, -200], [width + 200, height + 200]])
+    .translateExtent([
+      [-200, -200],
+      [width + 200, height + 200]
+    ])
     .on('zoom', () => {
       d3.event.sourceEvent && d3.event.sourceEvent.stopPropagation();
 
@@ -46,7 +49,7 @@ const Diagram = ({ content }) => {
       (svg, bindFunctions) => {
         el.innerHTML = svg;
 
-        bindFunctions(el);
+        bindFunctions && bindFunctions(el);
 
         if (!content.startsWith('gitGraph:')) {
           recenter(el);

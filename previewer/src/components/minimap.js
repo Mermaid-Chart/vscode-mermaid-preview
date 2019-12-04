@@ -7,7 +7,11 @@ const Minimap = ({ content }) => {
   useLayoutEffect(() => {
     const el = element.current;
 
-    if (content.startsWith('gantt') || content.startsWith('gitGraph:')) {
+    if (
+      ['gantt', 'gitGraph', 'stateDiagram'].some(diagram =>
+        content.startsWith(diagram)
+      )
+    ) {
       el.textContent = '';
     } else {
       mermaid.render(
@@ -16,7 +20,7 @@ const Minimap = ({ content }) => {
         (svg, bindFunctions) => {
           el.innerHTML = svg;
 
-          bindFunctions(el);
+          bindFunctions && bindFunctions(el);
         },
         el
       );
