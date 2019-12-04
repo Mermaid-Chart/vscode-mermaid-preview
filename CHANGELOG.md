@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.x.0 / 2019-12-04
+## 1.3.0 / 2019-12-04
 
 - added support form state diagrams and pie charts via mermaid@8.4
 - publish workflow with actions
