@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Use Nodejs 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Build previewer
+        run: |
+          npm --prefix previewer install
+          npm --prefix previewer run build
+          mkdir -p previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
+          cp -r previewer/node_modules/@fortawesome/fontawesome-free-webfonts/css/ previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
+          cp -r previewer/node_modules/@fortawesome/fontawesome-free-webfonts/webfonts/ previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
+
+      - name: Publish extension
+        run: |
+          npm install
+          npx vsce publish -p $VSCE_TOKEN
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
