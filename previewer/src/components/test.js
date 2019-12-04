@@ -37,43 +37,28 @@ graph TD
     B-->E(A fa:fa-hand-paper perhaps?);
 `;
 
+const stateDiagram = `stateDiagram
+    [*] --> Still
+    Still --> [*]
+
+    Still --> Moving
+    Moving --> Still
+    Moving --> Crash
+    Crash --> [*]`;
+
 const test = () => {
   setTimeout(() => {
     window.postMessage({
-      diagram: `
-graph TD
-    B["fab:fa-twitter for peace"]
-    B-->C[fa:fa-ban forbidden]
-    B-->D(fa:fa-spinner);
-    B-->E(A fa:fa-hand-paper perhaps?);
-      `
+      diagram: stateDiagram
     });
-  }, 1000);
-
-  return;
-  setTimeout(() => {
-    window.postMessage({
-      diagram: content11
-    });
-  }, 1000);
-
-  setTimeout(() => {
-    window.postMessage({
-      diagram: content12
-    });
-  }, 1250);
-
-  setTimeout(() => {
-    window.postMessage({
-      diagram: content13
-    });
-  }, 1500);
-
+  }, 500);
   setTimeout(() => {
     window.postMessage({
       diagram: content
     });
-  }, 3000);
+  }, 1000);
+
+  return;
 };
 
 export default test;
