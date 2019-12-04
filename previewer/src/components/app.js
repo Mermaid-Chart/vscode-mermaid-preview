@@ -36,7 +36,16 @@ const App = () => {
   if (diagram) {
     return <Diagram content={diagram} />;
   } else {
-    return <Help />;
+    return (
+      <Help
+        content={`
+\`\`\`mermaid
+diagram is rendered when the
+cursor is inside the fence
+\`\`\`
+`}
+      />
+    );
   }
 };
 

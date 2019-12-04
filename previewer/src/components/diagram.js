@@ -1,6 +1,7 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 import Minimap from './minimap';
+import Help from './help';
 import * as d3 from 'd3';
 
 const id = 'diagram';
@@ -39,31 +40,50 @@ const zoom = element => {
 
 const Diagram = ({ content }) => {
   const element = useRef(null);
+  const [success, setSuccess] = useState(false);
 
   useLayoutEffect(() => {
     const el = element.current;
 
-    mermaid.render(
-      'diagram',
-      content,
-      (svg, bindFunctions) => {
-        el.innerHTML = svg;
+    try {
+      mermaid.render(
+        'diagram',
+        content,
+        (svg, bindFunctions) => {
+          el.innerHTML = svg;
 
-        bindFunctions && bindFunctions(el);
+          bindFunctions && bindFunctions(el);
 
-        if (!content.startsWith('gitGraph:')) {
-          recenter(el);
-          zoom(el);
-        }
-      },
-      el
-    );
-  });
+          if (!content.startsWith('gitGraph:')) {
+            recenter(el);
+            zoom(el);
+          }
+
+          setSuccess(true);
+        },
+        el
+      );
+    } catch (e) {
+      console.log(e);
+      el.textContent = '';
+      setSuccess(false);
+    }
+  }, [content]);
 
   return (
     <React.Fragment>
       <div ref={element} style={{ height: '100vh' }} />
-      <Minimap content={content} />
+      {success ? (
+        <Minimap content={content} />
+      ) : (
+        <Help
+          content={`
+\`\`\`mermaid
+diagram is not syntactically correct
+\`\`\`
+`}
+        />
+      )}
     </React.Fragment>
   );
 };

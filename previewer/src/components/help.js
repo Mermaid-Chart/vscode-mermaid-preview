@@ -1,13 +1,6 @@
 import React from 'react';
 
-const content = `
-\`\`\`mermaid
-diagram is rendered when the
-cursor is inside the fence
-\`\`\`
-`;
-
-const Help = () => (
+const Help = ({ content }) => (
   <div
     style={{
       position: 'fixed',

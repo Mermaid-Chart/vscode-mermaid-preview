@@ -14,16 +14,21 @@ const Minimap = ({ content }) => {
     ) {
       el.textContent = '';
     } else {
-      mermaid.render(
-        'minimap',
-        content,
-        (svg, bindFunctions) => {
-          el.innerHTML = svg;
+      try {
+        mermaid.render(
+          'minimap',
+          content,
+          (svg, bindFunctions) => {
+            console.log(svg);
+            el.innerHTML = svg;
 
-          bindFunctions && bindFunctions(el);
-        },
-        el
-      );
+            bindFunctions && bindFunctions(el);
+          },
+          el
+        );
+      } catch (e) {
+        el.textContent = '';
+      }
     }
   });
 

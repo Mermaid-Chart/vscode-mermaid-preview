@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 / 2019-12-04
+
+- fixed parse crash #91
+
 ## 1.3.0 / 2019-12-04
 
 - added support form state diagrams and pie charts via mermaid@8.4
