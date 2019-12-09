@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 / 2019-12-09
+
+- added support for azure devops
+
 ## 1.3.1 / 2019-12-04
 
 - fixed parse crash #91
