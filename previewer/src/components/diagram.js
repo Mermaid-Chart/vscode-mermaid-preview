@@ -74,7 +74,7 @@ const Diagram = ({ content }) => {
     <React.Fragment>
       <div ref={element} style={{ height: '100vh' }} />
       {success ? (
-        <Minimap content={content} />
+        window._config.vscode.minimap && <Minimap content={content} />
       ) : (
         <Help
           content={`
