@@ -66,6 +66,7 @@ function activate(context) {
         : findDiagram(text, cursor);
 
       panel.webview.postMessage({
+        command: 'render',
         diagram
       });
     };

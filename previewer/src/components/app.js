@@ -17,7 +17,12 @@ const App = () => {
 
       console.log('received message diagram:', event.data.diagram);
 
-      setDiagram(event.data.diagram ? event.data.diagram.trim() : null);
+      switch (event.data.command) {
+        case 'render':
+          setDiagram(event.data.diagram ? event.data.diagram.trim() : null);
+          break;
+        default:
+      }
     };
 
     initializeMermaid();
