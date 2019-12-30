@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 / 2019-12-30
+
+- added configuration for controlling minimap visibility
+
 ## 1.4.0 / 2019-12-09
 
 - added support for azure devops

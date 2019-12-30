@@ -3,6 +3,7 @@ import mermaid from 'mermaid';
 const initializeMermaid = () => {
   const config = window._config || {
     vscode: {
+      minimap: true,
       dark: 'dark',
       light: 'forest'
     }

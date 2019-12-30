@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Previews Mermaid diagrams in Visual Studio Code",
   "license": "MIT",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -50,6 +50,11 @@
       "type": "object",
       "title": "Mermaid Preview configuration",
       "properties": {
+        "mermaid.vscode.minimap": {
+          "type": "boolean",
+          "default": true,
+          "description": "This option controls if the minimap is rendered"
+        },
         "mermaid.vscode.dark": {
           "type": "string",
           "enum": [

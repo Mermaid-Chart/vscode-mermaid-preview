@@ -7,8 +7,16 @@ const Minimap = ({ content }) => {
   useLayoutEffect(() => {
     const el = element.current;
 
+    console.log(window._config.vscode.minimap);
+
+    if (!window._config.vscode.minimap) {
+      el.textContent = '';
+
+      return;
+    }
+
     if (
-      ['gantt', 'gitGraph', 'stateDiagram'].some(diagram =>
+      [('gantt', 'gitGraph', 'stateDiagram')].some(diagram =>
         content.startsWith(diagram)
       )
     ) {
