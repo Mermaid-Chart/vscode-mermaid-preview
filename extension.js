@@ -3,42 +3,25 @@
 const vscode = require('vscode');
 const findDiagram = require('./lib/find-diagram');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-function activate(context) {
-  const registerCommand = vscode.commands.registerCommand;
+const getContent = ({ context }) => {
+  const config = vscode.workspace.getConfiguration('mermaid');
+  const configString = JSON.stringify(config);
 
-  let command = registerCommand('mermaidPreview.start', () => {
-    const _disposables = [];
+  const faBase = vscode.Uri.file(
+    context.asAbsolutePath(
+      'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
+    )
+  ).with({
+    scheme: 'vscode-resource'
+  });
 
-    const panel = vscode.window.createWebviewPanel(
-      'mermaidPreview',
-      'Mermaid Preview',
-      vscode.ViewColumn.Two,
-      {
-        enableScripts: true
-      }
-    );
+  const jsUrl = vscode.Uri.file(
+    context.asAbsolutePath('previewer/dist/index.js')
+  ).with({
+    scheme: 'vscode-resource'
+  });
 
-    const getContent = () => {
-      const config = vscode.workspace.getConfiguration('mermaid');
-      const configString = JSON.stringify(config);
-
-      const faBase = vscode.Uri.file(
-        context.asAbsolutePath(
-          'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
-        )
-      ).with({
-        scheme: 'vscode-resource'
-      });
-
-      const jsUrl = vscode.Uri.file(
-        context.asAbsolutePath('previewer/dist/index.js')
-      ).with({
-        scheme: 'vscode-resource'
-      });
-
-      return `
+  return `
 <!DOCTYPE html>
 <html>
   <head>
@@ -54,75 +37,94 @@ function activate(context) {
   </body>
 </html>
 `;
-    };
+};
 
-    const previewHandler = () => {
-      const editor = vscode.window.activeTextEditor;
-      const text = editor.document.getText();
-      const cursor = editor.document.offsetAt(editor.selection.anchor);
+// this method is called when your extension is activated
+// your extension is activated the very first time the command is executed
+function activate(context) {
+  let panel;
 
-      const diagram = /\.mmd$/.test(editor.document.fileName)
-        ? text
-        : findDiagram(text, cursor);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidPreview.start', () => {
+      const _disposables = [];
 
-      panel.webview.postMessage({
-        command: 'render',
-        diagram
-      });
-    };
-
-    vscode.workspace.onDidChangeTextDocument(
-      e => {
-        if (e.document === vscode.window.activeTextEditor.document) {
-          previewHandler();
+      panel = vscode.window.createWebviewPanel(
+        'mermaidPreview',
+        'Mermaid Preview',
+        vscode.ViewColumn.Two,
+        {
+          enableScripts: true
         }
-      },
-      null,
-      _disposables
-    );
+      );
 
-    vscode.workspace.onDidChangeConfiguration(
-      e => {
-        panel.webview.html = getContent();
-      },
-      null,
-      _disposables
-    );
+      const previewHandler = () => {
+        const editor = vscode.window.activeTextEditor;
+        const text = editor.document.getText();
+        const cursor = editor.document.offsetAt(editor.selection.anchor);
 
-    vscode.window.onDidChangeTextEditorSelection(
-      e => {
-        if (e.textEditor === vscode.window.activeTextEditor) {
-          previewHandler();
-        }
-      },
-      null,
-      _disposables
-    );
+        const diagram = /\.mmd$/.test(editor.document.fileName)
+          ? text
+          : findDiagram(text, cursor);
 
-    panel.onDidDispose(
-      () => {
-        console.log('panel closed');
+        panel.webview.postMessage({
+          command: 'render',
+          diagram
+        });
+      };
 
-        while (_disposables.length) {
-          const item = _disposables.pop();
-          if (item) {
-            item.dispose();
+      vscode.workspace.onDidChangeTextDocument(
+        e => {
+          if (e.document === vscode.window.activeTextEditor.document) {
+            previewHandler();
           }
-        }
-      },
-      null,
-      context.subscriptions
-    );
+        },
+        null,
+        _disposables
+      );
 
-    panel.webview.html = getContent();
-  });
+      vscode.workspace.onDidChangeConfiguration(
+        e => {
+          panel.webview.html = getContent({ context });
+        },
+        null,
+        _disposables
+      );
 
-  context.subscriptions.push(command);
+      vscode.window.onDidChangeTextEditorSelection(
+        e => {
+          if (e.textEditor === vscode.window.activeTextEditor) {
+            previewHandler();
+          }
+        },
+        null,
+        _disposables
+      );
+
+      panel.onDidDispose(
+        () => {
+          console.log('panel closed');
+
+          while (_disposables.length) {
+            const item = _disposables.pop();
+            if (item) {
+              item.dispose();
+            }
+          }
+        },
+        null,
+        context.subscriptions
+      );
+
+      panel.webview.html = getContent({ context });
+    })
+  );
 }
+
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
 function deactivate() {
   console.log('deactivated');
 }
+
 exports.deactivate = deactivate;

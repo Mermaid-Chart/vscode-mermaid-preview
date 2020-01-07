@@ -4,6 +4,8 @@ import Minimap from './minimap';
 import Help from './help';
 import * as d3 from 'd3';
 
+import { useConfig } from './configuration';
+
 const id = 'diagram';
 
 const recenter = element => {
@@ -42,17 +44,17 @@ const Diagram = ({ content }) => {
   const element = useRef(null);
   const [success, setSuccess] = useState(false);
 
+  const [config] = useConfig();
+
   useLayoutEffect(() => {
     const el = element.current;
 
     try {
       mermaid.render(
-        'diagram',
+        id,
         content,
-        (svg, bindFunctions) => {
+        svg => {
           el.innerHTML = svg;
-
-          bindFunctions && bindFunctions(el);
 
           if (!content.startsWith('gitGraph:')) {
             recenter(el);
@@ -73,8 +75,9 @@ const Diagram = ({ content }) => {
   return (
     <React.Fragment>
       <div ref={element} style={{ height: '100vh' }} />
+
       {success ? (
-        window._config.vscode.minimap && <Minimap content={content} />
+        config.minimap && <Minimap content={content} />
       ) : (
         <Help
           content={`

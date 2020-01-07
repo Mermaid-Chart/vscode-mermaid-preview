@@ -1,14 +1,6 @@
 import mermaid from 'mermaid';
 
-const initializeMermaid = () => {
-  const config = window._config || {
-    vscode: {
-      minimap: true,
-      dark: 'dark',
-      light: 'forest'
-    }
-  };
-
+const initializeMermaid = config => {
   config.startOnLoad = false;
 
   if (!['default', 'forest', 'dark', 'neutral', null].includes(config.theme)) {

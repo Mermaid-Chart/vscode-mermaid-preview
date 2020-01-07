@@ -1,3 +1,14 @@
+const configuration = {
+  vscode: {
+    export: {
+      theme: 'default'
+    },
+    dark: 'dark',
+    light: 'default',
+    minimap: true
+  }
+};
+
 const content11 = `
 sequenceDiagram
     Alice ->> Bob: Hello Bob, how are you?
@@ -49,14 +60,24 @@ const stateDiagram = `stateDiagram
 const test = () => {
   setTimeout(() => {
     window.postMessage({
-      diagram: stateDiagram
+      command: 'configure',
+      configuration
     });
   }, 500);
+
   setTimeout(() => {
     window.postMessage({
-      diagram: content
+      command: 'render',
+      diagram: content11
     });
   }, 1000);
+
+  setTimeout(() => {
+    window.postMessage({
+      command: 'render',
+      diagram: content12
+    });
+  }, 2000);
 
   return;
 };

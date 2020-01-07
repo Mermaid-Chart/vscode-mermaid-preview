@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+import { ConfigProvider } from './configuration';
+
 import Diagram from './diagram';
 import Help from './help';
-
-import initializeMermaid from './mermaid';
-
-import test from './test';
 
 const App = () => {
   const [diagram, setDiagram] = useState(null);
@@ -15,43 +13,39 @@ const App = () => {
       if (event.data.source && event.data.source.startsWith('react-devtools'))
         return;
 
-      console.log('received message diagram:', event.data.diagram);
-
       switch (event.data.command) {
         case 'render':
+          console.log('handle command', event.data.command);
           setDiagram(event.data.diagram ? event.data.diagram.trim() : null);
           break;
         default:
+          return;
       }
     };
 
-    initializeMermaid();
-
     window.addEventListener('message', handler);
-
-    if (process.env.NODE_ENV === 'development') {
-      test();
-    }
 
     return () => {
       return window.removeEventListener('message', handler);
     };
   }, []);
 
-  if (diagram) {
-    return <Diagram content={diagram} />;
-  } else {
-    return (
-      <Help
-        content={`
+  return (
+    <ConfigProvider>
+      {diagram ? (
+        <Diagram content={diagram} />
+      ) : (
+        <Help
+          content={`
 \`\`\`mermaid
 diagram is rendered when the
 cursor is inside the fence
 \`\`\`
 `}
-      />
-    );
-  }
+        />
+      )}
+    </ConfigProvider>
+  );
 };
 
 export default App;
