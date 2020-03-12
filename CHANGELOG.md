@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 / 2020-03-12
+
+- fixed azure devops regex
+
 ## 1.5.0 / 2019-12-30
 
 - added configuration for controlling minimap visibility
