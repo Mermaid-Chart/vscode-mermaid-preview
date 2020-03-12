@@ -4,9 +4,12 @@ import { ConfigProvider } from './configuration';
 
 import Diagram from './diagram';
 import Help from './help';
+import { useVscode } from './hooks/vscode';
 
 const App = () => {
   const [diagram, setDiagram] = useState(null);
+
+  const vscode = useVscode();
 
   useEffect(() => {
     const handler = event => {
@@ -17,6 +20,15 @@ const App = () => {
         case 'render':
           console.log('handle command', event.data.command);
           setDiagram(event.data.diagram ? event.data.diagram.trim() : null);
+          break;
+        case 'export':
+          console.log('handle command', event.data.command);
+
+          console.log('diagram', event.data.diagram);
+
+          vscode.postMessage({
+            command: 'svg'
+          });
           break;
         default:
           return;

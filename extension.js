@@ -4,9 +4,6 @@ const vscode = require('vscode');
 const findDiagram = require('./lib/find-diagram');
 
 const getContent = ({ context }) => {
-  const config = vscode.workspace.getConfiguration('mermaid');
-  const configString = JSON.stringify(config);
-
   const faBase = vscode.Uri.file(
     context.asAbsolutePath(
       'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
@@ -27,9 +24,6 @@ const getContent = ({ context }) => {
   <head>
     <base href="">
     <link rel="stylesheet" href="${faBase}">
-    <script>
-      window._config = JSON.parse('${configString}');
-    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -42,21 +36,14 @@ const getContent = ({ context }) => {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
-  let panel;
+  let previewPanel;
+
+  let renderedDiagram;
+
+  const _disposables = [];
 
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidPreview.start', () => {
-      const _disposables = [];
-
-      panel = vscode.window.createWebviewPanel(
-        'mermaidPreview',
-        'Mermaid Preview',
-        vscode.ViewColumn.Two,
-        {
-          enableScripts: true
-        }
-      );
-
       const previewHandler = () => {
         const editor = vscode.window.activeTextEditor;
         const text = editor.document.getText();
@@ -66,56 +53,156 @@ function activate(context) {
           ? text
           : findDiagram(text, cursor);
 
-        panel.webview.postMessage({
+        previewPanel.webview.postMessage({
           command: 'render',
           diagram
         });
+
+        renderedDiagram = diagram;
       };
 
-      vscode.workspace.onDidChangeTextDocument(
-        e => {
-          if (e.document === vscode.window.activeTextEditor.document) {
-            previewHandler();
+      if (previewPanel === undefined) {
+        previewPanel = vscode.window.createWebviewPanel(
+          'mermaidPreview',
+          'Mermaid Preview',
+          vscode.ViewColumn.Two,
+          {
+            enableScripts: true
+          }
+        );
+
+        vscode.workspace.onDidChangeTextDocument(
+          e => {
+            if (e.document === vscode.window.activeTextEditor.document) {
+              previewHandler();
+            }
+          },
+          null,
+          _disposables
+        );
+
+        vscode.workspace.onDidChangeConfiguration(
+          e => {
+            previewPanel.webview.html = getContent({ context });
+          },
+          null,
+          _disposables
+        );
+
+        vscode.window.onDidChangeTextEditorSelection(
+          e => {
+            if (e.textEditor === vscode.window.activeTextEditor) {
+              previewHandler();
+            }
+          },
+          null,
+          _disposables
+        );
+
+        previewPanel.onDidDispose(
+          () => {
+            console.log('panel closed');
+
+            while (_disposables.length) {
+              const item = _disposables.pop();
+              if (item) {
+                item.dispose();
+              }
+            }
+
+            previewPanel = undefined;
+          },
+          null,
+          context.subscriptions
+        );
+
+        previewPanel.webview.onDidReceiveMessage(
+          message => {
+            switch (message.command) {
+              case 'ready':
+                previewPanel.webview.postMessage({
+                  command: 'configure',
+                  configuration: vscode.workspace.getConfiguration('mermaid')
+                });
+              default:
+            }
+          },
+          undefined,
+          _disposables
+        );
+      }
+
+      previewPanel.webview.html = getContent({ context });
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidPreview.export', () => {
+      const disposables = [];
+
+      if (!renderedDiagram)
+        return vscode.window.showWarningMessage('Preview a diagram first');
+
+      const exportPanel = vscode.window.createWebviewPanel(
+        'mermaidExport',
+        'Mermaid Export',
+        vscode.ViewColumn.Two,
+        {
+          enableScripts: true
+        }
+      );
+
+      exportPanel.webview.onDidReceiveMessage(
+        message => {
+          switch (message.command) {
+            case 'ready':
+              const configuration = vscode.workspace.getConfiguration(
+                'mermaid'
+              );
+
+              exportPanel.webview.postMessage({
+                command: 'configure',
+                configuration: {
+                  ...configuration,
+                  theme: 'neutral'
+                }
+              });
+
+              exportPanel.webview.postMessage({
+                command: 'export',
+                diagram: renderedDiagram
+              });
+              break;
+            case 'svg':
+              console.log(message);
+
+              // exportPanel.dispose();
+              break;
+            default:
           }
         },
-        null,
-        _disposables
+        undefined,
+        disposables
       );
 
-      vscode.workspace.onDidChangeConfiguration(
-        e => {
-          panel.webview.html = getContent({ context });
-        },
-        null,
-        _disposables
-      );
-
-      vscode.window.onDidChangeTextEditorSelection(
-        e => {
-          if (e.textEditor === vscode.window.activeTextEditor) {
-            previewHandler();
-          }
-        },
-        null,
-        _disposables
-      );
-
-      panel.onDidDispose(
+      previewPanel.onDidDispose(
         () => {
-          console.log('panel closed');
+          console.log('export panel closed');
 
-          while (_disposables.length) {
-            const item = _disposables.pop();
+          while (disposables.length) {
+            const item = disposables.pop();
             if (item) {
               item.dispose();
             }
           }
+
+          previewPanel = undefined;
         },
         null,
-        context.subscriptions
+        disposables
       );
 
-      panel.webview.html = getContent({ context });
+      exportPanel.webview.html = getContent({ context });
     })
   );
 }

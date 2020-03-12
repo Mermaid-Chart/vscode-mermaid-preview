@@ -30,6 +30,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:mermaidPreview.export",
     "onCommand:mermaidPreview.start"
   ],
   "main": "./extension",
@@ -50,6 +51,16 @@
       "type": "object",
       "title": "Mermaid Preview configuration",
       "properties": {
+        "mermaid.vscode.export.theme": {
+          "type": "string",
+          "enum": [
+            "default",
+            "forest",
+            "neutral"
+          ],
+          "default": "default",
+          "description": "Theme used to render the exported SVG."
+        },
         "mermaid.vscode.minimap": {
           "type": "boolean",
           "default": true,
@@ -244,7 +255,11 @@
     "commands": [
       {
         "command": "mermaidPreview.start",
-        "title": "Preview Mermaid"
+        "title": "Mermaid: Preview diagram"
+      },
+      {
+        "command": "mermaidPreview.export",
+        "title": "Mermaid: Export diagram to SVG"
       }
     ]
   },

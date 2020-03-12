@@ -67,11 +67,12 @@ const test = () => {
 
   setTimeout(() => {
     window.postMessage({
-      command: 'render',
+      command: 'export',
       diagram: content11
     });
   }, 1000);
 
+  return;
   setTimeout(() => {
     window.postMessage({
       command: 'render',
