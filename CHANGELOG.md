@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.2 / 2020-04-16
+
+- fixed the fixed azure devops regex
+
 ## 1.5.1 / 2020-03-12
 
 - fixed azure devops regex
