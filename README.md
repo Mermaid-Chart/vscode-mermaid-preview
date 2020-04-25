@@ -93,7 +93,7 @@ You can customize the appearance of the previewed diagrams by setting the mermai
 }
 ```
 
-All mermaid configuration [options](http://knsv.github.io/mermaid/#mermaidapi) are supported.
+All mermaid configuration [options](https://mermaid-js.github.io/mermaid/#/mermaidAPI) are supported.
 
 ### Theme handling
 
