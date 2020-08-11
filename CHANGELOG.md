@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.3 / 2020-04-16
+
+- updated mermaid
+
 ## 1.5.2 / 2020-04-16
 
 - fixed the fixed azure devops regex
