@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.4 / 2020-08-13
+
+- switched from using hardcoded `vscode-resource` scheme to `Webview.asWebviewUri`
+
 ## 1.5.3 / 2020-04-16
 
 - updated mermaid

@@ -16,7 +16,7 @@ function activate(context) {
       'Mermaid Preview',
       vscode.ViewColumn.Two,
       {
-        enableScripts: true
+        enableScripts: true,
       }
     );
 
@@ -24,19 +24,17 @@ function activate(context) {
       const config = vscode.workspace.getConfiguration('mermaid');
       const configString = JSON.stringify(config);
 
-      const faBase = vscode.Uri.file(
-        context.asAbsolutePath(
-          'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
+      const faBase = panel.webview.asWebviewUri(
+        vscode.Uri.file(
+          context.asAbsolutePath(
+            'previewer/dist/vendor/font-awesome/css/font-awesome.min.css'
+          )
         )
-      ).with({
-        scheme: 'vscode-resource'
-      });
+      );
 
-      const jsUrl = vscode.Uri.file(
-        context.asAbsolutePath('previewer/dist/index.js')
-      ).with({
-        scheme: 'vscode-resource'
-      });
+      const jsUrl = panel.webview.asWebviewUri(
+        vscode.Uri.file(context.asAbsolutePath('previewer/dist/index.js'))
+      );
 
       return `
 <!DOCTYPE html>
@@ -66,12 +64,12 @@ function activate(context) {
         : findDiagram(text, cursor);
 
       panel.webview.postMessage({
-        diagram
+        diagram,
       });
     };
 
     vscode.workspace.onDidChangeTextDocument(
-      e => {
+      (e) => {
         if (e.document === vscode.window.activeTextEditor.document) {
           previewHandler();
         }
@@ -81,7 +79,7 @@ function activate(context) {
     );
 
     vscode.workspace.onDidChangeConfiguration(
-      e => {
+      (e) => {
         panel.webview.html = getContent();
       },
       null,
@@ -89,7 +87,7 @@ function activate(context) {
     );
 
     vscode.window.onDidChangeTextEditorSelection(
-      e => {
+      (e) => {
         if (e.textEditor === vscode.window.activeTextEditor) {
           previewHandler();
         }
