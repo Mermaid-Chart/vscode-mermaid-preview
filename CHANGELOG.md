@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.5 / 2020-08-13
+
+- removed `lodash` dependency
+
 ## 1.5.4 / 2020-08-13
 
 - switched from using hardcoded `vscode-resource` scheme to `Webview.asWebviewUri`

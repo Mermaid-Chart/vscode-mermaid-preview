@@ -1,11 +1,13 @@
 .vscode/**
 typings/**
 test/**
+.github
 .gitignore
 .envrc
 jsconfig.json
 vsc-extension-quickstart.md
 previewer/.cache
+previewer/actions
 previewer/dev
 previewer/node_modules
 previewer/src
