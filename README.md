@@ -32,9 +32,7 @@ The plugin detects mermaid diagrams in the following formats:
 ### HTML tag
 
 ```html
-<div class="mermaid">
-  sequenceDiagram A-->B: Works!
-</div>
+<div class="mermaid">sequenceDiagram A-->B: Works!</div>
 ```
 
 ### Markdown fenced code
@@ -76,6 +74,10 @@ sequenceDiagram
 ## FontAwesome support
 
 The plugin aims to be on par with the [Mermaid Live Editor](https://github.com/mermaidjs/mermaid-live-editor) on handling Font Awesome icons.
+
+## Minimap
+
+Enabling/disabling minimap rendering is controlled with the `minimap` setting.
 
 ## Customize diagrams
 

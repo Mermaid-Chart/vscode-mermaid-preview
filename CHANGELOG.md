@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.6 / 2020-09-29
+
+- added `minimap` setting documentation
+- upgraded mermaid version `8.8.0`
+
 ## 1.5.5 / 2020-08-13
 
 - removed `lodash` dependency
