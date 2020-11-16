@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.7 / 2020-11-16
+
+- upgraded mermaid version `8.8.3`
+
 ## 1.5.6 / 2020-09-29
 
 - added `minimap` setting documentation
