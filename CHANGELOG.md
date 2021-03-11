@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1 / 2020-03-11
+
+- pinned parcel-bundler
+- updated publish workflow
+
 ## 1.6.0 / 2020-03-11
 
 - support for mermaid metadata in [structured field values](https://www.rfc-editor.org/rfc/rfc8941.html) format
