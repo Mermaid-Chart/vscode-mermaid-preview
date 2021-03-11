@@ -4,7 +4,7 @@ classDiagram
 Class1 <|-- Class2
 ```
 
-```mermaid
+```mermaid test="value"
 classDiagram
 
 Class4 <|-- Class3

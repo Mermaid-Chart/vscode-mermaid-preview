@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 / 2020-03-11
+
+- support for mermaid metadata in [structured field values](https://www.rfc-editor.org/rfc/rfc8941.html) format
+- upgraded mermaid version `8.9.1`
+
 ## 1.5.7 / 2020-11-16
 
 - upgraded mermaid version `8.8.3`
