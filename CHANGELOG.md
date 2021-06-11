@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2 / 2020-06-11
+
+- upgraded mermaid to version `8.10.2`
+
 ## 1.6.1 / 2020-03-11
 
 - pinned parcel-bundler
