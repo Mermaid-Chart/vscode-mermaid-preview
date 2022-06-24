@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.3 / 2022-06-24
+
+- upgraded mermaid to version `9.1.2`
+
 ## 1.6.2 / 2020-06-11
 
 - upgraded mermaid to version `8.10.2`
