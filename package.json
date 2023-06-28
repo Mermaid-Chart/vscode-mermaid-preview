@@ -1,0 +1,119 @@
+{
+  "name": "vscode-mermaid-chart",
+  "publisher": "MermaidChart",
+  "displayName": "Mermaid Chart",
+  "description": "The Mermaid Chart extension for Visual Studio Code enables developers to view and edit diagrams stored in Mermaid charts within the Visual Studio Code. With integration to the Mermaid Chart service, this extension allows users to attach diagrams to their code. Gain quick access to edit diagrams. Simplify your development workflow with the Mermaid Chart extension.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Visualization"
+  ],
+  "keywords": [
+    "mermaid",
+    "diagram",
+    "mermaid chart",
+    "visio",
+    "flowchart",
+    "sequence diagram",
+    "gantt",
+    "pie chart",
+    "class diagram",
+    "state diagram",
+    "entity relationship diagram",
+    "user journey diagram",
+    "user journey",
+    "journey",
+    "pie",
+    "sequence",
+    "flow",
+    "flow chart",
+    "gantt chart",
+    "architecture",
+    "uml"
+  ],
+  "capabilities": {
+    "authentication": [
+      "mermaidChartAuthProvider"
+    ]
+  },
+  "activationEvents": [
+    "onLanguage"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Mermaid Chart",
+      "properties": {
+        "mermaidChart.apiToken": {
+          "type": "string",
+          "default": "",
+          "description": "API token for Mermaid Chart"
+        },
+        "mermaidChart.baseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Base URL for Mermaid Chart"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "mermaidChart",
+          "name": "mermaidChart"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "mermaidChart.refresh",
+          "group": "navigation",
+          "when": "view == mermaidChart"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "mermaidChart.viewMermaidChart",
+        "title": "View Diagram"
+      },
+      {
+        "command": "mermaidChart.editMermaidChart",
+        "title": "Edit Diagram"
+      },
+      {
+        "command": "mermaidChart.focus",
+        "title": "Mermaid Charts: Focus on View",
+        "icon": "images/mermaid-icon-16.png"
+      },
+      {
+        "command": "mermaidChart.refresh",
+        "title": "Refresh"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.77.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5",
+    "@vscode/test-electron": "^2.3.0"
+  }
+}
