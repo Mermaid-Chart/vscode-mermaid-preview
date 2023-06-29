@@ -6,7 +6,11 @@ Simplify your development workflow with the Mermaid Chart extension.
 
 ## Features
 
-You can attach diagrams into your code. The attachments are highlighted with an icon in the futter.
+In the explorer view under the MERMAIDCHART section you will find all the diagrams you have access to. When you click on a diagram, that diagram will be inserted into the code editor at the position of the cursor. To get the latest changes of diagrams from Mermaid Chart, click on the button named Refresh in the explorer view.
+
+![Image illustrating accessible diagrams in explorer panel](./images/explorer-view.png 'Code view')
+
+You can attach diagrams into your code. The attachments are highlighted with an icon in the footer.
 
 ![Image illustrating how a diagram is attached to the code](./images/code-view.png 'Code view')
 
@@ -46,6 +50,12 @@ You can find/create a API token at the [user settings](https://www.mermaidchart.
    ![Image of a token](./images/settings.png 'Copy token')
 
 ## Release Notes
+
+
+### 1.0.1
+Added default value "https://www.mermaidchart.com" for baseUrl configuration setting.
+Corrected inserted label in editor code.
+Added info in README.md about the MERMAIDCHART field in the explorer view.
 
 ### 1.0.0
 

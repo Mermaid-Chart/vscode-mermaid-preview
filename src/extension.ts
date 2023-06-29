@@ -12,7 +12,7 @@ import {
 import { getBaseUrl } from "./conf";
 
 const commentPattern = /(?:\/\/|#|\/\*|<!--).*$/gm;
-const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider();
+//const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider();
 
 function applyMermaidChartTokenHighlighting(
   editor: vscode.TextEditor,
@@ -176,8 +176,8 @@ async function viewMermaidChart(uuid: string) {
     </body>
     </html>`;
 }
-async function editMermaidChart(uuid: string) {
-  const project = mermaidChartProvider.getProjectOfDocument(uuid);
+async function editMermaidChart(uuid: string, provider: MermaidChartProvider) {
+  const project = provider.getProjectOfDocument(uuid);
   const projectUuid = project?.uuid;
   const baseUrl = getBaseUrl();
   const editUrl = `${baseUrl}/app/projects/${projectUuid}/diagrams/${uuid}/version/v0.1/edit`;
@@ -199,13 +199,13 @@ async function insertMermaidChartToken(
     const items = await provider.getChildren();
     const title = items.find((item) => item.uuid === uuid)?.title || "";
 
-    const mermaidChartTokenLine1 = `// ${title}`;
-    const mermaidChartTokenLine2 = `// [MermaidChart: ${uuid}]`;
+    //const mermaidChartTokenLine1 = `// ${title}`;
+    const mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
 
     editor.edit((editBuilder) => {
       editBuilder.insert(
         editor.selection.active,
-        `${mermaidChartTokenLine1}\n${mermaidChartTokenLine2}\n`
+        `${mermaidChartTokenLine1}\n`
       );
     });
   }
@@ -214,6 +214,7 @@ async function insertMermaidChartToken(
 export function activate(context: vscode.ExtensionContext) {
   console.log("Activating v4");
 
+  const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider();
   const mermaidChartTokenDecoration =
     vscode.window.createTextEditorDecorationType({
       backgroundColor: "rgba(255, 71, 123, 0.3)", // Adjust the background color as desired
@@ -272,17 +273,8 @@ export function activate(context: vscode.ExtensionContext) {
     "extension.viewMermaidChart",
     viewMermaidChart
   );
-  // const editCommandDisposable = vscode.commands.registerCommand(
-  //   'extension.editMermaidChart',
-  //   editMermaidChart
-  // );
 
   context.subscriptions.push(viewCommandDisposable);
-  //context.subscriptions.push(editCommandDisposable);
-
-  // Add this code snippet to create the TreeView in the sidebar
-  //const mermaidChartProvider = new MermaidChartProvider();
-  //mermaidChartProvider = new MermaidChartProvider();
 
   const treeView = vscode.window.createTreeView("mermaidChart", {
     treeDataProvider: mermaidChartProvider,
@@ -291,7 +283,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   const editCommandDisposable = vscode.commands.registerCommand(
     "extension.editMermaidChart",
-    editMermaidChart
+
+    (uuid: string) => {
+      return editMermaidChart(uuid, mermaidChartProvider);
+    }
   );
   context.subscriptions.push(editCommandDisposable);
 
