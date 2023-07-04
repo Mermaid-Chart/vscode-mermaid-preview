@@ -10,6 +10,11 @@ import {
   ITEM_TYPE_DOCUMENT,
 } from "./mermaidChartProvider";
 import { getBaseUrl } from "./conf";
+import {
+  MermaidChartAuthenticationProvider,
+  AUTH_TYPE,
+  getMermaidChartSession,
+} from "./mermaidChartAuthenticationProvider";
 
 const commentPattern = /(?:\/\/|#|\/\*|<!--).*$/gm;
 //const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider();
@@ -212,8 +217,29 @@ async function insertMermaidChartToken(
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  // void context.secrets.store("mermaidchart.sessions", "[]");
   console.log("Activating v4");
 
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "vscode-mermaidchart-authprovider.signIn",
+      async () => {
+        const session = await vscode.authentication.getSession(AUTH_TYPE, [], {
+          createIfNone: true,
+        });
+        console.log(session);
+      }
+    )
+  );
+  context.subscriptions.push(new MermaidChartAuthenticationProvider(context));
+  getMermaidChartSession();
+  context.subscriptions.push(
+    vscode.authentication.onDidChangeSessions(async (e) => {
+      if (e.provider.id === AUTH_TYPE) {
+        getMermaidChartSession();
+      }
+    })
+  );
   const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider();
   const mermaidChartTokenDecoration =
     vscode.window.createTextEditorDecorationType({
