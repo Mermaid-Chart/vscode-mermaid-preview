@@ -5,7 +5,6 @@ const baseUrlDefault = "https://www.mermaidchart.com";
 export function getBaseUrl(): string | undefined {
   const config = vscode.workspace.getConfiguration("mermaidChart");
   const baseUrl = config.get<string>("baseUrl");
-  return "http://127.0.0.1:5174";
   // If baseUrl is not set, set it to the default value and return it.
   if (!baseUrl) {
     setBaseUrlDefault();

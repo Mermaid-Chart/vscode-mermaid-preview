@@ -1,4 +1,5 @@
 import { Disposable, Event, EventEmitter, authentication } from "vscode";
+import { createHash } from "crypto";
 
 export interface PromiseAdapter<T, U> {
   (
@@ -55,3 +56,13 @@ export function promiseFromEvent<T, U>(
     cancel,
   };
 }
+
+export const getEncodedSHA256Hash = (str: string) => {
+  const hash = createHash("sha256").update(str).digest("hex");
+
+  return Buffer.from(hash)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+};

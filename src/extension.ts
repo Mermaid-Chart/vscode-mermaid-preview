@@ -217,7 +217,6 @@ async function insertMermaidChartToken(
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  // void context.secrets.store("mermaidchart.sessions", "[]");
   console.log("Activating v4");
 
   context.subscriptions.push(

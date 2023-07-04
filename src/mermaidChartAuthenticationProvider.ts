@@ -14,7 +14,7 @@ import {
   window,
 } from "vscode";
 import { v4 as uuid } from "uuid";
-import { PromiseAdapter, promiseFromEvent } from "./util";
+import { getEncodedSHA256Hash, PromiseAdapter, promiseFromEvent } from "./util";
 import defaultAxios from "axios";
 
 const test = true;
@@ -49,13 +49,17 @@ class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   }
 }
 
+interface AuthState {
+  codeVerifier: string;
+}
+
 export class MermaidChartAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
   private _sessionChangeEmitter =
     new EventEmitter<AuthenticationProviderAuthenticationSessionsChangeEvent>();
   private _disposable: Disposable;
-  private _pendingStates: string[] = [];
+  private _pendingStates: Record<string, AuthState> = {};
   private _codeExchangePromises = new Map<
     string,
     { promise: Promise<string>; cancel: EventEmitter<void> }
@@ -92,6 +96,7 @@ export class MermaidChartAuthenticationProvider
   public async getSessions(
     scopes?: string[]
   ): Promise<readonly AuthenticationSession[]> {
+    // return [];
     const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
 
     if (allSessions) {
@@ -192,7 +197,9 @@ export class MermaidChartAuthenticationProvider
       async (_, token) => {
         const stateId = uuid();
 
-        this._pendingStates.push(stateId);
+        this._pendingStates[stateId] = {
+          codeVerifier: uuid(),
+        };
 
         const scopeString = scopes.join(" ");
 
@@ -211,7 +218,10 @@ export class MermaidChartAuthenticationProvider
           ["client_id", CLIENT_ID],
           ["redirect_uri", this.redirectUri],
           ["code_challenge_method", "S256"],
-          ["code_challenge", "none"],
+          [
+            "code_challenge",
+            getEncodedSHA256Hash(this._pendingStates[stateId].codeVerifier),
+          ],
           ["state", stateId],
           ["scope", scopes.join(" ")],
         ]);
@@ -243,9 +253,7 @@ export class MermaidChartAuthenticationProvider
             ).promise,
           ]);
         } finally {
-          this._pendingStates = this._pendingStates.filter(
-            (n) => n !== stateId
-          );
+          delete this._pendingStates[stateId];
           codeExchangePromise?.cancel.fire();
           this._codeExchangePromises.delete(scopeString);
         }
@@ -276,8 +284,9 @@ export class MermaidChartAuthenticationProvider
         return;
       }
 
+      const pendingState = this._pendingStates[state];
       // Check if it is a valid auth request started by the extension
-      if (!this._pendingStates.some((n) => n === state)) {
+      if (!pendingState) {
         reject(new Error("State not found"));
         return;
       }
@@ -287,7 +296,7 @@ export class MermaidChartAuthenticationProvider
         {
           client_id: CLIENT_ID,
           redirect_uri: this.redirectUri,
-          code_verifier: "none",
+          code_verifier: pendingState.codeVerifier,
           code: authorizationToken,
         }
       );
