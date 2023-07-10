@@ -215,16 +215,6 @@ export class MermaidChartAuthenticationProvider
 
         const scopeString = scopes.join(" ");
 
-        // if (!scopes.includes("openid")) {
-        //   scopes.push("openid");
-        // }
-        // if (!scopes.includes("profile")) {
-        //   scopes.push("profile");
-        // }
-        // if (!scopes.includes("email")) {
-        //   scopes.push("email");
-        // }
-
         const params: OAuthAuthorizationParams = {
           client_id: CLIENT_ID,
           redirect_uri: this.redirectUri,
