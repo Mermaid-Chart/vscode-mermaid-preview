@@ -30,10 +30,22 @@ const axios = defaultAxios.create({
   baseURL: MERMAIDCHART_BASEURL,
 });
 
+interface OAuthAuthorizationParams {
+  response_type: "code";
+  client_id: string;
+  redirect_uri: string;
+  code_challenge_method: "S256";
+  code_challenge: string;
+  state: string;
+  scope: string;
+}
+
 const URLS = {
   oauth: {
-    authorize: (params: URLSearchParams) =>
-      `/oauth/authorize?${params.toString()}`,
+    authorize: (params: OAuthAuthorizationParams) =>
+      `/oauth/authorize?${new URLSearchParams(
+        Object.entries(params)
+      ).toString()}`,
     token: `/oauth/token`,
   },
   rest: {
@@ -213,20 +225,19 @@ export class MermaidChartAuthenticationProvider
         //   scopes.push("email");
         // }
 
-        const searchParams = new URLSearchParams([
-          ["response_type", "code"],
-          ["client_id", CLIENT_ID],
-          ["redirect_uri", this.redirectUri],
-          ["code_challenge_method", "S256"],
-          [
-            "code_challenge",
-            getEncodedSHA256Hash(this._pendingStates[stateId].codeVerifier),
-          ],
-          ["state", stateId],
-          ["scope", scopes.join(" ")],
-        ]);
+        const params: OAuthAuthorizationParams = {
+          client_id: CLIENT_ID,
+          redirect_uri: this.redirectUri,
+          response_type: "code",
+          code_challenge_method: "S256",
+          code_challenge: getEncodedSHA256Hash(
+            this._pendingStates[stateId].codeVerifier
+          ),
+          state: stateId,
+          scope: scopes.join(" "),
+        };
         const uri = Uri.parse(
-          `${MERMAIDCHART_BASEURL}${URLS.oauth.authorize(searchParams)}`
+          `${MERMAIDCHART_BASEURL}${URLS.oauth.authorize(params)}`
         );
         await env.openExternal(uri);
 
