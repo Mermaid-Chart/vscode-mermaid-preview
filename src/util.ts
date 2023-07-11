@@ -1,7 +1,7 @@
 import { Disposable, Event, EventEmitter, authentication } from "vscode";
 import { createHash } from "crypto";
 import * as vscode from "vscode";
-import { MermaidChartVSCode } from "./api";
+import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   MermaidChartProvider,
   ITEM_TYPE_DOCUMENT,

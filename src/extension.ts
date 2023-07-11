@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { MermaidChartProvider, MCTreeItem } from "./mermaidChartProvider";
-import { MermaidChartVSCode } from "./api";
+import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,

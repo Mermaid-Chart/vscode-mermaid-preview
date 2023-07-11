@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { MermaidChartVSCode } from "./api";
+import { MermaidChartVSCode } from "./mermaidChartVSCode";
 
 export const ITEM_TYPE_PROJECT = "project";
 export const ITEM_TYPE_DOCUMENT = "document";

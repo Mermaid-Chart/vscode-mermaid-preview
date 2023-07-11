@@ -14,7 +14,7 @@ import {
 } from "vscode";
 import { v4 as uuid } from "uuid";
 import { PromiseAdapter, promiseFromEvent } from "./util";
-import { MermaidChartVSCode } from "./api";
+import { MermaidChartVSCode } from "./mermaidChartVSCode";
 
 class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   public handleUri(uri: Uri) {
