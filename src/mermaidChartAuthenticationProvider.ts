@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
-  authentication,
   AuthenticationProvider,
   AuthenticationProviderAuthenticationSessionsChangeEvent,
   AuthenticationSession,
@@ -14,46 +13,8 @@ import {
   window,
 } from "vscode";
 import { v4 as uuid } from "uuid";
-import { getEncodedSHA256Hash, PromiseAdapter, promiseFromEvent } from "./util";
-import defaultAxios from "axios";
-
-const test = true;
-export const AUTH_TYPE = `mermaidchart`;
-const AUTH_NAME = `MermaidChart`;
-const CLIENT_ID = `469e30a6-2602-4022-aff8-2ab36842dc57`;
-const SESSIONS_SECRET_KEY = `${AUTH_TYPE}.sessions`;
-const MERMAIDCHART_BASEURL = test
-  ? "http://127.0.0.1:5174"
-  : "https://www.mermaidchart.com";
-
-const axios = defaultAxios.create({
-  baseURL: MERMAIDCHART_BASEURL,
-});
-
-interface OAuthAuthorizationParams {
-  response_type: "code";
-  client_id: string;
-  redirect_uri: string;
-  code_challenge_method: "S256";
-  code_challenge: string;
-  state: string;
-  scope: string;
-}
-
-const URLS = {
-  oauth: {
-    authorize: (params: OAuthAuthorizationParams) =>
-      `/oauth/authorize?${new URLSearchParams(
-        Object.entries(params)
-      ).toString()}`,
-    token: `/oauth/token`,
-  },
-  rest: {
-    users: {
-      self: `/rest-api/users/me`,
-    },
-  },
-} as const;
+import { PromiseAdapter, promiseFromEvent } from "./util";
+import { MermaidChartVSCode } from "./api";
 
 class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   public handleUri(uri: Uri) {
@@ -61,33 +22,29 @@ class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   }
 }
 
-interface AuthState {
-  codeVerifier: string;
-}
-
 export class MermaidChartAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
+  static id = "mermaidchart";
+  static providerName = "MermaidChart";
+  private sessionsKey = `${MermaidChartAuthenticationProvider.id}.sessions`;
   private _sessionChangeEmitter =
     new EventEmitter<AuthenticationProviderAuthenticationSessionsChangeEvent>();
   private _disposable: Disposable;
-  private _pendingStates: Record<string, AuthState> = {};
   private _codeExchangePromises = new Map<
     string,
     { promise: Promise<string>; cancel: EventEmitter<void> }
   >();
   private _uriHandler = new UriEventHandler();
 
-  constructor(private readonly context: ExtensionContext) {
+  constructor(
+    private readonly mcAPI: MermaidChartVSCode,
+    private readonly context: ExtensionContext
+  ) {
     this._disposable = Disposable.from(
-      authentication.registerAuthenticationProvider(
-        AUTH_TYPE,
-        AUTH_NAME,
-        this,
-        { supportsMultipleAccounts: false }
-      ),
       window.registerUriHandler(this._uriHandler)
     );
+    this.mcAPI.setRedirectURI(this.redirectUri);
   }
 
   get onDidChangeSessions() {
@@ -109,7 +66,7 @@ export class MermaidChartAuthenticationProvider
     scopes?: string[]
   ): Promise<readonly AuthenticationSession[]> {
     // return [];
-    const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
+    const allSessions = await this.context.secrets.get(this.sessionsKey);
 
     if (allSessions) {
       return JSON.parse(allSessions) as AuthenticationSession[];
@@ -125,26 +82,24 @@ export class MermaidChartAuthenticationProvider
    */
   public async createSession(scopes: string[]): Promise<AuthenticationSession> {
     try {
-      const token = await this.login(scopes);
+      await this.login(scopes);
+      const token = await this.mcAPI.getAccessToken();
       if (!token) {
         throw new Error(`MermaidChart login failure`);
       }
-
-      const userinfo: { fullName: string; emailAddress: string } =
-        await this.getUserInfo(token);
-
+      const user = await this.getUserInfo();
       const session: AuthenticationSession = {
         id: uuid(),
         accessToken: token,
         account: {
-          label: userinfo.fullName,
-          id: userinfo.emailAddress,
+          label: user.fullName,
+          id: user.emailAddress,
         },
         scopes: [],
       };
 
       await this.context.secrets.store(
-        SESSIONS_SECRET_KEY,
+        this.sessionsKey,
         JSON.stringify([session])
       );
 
@@ -167,15 +122,15 @@ export class MermaidChartAuthenticationProvider
    * @param sessionId
    */
   public async removeSession(sessionId: string): Promise<void> {
-    const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
+    const allSessions = await this.context.secrets.get(this.sessionsKey);
     if (allSessions) {
       let sessions = JSON.parse(allSessions) as AuthenticationSession[];
       const sessionIdx = sessions.findIndex((s) => s.id === sessionId);
       const session = sessions[sessionIdx];
       sessions.splice(sessionIdx, 1);
-
+      this.mcAPI.resetAccessToken();
       await this.context.secrets.store(
-        SESSIONS_SECRET_KEY,
+        this.sessionsKey,
         JSON.stringify(sessions)
       );
 
@@ -207,37 +162,19 @@ export class MermaidChartAuthenticationProvider
         cancellable: true,
       },
       async (_, token) => {
-        const stateId = uuid();
-
-        this._pendingStates[stateId] = {
-          codeVerifier: uuid(),
-        };
-
-        const scopeString = scopes.join(" ");
-
-        const params: OAuthAuthorizationParams = {
-          client_id: CLIENT_ID,
-          redirect_uri: this.redirectUri,
-          response_type: "code",
-          code_challenge_method: "S256",
-          code_challenge: getEncodedSHA256Hash(
-            this._pendingStates[stateId].codeVerifier
-          ),
-          state: stateId,
-          scope: scopes.join(" "),
-        };
-        const uri = Uri.parse(
-          `${MERMAIDCHART_BASEURL}${URLS.oauth.authorize(params)}`
-        );
+        const authData = await this.mcAPI.getAuthorizationData();
+        const uri = Uri.parse(authData.url);
         await env.openExternal(uri);
 
-        let codeExchangePromise = this._codeExchangePromises.get(scopeString);
+        let codeExchangePromise = this._codeExchangePromises.get(
+          authData.scope
+        );
         if (!codeExchangePromise) {
           codeExchangePromise = promiseFromEvent(
             this._uriHandler.event,
             this.handleUri(scopes)
           );
-          this._codeExchangePromises.set(scopeString, codeExchangePromise);
+          this._codeExchangePromises.set(authData.scope, codeExchangePromise);
         }
 
         try {
@@ -254,9 +191,8 @@ export class MermaidChartAuthenticationProvider
             ).promise,
           ]);
         } finally {
-          delete this._pendingStates[stateId];
           codeExchangePromise?.cancel.fire();
-          this._codeExchangePromises.delete(scopeString);
+          this._codeExchangePromises.delete(authData.scope);
         }
       }
     );
@@ -271,58 +207,13 @@ export class MermaidChartAuthenticationProvider
     scopes: readonly string[]
   ) => PromiseAdapter<Uri, string> =
     (scopes) => async (uri, resolve, reject) => {
-      const query = new URLSearchParams(uri.query);
-
-      const authorizationToken = query.get("code");
-      const state = query.get("state");
-
-      if (!authorizationToken) {
-        reject(new Error("No token"));
-        return;
-      }
-      if (!state) {
-        reject(new Error("No state"));
-        return;
-      }
-
-      const pendingState = this._pendingStates[state];
-      // Check if it is a valid auth request started by the extension
-      if (!pendingState) {
-        reject(new Error("State not found"));
-        return;
-      }
-
-      const tokenResponse = await defaultAxios.post(
-        MERMAIDCHART_BASEURL + URLS.oauth.token,
-        {
-          client_id: CLIENT_ID,
-          redirect_uri: this.redirectUri,
-          code_verifier: pendingState.codeVerifier,
-          code: authorizationToken,
-        }
+      await this.mcAPI.handleAuthorizationResponse(
+        new URLSearchParams(uri.query)
       );
-
-      resolve(tokenResponse.data.access_token);
+      resolve("done");
     };
 
-  /**
-   * Get the user info from Auth0
-   * @param token
-   * @returns
-   */
-  private async getUserInfo(token: string) {
-    const response = await axios.get(URLS.rest.users.self, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
+  private async getUserInfo() {
+    return await this.mcAPI.getUser();
   }
 }
-
-export const getMermaidChartSession = async () => {
-  const session = await authentication.getSession(AUTH_TYPE, [], {
-    createIfNone: true,
-  });
-  return session;
-};

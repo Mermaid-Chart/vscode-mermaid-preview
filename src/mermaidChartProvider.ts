@@ -1,19 +1,24 @@
-import * as vscode from 'vscode';
-import { fetchMermaidChartDocuments, fetchMermaidChartProjects } from './fetchMermaidChartData';
+import * as vscode from "vscode";
+import { MermaidChartVSCode } from "./api";
+
+export const ITEM_TYPE_PROJECT = "project";
+export const ITEM_TYPE_DOCUMENT = "document";
+export const ITEM_TYPE_UNKNOWN = "unknown";
 
 let allTreeViewProjectsCache: Project[] = [];
 
-export const ITEM_TYPE_PROJECT = 'project';
-export const ITEM_TYPE_DOCUMENT = 'document';
-export const ITEM_TYPE_UNKNOWN = 'unknown';
-
-export class MyTreeItem extends vscode.TreeItem {
+export class MCTreeItem extends vscode.TreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
-  children?: MyTreeItem[];
+  children?: MCTreeItem[];
 
-  constructor(uuid: string, range: vscode.Range, title: string, children?: MyTreeItem[]) {
+  constructor(
+    uuid: string,
+    range: vscode.Range,
+    title: string,
+    children?: MCTreeItem[]
+  ) {
     super(
       title,
       children === undefined
@@ -26,12 +31,12 @@ export class MyTreeItem extends vscode.TreeItem {
   }
 }
 
-class Document implements MyTreeItem {
+class Document implements MCTreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
   collapsibleState: vscode.TreeItemCollapsibleState.None;
-  children?: MyTreeItem[];
+  children?: MCTreeItem[];
 
   constructor(
     uuid: string,
@@ -47,23 +52,23 @@ class Document implements MyTreeItem {
 
   getTreeItem(): vscode.TreeItem {
     return {
-      collapsibleState: vscode.TreeItemCollapsibleState.None
+      collapsibleState: vscode.TreeItemCollapsibleState.None,
     };
   }
 }
 
-class Project implements MyTreeItem {
+class Project implements MCTreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
   collapsibleState: vscode.TreeItemCollapsibleState;
-  children?: MyTreeItem[];
+  children?: MCTreeItem[];
   constructor(
     uuid: string,
     range: vscode.Range,
     title: string,
     collapsibleState: vscode.TreeItemCollapsibleState,
-    children?: MyTreeItem[]
+    children?: MCTreeItem[]
   ) {
     this.uuid = uuid;
     this.range = range;
@@ -74,15 +79,20 @@ class Project implements MyTreeItem {
 
   getTreeItem(): vscode.TreeItem {
     return {
-      collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
+      collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     };
   }
 }
 
-export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem> {
-  private _onDidChangeTreeData: vscode.EventEmitter<MyTreeItem | undefined | void> =
-    new vscode.EventEmitter<MyTreeItem | undefined | void>();
-  readonly onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | void> =
+export class MermaidChartProvider
+  implements vscode.TreeDataProvider<MCTreeItem>
+{
+  constructor(private mcAPI: MermaidChartVSCode) {}
+
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    MCTreeItem | undefined | void
+  > = new vscode.EventEmitter<MCTreeItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<MCTreeItem | undefined | void> =
     this._onDidChangeTreeData.event;
 
   refresh(): void {
@@ -92,19 +102,15 @@ export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem>
 
   getItemTypeFromUuid(uuid: string): string {
     let allProjects: Project[] = [];
-    if (allTreeViewProjectsCache.length > 0) {
-      allProjects = allTreeViewProjectsCache;
-    } else {
+    if (allTreeViewProjectsCache.length === 0) {
       this.refresh();
-      allProjects = allTreeViewProjectsCache;
     }
-    for (let i = 0; i < allProjects.length; i++) {
-      const project = allProjects[i];
+    allProjects = allTreeViewProjectsCache;
+    for (const project of allProjects) {
       if (project.uuid === uuid) {
         return ITEM_TYPE_PROJECT;
       }
-      for (let j = 0; j < project.children!.length; j++) {
-        const document = project.children![j];
+      for (const document of project.children ?? []) {
         if (document.uuid === uuid) {
           return ITEM_TYPE_DOCUMENT;
         }
@@ -115,16 +121,12 @@ export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem>
 
   getProjectOfDocument(uuid: string): Project | undefined {
     let allProjects: Project[] = [];
-    if (allTreeViewProjectsCache.length > 0) {
-      allProjects = allTreeViewProjectsCache;
-    } else {
+    if (allTreeViewProjectsCache.length === 0) {
       this.refresh();
-      allProjects = allTreeViewProjectsCache;
     }
-    for (let i = 0; i < allProjects.length; i++) {
-      const project = allProjects[i];
-      for (let j = 0; j < project.children!.length; j++) {
-        const document = project.children![j];
+    allProjects = allTreeViewProjectsCache;
+    for (const project of allProjects) {
+      for (const document of project.children ?? []) {
         if (document.uuid === uuid) {
           return project;
         }
@@ -133,7 +135,7 @@ export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem>
     return undefined;
   }
 
-  getTreeItem(element: MyTreeItem): vscode.TreeItem {
+  getTreeItem(element: MCTreeItem): vscode.TreeItem {
     let collapsibleState: vscode.TreeItemCollapsibleState;
     if (element instanceof Document) {
       collapsibleState = vscode.TreeItemCollapsibleState.None;
@@ -146,14 +148,14 @@ export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem>
     const treeItem = new vscode.TreeItem(`${element.title}`, collapsibleState);
 
     treeItem.command = {
-      command: 'mermaidChart.insertUuidIntoEditor',
-      title: 'Insert UUID into Editor',
-      arguments: [element.uuid]
+      command: "mermaidChart.insertUuidIntoEditor",
+      title: "Insert UUID into Editor",
+      arguments: [element.uuid],
     };
     return treeItem;
   }
 
-  async getChildren(element?: MyTreeItem): Promise<MyTreeItem[]> {
+  async getChildren(element?: MCTreeItem): Promise<MCTreeItem[]> {
     const allTreeViewProjects: Project[] = [];
 
     if (!element) {
@@ -162,22 +164,21 @@ export class MermaidChartProvider implements vscode.TreeDataProvider<MyTreeItem>
       }
       // Fetch all projects and associated documents
       // and build a tree view
-      const mermaidChartProjects = await fetchMermaidChartProjects();
-      for (let i = 0; i < mermaidChartProjects.length; i++) {
-        const project = mermaidChartProjects[i];
+      const mermaidChartProjects = await this.mcAPI.getProjects();
+      for (const project of mermaidChartProjects) {
         const projectDocuments = [];
-        const mermaidChartDocuments = await fetchMermaidChartDocuments(project.id);
+        const mermaidChartDocuments = await this.mcAPI.getDocuments(project.id);
 
         // Get all documents for a project and insert as children of project
-        for (let i = 0; i < mermaidChartDocuments.length; i++) {
-          if (mermaidChartDocuments[i].title === null) {
-            mermaidChartDocuments[i].title = 'Untitled Diagram';
+        for (const document of mermaidChartDocuments) {
+          if (document.title === null) {
+            document.title = "Untitled Diagram";
           }
 
           const treeViewDocument = new Document(
-            mermaidChartDocuments[i].documentID,
+            document.documentID,
             new vscode.Range(0, 0, 0, 1),
-            mermaidChartDocuments[i].title,
+            document.title,
             vscode.TreeItemCollapsibleState.None
           );
           projectDocuments.push(treeViewDocument);
