@@ -1,12 +1,5 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import {
-  MermaidChartProvider,
-  MCTreeItem,
-  ITEM_TYPE_PROJECT,
-  ITEM_TYPE_UNKNOWN,
-} from "./mermaidChartProvider";
+import { MermaidChartProvider, MCTreeItem } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./api";
 import {
   applyMermaidChartTokenHighlighting,
