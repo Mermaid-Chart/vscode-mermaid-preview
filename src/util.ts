@@ -230,11 +230,33 @@ export async function insertMermaidChartToken(
   if (!editor) {
     return;
   }
-  const mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+  const mermaidChartTokenLine = getCommentLine(editor, uuid);
+
   editor.edit((editBuilder) => {
     editBuilder.insert(
       new vscode.Position(editor.selection.active.line, 0),
-      `${mermaidChartTokenLine1}\n`
+      `${mermaidChartTokenLine}\n`
     );
   });
 }
+
+const getCommentLine = (editor: vscode.TextEditor, uuid: string): string => {
+  const languageId = editor.document.languageId;
+  switch (languageId) {
+    case "markdown":
+    case "html":
+      return `<!-- [MermaidChart: ${uuid}] -->`;
+    case "yaml":
+    case "python":
+      return `# [MermaidChart: ${uuid}]`;
+    case "json":
+    case "javascript":
+    case "typescript":
+    case "java":
+    case "c":
+    case "c++":
+    case "c#":
+    default:
+      return `// [MermaidChart: ${uuid}]`;
+  }
+};
