@@ -3,7 +3,7 @@
   "publisher": "MermaidChart",
   "displayName": "Mermaid Chart",
   "description": "The Mermaid Chart extension for Visual Studio Code enables developers to view and edit diagrams stored in Mermaid charts within the Visual Studio Code. With integration to the Mermaid Chart service, this extension allows users to attach diagrams to their code. Gain quick access to edit diagrams. Simplify your development workflow with the Mermaid Chart extension.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "icon": "images/mermaid-chart.png",
   "repository": "github:Mermaid-Chart/vscode-mermaid-chart",
   "engines": {
@@ -48,11 +48,6 @@
     "configuration": {
       "title": "Mermaid Chart",
       "properties": {
-        "mermaidChart.apiToken": {
-          "type": "string",
-          "default": "",
-          "description": "API token for Mermaid Chart"
-        },
         "mermaidChart.baseUrl": {
           "type": "string",
           "default": "https://www.mermaidchart.com",
@@ -109,6 +104,7 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
+    "@types/uuid": "^9.0.2",
     "@types/vscode": "^1.77.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
@@ -119,6 +115,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "uuid": "^9.0.0"
   }
 }
