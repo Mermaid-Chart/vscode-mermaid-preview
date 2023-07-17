@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.2] -2023-07-17
+
+- Added OAuth support for the MermaidChart plugin.
+
 ## [1.0.1] -2023-06-29
 
 - Added default value "https://www.mermaidchart.com" for baseUrl configuration setting.
