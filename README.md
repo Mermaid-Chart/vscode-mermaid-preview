@@ -51,6 +51,8 @@ You can find/create a API token at the [user settings](https://www.mermaidchart.
 
 ## Release Notes
 
+### 1.0.2
+Added support for python and markdown files.
 
 ### 1.0.1
 Added default value "https://www.mermaidchart.com" for baseUrl configuration setting.

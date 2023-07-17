@@ -198,9 +198,43 @@ async function insertMermaidChartToken(
   if (editor) {
     const items = await provider.getChildren();
     const title = items.find((item) => item.uuid === uuid)?.title || "";
-
-    //const mermaidChartTokenLine1 = `// ${title}`;
-    const mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+    const languageId = editor.document.languageId;
+    let mermaidChartTokenLine1 = "";
+    switch (languageId) {
+      case "markdown":
+        mermaidChartTokenLine1 = `<!-- [MermaidChart: ${uuid}] -->`;
+        break;
+      case "yaml":
+        mermaidChartTokenLine1 = `# [MermaidChart: ${uuid}]`;
+        break;
+      case "json":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "javascript":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "typescript":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "python":
+        mermaidChartTokenLine1 = `# [MermaidChart: ${uuid}]`;
+        break;
+      case "java":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "c":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "c++":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      case "c#":
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+      default:
+        mermaidChartTokenLine1 = `// [MermaidChart: ${uuid}]`;
+        break;
+    }
 
     editor.edit((editBuilder) => {
       editBuilder.insert(
