@@ -36,9 +36,13 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 1.0.2
+### 1.0.3
 
 Added OAuth support for the MermaidChart plugin.
+
+### 1.0.2
+
+Added support for python and markdown files.
 
 ### 1.0.1
 
