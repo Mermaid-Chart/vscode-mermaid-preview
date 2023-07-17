@@ -36,20 +36,20 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 1.0.3
+### 1.0.3 - 2023-07-17
 
-Added OAuth support for the MermaidChart plugin.
+- Added OAuth support for the MermaidChart plugin.
 
-### 1.0.2
+### 1.0.2 - 2023-07-14
 
-Added support for python and markdown files.
+- Added support for multiple languages including python, markdown, yaml, etc.
 
-### 1.0.1
+### 1.0.1 - 2023-06-29
 
-Added default value "https://www.mermaidchart.com" for baseUrl configuration setting.
-Corrected inserted label in editor code.
-Added info in README.md about the MERMAIDCHART field in the explorer view.
+- Added default value "https://www.mermaidchart.com" for baseUrl configuration setting.
+- Corrected inserted label in editor code.
+- Added info in README.md about the MERMAIDCHART field in the explorer view.
 
-### 1.0.0
+### 1.0.0 - 2023-06-26
 
-Initial release of the Mermaid CHart extension for Visual Studio Code.
+- Initial release of the Mermaid Chart extension for Visual Studio Code.
