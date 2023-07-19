@@ -152,7 +152,7 @@ export class MermaidChartAuthenticationProvider
   }
 
   /**
-   * Log in to Auth0
+   * Log in to MermaidChart
    */
   private async login(scopes: string[] = []) {
     return await window.withProgress<string>(
