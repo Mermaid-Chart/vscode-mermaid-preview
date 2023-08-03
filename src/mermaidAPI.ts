@@ -78,6 +78,14 @@ export class MermaidChart {
     this.axios = defaultAxios.create({
       baseURL: this.baseURL,
     });
+
+    this.axios.interceptors.response.use((res) => {
+      // Reset token if a 401 is thrown
+      if (res.status === 401) {
+        this.resetAccessToken();
+      }
+      return res;
+    });
   }
 
   public async getAuthorizationData({
@@ -172,8 +180,8 @@ export class MermaidChart {
   }
 
   public async resetAccessToken(): Promise<void> {
-    this.axios.defaults.headers.common["Authorization"] = `Bearer none`;
     this.accessToken = undefined;
+    this.axios.defaults.headers.common["Authorization"] = `Bearer none`;
   }
 
   /**
@@ -273,7 +281,6 @@ export class RequiredParameterMissingError extends Error {
     super(`Required parameter ${parameterName} is missing`);
   }
 }
-
 export class OAuthError extends Error {
   constructor(message: string) {
     super(message);
@@ -281,7 +288,7 @@ export class OAuthError extends Error {
 }
 
 export const getEncodedSHA256Hash = (str: string) => {
-  const hash = createHash("sha256").update(str).digest("hex");
+  const hash = createHash("sha256").update(str).digest();
 
   return Buffer.from(hash)
     .toString("base64")
