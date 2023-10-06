@@ -199,19 +199,16 @@ export async function editMermaidChart(
   uuid: string,
   provider: MermaidChartProvider
 ) {
-  const project = provider.getProjectOfDocument(uuid);
-  const projectUuid = project?.uuid;
-  if (!projectUuid) {
-    vscode.window.showErrorMessage(
-      "Diagram not found in project. Diagram might have moved to a different project."
-    );
-    return;
-  }
+  // const project = provider.getProjectOfDocument(uuid);
+  // const projectUuid = project?.uuid;
+  // if (!projectUuid) {
+  //   vscode.window.showErrorMessage(
+  //     "Diagram not found in project. Diagram might have moved to a different project."
+  //   );
+  //   return;
+  // }
   const editUrl = await mcAPI.getEditURL({
     documentID: uuid,
-    projectID: projectUuid,
-    major: "0",
-    minor: "1",
   });
   vscode.env.openExternal(vscode.Uri.parse(editUrl));
 }

@@ -144,7 +144,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   mermaidChartProvider.refresh();
   // Add a console.log() statement to ensure the view is registered
-  console.log("Mermaid Charts view registered.");
+  console.log("Mermaid Charts view registered");
 }
 
 // This method is called when your extension is deactivated

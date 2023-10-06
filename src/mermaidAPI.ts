@@ -215,9 +215,7 @@ export class MermaidChart {
     return projects.data;
   }
 
-  public async getEditURL(
-    document: Pick<MCDocument, "documentID" | "major" | "minor" | "projectID">
-  ) {
+  public async getEditURL(document: Pick<MCDocument, "documentID">) {
     const url = `${this.baseURL}${this.URLS.diagram(document).edit}`;
     return url;
   }
@@ -247,7 +245,7 @@ export class MermaidChart {
       documents: {
         get: (documentID: string) => {
           return `/rest-api/documents/${documentID}`;
-        }
+        },
       },
       projects: {
         list: `/rest-api/projects`,
@@ -266,17 +264,15 @@ export class MermaidChart {
       return {
         html: base + "html",
         svg: base + "svg",
-        png: base + 'png'
+        png: base + "png",
       };
     },
-    diagram: (
-      d: Pick<MCDocument, "projectID" | "documentID" | "major" | "minor">
-    ) => {
-      const base = `/app/projects/${d.projectID}/diagrams/${d.documentID}/version/v${d.major}.${d.minor}`;
+    diagram: (d: Pick<MCDocument, "documentID">) => {
+      // const base = `/app/projects/${d.projectID}/diagrams/${d.documentID}/version/v${d.major}.${d.minor}`;
       return {
-        self: base,
-        edit: `/diagrams/${d.documentID}/`,
-        view: base + "/view",
+        // self: base,
+        edit: `/app/diagrams/${d.documentID}?ref=vscode`,
+        // view: base + "/view",
       } as const;
     },
   } as const;
