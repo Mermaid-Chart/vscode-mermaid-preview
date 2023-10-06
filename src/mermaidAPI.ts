@@ -244,6 +244,11 @@ export class MermaidChart {
       users: {
         self: `/rest-api/users/me`,
       },
+      documents: {
+        get: (documentID: string) => {
+          return `/rest-api/documents/${documentID}`;
+        }
+      },
       projects: {
         list: `/rest-api/projects`,
         get: (projectID: string) => {
@@ -261,6 +266,7 @@ export class MermaidChart {
       return {
         html: base + "html",
         svg: base + "svg",
+        png: base + 'png'
       };
     },
     diagram: (
@@ -269,7 +275,7 @@ export class MermaidChart {
       const base = `/app/projects/${d.projectID}/diagrams/${d.documentID}/version/v${d.major}.${d.minor}`;
       return {
         self: base,
-        edit: base + "/edit",
+        edit: `/diagrams/${d.documentID}/`,
         view: base + "/view",
       } as const;
     },
