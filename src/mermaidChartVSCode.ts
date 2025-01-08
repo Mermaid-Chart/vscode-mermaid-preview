@@ -17,6 +17,23 @@ export class MermaidChartVSCode extends MermaidChart {
     await this.setupAPI();
   }
 
+  public async logout(context: vscode.ExtensionContext): Promise<void> {
+    const session = await vscode.authentication.getSession(
+      MermaidChartAuthenticationProvider.id,
+      [],
+      { silent: true }
+    );
+  
+    if (session) {
+      const authProvider = MermaidChartAuthenticationProvider.getInstance(this, context);
+      await authProvider.removeSession(session.id);
+      vscode.window.showInformationMessage(`You have successfully signed out from ${session.account.id}.`);
+    } else {
+      vscode.window.showInformationMessage('No active session found. You are already signed out.');
+    }
+  }
+  
+
   private async registerListeners(context: vscode.ExtensionContext) {
     /**
      * Register the authentication provider with VS Code.
@@ -26,7 +43,7 @@ export class MermaidChartVSCode extends MermaidChart {
       vscode.authentication.registerAuthenticationProvider(
         MermaidChartAuthenticationProvider.id,
         MermaidChartAuthenticationProvider.providerName,
-        new MermaidChartAuthenticationProvider(this, context)
+        MermaidChartAuthenticationProvider.getInstance(this, context)
       )
     );
 

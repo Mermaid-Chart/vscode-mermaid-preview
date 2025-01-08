@@ -16,6 +16,12 @@ export async function activate(context: vscode.ExtensionContext) {
   const mcAPI = new MermaidChartVSCode();
   await mcAPI.initialize(context);
 
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidChart.logout', async () => {
+      mcAPI.logout(context);
+    })
+  );
+
   const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider(
     mcAPI
   );

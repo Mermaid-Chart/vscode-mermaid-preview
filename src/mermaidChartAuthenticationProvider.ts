@@ -37,6 +37,21 @@ export class MermaidChartAuthenticationProvider
   >();
   private _uriHandler = new UriEventHandler();
 
+  private static instance: MermaidChartAuthenticationProvider | null = null;
+
+  static getInstance(
+    mcAPI: MermaidChartVSCode,
+    context: ExtensionContext
+  ): MermaidChartAuthenticationProvider {
+    if (!MermaidChartAuthenticationProvider.instance) {
+      MermaidChartAuthenticationProvider.instance = new MermaidChartAuthenticationProvider(
+        mcAPI,
+        context
+      );
+    }
+    return MermaidChartAuthenticationProvider.instance;
+  }
+
   constructor(
     private readonly mcAPI: MermaidChartVSCode,
     private readonly context: ExtensionContext

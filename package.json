@@ -78,6 +78,10 @@
         "title": "View Diagram"
       },
       {
+        "command": "mermaidChart.logout",
+        "title": "MermaidChart Logout"
+      },
+      {
         "command": "mermaidChart.editMermaidChart",
         "title": "Edit Diagram"
       },
