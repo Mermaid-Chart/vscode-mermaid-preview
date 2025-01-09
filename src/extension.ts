@@ -10,9 +10,15 @@ import {
   viewMermaidChart,
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
+import { createMermaidFile } from "./commands/createFile";
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidChart.createMermaidFile', createMermaidFile)
+  );
+
   const mcAPI = new MermaidChartVSCode();
   await mcAPI.initialize(context);
 

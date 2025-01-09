@@ -82,6 +82,10 @@
         "title": "MermaidChart Logout"
       },
       {
+        "command": "mermaidChart.createMermaidFile",
+        "title": "New Mermaid Diagram"
+      },
+      {
         "command": "mermaidChart.editMermaidChart",
         "title": "Edit Diagram"
       },
