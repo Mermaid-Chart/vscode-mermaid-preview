@@ -1,12 +1,14 @@
-export function getWebviewHTML(content: string): string {
-  return `
+import * as vscode from "vscode";
+
+export function getWebviewHTML(content: string, mermaidScriptUri: vscode.Uri): string {
+  return /*html*/`
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Mermaid Preview</title>
-      <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+      <script src="${mermaidScriptUri}">
         mermaid.initialize({ startOnLoad: true });
       </script>
       <style>
@@ -34,5 +36,6 @@ export function getWebviewHTML(content: string): string {
     <body>
       <div class="mermaid">${content}</div>
     </body>
-    </html>`;
+    </html>
+  `;
 }

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
+import * as path from "path";
 
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
@@ -34,7 +35,16 @@ export class PreviewPanel {
 
   private update() {
     const content = this.document.getText();
-    this.panel.webview.html = getWebviewHTML(content)
+    const extensionPath = vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")?.extensionPath;
+
+    if (!extensionPath) {
+      throw new Error("Unable to resolve the extension path");
+    }
+
+    const mermaidScriptUri = this.panel.webview.asWebviewUri(
+      vscode.Uri.file(path.join(extensionPath, "out", "mermaid-bundle.js"))
+    );
+    this.panel.webview.html = getWebviewHTML(content, mermaidScriptUri);
   }
 
   private setupListeners() {
