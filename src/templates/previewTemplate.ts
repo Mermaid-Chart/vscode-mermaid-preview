@@ -1,40 +1,22 @@
 import * as vscode from "vscode";
+import * as path from "path";
 
-export function getWebviewHTML(content: string, mermaidScriptUri: vscode.Uri): string {
-  return /*html*/`
+export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string): string {
+  const scriptUri = panel.webview.asWebviewUri(
+    vscode.Uri.file(path.join(extensionPath, "out", "svelte", "bundle.js"))
+  );
+
+  return /*html*/ `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Mermaid Preview</title>
-      <script src="${mermaidScriptUri}">
-        mermaid.initialize({ startOnLoad: true });
-      </script>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          background-color: #f4f4f4;
-        }
-        #diagram {
-          width: 90%;
-          max-width: 800px;
-          border: 1px solid #ddd;
-          padding: 10px;
-          background: white;
-          border-radius: 5px;
-          overflow: auto;
-        }
-      </style>
+      <title>Svelte Mermaid Preview</title>
+      <script type="module" src="${scriptUri}"></script>
     </head>
     <body>
-      <div class="mermaid">${content}</div>
+      <div id="app"></div>
     </body>
     </html>
   `;
