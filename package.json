@@ -102,6 +102,7 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm compile",
+    "precompile":"cd webview && pnpm install && pnpm build",
     "compile": "tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "tsc -p ./ --noEmit --watch",
     "pretest": "pnpm compile && pnpm lint",
