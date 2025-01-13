@@ -14,6 +14,11 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Svelte Mermaid Preview</title>
       <script type="module" src="${scriptUri}"></script>
+      <style>
+        #app {
+          height:100vh;
+        }
+      </style>
     </head>
     <body>
       <div id="app"></div>
