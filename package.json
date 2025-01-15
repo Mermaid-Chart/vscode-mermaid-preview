@@ -45,6 +45,34 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "mermaid",
+        "aliases": [
+          "Mermaid",
+          "mermaid"
+        ],
+        "extensions": [
+          ".mermaid",
+          ".mmd"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+   "themes": [
+      {
+        "label": "Mermaid Light",
+        "uiTheme": "vs",
+        "path": "./themes/mermaid-light-color-theme.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mermaid",
+        "scopeName": "source.mermaid.flowchart",
+        "path": "./syntaxes/mermaid-flowchart.tmLanguage.json"
+      }
+    ],
     "configuration": {
       "title": "Mermaid Chart",
       "properties": {
@@ -128,7 +156,6 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@mermaid-chart/mermaid": "11.4.1-b.2",
     "axios": "^1.4.0",
     "uuid": "^9.0.0"
   }

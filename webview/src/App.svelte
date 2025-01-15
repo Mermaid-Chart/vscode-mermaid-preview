@@ -7,6 +7,7 @@
   import zoomoutIcon from './assets/zoom-out.svg';
 
   let diagramContent: string = '';
+  let errorMessage = "";
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
@@ -15,6 +16,7 @@
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
       try {
+        errorMessage = "";
         await mermaid.initialize({ startOnLoad: true });
 
         const { svg } = await mermaid.render("diagram-graph", diagramContent);
@@ -23,6 +25,9 @@
         const svgElement = element.querySelector("svg");
 
         if (svgElement) {
+          svgElement.style.height = "100%";
+          svgElement.style.width = "auto";
+
           if (panzoomInstance) panzoomInstance.destroy();
           panzoomInstance = Panzoom(element, {
             maxScale: 5,
@@ -32,11 +37,11 @@
 
           element.addEventListener("wheel", panzoomInstance.zoomWithWheel);
 
-          // Set cursor based on panEnabled
           updateCursorStyle();
         }
       } catch (error) {
         console.error("Error rendering Mermaid diagram:", error);
+        errorMessage = `Syntax error in text: ${error.message || error}`;
       }
     }
   }
@@ -137,7 +142,60 @@
     height: 20px;
     color: #2329D6;
   }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
+  #mermaid-diagram {
+    width: 100%;
+    height: 100vh;
+    background: white;
+    cursor: pointer;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+  }
+
+  #error-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #ffdddd;
+      color: #d8000c;
+      padding: 10px;
+      font-size: 14px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 1000;
+    }
+
+  #error-message.errorVisible {
+    display: block;
+  }
+
+  #mermaid-diagram svg {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+
 </style>
+
+<div id="error-message" class:errorVisible={!!errorMessage}>
+  {#if errorMessage}
+    <p>{errorMessage}</p>
+  {/if}
+</div>
 
 <div id="mermaid-diagram" class="mermaid">
   {#if diagramContent}

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
 
 export function createMermaidFile() {
-  const exampleContent = `graph TD;
+  const exampleContent = `graph TD
   A-->B
   A-->C
   B-->D
