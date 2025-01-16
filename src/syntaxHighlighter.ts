@@ -1,11 +1,31 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 
-// Function to get the first word of the text
 export function getFirstWord(text: string): string {
-  const regex = /^\s*(\w+)/;
-  const match = text.match(regex);
-  return match ? match[1].toLowerCase() : '';
+  const lines = text.split(/\r?\n/);
+  let insideBlock = false;
+
+  for (let line of lines) {
+    line = line.trim();
+    if (line.startsWith('%%')) {
+      insideBlock = true;
+    }
+    if (insideBlock && line.endsWith('%%')) {
+      insideBlock = false;
+      continue;
+    }
+    if (insideBlock) {
+      continue;
+    }
+
+    const regex = /^\s*(\w+)/;
+    const match = line.match(regex);
+    if (match) {
+      return match[1].toLowerCase();
+    }
+  }
+
+  return '';
 }
 
 // Function to map the first word to a diagram type
