@@ -1,14 +1,17 @@
 {
-  "scopeName": "source.mermaid.sequenceDiagram",
+  "scopeName": "source.mermaid.requirementDiagram",
+  "name":"requirementDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
     { "include": "#blockKeywords" },
     { "include": "#keywords" },
     { "include": "#comments" },
-    { "include": "#variables" },
+    { "include": "#strings" },
     { "include": "#transitions" },
-    { "include": "#strings" }
+    { "include": "#numbers" },
+    { "include": "#variables" },
+    { "include": "#delimiters" }
   ],
   "repository": {
     "configDirective": {
@@ -36,7 +39,7 @@
       "patterns": [
         {
           "name": "keyword.control.type.mermaid",
-          "match": "\\b(sequenceDiagram)\\b"
+          "match": "\\b(requirementDiagram|requirement)\\b"
         }
       ]
     },
@@ -44,7 +47,7 @@
       "patterns": [
         {
           "name": "keyword.control.block.mermaid",
-          "match": "\\b(alt|par|loop|opt|else|end|rect)\\b"
+          "match": "\\b(element|requirement|functionalRequirement|interfaceRequirement|performanceRequirement|physicalRequirement|designConstraint)\\b"
         }
       ]
     },
@@ -52,47 +55,7 @@
       "patterns": [
         {
           "name": "keyword.other.mermaid",
-          "match": "\\b(participant|actor|activate|deactivate|Note|note|as|right of|left of|over|autonumber|title|accDescription|link|links)\\b"
-        }
-      ]
-    },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.after-colon.mermaid",
-          "match": "(:)([^\n]*)$",
-          "captures": {
-            "1": {
-              "name": "punctuation.separator.colon.mermaid"
-            },
-            "2": {
-              "name": "string.quoted.mermaid"
-            }
-          }
-        },
-        {
-          "name": "string.quoted.double.mermaid",
-          "match": "\".*?\""
-        },
-        {
-          "name": "string.quoted.special.mermaid",
-          "match": "\\|+[^\\|]+\\|+"
-        },
-        {
-          "name": "string.quoted.bracket.mermaid",
-          "match": "\\[[^\\[\\]]+\\]"
-        },
-        {
-          "name": "string.quoted.angle.mermaid",
-          "match": "<[^<>]+>"
-        },
-        {
-          "name": "string.quoted.curly.mermaid",
-          "match": "\\{[^{}]+\\}"
-        },
-        {
-          "name": "string.quoted.parenthesis.mermaid",
-          "match": "\\([^()]+\\)"
+          "match": "\\b(functionalRequirement|interfaceRequirement|performanceRequirement|physicalRequirement|designConstraint)\\b"
         }
       ]
     },
@@ -104,11 +67,15 @@
         }
       ]
     },
-    "variables": {
+    "strings": {
       "patterns": [
         {
-          "name": "variable.name.mermaid",
-          "match": "\\b[A-Za-z][\\w$]*\\b"
+          "name": "string.unquoted.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
         }
       ]
     },
@@ -117,6 +84,34 @@
         {
           "name": "keyword.control.transition.mermaid",
           "match": "(--?>?>|--?[)x])[+-]?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(--?>?<|--?[)x])[+-]?"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.mermaid",
+          "match": "(\\d+\\.)*\\d+"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.mermaid",
+          "match": "[A-Za-z][\\w$]*"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": "[/:{}]"
         }
       ]
     }

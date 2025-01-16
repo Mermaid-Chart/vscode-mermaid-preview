@@ -1,0 +1,48 @@
+{
+  "c4Diagram": [
+    "C4Context",
+    "C4Container",
+    "C4Component",
+    "C4Dynamic",
+    "C4Deployment"
+  ],
+  "classDiagram": [
+    "classDiagram",
+    "classDiagram-v2"
+  ],
+  "erDiagram": [
+    "erDiagram"
+  ],
+  "flowchart": [
+    "flowchart",
+    "flowchart-v2",
+    "graph"
+  ],
+  "gantt": [
+    "gantt",
+    "section"
+  ],
+  "gitGraph": [
+    "gitGraph"
+  ],
+  "info": [
+    "info"
+  ],
+  "journey": [
+    "journey"
+  ],
+  "pie": [
+    "pie"
+  ],
+  "requirementDiagram": [
+    "requirement",
+    "requirementDiagram"
+  ],
+  "sequenceDiagram": [
+    "sequenceDiagram"
+  ],
+  "stateDiagram": [
+    "stateDiagram",
+    "stateDiagram-v2"
+  ]
+}

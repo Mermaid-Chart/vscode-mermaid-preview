@@ -1,5 +1,6 @@
 {
   "scopeName": "source.mermaid.gitGraph",
+  "name":"gitGraph",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

@@ -1,5 +1,6 @@
 {
   "scopeName": "source.mermaid.flowchart",
+  "name":"flowchart",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
@@ -56,47 +57,52 @@
         }
       ]
     },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.double.mermaid",
-          "match": "\".*?\""
-        },
-        {
-          "name": "string.quoted.special.mermaid",
-          "match": "\\|+[^\\|]+\\|+"
-        },
-        {
-          "name": "string.quoted.bracket.mermaid",
-          "match": "\\[[^\\[\\]]+\\]"
-        },
-        {
-          "name": "string.quoted.angle.mermaid",
-          "match": "<[^<>]+>"
-        },
-        {
-          "name": "string.quoted.curly.mermaid",
-          "match": "\\{[^{}]+\\}"
-        },
-        {
-          "name": "string.quoted.parenthesis.mermaid",
-          "match": "\\([^()]+\\)"
-        }
-      ]
-    },
+      "strings": {
+        "patterns": [
+          {
+            "name": "string.color.mermaid",
+            "match": "#[A-Fa-f0-9]{6}|#[A-Fa-f0-9]{3}"
+          },
+          {
+            "name": "string.quoted.double.mermaid",
+            "match": "\".*?\""
+          },
+          {
+            "name": "string.quoted.special.mermaid",
+            "match": "\\|+[^\\|]+\\|+"
+          },
+          {
+            "name": "string.quoted.bracket.mermaid",
+            "match": "\\[[^\\[\\]]+\\]"
+          },
+          {
+            "name": "string.quoted.angle.mermaid",
+            "match": "<[^<>]+>"
+          },
+          {
+            "name": "string.quoted.curly.mermaid",
+            "match": "\\{[^{}]+\\}"
+          },
+          {
+            "name": "string.quoted.parenthesis.mermaid",
+            "match": "\\([^()]+\\)"
+          }
+        ]
+      },
+      "variables": {
+        "patterns": [
+          {
+            "name": "variable.name.mermaid",
+            "match": "\\b[A-Za-z][\\w$]*\\b"
+          }
+        ]
+      }
+    ,
     "comments": {
       "patterns": [
         {
           "name": "comment.line.double-percent.mermaid",
           "match": "%%.*$"
-        }
-      ]
-    },
-    "variables": {
-      "patterns": [
-        {
-          "name": "variable.name.mermaid",
-          "match": "\\b[A-Za-z][\\w$]*\\b"
         }
       ]
     },

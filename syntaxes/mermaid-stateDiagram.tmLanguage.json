@@ -1,11 +1,14 @@
 {
-  "scopeName": "source.mermaid.erDiagram",
+  "scopeName": "source.mermaid.stateDiagram",
+  "name":"stateDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
     { "include": "#keywords" },
     { "include": "#comments" },
     { "include": "#strings" },
+    { "include": "#annotations" },
     { "include": "#transitions" },
     { "include": "#variables" },
     { "include": "#delimiters" }
@@ -36,7 +39,15 @@
       "patterns": [
         {
           "name": "keyword.control.type.mermaid",
-          "match": "\\berDiagram\\b"
+          "match": "\\b(stateDiagram|stateDiagram-v2)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(state|note|end)\\b"
         }
       ]
     },
@@ -44,7 +55,7 @@
       "patterns": [
         {
           "name": "keyword.other.mermaid",
-          "match": "\\b(title|accDescription)\\b"
+          "match": "\\b(state|as|hide empty description|direction|TB|BT|RL|LR)\\b"
         }
       ]
     },
@@ -67,8 +78,20 @@
           "match": "\".*?\""
         },
         {
-          "name": "string.unquoted.mermaid",
-          "match": "(?<=:\\s*)[a-zA-Z0-9_]+"
+          "name": "string.brackets.mermaid",
+          "match": "(\\[\\[).*?(\\]\\])|\\[.*?\\]"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "annotation.mermaid",
+          "match": "(<<)(fork|join|choice)(>>)"
+        },
+        {
+          "name": "annotation.mermaid",
+          "match": "(\\[\\[)(fork|join|choice)(\\]\\])"
         }
       ]
     },
@@ -76,11 +99,7 @@
       "patterns": [
         {
           "name": "keyword.control.transition.mermaid",
-          "match": "(\\*|<\\|\\?|o)?(--|\\.\\.)(\\*|\\|?>|o)?"
-        },
-        {
-          "name": "keyword.control.transition.mermaid",
-          "match": "(\\|\\||--|\\.\\.|\\|)"
+          "match": "(--?>?>|--?[)x])[+-]?"
         }
       ]
     },
@@ -96,7 +115,11 @@
       "patterns": [
         {
           "name": "delimiter.bracket.mermaid",
-          "match": "[:{}]"
+          "match": ":|,|\\+|\\$"
+        },
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": "{|}"
         }
       ]
     }

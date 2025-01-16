@@ -11,9 +11,28 @@ import {
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
 import { createMermaidFile } from "./commands/createFile";
+import * as path from "path";
+import * as fs from "fs";
+import { handleTextDocumentChange } from "./eventHandlers";
+
+const diagramMappingsFilePath = path.join(__dirname, '..', 'src', 'diagramTypeWords.json');
+let diagramMappings: { [key: string]: string[] } = {};
+
+fs.readFile(diagramMappingsFilePath, 'utf-8', (err, data) => {
+  if (err) {
+    console.error('Error reading diagramMappings.json:', err);
+    return;
+  }
+  diagramMappings = JSON.parse(data);
+});
+
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
+
+  vscode.workspace.onDidChangeTextDocument((event) =>
+    handleTextDocumentChange(event, diagramMappings)
+  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.createMermaidFile', createMermaidFile)

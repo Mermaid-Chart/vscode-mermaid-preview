@@ -1,15 +1,14 @@
 {
-  "scopeName": "source.mermaid.classDiagram",
+  "scopeName": "source.mermaid.erDiagram",
+  "name":"erDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
-    { "include": "#blockKeywords" },
     { "include": "#keywords" },
     { "include": "#comments" },
-    { "include": "#variables" },
-    { "include": "#transitions" },
-    { "include": "#annotations" },
     { "include": "#strings" },
+    { "include": "#transitions" },
+    { "include": "#variables" },
     { "include": "#delimiters" }
   ],
   "repository": {
@@ -38,15 +37,7 @@
       "patterns": [
         {
           "name": "keyword.control.type.mermaid",
-          "match": "\\b(classDiagram|classDiagram-v2)\\b"
-        }
-      ]
-    },
-    "blockKeywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.block.mermaid",
-          "match": "\\b(class)\\b"
+          "match": "\\berDiagram\\b"
         }
       ]
     },
@@ -54,7 +45,7 @@
       "patterns": [
         {
           "name": "keyword.other.mermaid",
-          "match": "\\b(link|click|callback|call|href|cssClass|direction|TB|BT|RL|LR|title|accDescription|order)\\b"
+          "match": "\\b(title|accDescription)\\b"
         }
       ]
     },
@@ -66,19 +57,23 @@
         }
       ]
     },
-   "variables": {
+    "strings": {
       "patterns": [
         {
-          "name": "support.type.mermaid",
-          "match": "[+]\\s*[A-Za-z_][\\w$]*\\s*(?!\\(\\))\\b"
+          "name": "string.unquoted.mermaid",
+          "match": "\".*?\""
         },
         {
-          "name": "variable.mermaid",
-          "match": "\\b[A-Za-z_][\\w$]*\\b"
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.unquoted.mermaid",
+          "match": "(?<=:\\s*)[a-zA-Z0-9_]+"
         }
       ]
     },
-   "transitions": {
+    "transitions": {
       "patterns": [
         {
           "name": "keyword.control.transition.mermaid",
@@ -86,32 +81,15 @@
         },
         {
           "name": "keyword.control.transition.mermaid",
-          "match": "(\\|\\||--|\\.\\.|\\|<|>\\|?|<|>)"
-        },
-        {
-          "name": "keyword.control.transition.mermaid",
           "match": "(\\|\\||--|\\.\\.|\\|)"
         }
       ]
     },
-    "annotations": {
+    "variables": {
       "patterns": [
         {
-          "name": "annotation.mermaid",
-          "match": "(<<)(.+?)(>>)",
-          "captures": {
-            "1": { "name": "delimiter.bracket.mermaid" },
-            "2": { "name": "annotation.content.mermaid" },
-            "3": { "name": "delimiter.bracket.mermaid" }
-          }
-        }
-      ]
-    },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.double.mermaid",
-          "match": "\".*?\""
+          "name": "variable.mermaid",
+          "match": "[A-Za-z][\\w$]*"
         }
       ]
     },
@@ -119,7 +97,7 @@
       "patterns": [
         {
           "name": "delimiter.bracket.mermaid",
-          "match": ":|\\+|-|#|~|\\*\\s*$|\\$\\s*$|\\(|\\)|\\{|\\}"
+          "match": "[:{}]"
         }
       ]
     }
