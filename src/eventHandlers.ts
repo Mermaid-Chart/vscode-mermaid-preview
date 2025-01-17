@@ -11,7 +11,7 @@ export function handleTextDocumentChange(event: vscode.TextDocumentChangeEvent, 
   const documentUri = document.uri.toString();
   const firstWord = getFirstWord(document.getText());
 
-  if (firstWordCache.get(documentUri) === firstWord) {
+  if (firstWordCache.get(documentUri) === firstWord && firstWord === '') {
     return;
   }
 

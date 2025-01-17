@@ -1,11 +1,10 @@
 import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
-
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
   private readonly panel: vscode.WebviewPanel;
-  private readonly document: vscode.TextDocument;
+  private document: vscode.TextDocument;
   private readonly disposables: vscode.Disposable[] = [];
 
   private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
@@ -39,10 +38,9 @@ export class PreviewPanel {
       throw new Error("Unable to resolve the extension path");
     }
 
-    // Send the HTML content to the webview
+    if (!this.panel.webview.html) {
     this.panel.webview.html = getWebviewHTML(this.panel, extensionPath);
-
-    // Pass the document content to the Svelte app via postMessage
+    }
     this.panel.webview.postMessage({
       type: "update",
       content: this.document.getText(),
@@ -56,6 +54,11 @@ export class PreviewPanel {
       if (event.document === this.document) {
         debouncedUpdate();
       }
+    }, this.disposables);
+
+    vscode.workspace.onDidOpenTextDocument((openedDocument) => {
+        this.document = openedDocument;
+        this.update();
     }, this.disposables);
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
