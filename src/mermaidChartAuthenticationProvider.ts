@@ -2,6 +2,7 @@
 import {
   AuthenticationProvider,
   AuthenticationProviderAuthenticationSessionsChangeEvent,
+  AuthenticationProviderSessionOptions,
   AuthenticationSession,
   Disposable,
   env,
@@ -78,9 +79,9 @@ export class MermaidChartAuthenticationProvider
    * @returns
    */
   public async getSessions(
-    scopes?: string[]
-  ): Promise<readonly AuthenticationSession[]> {
-    // return [];
+    scopes: readonly string[] | undefined,
+    options: AuthenticationProviderSessionOptions
+  ): Promise<AuthenticationSession[]> {
     const allSessions = await this.context.secrets.get(this.sessionsKey);
 
     if (allSessions) {

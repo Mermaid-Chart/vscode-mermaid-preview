@@ -17,6 +17,10 @@ export class MermaidChartVSCode extends MermaidChart {
     await this.setupAPI();
   }
 
+  public async login() {
+    await this.setupAPI();
+  }
+
   public async logout(context: vscode.ExtensionContext): Promise<void> {
     const session = await vscode.authentication.getSession(
       MermaidChartAuthenticationProvider.id,

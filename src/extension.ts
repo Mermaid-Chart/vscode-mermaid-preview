@@ -33,19 +33,23 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.workspace.onDidChangeTextDocument((event) =>
     handleTextDocumentChange(event, diagramMappings)
   );
-
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.createMermaidFile', createMermaidFile)
   );
-
-  const mcAPI = new MermaidChartVSCode();
-  await mcAPI.initialize(context);
-
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.logout', async () => {
       mcAPI.logout(context);
     })
   );
+
+  const mcAPI = new MermaidChartVSCode();
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidChart.login', async () => {
+      await mcAPI.login();
+    })
+  );
+
+  await mcAPI.initialize(context);
 
   const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider(
     mcAPI
