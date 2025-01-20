@@ -27,7 +27,6 @@ export class PreviewPanel {
       vscode.ViewColumn.Beside,
       { enableScripts: true }
     );
-
     PreviewPanel.currentPanel = new PreviewPanel(panel, document);
   }
 
@@ -55,10 +54,11 @@ export class PreviewPanel {
         debouncedUpdate();
       }
     }, this.disposables);
-
-    vscode.workspace.onDidOpenTextDocument((openedDocument) => {
-        this.document = openedDocument;
-        this.update();
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor && editor.document) {
+        this.document = editor.document; 
+        debouncedUpdate(); 
+      }
     }, this.disposables);
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);

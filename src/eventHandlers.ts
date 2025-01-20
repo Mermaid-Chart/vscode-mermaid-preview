@@ -6,12 +6,12 @@ const firstWordCache: Map<string, string> = new Map();
 
 
 // Function to handle text document change events
-export function handleTextDocumentChange(event: vscode.TextDocumentChangeEvent, diagramMappings: { [key: string]: string[] }) {
+export function handleTextDocumentChange(event: any, diagramMappings: { [key: string]: string[] }, isTextEditorChanged: boolean) {
   const document = event.document;
   const documentUri = document.uri.toString();
   const firstWord = getFirstWord(document.getText());
 
-  if (firstWordCache.get(documentUri) === firstWord && firstWord === '') {
+  if ((firstWordCache.get(documentUri) === firstWord || firstWord === '') && !isTextEditorChanged) {
     return;
   }
 

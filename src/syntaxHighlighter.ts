@@ -4,9 +4,23 @@ import * as vscode from 'vscode';
 export function getFirstWord(text: string): string {
   const lines = text.split(/\r?\n/);
   let insideBlock = false;
+  let insideConfigBlock = false;
 
   for (let line of lines) {
     line = line.trim();
+
+    if (line === '---') {
+      insideConfigBlock = !insideConfigBlock;
+      continue;
+    }
+    if (insideConfigBlock) {
+      continue;
+    }
+
+    if (line.startsWith('%%') && !line.endsWith('%%')) {
+      continue;
+    }
+
     if (line.startsWith('%%')) {
       insideBlock = true;
     }

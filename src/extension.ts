@@ -31,7 +31,10 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
 
   vscode.workspace.onDidChangeTextDocument((event) =>
-    handleTextDocumentChange(event, diagramMappings)
+    handleTextDocumentChange(event, diagramMappings, false)
+  );
+  vscode.window.onDidChangeActiveTextEditor((event) =>
+    handleTextDocumentChange(event, diagramMappings, true)
   );
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.createMermaidFile', createMermaidFile)
