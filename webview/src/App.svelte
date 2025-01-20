@@ -6,19 +6,39 @@
   import zoominIcon from './assets/zoom-in.svg';
   import zoomoutIcon from './assets/zoom-out.svg';
 
-  let diagramContent: string = '';
+  let diagramContent: string = `flowchart TD
+  A-->B
+  A-->C
+  B-->D
+  C-->D`;
   let errorMessage = "";
+  let isMermaidInitialized = false;
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
 
+  async function initializeMermaid() {
+    try {
+      await mermaid.initialize({
+        startOnLoad: false,
+        suppressErrorRendering: true
+      });
+      isMermaidInitialized = true;
+    } catch (error) {
+      console.error('Error initializing Mermaid:', error);
+    }
+  }
+
   async function renderDiagram() {
+    if (!isMermaidInitialized) {
+      console.log('Mermaid is not initialized yet. Waiting...');
+      await initializeMermaid();
+    }
+
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
       try {
         errorMessage = "";
-        await mermaid.initialize({ startOnLoad: true });
-
         const { svg } = await mermaid.render("diagram-graph", diagramContent);
         element.innerHTML = svg;
 
@@ -57,9 +77,7 @@
   function updateCursorStyle() {
     const element = document.getElementById("mermaid-diagram");
     if (element) {
-      element.style.cursor = panEnabled
-        ? `pointer`
-        : 'default';
+      element.style.cursor = panEnabled ? `pointer` : 'default';
     }
   }
 
@@ -75,32 +93,28 @@
     panzoomInstance?.reset();
   }
 
-  window.addEventListener("message", (event) => {
+  window.addEventListener("message", async (event) => {
     const { type, content } = event.data;
     if (type === "update" && content) {
       diagramContent = content;
-      renderDiagram();
+
+      if (!isMermaidInitialized) {
+        await initializeMermaid();
+        renderDiagram();
+      } else {
+        renderDiagram();
+      }
     }
   });
 
-  onMount(() => {
+  onMount(async () => {
+    await initializeMermaid();
     renderDiagram();
   });
 </script>
 
 <style>
-  .mermaid {
-    width: 100%;
-    height: 100%;
-    background: white;
-    cursor: pointer;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
+  
 
   .sidebar {
     position: absolute;
@@ -143,83 +157,70 @@
     color: #2329D6;
   }
 
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-  }
-
   #mermaid-diagram {
-    width: 100%;
     height: 100vh;
-    background: white;
     cursor: pointer;
-    padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: auto;
   }
 
-  #error-message {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: #ffdddd;
-      color: #d8000c;
-      padding: 10px;
-      font-size: 14px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 1000;
-    }
 
-  #error-message.errorVisible {
-    display: block;
-  }
+  #app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  gap: 10px;
+}
 
-  #mermaid-diagram svg {
-    height: 100%;
-    width: auto;
-    display: block;
-  }
+#error-message {
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #d8000c;
+  display: none;
+}
+
+#error-message.errorVisible {
+  display: block;
+}
 
 </style>
 
-<div id="error-message" class:errorVisible={!!errorMessage}>
-  {#if errorMessage}
-    <p>{errorMessage}</p>
+
+
+<div id="app-container">
+  <div id="error-message" class:errorVisible={!!errorMessage}>
+    {#if errorMessage}
+      <p>{errorMessage}</p>
+    {/if}
+  </div>
+
+  <div id="mermaid-diagram"></div>
+
+  {#if !errorMessage}
+  <div class="sidebar">
+    <button 
+      class="icon {panEnabled ? 'active' : ''}" 
+      on:click={togglePan} 
+      aria-label="Enable Pan"
+    >
+      <img src={panIcon} alt="Pan Icon" />
+    </button>
+    <button class="icon" on:click={zoomOut} aria-label="Zoom Out">
+      <img src={zoomoutIcon} alt="Zoom Out Icon" />
+    </button>
+    <button class="icon" on:click={resetView} aria-label="Reset View">
+      <span>Reset</span>
+    </button>
+    <button class="icon" on:click={zoomIn} aria-label="Zoom In">
+      <img src={zoominIcon} alt="Zoom In Icon" />
+    </button>
+  </div>
   {/if}
 </div>
 
-<div id="mermaid-diagram" class="mermaid">
-  {#if diagramContent}
-    <!-- Rendered Mermaid diagram will appear here -->
-  {:else}
-    <p>Enter diagram code to render.</p>
-  {/if}
-</div>
-
-<div class="sidebar">  
-  <button 
-    class="icon {panEnabled ? 'active' : ''}" 
-    on:click={togglePan} 
-    aria-label="Enable Pan"
-  >
-    <img src={panIcon} alt="Pan Icon" />
-  </button>
-  <button class="icon" on:click={zoomOut} aria-label="Zoom Out">
-    <img src={zoomoutIcon} alt="Zoom Out Icon" />
-  </button>
-  <button class="icon" on:click={resetView} aria-label="Reset View">
-    <span>Reset</span>
-  </button>
-  <button class="icon" on:click={zoomIn} aria-label="Zoom In">
-    <img src={zoominIcon} alt="Zoom In Icon" />
-  </button>
-</div>

@@ -58,7 +58,7 @@ export function applySyntaxHighlighting(document: vscode.TextDocument, tmLanguag
     // Set the text document language using languageId
     vscode.languages.setTextDocumentLanguage(document, languageId).then(
       () => {
-        console.log(`Applied syntax highlighting for ${languageId}`);
+        // console.log(`Applied syntax highlighting for ${languageId}`);
       },
       (error) => {
         console.error('Failed to apply syntax highlighting:', error);
