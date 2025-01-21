@@ -37,7 +37,7 @@
 
   let errorMessage = "";
   let isMermaidInitialized = false;
-  let isToggled = false;
+  let isToggled = true;
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
@@ -93,6 +93,15 @@
           svgElement.style.height = "100%";
           svgElement.style.width = "auto";
 
+          if (!panzoomInstance) {
+          panzoomInstance = Panzoom(element, {
+            maxScale: 5,
+            minScale: 0.5,
+            contain: "outside",
+          });
+
+          element.addEventListener("wheel", panzoomInstance.zoomWithWheel);
+        }
           if (!isToggled) {
           if (panzoomInstance) {
             panzoomInstance.destroy();
