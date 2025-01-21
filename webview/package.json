@@ -15,6 +15,11 @@
   },
   "dependencies": {
     "@mermaid-chart/mermaid": "11.4.1-b.2",
-    "@panzoom/panzoom": "^4.5.1"
+    "@panzoom/panzoom": "^4.5.1",
+    "@mermaid-chart/icons-aws": "^1.0.1",
+    "@mermaid-chart/icons-azure": "^1.0.0",
+    "@mermaid-chart/icons-gcp": "^1.0.0",
+    "@mermaid-chart/layout-elk": "0.1.7-b.2",
+    "@iconify-json/fa6-regular": "^1.2.0"
   }
 }
