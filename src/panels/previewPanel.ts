@@ -6,6 +6,7 @@ export class PreviewPanel {
   private readonly panel: vscode.WebviewPanel;
   private document: vscode.TextDocument;
   private readonly disposables: vscode.Disposable[] = [];
+  private isFileChange = false;
 
   private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
     this.panel = panel;
@@ -48,8 +49,10 @@ export class PreviewPanel {
     this.panel.webview.postMessage({
       type: "update",
       content: this.document.getText(),
-      currentTheme: theme
+      currentTheme: theme,
+      isFileChange:this.isFileChange
     });
+    this.isFileChange=false
   }
 
   private setupListeners() {
@@ -61,11 +64,15 @@ export class PreviewPanel {
       }
     }, this.disposables);
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (editor && editor.document) {
-        this.document = editor.document; 
-        debouncedUpdate(); 
+      if (editor && editor.document !== this.document) {
+        if (editor.document.uri.toString() !== this.document.uri.toString()) {
+          this.document = editor.document; 
+          this.isFileChange = true; 
+          debouncedUpdate(); 
+        }
       }
     }, this.disposables);
+
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
   }

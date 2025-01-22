@@ -41,6 +41,7 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
+  let isFileChange = false;
 
   async function initializeMermaid() {
     try {
@@ -171,10 +172,13 @@
   }
 
   window.addEventListener("message", async (event) => {
-    const { type, content, currentTheme } = event.data;
+    const { type, content, currentTheme,isFileChange} = event.data;
     if (type === "update" && content) {
       diagramContent = content;
       theme = currentTheme;
+      if (isFileChange) {
+      panzoomInstance?.reset();
+    }
       await renderDiagram();
     }
   });
