@@ -38,6 +38,7 @@
   let vscode: any;
   let errorMessage = "";
   let isToggled = true;
+  $: zoomLevel = 100;
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
@@ -107,10 +108,13 @@
           panzoomInstance = Panzoom(element, {
             maxScale: 5,
             minScale: 0.5,
-            contain: "outside",
+            contain: "outside"
           });
 
-          element.addEventListener("wheel", panzoomInstance.zoomWithWheel);
+          element.addEventListener("wheel", (event) => {
+            panzoomInstance?.zoomWithWheel(event);
+            updateZoomLevel();
+          });        
         }
           if (!isToggled) {
           if (panzoomInstance) {
@@ -122,7 +126,10 @@
             contain: "outside",
           });
 
-          element.addEventListener("wheel", panzoomInstance.zoomWithWheel);
+          element.addEventListener("wheel", (event) => {
+            panzoomInstance?.zoomWithWheel(event);
+            updateZoomLevel();
+          });
         }
 
         if (isToggled) {
@@ -171,16 +178,25 @@
     }
   }
 
+  function updateZoomLevel() {
+    if (panzoomInstance) {
+      zoomLevel = Math.round(panzoomInstance.getScale() * 100);
+    }
+  }
+
   function zoomIn() {
     panzoomInstance?.zoomIn();
+    updateZoomLevel();
   }
 
   function zoomOut() {
     panzoomInstance?.zoomOut();
+    updateZoomLevel();
   }
 
   function resetView() {
     panzoomInstance?.reset();
+    updateZoomLevel();
   }
 
   window.addEventListener("message", async (event) => {
@@ -198,6 +214,7 @@
   onMount(async () => {
     vscode = (window as any).vscode;
     renderDiagram();
+    updateZoomLevel();
   });
 </script>
 
@@ -251,7 +268,7 @@
   .sidebar {
     position: absolute;
     top: 5px;
-    right: 25px;
+    right: 5px;
     display: flex;
     gap: 5px;
     background: white;
@@ -286,6 +303,8 @@
   .icon span {
     width: 20px;
     height: 20px;
+    font-size: 14px;
+    font-weight: 700;
     color: #2329D6;
   }
 
@@ -320,7 +339,18 @@
 #error-message.errorVisible {
   display: block;
 }
-
+.zoom-level {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+  margin-left: 5px;
+}
+.zoom-level span{
+  color: #6d86c5;
+}
 </style>
 
 
@@ -351,6 +381,9 @@
     <button class="icon" on:click={zoomIn} aria-label="Zoom In">
       <img src={zoominIcon} alt="Zoom In Icon" />
     </button>
+    <div class="zoom-level">
+      <span>Zoom: {zoomLevel}%</span>
+    </div>
     <!-- <label class="switch">
       <input type="checkbox" bind:checked={isToggled} on:click={handleToggleClick}  />
       <span class="slider"></span>
