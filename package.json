@@ -266,12 +266,23 @@
           "group": "navigation",
           "when": "view == mermaidChart"
         }
+      ],
+      "editor/context": [
+        {
+          "command": "mermaidChart.preview",
+          "when": "resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/",
+          "group": "navigation"
+        }
       ]
     },
     "commands": [
       {
         "command": "mermaidChart.viewMermaidChart",
         "title": "View Diagram"
+      },
+      {
+        "command": "mermaidChart.preview",
+        "title": "Preview Mermaid Diagram"
       },
       {
         "command": "mermaidChart.logout",

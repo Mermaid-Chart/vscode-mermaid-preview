@@ -8,6 +8,24 @@ importers:
 
   .:
     dependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: 6.7.2
+        version: 6.7.2
+      '@iconify-json/fa6-regular':
+        specifier: ^1.2.0
+        version: 1.2.3
+      '@mermaid-chart/icons-aws':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@mermaid-chart/icons-azure':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@mermaid-chart/icons-gcp':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@mermaid-chart/layout-elk':
+        specifier: 0.1.7-b.2
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.4.1-b.2)
       '@mermaid-chart/mermaid':
         specifier: 11.4.1-b.2
         version: 11.4.1-b.2
@@ -205,6 +223,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@fortawesome/fontawesome-free@6.7.2':
+    resolution: {integrity: sha512-JUOtgFW6k9u4Y+xeIaEiLr3+cjoUPiAuLXoyKOJSia6Duzb7pq+A76P9ZdPDoAoxHdHzq6gE9/jKBGXlZT8FbA==}
+    engines: {node: '>=6'}
+
+  '@iconify-json/fa6-regular@1.2.3':
+    resolution: {integrity: sha512-NGV2j5mn4j49mpP7MABCljp1WPWKjwgfjN6NGwsmlFuQ7bdnz36nZB/5aRXLOcT36NXaBeCoT05G9aatdtMr3A==}
+
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -228,6 +253,20 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@mermaid-chart/icons-aws@1.0.1':
+    resolution: {integrity: sha512-FgPbVM8+eXTeK2DnMD4QHf48JIkIFQqyfGYTzxPdBbOlL5y7XVawd4ceb1bEIoRsYgZzYY0ekVX3v6zL5AVqIA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/icons-aws/1.0.1/85df8b4061f3572091968d882cc2ea6d6eb43c3d}
+
+  '@mermaid-chart/icons-azure@1.0.0':
+    resolution: {integrity: sha512-Gb9Y3AO/Z8r2VRfIZluOPU8ilVl2gPvw5YIhgGVq9NaysZKmyJb9ofNIq9OSQpJeRSFj/qKJHWA33DdTxVo8eQ==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/icons-azure/1.0.0/0a6812e01c53d08e328486a84221427a608a2dad}
+
+  '@mermaid-chart/icons-gcp@1.0.0':
+    resolution: {integrity: sha512-6fa2BlFQ69jKj1xyYpFlitEABTgLC8LrJhomKOo1hqfajrb77y6H+/fyN5FH3B+Gnk152IVJtr5GS1y10MTIMA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/icons-gcp/1.0.0/2b28f187affb77d80830309bae01d59af4f1e80a}
+
+  '@mermaid-chart/layout-elk@0.1.7-b.2':
+    resolution: {integrity: sha512-0D5dQYSqnD5CO8PajT983ap1PH+PnMKA+EMHY6CM5pcV6i8YtKb4cGv/p/IsjXOTRVzPioNKwueAY5RBE/pL8Q==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/layout-elk/0.1.7-b.2/713f820a9026a1e0593da973ae177c940cc89b19}
+    peerDependencies:
+      '@mermaid-chart/mermaid': ^11.0.0
 
   '@mermaid-chart/mermaid@11.4.1-b.2':
     resolution: {integrity: sha512-qr9Xq4sJ1DOp/cghqLi2xL6Fl1xckRHnTh5qxqkCiM+Umubv0qmtBJ2YkMvualvlG2dxuppf7WG1v+mR+mcpkA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.4.1-b.2/07510293c252f6a27d573a4d92422d213de2e2c9}
@@ -675,6 +714,9 @@ packages:
   dompurify@3.2.3:
     resolution: {integrity: sha512-U1U5Hzc2MO0oW3DF+G9qYN0aT7atAou4AgI0XjWz061nyBPbdxkfdhfy5uMgGn6+oLFCfn44ZGbdDqCzVmlOWA==}
 
+  elkjs@0.9.3:
+    resolution: {integrity: sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==}
+
   esbuild@0.24.2:
     resolution: {integrity: sha512-+9egpBW8I3CD5XPe0n6BfT5fxLzxrlDzqydF3aviG+9ni1lDC/OvMHcxqEFV0+LANZG5R1bFMWfUrjVsdwxJvA==}
     engines: {node: '>=18'}
@@ -1011,6 +1053,12 @@ snapshots:
   '@esbuild/win32-x64@0.24.2':
     optional: true
 
+  '@fortawesome/fontawesome-free@6.7.2': {}
+
+  '@iconify-json/fa6-regular@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@2.2.1':
@@ -1042,6 +1090,24 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@mermaid-chart/icons-aws@1.0.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@mermaid-chart/icons-azure@1.0.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@mermaid-chart/icons-gcp@1.0.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.4.1-b.2)':
+    dependencies:
+      '@mermaid-chart/mermaid': 11.4.1-b.2
+      d3: 7.9.0
+      elkjs: 0.9.3
 
   '@mermaid-chart/mermaid@11.4.1-b.2':
     dependencies:
@@ -1516,6 +1582,8 @@ snapshots:
   dompurify@3.2.3:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
+
+  elkjs@0.9.3: {}
 
   esbuild@0.24.2:
     optionalDependencies:

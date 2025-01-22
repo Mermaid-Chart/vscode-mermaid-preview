@@ -35,13 +35,15 @@
 
       %% You can add notes with two "%" signs in a row!`;
 
+  let vscode: any;
   let errorMessage = "";
   let isToggled = true;
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
-  let isFileChange = false;
+  let isErrorOccured= false;
+
 
   async function initializeMermaid() {
     try {
@@ -75,8 +77,7 @@
     }
   }
   async function renderDiagram() {
-      console.log('Mermaid is not initialized yet. Waiting...');
-      await initializeMermaid();
+    await initializeMermaid();
 
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
@@ -131,8 +132,19 @@
 
           updateCursorStyle();
         }
+        if(isErrorOccured){
+          vscode.postMessage({
+            type: "clearError", 
+          });
+          isErrorOccured = false
+        }
       } catch (error) {
         errorMessage = `Syntax error in text: ${error.message || error}`;
+        vscode.postMessage({
+          type: "error",
+          message: errorMessage,
+        });
+        isErrorOccured = true
       }
     }
   }
@@ -184,7 +196,7 @@
   });
 
   onMount(async () => {
-    await initializeMermaid();
+    vscode = (window as any).vscode;
     renderDiagram();
   });
 </script>

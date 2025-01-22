@@ -32,7 +32,27 @@ export function createMermaidFile() {
 
   vscode.workspace.openTextDocument({ content: exampleContent}).then((document) => {
     vscode.window.showTextDocument(document).then((editor) => {
-      PreviewPanel.createOrShow(editor.document);
+      if (editor?.document) {
+        PreviewPanel.createOrShow(editor.document);
+      }
     });
   });
+}
+
+export function getPreview() {
+  const activeEditor = vscode.window.activeTextEditor;
+  
+      if (!activeEditor) {
+        vscode.window.showErrorMessage("No active editor. Open a .mmd file to preview.");
+        return;
+      }
+  
+      const document = activeEditor?.document;
+      if (document && document?.languageId !== "plaintext" && !document.fileName.endsWith(".mmd") && !document.fileName.endsWith(".mermaid") && !document.languageId.startsWith('mermaid')) {
+        vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");
+        return;
+      }
+      if (document) {
+        PreviewPanel.createOrShow(document);
+      }
 }
