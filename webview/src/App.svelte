@@ -36,11 +36,11 @@
       %% You can add notes with two "%" signs in a row!`;
 
   let errorMessage = "";
-  let isMermaidInitialized = false;
   let isToggled = true;
 
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
+  let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
 
   async function initializeMermaid() {
     try {
@@ -63,29 +63,37 @@
           loader: () => import('@mermaid-chart/icons-gcp').then((m) => m.icons),
         },
       ]);
-      await mermaid.initialize({
+      let config = {
         startOnLoad: false,
-        suppressErrorRendering: true
-      });
-      isMermaidInitialized = true;
+        suppressErrorRendering: true,
+        theme: theme
+      }
+      await mermaid.initialize(config);
     } catch (error) {
       console.error('Error initializing Mermaid:', error);
     }
   }
   async function renderDiagram() {
-    if (!isMermaidInitialized) {
       console.log('Mermaid is not initialized yet. Waiting...');
       await initializeMermaid();
-    }
 
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
       try {
+        const parsed = await mermaid.parse(diagramContent || 'info')
+        if (parsed?.config?.theme) {
+          theme = parsed?.config?.theme;
+        }
         errorMessage = "";
         const currentScale = panzoomInstance?.getScale() || 1;
         const currentPan = panzoomInstance?.getPan() || { x: 0, y: 0 };
         const { svg } = await mermaid.render("diagram-graph", diagramContent);
         element.innerHTML = svg;
+        if (theme && (theme === "dark" || theme === "neo-dark" )) {
+          element.style.backgroundColor= "#1e1e1e"
+        } else {
+          element.style.backgroundColor =  "white"
+        }
 
         const svgElement = element.querySelector("svg");
 
@@ -123,7 +131,6 @@
           updateCursorStyle();
         }
       } catch (error) {
-        console.error("Error rendering Mermaid diagram:", error);
         errorMessage = `Syntax error in text: ${error.message || error}`;
       }
     }
@@ -164,16 +171,11 @@
   }
 
   window.addEventListener("message", async (event) => {
-    const { type, content } = event.data;
+    const { type, content, currentTheme } = event.data;
     if (type === "update" && content) {
       diagramContent = content;
-
-      if (!isMermaidInitialized) {
-        await initializeMermaid();
-        renderDiagram();
-      } else {
-        renderDiagram();
-      }
+      theme = currentTheme;
+      await renderDiagram();
     }
   });
 
@@ -333,10 +335,10 @@
     <button class="icon" on:click={zoomIn} aria-label="Zoom In">
       <img src={zoominIcon} alt="Zoom In Icon" />
     </button>
-    <label class="switch">
+    <!-- <label class="switch">
       <input type="checkbox" bind:checked={isToggled} on:click={handleToggleClick}  />
       <span class="slider"></span>
-    </label>
+    </label> -->
   </div>
   {/if}
 </div>

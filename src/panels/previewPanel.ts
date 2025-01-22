@@ -40,9 +40,15 @@ export class PreviewPanel {
     if (!this.panel.webview.html) {
     this.panel.webview.html = getWebviewHTML(this.panel, extensionPath);
     }
+
+    const isDarkTheme =
+        vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
+      const theme = isDarkTheme ? "neo-dark" : "neo";
+
     this.panel.webview.postMessage({
       type: "update",
       content: this.document.getText(),
+      currentTheme: theme
     });
   }
 
