@@ -15,7 +15,8 @@ import * as path from "path";
 import * as fs from "fs";
 import { handleTextDocumentChange } from "./eventHandlers";
 
-let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');;
+let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
+let isExtensionStarted = false;
 
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -26,7 +27,8 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
+    if (activeEditor && !isExtensionStarted) {
+        isExtensionStarted = true;
         handleTextDocumentChange(activeEditor, diagramMappings, true);
     }
 
