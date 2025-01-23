@@ -52,7 +52,7 @@ export class PreviewPanel {
 
     this.panel.webview.postMessage({
       type: "update",
-      content: this.document.getText(),
+      content: this.document.getText() || " ",
       currentTheme: theme,
       isFileChange:this.isFileChange
     });
@@ -78,6 +78,9 @@ export class PreviewPanel {
           debouncedUpdate(); 
       }
     }, this.disposables);
+    vscode.window.onDidChangeActiveColorTheme(() => {
+      this.update(); 
+  }, this.disposables);
 
     this.panel.webview. onDidReceiveMessage((message) => {
       if (message.type === "error" && message.message) {
