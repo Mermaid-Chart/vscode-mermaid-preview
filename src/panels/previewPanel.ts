@@ -71,7 +71,7 @@ export class PreviewPanel {
       if (
         editor && 
         editor?.document && 
-        (editor?.document?.fileName.endsWith('.mmd') || editor.document.fileName.endsWith('.mermaid') || editor.document.languageId.startsWith('mermaid'))
+        (editor?.document?.fileName.endsWith('.mmd') || editor.document.fileName.endsWith('.mermaid') || editor.document.languageId.startsWith('mermaid')) && editor.document.uri.toString() !== this.document.uri.toString()
       ) {
           this.document = editor.document; 
           this.isFileChange = true; 
