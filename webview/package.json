@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/vscode-webview": "^1.57.5",
     "svelte": "^5.17.3",
     "vite": "^6.0.7"
   },
@@ -21,6 +22,7 @@
     "@mermaid-chart/icons-gcp": "^1.0.0",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
     "@iconify-json/fa6-regular": "^1.2.0",
-    "@fortawesome/fontawesome-free": "6.7.2"
+    "@fortawesome/fontawesome-free": "6.7.2",
+    "vscode": "^1.1.37"
   }
 }

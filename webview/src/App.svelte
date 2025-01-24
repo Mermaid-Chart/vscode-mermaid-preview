@@ -6,6 +6,7 @@
   import zoominIcon from './assets/zoom-in.svg';
   import zoomoutIcon from './assets/zoom-out.svg';
   import layouts from '@mermaid-chart/layout-elk';
+  import { vscode } from './utility/vscode'
 
   let diagramContent: string = `flowchart TD
       %% Nodes
@@ -34,7 +35,7 @@
           style I color:#FFFFFF, stroke:#2962FF, fill:#2962FF
 
       %% You can add notes with two "%" signs in a row!`;
-  let vscode: any;
+ 
   let errorMessage = "";
   let isToggled = true;
   $: zoomLevel = 100;
@@ -218,7 +219,6 @@
   });
 
   onMount(async () => {
-    vscode = (window as any).vscode;
     renderDiagram();
     updateZoomLevel();
   });

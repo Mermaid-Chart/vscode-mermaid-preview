@@ -131,7 +131,6 @@ export class PreviewPanel {
   }
   
   private getErrorLine(errorMessage: string): { line: number; message: string } | null {
-    console.log("Parsing error message:", errorMessage);
   
     const match = errorMessage.match(/line (\d+):\s*([\s\S]+)/i); // Case-insensitive match for "line <number>: <message>"
     if (match) {

@@ -18,10 +18,6 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
       />
       <script type="module" src="${scriptUri}"></script>
-       <script>
-          const vscode = acquireVsCodeApi();
-          window.vscode = vscode;
-        </script>
       <style>
         #app {
           height:100vh;
