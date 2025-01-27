@@ -21,13 +21,20 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
         arguments: [token.uuid],
       };
 
-      const editCommand: vscode.Command = {
-        title: "Edit Diagram",
+      const editInMermaidChartCommand: vscode.Command = {
+        title: "Edit Diagram in Mermaid Chart",
         command: "extension.editMermaidChart",
         arguments: [token.uuid],
       };
 
+      const editCommand: vscode.Command = {
+        title: "Edit Diagram",
+        command: "extension.editLocally",
+        arguments: [token.uuid],
+      };
+
       codeLenses.push(new vscode.CodeLens(token.range, viewCommand));
+      codeLenses.push(new vscode.CodeLens(token.range, editInMermaidChartCommand));
       codeLenses.push(new vscode.CodeLens(token.range, editCommand));
     }
 

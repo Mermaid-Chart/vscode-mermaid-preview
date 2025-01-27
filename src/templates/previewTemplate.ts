@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
-export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string): string {
+export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string, initialContent: string, currentTheme:string): string {
   const scriptUri = panel.webview.asWebviewUri(
     vscode.Uri.file(path.join(extensionPath, "out", "svelte", "bundle.js"))
   );
 
-  return /*html*/`
+  return /*html*/ `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -20,12 +20,12 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
       <script type="module" src="${scriptUri}"></script>
       <style>
         #app {
-          height:100vh;
+          height: 100vh;
         }
       </style>
     </head>
     <body>
-      <div id="app"></div>
+      <div id="app" data-initial-content="${encodeURIComponent(initialContent)}" data-current-theme="${encodeURIComponent(currentTheme)}"></div>
     </body>
     </html>
   `;

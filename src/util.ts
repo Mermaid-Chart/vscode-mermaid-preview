@@ -257,3 +257,51 @@ const getCommentLine = (editor: vscode.TextEditor, uuid: string): string => {
       return `// [MermaidChart: ${uuid}]`;
   }
 };
+
+
+/**
+ * Ensures the diagram code has a config block with the given ID.
+ * @param code The original diagram code.
+ * @param diagramId The ID to include in the config block.
+ * @returns The updated diagram code.
+ */
+export function ensureConfigBlock(code: string, diagramId: string): string {
+  const configPattern = /^---\s*config:\s*([\s\S]*?)---/m; // Regex to match the config block
+  const idLine = `    id: ${diagramId}\n`;
+
+  if (configPattern.test(code)) {
+    // If config block exists, update or append the ID
+    const updatedCode = code.replace(configPattern, (match, configContent) => {
+      if (configContent.includes("id:")) {
+        // Update the existing ID
+        return match.replace(/id:\s*.+/m, idLine.trim());
+      } else {
+        // Append the ID
+        return match.replace("config:", `config:\n${idLine}`);
+      }
+    });
+
+    // Check for and remove empty lines below the id field
+    return updatedCode.replace(/(id:\s*.+)\n\s*\n/m, "$1\n");
+  } else {
+    // If config block doesn't exist, add the entire block
+    const configBlock = `---\nconfig:\n${idLine}---\n\n`;
+    return configBlock + code;
+  }
+}
+
+// Function to extract the 'id' from the code block using a regex
+export function extractIdFromCode(code: string): string | null {
+  const configPattern = /^---\s*config:\s*([\s\S]*?)---/m;
+  const idPattern = /id:\s*(\S+)/;
+
+  const match = configPattern.exec(code);
+  if (match && match[1]) {
+    // Match the id inside the config block
+    const idMatch = idPattern.exec(match[1]);
+    if (idMatch) {
+      return idMatch[1]; // Return the ID found
+    }
+  }
+  return null; // Return null if no ID is found
+}

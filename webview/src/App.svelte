@@ -45,7 +45,7 @@
   let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
   $: sidebarBackgroundColor = theme === "dark" || theme === "neo-dark" ? "#4d4d4d" : "white";
   $: iconBackgroundColor = theme === "dark" || theme === "neo-dark" ? "#4d4d4d" : "white";
-  $: svgColor = theme === "neo-dark" ? "white" : "#2329D6";
+  $: svgColor = theme === "neo-dark" || theme === "dark" ? "white" : "#2329D6";
   $: shadowColor =
     theme === "dark" || theme === "neo-dark" ? "#6b6b6b" : "#A3BDFF";
 
@@ -219,8 +219,18 @@
   });
 
   onMount(async () => {
-    renderDiagram();
-    updateZoomLevel();
+    const appElement = document.getElementById("app");
+    const initialContent = appElement?.dataset.initialContent;
+    const currentTheme = appElement?.dataset.currentTheme;
+    console.log('initialContent', initialContent)
+    if (initialContent) {
+      diagramContent = decodeURIComponent(initialContent);
+      theme = decodeURIComponent(currentTheme) as "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null";
+      renderDiagram();
+    } else {
+      renderDiagram();
+      updateZoomLevel();
+    }
   });
 </script>
 

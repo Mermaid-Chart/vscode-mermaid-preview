@@ -41,22 +41,22 @@ export class PreviewPanel {
     if (!extensionPath) {
       throw new Error("Unable to resolve the extension path");
     }
-
+  
+    const initialContent = this.document.getText() || " ";
+    const isDarkTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
+    const currentTheme = isDarkTheme ? "neo-dark" : "neo";
+  
     if (!this.panel.webview.html) {
-    this.panel.webview.html = getWebviewHTML(this.panel, extensionPath);
+      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme);
     }
-
-    const isDarkTheme =
-        vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
-      const theme = isDarkTheme ? "neo-dark" : "neo";
 
     this.panel.webview.postMessage({
       type: "update",
       content: this.document.getText() || " ",
-      currentTheme: theme,
-      isFileChange:this.isFileChange
+      currentTheme: currentTheme,
+      isFileChange: this.isFileChange,
     });
-    this.isFileChange=false
+    this.isFileChange = false;
   }
 
   private setupListeners() {

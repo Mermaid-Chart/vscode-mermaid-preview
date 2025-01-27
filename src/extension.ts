@@ -1,9 +1,11 @@
 import * as vscode from "vscode";
-import { MermaidChartProvider, MCTreeItem } from "./mermaidChartProvider";
+import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,
+  ensureConfigBlock,
+  extractIdFromCode,
   findComments,
   findMermaidChartTokens,
   insertMermaidChartToken,
@@ -20,6 +22,9 @@ let isExtensionStarted = false;
 
 
 export async function activate(context: vscode.ExtensionContext) {
+
+  const syncedFiles = new Map<string, boolean>();
+
   console.log("Activating Mermaid Chart extension");
 
   context.subscriptions.push(
@@ -137,10 +142,88 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(editCommandDisposable);
 
   context.subscriptions.push(
+    vscode.commands.registerCommand("extension.editLocally", (uuid: string) => {
+      const projects = getAllTreeViewProjectsCache();
+  
+      // Find the diagram code based on the UUID
+      const diagramCode = projects
+        .flatMap((project) => project?.children ?? [])
+        .find((child) => child.uuid === uuid)?.code;
+  
+      // Create the Mermaid file if diagramCode is found
+      if (diagramCode) {
+        const diagramId = uuid;
+        const processedCode = ensureConfigBlock(diagramCode, diagramId);
+        createMermaidFile(processedCode, syncedFiles);
+      } else {
+        vscode.window.showErrorMessage("Diagram not found for the given UUID.");
+      }
+    })
+  );
+
+  vscode.workspace.onWillSaveTextDocument(async (event) => {
+    const documentUri = event.document.uri.toString();
+  
+    // if (syncedFiles.has(documentUri) && syncedFiles.get(documentUri)) {
+      if (event.document.languageId.startsWith("mermaid")) {
+      // Prevent the default save action
+      event.waitUntil(Promise.resolve([]));
+  
+      const content = event.document.getText();
+      try {
+        // Extract the id from the code
+        const diagramId = extractIdFromCode(content);
+        
+        if (diagramId) {
+          console.log(`Extracted diagram ID: ${diagramId}`);
+          const response = await mcAPI.saveDocumentCode(content, diagramId);
+          console.log(response)
+          vscode.window.showInformationMessage(`File synced successfully to the remote server. Diagram ID: ${diagramId}`);
+        } else {
+          vscode.window.showErrorMessage("No diagram ID found in the file.");
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          // Only access message if it's an Error
+          vscode.window.showErrorMessage(`Failed to sync file to the remote server: ${error.message}`);
+        } else {
+          // Handle other types of errors
+          vscode.window.showErrorMessage("Failed to sync file to the remote server: Unknown error occurred.");
+        }      
+      }
+    }
+  });
+
+  function showSyncWarning(editor: vscode.TextEditor) {
+    if (syncedFiles.has(editor.document.uri.toString()) && syncedFiles.get(editor.document.uri.toString())) {
+      const panel = vscode.window.createWebviewPanel(
+        "syncWarning",
+        "",
+        { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
+        { enableScripts: true, retainContextWhenHidden: true }
+      );
+  
+      panel.webview.html = `
+        <html>
+          <body style="margin: 0; padding: 10px; background-color: lightblue; font-size: 14px; text-align: center; width: 100%;">
+            ⚡ This file is in sync with the remote Mermaid chart. You cannot save it locally. Changes will be saved remotely.
+          </body>
+        </html>`;
+    }
+  }
+  
+  // vscode.window.onDidChangeActiveTextEditor((editor) => {
+  //   if (editor) {
+  //     showSyncWarning(editor);
+  //   }
+  // });
+
+  context.subscriptions.push(
     vscode.commands.registerCommand("mermaidChart.focus", () => {
       const emptyMermaidChartToken: MCTreeItem = {
         uuid: "",
         title: "",
+        code : "",
         range: new vscode.Range(0, 0, 0, 0),
       };
       treeView.reveal(emptyMermaidChartToken, {

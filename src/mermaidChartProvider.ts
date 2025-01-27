@@ -7,16 +7,26 @@ export const ITEM_TYPE_UNKNOWN = "unknown";
 
 let allTreeViewProjectsCache: Project[] = [];
 
+export function setAllTreeViewProjectsCache(projects: Project[]): void {
+  allTreeViewProjectsCache = projects;
+}
+
+export function getAllTreeViewProjectsCache(): Project[] {
+  return allTreeViewProjectsCache;
+}
+
 export class MCTreeItem extends vscode.TreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
+  code: string;
   children?: MCTreeItem[];
 
   constructor(
     uuid: string,
     range: vscode.Range,
     title: string,
+    code: string,
     children?: MCTreeItem[]
   ) {
     super(
@@ -26,6 +36,7 @@ export class MCTreeItem extends vscode.TreeItem {
         : vscode.TreeItemCollapsibleState.Collapsed
     );
     this.uuid = uuid;
+    this.code = code || "";
     this.range = range;
     this.title = title;
   }
@@ -35,6 +46,7 @@ class Document implements MCTreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
+  code: string;
   collapsibleState: vscode.TreeItemCollapsibleState.None;
   children?: MCTreeItem[];
 
@@ -42,11 +54,13 @@ class Document implements MCTreeItem {
     uuid: string,
     range: vscode.Range,
     title: string,
+    code: string,
     collapsibleState: vscode.TreeItemCollapsibleState.None
   ) {
     this.uuid = uuid;
     this.range = range;
     this.title = title;
+    this.code = code || "";
     this.collapsibleState = vscode.TreeItemCollapsibleState.None;
   }
 
@@ -61,18 +75,21 @@ class Project implements MCTreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
+  code: string;
   collapsibleState: vscode.TreeItemCollapsibleState;
   children?: MCTreeItem[];
   constructor(
     uuid: string,
     range: vscode.Range,
     title: string,
+    code: string,
     collapsibleState: vscode.TreeItemCollapsibleState,
     children?: MCTreeItem[]
   ) {
     this.uuid = uuid;
     this.range = range;
     this.title = title;
+    this.code = code || "";
     this.collapsibleState = collapsibleState;
     this.children = children;
   }
@@ -179,6 +196,7 @@ export class MermaidChartProvider
             document.documentID,
             new vscode.Range(0, 0, 0, 1),
             document.title,
+            document.code,
             vscode.TreeItemCollapsibleState.None
           );
           projectDocuments.push(treeViewDocument);
@@ -187,6 +205,7 @@ export class MermaidChartProvider
           project.id,
           new vscode.Range(0, 0, 0, 1),
           project.title,
+          "",
           vscode.TreeItemCollapsibleState.None,
           projectDocuments
         );
