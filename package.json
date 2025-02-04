@@ -287,26 +287,43 @@
         }
       ]
     },
+    "keybindings": [
+      {
+        "key": "ctrl+s",
+        "command": "mermaidChart.syncDiagramWithMermaid",
+        "when": "editorLangId =~ /^mermaid/"
+      },
+      {
+        "key": "cmd+s",
+        "command": "mermaidChart.syncDiagramWithMermaid",
+        "when": "editorLangId =~ /^mermaid/",
+        "mac": "cmd+s"
+      }
+    ],
     "commands": [
       {
+        "command": "mermaidChart.syncDiagramWithMermaid",
+        "title": "MermaidChart: Sync Diagram"
+      },
+      {
         "command": "mermaidChart.viewMermaidChart",
-        "title": "View Diagram"
+        "title": "MermaidChart: View Diagram"
       },
       {
         "command": "mermaidChart.preview",
-        "title": "Preview Mermaid Diagram"
+        "title": "MermaidChart: Preview Diagram"
       },
       {
         "command": "mermaidChart.logout",
-        "title": "MermaidChart Logout"
+        "title": "MermaidChart: Logout"
       },
       {
         "command": "mermaidChart.login",
-        "title": "MermaidChart Login"
+        "title": "MermaidChart: Login"
       },
       {
         "command": "mermaidChart.createMermaidFile",
-        "title": "New Mermaid Diagram"
+        "title": "MermaidChart: Create Diagram"
       },
       {
         "command": "mermaidChart.editMermaidChart",

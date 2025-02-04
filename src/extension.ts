@@ -13,8 +13,6 @@ import {
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
 import { createMermaidFile, getPreview } from "./commands/createFile";
-import * as path from "path";
-import * as fs from "fs";
 import { handleTextDocumentChange } from "./eventHandlers";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
@@ -22,8 +20,6 @@ let isExtensionStarted = false;
 
 
 export async function activate(context: vscode.ExtensionContext) {
-
-  const syncedFiles = new Map<string, boolean>();
 
   console.log("Activating Mermaid Chart extension");
 
@@ -154,7 +150,7 @@ export async function activate(context: vscode.ExtensionContext) {
       if (diagramCode) {
         const diagramId = uuid;
         const processedCode = ensureConfigBlock(diagramCode, diagramId);
-        createMermaidFile(processedCode, syncedFiles);
+        createMermaidFile(processedCode);
       } else {
         vscode.window.showErrorMessage("Diagram not found for the given UUID.");
       }
@@ -162,40 +158,41 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.workspace.onWillSaveTextDocument(async (event) => {
-    const documentUri = event.document.uri.toString();
-  
-    // if (syncedFiles.has(documentUri) && syncedFiles.get(documentUri)) {
-      if (event.document.languageId.startsWith("mermaid")) {
-      // Prevent the default save action
-      event.waitUntil(Promise.resolve([]));
-  
-      const content = event.document.getText();
-      try {
-        // Extract the id from the code
-        const diagramId = extractIdFromCode(content);
-        
-        if (diagramId) {
-          console.log(`Extracted diagram ID: ${diagramId}`);
-          const response = await mcAPI.saveDocumentCode(content, diagramId);
-          console.log(response)
-          vscode.window.showInformationMessage(`File synced successfully to the remote server. Diagram ID: ${diagramId}`);
-        } else {
-          vscode.window.showErrorMessage("No diagram ID found in the file.");
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          // Only access message if it's an Error
-          vscode.window.showErrorMessage(`Failed to sync file to the remote server: ${error.message}`);
-        } else {
-          // Handle other types of errors
-          vscode.window.showErrorMessage("Failed to sync file to the remote server: Unknown error occurred.");
-        }      
-      }
+    event.waitUntil(Promise.resolve([]));
+    const content = event.document.getText();
+    const diagramId = extractIdFromCode(content);
+    if (diagramId) {
+        await mcAPI.saveDocumentCode(content, diagramId);
     }
   });
 
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidChart.syncDiagramWithMermaid', async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        syncFileToMermaidChart(editor.document);
+      }
+    })
+  );
+  const syncFileToMermaidChart = async (document: vscode.TextDocument) => {
+    if (document.languageId.startsWith("mermaid")) {
+        const content = document.getText();
+        try {
+            const diagramId = extractIdFromCode(content);
+
+            if (diagramId) {
+                await mcAPI.saveDocumentCode(content, diagramId);
+                vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
+            } else {
+              await vscode.commands.executeCommand('workbench.action.files.save');
+            }
+        } catch (error) {
+            vscode.window.showErrorMessage(`Failed to sync file: ${error instanceof Error ? error.message : "Unknown error occurred."}`);
+        }
+    }
+};
+
   function showSyncWarning(editor: vscode.TextEditor) {
-    if (syncedFiles.has(editor.document.uri.toString()) && syncedFiles.get(editor.document.uri.toString())) {
       const panel = vscode.window.createWebviewPanel(
         "syncWarning",
         "",
@@ -209,7 +206,6 @@ export async function activate(context: vscode.ExtensionContext) {
             ⚡ This file is in sync with the remote Mermaid chart. You cannot save it locally. Changes will be saved remotely.
           </body>
         </html>`;
-    }
   }
   
   // vscode.window.onDidChangeActiveTextEditor((editor) => {
