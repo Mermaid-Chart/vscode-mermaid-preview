@@ -1,0 +1,91 @@
+{
+  "scopeName": "source.mermaid.kanban",
+  "name": "kanban",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#statusKeywords" },
+    { "include": "#tasks" },
+    { "include": "#metadata" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#indentation" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*---\\s*$",
+      "end": "^\\s*---\\s*$",
+      "patterns": [{ "include": "#strings" }]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(kanban)\\b"
+        }
+      ]
+    },
+    "statusKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.status.mermaid",
+          "match": "^\\s*(Todo|Done|Backlog|In progress|Review|Testing|Blocked)\\b"
+        }
+      ]
+    },
+    "tasks": {
+      "patterns": [
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        }
+      ]
+    },
+    "metadata": {
+      "patterns": [
+        {
+          "name": "meta.metadata.mermaid",
+          "match": "@\\{[^{}]+\\}"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        }
+      ]
+    },
+    "indentation": {
+      "patterns": [
+        {
+          "name": "keyword.control.status.level1.mermaid",
+          "match": "^\\s{2,4}([A-Za-z0-9_]+)\\b"
+        },
+        {
+          "name": "keyword.control.status.level2.mermaid",
+          "match": "^\\s{6,8}([A-Za-z0-9_]+)\\b"
+        },
+        {
+          "name": "keyword.control.status.level3.mermaid",
+          "match": "^\\s{10,}([A-Za-z0-9_]+)\\b"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

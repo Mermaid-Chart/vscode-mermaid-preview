@@ -41,8 +41,43 @@
   "sequenceDiagram": [
     "sequenceDiagram"
   ],
+  "quadrantChart": [
+    "quadrantChart"
+  ],
+  "mindmap": [
+    "mindmap"
+  ],
+  "timeline": [
+    "timeline"
+  ],
+  "xychart": [
+    "xychart",
+    "xychart-beta"
+  ],
+  "sankeyDiagram": [
+    "sankey",
+    "sankey-beta"
+    
+  ],
   "stateDiagram": [
     "stateDiagram",
     "stateDiagram-v2"
+  ],
+  "kanban": [
+    "kanban"
+  ],
+  "block": [
+    "block-beta",
+    "block",
+    "blockDiagram"
+  ],
+  "architecture": [
+   "architecture"
+  ],
+  "packet": [
+    "packet"
+  ],
+  "zenuml": [
+    "zenuml"
   ]
 }

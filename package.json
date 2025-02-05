@@ -177,6 +177,96 @@
         ],
         "extensions": [".mmd", ".mermaid"],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.quadrantChart",
+        "aliases": [
+          "Mermaid quadrantChart",
+          "mermaid QuadrantChart"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.mindmap",
+        "aliases": [
+          "Mermaid mindmap",
+          "mermaid Mindmap"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.timeline",
+        "aliases": [
+          "Mermaid timeline",
+          "mermaid Timeline"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.sankey",
+        "aliases": [
+          "Mermaid sankey",
+          "mermaid SankeyDiagram"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.xychart",
+        "aliases": [
+          "Mermaid xychart",
+          "mermaid Xychart"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.kanban",
+        "aliases": [
+          "Mermaid kanban",
+          "mermaid Kanban"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.block",
+        "aliases": [
+          "Mermaid blockDiagram",
+          "mermaid BlockDiagram"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.architecture",
+        "aliases": [
+          "Mermaid architecture",
+          "mermaid Architecture"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.packet",
+        "aliases": [
+          "Mermaid packet",
+          "mermaid Packet"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.zenuml",
+        "aliases": [
+          "Mermaid zenuml",
+          "mermaid Zenuml"
+        ],
+        "extensions": [".mmd", ".mermaid"],
+        "configuration": "./language-configuration.json"
       }
     ],
    "themes": [
@@ -251,6 +341,56 @@
         "language": "mermaid.stateDiagram",
         "scopeName": "source.mermaid.stateDiagram",
         "path": "./syntaxes/mermaid-stateDiagram.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.quadrantChart",
+        "scopeName": "source.mermaid.quadrantChart",
+        "path": "./syntaxes/mermaid-quadrantChart.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.mindmap",
+        "scopeName": "source.mermaid.mindmap",
+        "path": "./syntaxes/mermaid-mindmap.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.timeline",
+        "scopeName": "source.mermaid.timeline",
+        "path": "./syntaxes/mermaid-timeline.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.sankey",
+        "scopeName": "source.mermaid.sankey",
+        "path": "./syntaxes/mermaid-sankeyDiagram.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.xychart",
+        "scopeName": "source.mermaid.xychart",
+        "path": "./syntaxes/mermaid-xychart.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.kanban",
+        "scopeName": "source.mermaid.kanban",
+        "path": "./syntaxes/mermaid-kanban.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.block",
+        "scopeName": "source.mermaid.block",
+        "path": "./syntaxes/mermaid-block.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.architecture",
+        "scopeName": "source.mermaid.architecture",
+        "path": "./syntaxes/mermaid-architecture.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.packet",
+        "scopeName": "source.mermaid.packet",
+        "path": "./syntaxes/mermaid-packet.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.zenuml",
+        "scopeName": "source.mermaid.zenuml",
+        "path": "./syntaxes/mermaid-zenuml.tmLanguage.json"
       }
     ],
     "configuration": {

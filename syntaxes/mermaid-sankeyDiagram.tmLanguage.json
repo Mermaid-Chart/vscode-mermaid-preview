@@ -1,0 +1,101 @@
+{
+  "scopeName": "source.mermaid.sankey",
+  "name": "sankey",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#flowKeywords" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#variables" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(sankey-beta)\\b"
+        }
+      ]
+    },
+    "flowKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.flow.mermaid",
+          "match": "^([A-Za-z0-9 .-]+),([A-Za-z0-9 .-]+),(\\d+\\.?\\d*)$",
+          "captures": {
+            "1": { "name": "variable.name.mermaid" },
+            "2": { "name": "variable.name.mermaid" },
+            "3": { "name": "constant.numeric.mermaid" }
+          }
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.color.mermaid",
+          "match": "#[A-Fa-f0-9]{6}|#[A-Fa-f0-9]{3}"
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.angle.mermaid",
+          "match": "<[^<>]+>"
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.name.mermaid",
+          "match": "\\b[A-Za-z][\\w$]*\\b"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

@@ -1,0 +1,160 @@
+{
+  "scopeName": "source.mermaid.quadrantChart",
+  "name": "quadrantChart",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#axisKeywords" },
+    { "include": "#quadrants" },
+    { "include": "#dataPoints" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#delimiters" },
+    { "include": "#transitions" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\bquadrantChart\\b"
+        }
+      ]
+    },
+    "axisKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(title|x-axis|y-axis|quadrant-[^\\s:]+)\\b"
+        },
+        {
+          "name": "string.quoted.mermaid",
+          "match": "(?<=title|x-axis|y-axis|quadrant-[^\\s:]+)\\s+(.+)"
+        }
+      ]
+    },
+    "quadrants": {
+      "patterns": [
+        {
+          "name": "string.quoted.mermaid",
+          "match": "(?<=quadrant-[1-4])\\s+(.+)"
+        }
+      ]
+    },
+    "dataPoints": {
+      "patterns": [
+        {
+          "name": "variable.mermaid",
+          "match": "[A-Za-z\\- ]+: \\[\\d+(\\.\\d+)?, \\d+(\\.\\d+)?\\]"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": ":|,|\\+|\\$"
+        },
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": "\\{|\\}"
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "[ox]?(--+|==+)[ox]?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "-\\.+->?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(?<=--|==)([^>-]+?)(?=-->|==>)",
+          "captures": {
+            "0": {
+              "name": "string.unquoted.label.mermaid"
+            }
+          }
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(-{3,}|-{2,}>|==+|={3,}|={2,}>|\\.\\-+>)"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": ":::"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(\\|\\||--|\\.\\.|\\|<|>\\|?|<|>)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.color.mermaid",
+          "match": "#[A-Fa-f0-9]{6}|#[A-Fa-f0-9]{3}"
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.special.mermaid",
+          "match": "\\|+[^\\|]+\\|+"
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.angle.mermaid",
+          "match": "<[^<>]+>"
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}
