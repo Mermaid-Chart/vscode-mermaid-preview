@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
+import { TempFileCache } from "../cache/tempFileCache";
 
-export function createMermaidFile(diagramContent: string | null) {
+export function createMermaidFile(context: vscode.ExtensionContext, diagramContent: string | null, isTempFile: boolean) {
   const exampleContent = `flowchart TD
     %% Nodes
         A("fab:fa-youtube Starter Guide")
@@ -33,6 +34,11 @@ export function createMermaidFile(diagramContent: string | null) {
   vscode.workspace.openTextDocument({ language: "mermaid", content: diagramContent ? diagramContent : exampleContent}).then((document) => {
     vscode.window.showTextDocument(document).then((editor) => {
       if (editor?.document) {
+        if (isTempFile) {
+          TempFileCache.addTempUri(context,editor.document.uri.toString())
+        } else {
+          TempFileCache.removeTempUri(context,editor.document.uri.toString())
+        }
         PreviewPanel.createOrShow(editor.document);
       }
     });

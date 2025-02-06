@@ -1,6 +1,10 @@
 import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
+const DARK_THEME_KEY = "mermaid.vscode.dark";
+const LIGHT_THEME_KEY = "mermaid.vscode.light";
+const DEFAULT_DARK_THEME = "neo-dark";
+const DEFAULT_LIGHT_THEME = "neo";
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
   private readonly panel: vscode.WebviewPanel;
@@ -42,9 +46,23 @@ export class PreviewPanel {
       throw new Error("Unable to resolve the extension path");
     }
   
-    const initialContent = this.document.getText() || " ";
+    // Get the current active theme (dark or light)
     const isDarkTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
-    const currentTheme = isDarkTheme ? "neo-dark" : "neo";
+
+    // Fetch the configuration from VSCode workspace
+    const config = vscode.workspace.getConfiguration();
+
+    // Get the theme settings from configuration
+    const darkTheme = config.get<string>(DARK_THEME_KEY, "NA");
+    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "NA");
+
+    // Determine the current theme based on the user's preference and the active color theme
+    const currentTheme = isDarkTheme
+      ? (darkTheme !== "NA" ? darkTheme : DEFAULT_DARK_THEME)
+      : (lightTheme !== "NA" ? lightTheme : DEFAULT_LIGHT_THEME);
+
+    // Initial content to be used (defaults to a single space if empty)
+    const initialContent = this.document.getText() || " ";
   
     if (!this.panel.webview.html) {
       this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme);
