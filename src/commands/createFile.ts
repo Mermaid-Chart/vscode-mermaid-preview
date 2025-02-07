@@ -2,7 +2,11 @@ import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
 import { TempFileCache } from "../cache/tempFileCache";
 
-export function createMermaidFile(context: vscode.ExtensionContext, diagramContent: string | null, isTempFile: boolean) {
+export function createMermaidFile(
+  context: vscode.ExtensionContext,
+  diagramContent: string | null,
+  isTempFile: boolean
+): Thenable<vscode.TextEditor | null> {
   const exampleContent = `flowchart TD
     %% Nodes
         A("fab:fa-youtube Starter Guide")
@@ -31,18 +35,20 @@ export function createMermaidFile(context: vscode.ExtensionContext, diagramConte
 
     %% You can add notes with two "%" signs in a row!`;
 
-  vscode.workspace.openTextDocument({ language: "mermaid", content: diagramContent ? diagramContent : exampleContent}).then((document) => {
-    vscode.window.showTextDocument(document).then((editor) => {
+  return vscode.workspace.openTextDocument({language: "mermaid", content: diagramContent ? diagramContent : exampleContent,})
+    .then((document) => vscode.window.showTextDocument(document))
+    .then((editor) => {
       if (editor?.document) {
         if (isTempFile) {
-          TempFileCache.addTempUri(context,editor.document.uri.toString())
+          TempFileCache.addTempUri(context, editor.document.uri.toString());
         } else {
-          TempFileCache.removeTempUri(context,editor.document.uri.toString())
+          TempFileCache.removeTempUri(context, editor.document.uri.toString());
         }
         PreviewPanel.createOrShow(editor.document);
+        return editor;
       }
+      return null;
     });
-  });
 }
 
 function showSyncNotification() {

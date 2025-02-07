@@ -6,6 +6,17 @@ import {
   MermaidChartProvider,
   ITEM_TYPE_DOCUMENT,
 } from "./mermaidChartProvider";
+import path = require("path");
+
+const activeListeners = new Map<string, vscode.Disposable>();
+
+
+export const pattern : Record<string, RegExp> = {
+  ".md": /```mermaid([\s\S]*?)```/g,
+  ".html": /<div class=["']mermaid["']>([\s\S]*?)<\/div>/g,
+  ".hugo": /{{<mermaid[^>]*>}}([\s\S]*?){{<\/mermaid>}}/g,
+  ".rst": /\.\. mermaid::(?:[ \t]*)?$(?:(?:\n[ \t]+:(?:(?:\\:\s)|[^:])+:[^\n]*$)+\n)?((?:\n(?:[ \t][^\n]*)?$)+)?/gm, 
+};
 
 export interface PromiseAdapter<T, U> {
   (
@@ -78,8 +89,8 @@ export interface MermaidChartToken {
   title: string;
   range: vscode.Range;
   collapsibleState?: vscode.TreeItemCollapsibleState;
+  uri?: vscode.Uri
 }
-
 export function findMermaidChartTokens(
   document: vscode.TextDocument,
   comments: vscode.Range[]
@@ -108,6 +119,28 @@ export function findMermaidChartTokens(
         ),
       });
     }
+  }
+
+  return mermaidChartTokens;
+}
+
+export function findMermaidChartTokensFromAuxFiles(document: vscode.TextDocument): MermaidChartToken[] {
+  const mermaidChartTokens: MermaidChartToken[] = [];
+  const text = document.getText();
+  const regex = pattern[path.extname(document.fileName)];
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    const range = new vscode.Range(
+      document.positionAt(match.index),
+      document.positionAt(match.index + match[0].length)
+    );
+    mermaidChartTokens.push({
+      title: `Chart - ${extractIdFromCode(document.getText(range)) || ""}`,
+      uri: document.uri,
+      range,
+      uuid: extractIdFromCode(document.getText(range)) || "",
+    });
   }
 
   return mermaidChartTokens;
@@ -304,4 +337,135 @@ export function extractIdFromCode(code: string): string | null {
     }
   }
   return null; // Return null if no ID is found
+}
+
+export function extractMermaidCode(content: string, fileExt: string): string[] {
+  const mermaidRegex = pattern[fileExt];
+  if (!mermaidRegex) return [];
+
+  const matches: string[] = [];
+  const match = mermaidRegex.exec(content);
+  console.log(match)
+  if (match) {
+    console.log("inside if match")
+    matches.push(match[1].trim());
+  }
+
+  return matches;
+}
+
+export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,range: vscode.Range) {
+  
+  if (activeListeners.has(tempFileUri)) {
+    
+    activeListeners.get(tempFileUri)?.dispose();
+    activeListeners.delete(tempFileUri);
+  }
+
+  const disposable = vscode.workspace.onDidChangeTextDocument((event) => {
+    if (event.document.uri.toString() === tempFileUri) {
+      syncFiles(originalFileUri, event.document.getText(),range);
+    }
+  });
+
+  activeListeners.set(tempFileUri, disposable);
+
+  vscode.workspace.onDidCloseTextDocument((closedDoc) => {
+    if (closedDoc.uri.toString() === tempFileUri) {
+      setTimeout(() => {
+        const isReopened = vscode.workspace.textDocuments.some(
+          (doc) => doc.uri.toString() === tempFileUri
+        );
+        if (!isReopened) {
+          activeListeners.get(tempFileUri)?.dispose();
+          activeListeners.delete(tempFileUri);
+        } 
+      }, 500);
+    }
+  });
+}
+
+export function syncFiles(
+  fileUri: vscode.Uri,
+  mermaidCode: string,
+  range: vscode.Range 
+) {
+  if (!mermaidCode || mermaidCode.trim() === "") {
+    return;
+  }
+
+  vscode.workspace.openTextDocument(fileUri).then((doc) => {
+    const text = doc.getText();
+    const fileExt = fileUri.fsPath.split('.').pop()?.toLowerCase();
+
+    const patterns: Record<string, RegExp> = {
+      "md": /```mermaid([\s\S]*?)```/g,
+      "html": /<div class=["']mermaid["']>([\s\S]*?)<\/div>/g,
+      "hugo": /{{<mermaid[^>]*>}}([\s\S]*?){{<\/mermaid>}}/g,
+      "rst": /\.\. mermaid::(?:[ \t]*)?$(?:(?:\n[ \t]+:(?:(?:\\:\s)|[^:])+:[^\n]*$)+\n)?((?:\n(?:[ \t][^\n]*)?$)+)?/gm
+    };
+
+    const startTags: Record<string, string> = {
+      "md": "```mermaid\n",
+      "html": '<div class="mermaid">\n',
+      "hugo": "{{<mermaid>}}\n",
+      "rst": ".. mermaid::\n  " 
+    };
+
+    const endTags: Record<string, string> = {
+      "md": "\n```",
+      "html": "\n</div>",
+      "hugo": "\n{{</mermaid>}}",
+      "rst": "" 
+    };
+
+    if (!fileExt || !patterns[fileExt]) {
+      vscode.window.showErrorMessage(`Unsupported file type: .${fileExt}`);
+      return;
+    }
+
+    const regex = patterns[fileExt];
+    let match = regex.exec(text);
+    let lastMatchRange: vscode.Range | null = null;
+
+    while (match) {
+      const start = match.index;
+      const end = start + match[0].length;
+      lastMatchRange = new vscode.Range(doc.positionAt(start), doc.positionAt(end));
+      
+      if (lastMatchRange.contains(range.start)) {
+        const workspaceEdit = new vscode.WorkspaceEdit();
+        workspaceEdit.replace(
+          fileUri,
+          lastMatchRange,
+      `${startTags[fileExt]}${mermaidCode}${endTags[fileExt]}`
+        );
+
+        vscode.workspace.applyEdit(workspaceEdit);
+        break; 
+      }
+      match = regex.exec(text); 
+    }
+  });
+}
+
+
+export function checkDiagramId(range: vscode.Range): boolean {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    vscode.window.showErrorMessage('No active editor found!');
+    return false; 
+  }
+
+  const documentText = editor.document.getText(range);
+
+
+  return !!extractIdFromCode(documentText); 
+}
+
+export function isAuxFile(fileName: string): boolean {
+  const allowedExt = [".md", ".html", ".hugo", ".rst"];
+  const fileExt = path.extname(fileName).toLowerCase();
+
+  return allowedExt.includes(fileExt);
 }

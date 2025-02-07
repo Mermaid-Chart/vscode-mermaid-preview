@@ -237,6 +237,12 @@ export class MermaidChart {
       });
       return response.data;
   }
+  public async createDocumentWithDiagram(code: string, projectID: string): Promise<MCDocument> {
+    const response = await this.axios.post(this.URLS.rest.projects.get(projectID).documents, {
+      code : code
+    });
+    return response.data;
+}
 
   private URLS = {
     oauth: {
