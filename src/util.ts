@@ -349,10 +349,29 @@ export function extractMermaidCode(content: string, fileExt: string): string[] {
 
     const matches: string[] = [];
     let match;
-    
+
     while ((match = mermaidRegex.exec(content)) !== null) {
       if (match[1]) {
-        matches.push(match[1].trim());
+        if (fileExt === ".rst") {
+          let extractedCode = match[1].trim(); // Trim leading & trailing spaces
+  
+          // Ensure `---` lines have no indentation, but `config:` is indented
+          extractedCode = extractedCode.replace(
+            /^\s*---\s*\n\s*(config:\s*\n[\s\S]*?)\n\s*---\s*/m,
+            (fullMatch, configContent) => {
+              // Ensure `config:` and its contents are indented correctly
+              const indentedConfig = configContent
+                .split("\n")
+                .map((line: any) => `  ${line.trimStart()}`) // Indent each line by 2 spaces
+                .join("\n");
+  
+              return `---\n${indentedConfig}\n---`;
+            }
+          );
+          matches.push(extractedCode);
+        } else {
+          matches.push(match[1].trim());
+        }
       }
     }
 
@@ -422,7 +441,7 @@ export function syncFiles(
       "md": "```mermaid\n",
       "html": '<div class="mermaid">\n',
       "hugo": "{{<mermaid>}}\n",
-      "rst": ".. mermaid::\n  " 
+      "rst": ".. mermaid::\n" 
     };
 
     const endTags: Record<string, string> = {
@@ -448,12 +467,19 @@ export function syncFiles(
       
       if (lastMatchRange.contains(range.start)) {
         const workspaceEdit = new vscode.WorkspaceEdit();
-        workspaceEdit.replace(
-          fileUri,
-          lastMatchRange,
-      `${startTags[fileExt]}${mermaidCode}${endTags[fileExt]}`
-        );
+        let formattedCode = `${startTags[fileExt]}${mermaidCode}${endTags[fileExt]}`;
 
+        // Add indentation for .rst files
+        if (fileExt === "rst") {
+          formattedCode = startTags[fileExt] + 
+                          mermaidCode
+                            .split("\n")
+                            .map(line => `  ${line}`) // Add 2 spaces at the start of each line
+                            .join("\n") + 
+                          endTags[fileExt];
+        }
+
+        workspaceEdit.replace(fileUri, lastMatchRange, formattedCode);
         vscode.workspace.applyEdit(workspaceEdit);
         break; 
       }
