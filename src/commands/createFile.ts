@@ -35,7 +35,7 @@ export function createMermaidFile(
 
     %% You can add notes with two "%" signs in a row!`;
 
-  return vscode.workspace.openTextDocument({language: "mermaid", content: diagramContent ? diagramContent : exampleContent,})
+  return vscode.workspace.openTextDocument({language: "mermaid", content: diagramContent ? diagramContent : exampleContent})
     .then((document) => vscode.window.showTextDocument(document))
     .then((editor) => {
       if (editor?.document) {

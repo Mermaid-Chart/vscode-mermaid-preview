@@ -168,19 +168,31 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     })
   );
-  context.subscriptions.push(
-    vscode.commands.registerCommand('mermaid.editAuxFile', async (uri: vscode.Uri, range: vscode.Range) => {
+
+context.subscriptions.push(
+  vscode.commands.registerCommand('mermaid.editAuxFile', async (uri: vscode.Uri, range: vscode.Range) => {
+    try {
       const document = await vscode.workspace.openTextDocument(uri);
       const content = document.getText();
-       const fileExt = path.extname(document.fileName);
+      const fileExt = path.extname(document.fileName);
       const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end));
-      const mermaidCode = extractMermaidCode(blockContent,fileExt).join("\n\n");
+      
+      const mermaidCode = extractMermaidCode(blockContent, fileExt).join("\n\n");
+      
+      if (!mermaidCode) {
+        vscode.window.showErrorMessage("No valid Mermaid diagram found in the selected range.");
+        return;
+      }
+      
       const editor = await createMermaidFile(context, mermaidCode, true);
       if (editor) {
-        syncAuxFile(editor.document.uri.toString(), uri,range);
+        syncAuxFile(editor.document.uri.toString(), uri, range);
       }
-    })
-  );
+    } catch (error) {
+      vscode.window.showErrorMessage(`Error processing Mermaid diagram: ${error instanceof Error ? error.message : "Unknown error occurred."}`);
+    }
+  })
+);
  
 context.subscriptions.push(
   vscode.commands.registerCommand('mermaid.connectDiagram',async(uri:vscode.Uri, range:vscode.Range)=>{

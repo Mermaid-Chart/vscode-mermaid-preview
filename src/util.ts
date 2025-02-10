@@ -15,7 +15,7 @@ export const pattern : Record<string, RegExp> = {
   ".md": /```mermaid([\s\S]*?)```/g,
   ".html": /<div class=["']mermaid["']>([\s\S]*?)<\/div>/g,
   ".hugo": /{{<mermaid[^>]*>}}([\s\S]*?){{<\/mermaid>}}/g,
-  ".rst": /\.\. mermaid::(?:[ \t]*)?$(?:(?:\n[ \t]+:(?:(?:\\:\s)|[^:])+:[^\n]*$)+\n)?((?:\n(?:[ \t][^\n]*)?$)+)?/gm, 
+  ".rst": /\.\. mermaid::(?:[ \t]*)?$(?:(?:\n[ \t]+:(?:(?:\\:\s)|[^:])+:[^\n]*$)+\n)?((?:\n(?:[ \t][^\n]*)?$)+)?/gm,
 };
 
 export interface PromiseAdapter<T, U> {
@@ -340,18 +340,31 @@ export function extractIdFromCode(code: string): string | null {
 }
 
 export function extractMermaidCode(content: string, fileExt: string): string[] {
-  const mermaidRegex = pattern[fileExt];
-  if (!mermaidRegex) return [];
+  try {
+    const mermaidRegex = pattern[fileExt];
+    if (!mermaidRegex) {
+      console.warn(`No regex pattern found for file extension: ${fileExt}`);
+      return [];
+    }
 
-  const matches: string[] = [];
-  const match = mermaidRegex.exec(content);
-  console.log(match)
-  if (match) {
-    console.log("inside if match")
-    matches.push(match[1].trim());
+    const matches: string[] = [];
+    let match;
+    
+    while ((match = mermaidRegex.exec(content)) !== null) {
+      if (match[1]) {
+        matches.push(match[1].trim());
+      }
+    }
+
+    if (matches.length === 0) {
+      console.warn("No valid Mermaid code blocks found.");
+    }
+
+    return matches;
+  } catch (error) {
+    console.error("Error extracting Mermaid code:", error);
+    return [];
   }
-
-  return matches;
 }
 
 export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,range: vscode.Range) {
