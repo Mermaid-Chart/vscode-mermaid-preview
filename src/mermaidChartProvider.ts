@@ -42,7 +42,7 @@ export class MCTreeItem extends vscode.TreeItem {
   }
 }
 
-class Document implements MCTreeItem {
+export class Document implements MCTreeItem {
   uuid: string;
   range: vscode.Range;
   title: string;
@@ -169,6 +169,14 @@ export class MermaidChartProvider
       title: "Insert UUID into Editor",
       arguments: [element.uuid],
     };
+
+    if (element.children) {
+      treeItem.contextValue = "project";
+    } else {
+      treeItem.contextValue = element.children ? "project" : "document";
+    }
+
+
     return treeItem;
   }
 

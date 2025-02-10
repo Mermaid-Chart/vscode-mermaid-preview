@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache } from "./mermaidChartProvider";
+import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, Document } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
@@ -193,35 +193,36 @@ context.subscriptions.push(
     }
   })
 );
- 
-context.subscriptions.push(
+
+  context.subscriptions.push(
   vscode.commands.registerCommand('mermaid.connectDiagram',async(uri:vscode.Uri, range:vscode.Range)=>{
-    const document = await vscode.workspace.openTextDocument(uri);
-    const content = document.getText();
-    const fileExt = path.extname(document.fileName);
-    const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end));
-    const diagramCode = extractMermaidCode(blockContent, fileExt).join("\n\n");
-    const projects = getAllTreeViewProjectsCache();
+      const document = await vscode.workspace.openTextDocument(uri);
+      const content = document.getText();
+      const fileExt = path.extname(document.fileName);
+      const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end));
+      const diagramCode = extractMermaidCode(blockContent, fileExt).join("\n\n");
+      const projects = getAllTreeViewProjectsCache();
 
-    const selectedProject = await vscode.window.showQuickPick(
-      projects.map((p) => ({ label: p.title, description: p.title, projectId: p.uuid })),
-      { placeHolder: "Select a project to save the diagram" }
-    );
-    
-    if (!selectedProject || !selectedProject?.projectId) {
-        vscode.window.showInformationMessage("Operation cancelled.");
-        return;
-    }
+      const selectedProject = await vscode.window.showQuickPick(
+        projects.map((p) => ({ label: p.title, description: p.title, projectId: p.uuid })),
+        { placeHolder: "Select a project to save the diagram" }
+      );
+      
+      if (!selectedProject || !selectedProject?.projectId) {
+          vscode.window.showInformationMessage("Operation cancelled.");
+          return;
+      }
+      
+      const response = await mcAPI.createDocumentWithDiagram(diagramCode, selectedProject.projectId)
 
-    const response = await mcAPI.createDocumentWithDiagram(diagramCode, selectedProject.projectId)
-
-    const processedCode = ensureConfigBlock(diagramCode, response.documentID);
+      const processedCode = ensureConfigBlock(diagramCode, response.documentID);
        const editor= await await createMermaidFile(context, processedCode, true);
        if(editor){
         syncAuxFile(editor.document.uri.toString(), uri,range);
-       }
-  })
-)
+      }
+    })
+  )
+
   vscode.workspace.onWillSaveTextDocument(async (event) => {
     if (event.document.languageId.startsWith("mermaid")) {
       event.waitUntil(Promise.resolve([]));
@@ -263,6 +264,15 @@ context.subscriptions.push(
         }
     }
 };
+
+  vscode.commands.registerCommand("mermaidChart.downloadDiagram", async (item: Document) => {
+    if (!item || !item.code) {
+      vscode.window.showErrorMessage("No code found for this diagram.");
+      return;
+    }
+    const processedCode = ensureConfigBlock(item.code, item.uuid);
+    createMermaidFile(context, processedCode, false)
+  });
 
   function showSyncWarning(editor: vscode.TextEditor) {
       const panel = vscode.window.createWebviewPanel(
