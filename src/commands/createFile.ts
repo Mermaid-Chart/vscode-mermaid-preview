@@ -51,16 +51,6 @@ export function createMermaidFile(
     });
 }
 
-function showSyncNotification() {
-  const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-  statusBarItem.text = "⚡ This file is in sync with the remote Mermaid chart. Changes will be saved remotely.";
-  statusBarItem.backgroundColor = new vscode.ThemeColor("statusBarItem.warningBackground");
-  statusBarItem.show();
-
-  // Automatically hide the notification after 10 seconds
-  setTimeout(() => statusBarItem.hide(), 10000);
-}
-
 export function getPreview() {
   const activeEditor = vscode.window.activeTextEditor;
   

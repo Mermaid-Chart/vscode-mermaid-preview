@@ -170,12 +170,7 @@ export class MermaidChartProvider
       arguments: [element.uuid],
     };
 
-    if (element.children) {
-      treeItem.contextValue = "project";
-    } else {
-      treeItem.contextValue = element.children ? "project" : "document";
-    }
-
+    treeItem.contextValue = element.children ? "project" : "document";
 
     return treeItem;
   }

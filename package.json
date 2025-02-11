@@ -454,6 +454,11 @@
           "command": "mermaidChart.preview",
           "when": "resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/",
           "group": "navigation"
+        },
+        {
+          "command": "mermaid.connectDiagramToMermaidChart",
+          "when": "resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/",
+          "group": "navigation"
         }
       ]
     },
@@ -515,6 +520,10 @@
       {
         "command": "mermaidChart.refresh",
         "title": "Refresh"
+      },
+      {
+        "command": "mermaid.connectDiagramToMermaidChart",
+        "title": "MermaidChart: Connect Diagram"
       }
     ]
   },

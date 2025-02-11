@@ -8,6 +8,7 @@ import {
 } from "./mermaidChartProvider";
 import path = require("path");
 
+const configIdPattern = /^---\s*config:\s*([\s\S]*?)id:\s*(\S+)\s*\n/m;
 const activeListeners = new Map<string, vscode.Disposable>();
 
 
@@ -321,6 +322,10 @@ export function ensureConfigBlock(code: string, diagramId: string): string {
     const configBlock = `---\nconfig:\n${idLine}---\n\n`;
     return configBlock + code;
   }
+}
+
+export function hasConfigId(code: string): boolean {
+  return configIdPattern.test(code);
 }
 
 // Function to extract the 'id' from the code block using a regex
