@@ -22,6 +22,7 @@ import { handleTextDocumentChange } from "./eventHandlers";
 import path = require("path");
 import { TempFileCache } from "./cache/tempFileCache";
 import { PreviewPanel } from "./panels/previewPanel";
+import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -370,6 +371,43 @@ context.subscriptions.push(
   );
 
   mermaidChartProvider.refresh();
+
+  const provider = vscode.languages.registerCompletionItemProvider(
+    [
+      { scheme: 'file' },
+      { scheme: 'untitled' }
+    ],
+    {
+        provideCompletionItems(document, position, token, context) {
+            const languageId = document.languageId.toLowerCase();
+
+            // Ensure the languageId is exactly "mermaid" or starts with "mermaid"
+            if (!(languageId === 'mermaid' || languageId.startsWith('mermaid'))) {
+                return [];
+            }
+
+            const snippets = getSnippetsBasedOnDiagram(languageId);
+
+            const suggestions: vscode.CompletionItem[] = snippets.map(snippet => {
+                const item = new vscode.CompletionItem(
+                    snippet.id,
+                    vscode.CompletionItemKind.Snippet
+                );
+                item.insertText = new vscode.SnippetString(snippet.completion);
+                item.documentation = new vscode.MarkdownString(
+                    `**${snippet.name}**\n\n\`\`\`mermaid\n${snippet.sample}\n\`\`\``
+                );
+                return item;
+            });
+
+            return suggestions;
+        },
+    },
+    'm'
+);
+
+context.subscriptions.push(provider);
+
   console.log("Mermaid Charts view registered");
 }
 

@@ -45,6 +45,9 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "completionProvider": {
+        "triggerCharacters": ["m"]
+    },
     "languages": [
       {
         "id": "mermaid",
