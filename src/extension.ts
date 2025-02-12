@@ -256,8 +256,8 @@ context.subscriptions.push(
             } else if (TempFileCache.hasTempUri(context, document.uri.toString())){
               vscode.window.showInformationMessage('This is temporary buffer, this can not be saved locally');
           } else if (!TempFileCache.hasTempUri(context, document.uri.toString()) && diagramId) {
-              await vscode.commands.executeCommand('workbench.action.files.save');
                 await mcAPI.saveDocumentCode(content, diagramId);
+                await vscode.commands.executeCommand('workbench.action.files.save');
                 vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
             } else {
               await vscode.commands.executeCommand('workbench.action.files.save');
