@@ -56,10 +56,6 @@
           ".mmd",
           ".mermaid"
         ],
-        "icon": {
-          "light": "./images/mermaid-icon.png",
-          "dark": "./images/mermaid-icon.png"
-        },
         "configuration": "./language-configuration.json"
       },
       {
@@ -68,10 +64,6 @@
           "Mermaid Flowchart",
           "mermaid flowchart"
         ],
-        "icon": {
-          "light": "./images/mermaid-icon.png",
-          "dark": "./images/mermaid-icon.png"
-        },
         "extensions": [".mmd", ".mermaid"],
         "configuration": "./language-configuration.json"
       },
@@ -108,10 +100,6 @@
           "Mermaid Class Diagram",
           "mermaid class diagram"
         ],
-        "icon": {
-          "light": "./images/seti.png",
-          "dark": "./images/seti.png"
-        },
         "extensions": [".mmd", ".mermaid"],
         "configuration": "./language-configuration.json"
       },
@@ -487,14 +475,6 @@
       {
         "command": "mermaidChart.createMermaidFile",
         "title": "MermaidChart: Create Diagram"
-      },
-      {
-        "command": "mermaidChart.editMermaidChart",
-        "title": "Edit Diagram in Mermaid chart"
-      },
-      {
-        "command": "mermaidChart.editLocally",
-        "title": "Edit Diagram"
       },
       {
         "command": "mermaidChart.focus",

@@ -9,6 +9,7 @@ import {
 import path = require("path");
 
 const activeListeners = new Map<string, vscode.Disposable>();
+const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
 
 
 export const pattern : Record<string, RegExp> = {
@@ -386,17 +387,16 @@ export function extractMermaidCode(content: string, fileExt: string): string[] {
   }
 }
 
-export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,range: vscode.Range) {
+export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri, range: vscode.Range) {
   
   if (activeListeners.has(tempFileUri)) {
-    
     activeListeners.get(tempFileUri)?.dispose();
     activeListeners.delete(tempFileUri);
   }
 
   const disposable = vscode.workspace.onDidChangeTextDocument((event) => {
     if (event.document.uri.toString() === tempFileUri) {
-      syncFiles(originalFileUri, event.document.getText(),range);
+      syncFiles(originalFileUri, event.document.getText(), range);
     }
   });
 
@@ -408,11 +408,13 @@ export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,ran
         const isReopened = vscode.workspace.textDocuments.some(
           (doc) => doc.uri.toString() === tempFileUri
         );
+        
+        // Only remove the listener if the file was not reopened
         if (!isReopened) {
           activeListeners.get(tempFileUri)?.dispose();
           activeListeners.delete(tempFileUri);
         } 
-      }, 500);
+      }, REOPEN_CHECK_DELAY_MS);
     }
   });
 }

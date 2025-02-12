@@ -50,37 +50,37 @@
     theme === "dark" || theme === "neo-dark" ? "#6b6b6b" : "#A3BDFF";
 
 
-  async function initializeMermaid() {
-    try {
-      mermaid.registerLayoutLoaders(layouts);
-      mermaid.registerIconPacks([
-        {
-          name: 'fa',
-          loader: () => import('@iconify-json/fa6-regular').then((m) => m.icons),
-        },
-        {
-          name: 'aws',
-          loader: () => import('@mermaid-chart/icons-aws').then((m) => m.icons),
-        },
-        {
-          name: 'azure',
-          loader: () => import('@mermaid-chart/icons-azure').then((m) => m.icons),
-        },
-        {
-          name: 'gcp',
-          loader: () => import('@mermaid-chart/icons-gcp').then((m) => m.icons),
-        },
-      ]);
-      let config = {
-        startOnLoad: false,
-        suppressErrorRendering: true,
-        theme: theme
+    async function initializeMermaid() {
+      try {
+        mermaid.registerLayoutLoaders(layouts);
+        mermaid.registerIconPacks([
+          {
+            name: 'fa',
+            loader: () => import('@iconify-json/fa6-regular').then((m) => m.icons),
+          },
+          {
+            name: 'aws',
+            loader: () => import('@mermaid-chart/icons-aws').then((m) => m.icons),
+          },
+          {
+            name: 'azure',
+            loader: () => import('@mermaid-chart/icons-azure').then((m) => m.icons),
+          },
+          {
+            name: 'gcp',
+            loader: () => import('@mermaid-chart/icons-gcp').then((m) => m.icons),
+          },
+        ]);
+        await mermaid.initialize({
+          startOnLoad: false,
+          suppressErrorRendering: true,
+          theme: theme,
+        });
+      } catch (error) {
+        console.error('Error initializing Mermaid:', error);
       }
-      await mermaid.initialize(config);
-    } catch (error) {
-      console.error('Error initializing Mermaid:', error);
     }
-  }
+
   async function renderDiagram() {
       await initializeMermaid();
 
