@@ -459,7 +459,7 @@
           "group": "navigation"
         },
         {
-          "command": "mermaid.connectDiagramToMermaidChart",
+          "command": "mermaidChart.connectDiagramToMermaidChart",
           "when": "resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/",
           "group": "navigation"
         }
@@ -476,6 +476,11 @@
         "command": "mermaidChart.syncDiagramWithMermaid",
         "when": "editorLangId =~ /^mermaid/",
         "mac": "cmd+s"
+      },
+      {
+        "command": "mermaidChart.showCompletions",
+        "key": "ctrl+shift+k",
+        "when": "editorLangId =~ /^mermaid/"
       }
     ],
     "commands": [
@@ -525,8 +530,12 @@
         "title": "Refresh"
       },
       {
-        "command": "mermaid.connectDiagramToMermaidChart",
+        "command": "mermaidChart.connectDiagramToMermaidChart",
         "title": "MermaidChart: Connect Diagram"
+      },
+      {
+        "command": "mermaidChart.showCompletions",
+        "title": "Trigger Mermaid Completions"
       }
     ]
   },

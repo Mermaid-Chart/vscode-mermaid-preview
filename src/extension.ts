@@ -233,6 +233,7 @@ context.subscriptions.push(
       const diagramId = extractIdFromCode(content);
       if (diagramId) {
           await mcAPI.saveDocumentCode(content, diagramId);
+          vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
       }
     }
   });
@@ -256,9 +257,7 @@ context.subscriptions.push(
             } else if (TempFileCache.hasTempUri(context, document.uri.toString())){
               vscode.window.showInformationMessage('This is temporary buffer, this can not be saved locally');
           } else if (!TempFileCache.hasTempUri(context, document.uri.toString()) && diagramId) {
-                await mcAPI.saveDocumentCode(content, diagramId);
                 await vscode.commands.executeCommand('workbench.action.files.save');
-                vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
             } else {
               await vscode.commands.executeCommand('workbench.action.files.save');
             }
@@ -269,7 +268,7 @@ context.subscriptions.push(
 };
 
 context.subscriptions.push(
-  vscode.commands.registerCommand('mermaid.connectDiagramToMermaidChart', async () => {
+  vscode.commands.registerCommand('mermaidChart.connectDiagramToMermaidChart', async () => {
     const activeEditor = vscode.window.activeTextEditor;
     const document = activeEditor?.document;
 
@@ -311,6 +310,8 @@ context.subscriptions.push(
     });
 
     PreviewPanel.createOrShow(document);
+    vscode.window.showInformationMessage(`Diagram connected successfully with Mermaid chart.`);
+
   })
 );
 
@@ -404,9 +405,20 @@ context.subscriptions.push(
         },
     },
     'm'
-);
+  );
+  context.subscriptions.push(provider);
 
-context.subscriptions.push(provider);
+  const triggerCompletions = vscode.commands.registerCommand(
+    'mermaidChart.showCompletions',
+    () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor) {
+            vscode.commands.executeCommand('editor.action.triggerSuggest');
+        }
+    }
+  );
+
+  context.subscriptions.push(provider, triggerCompletions);
 
   console.log("Mermaid Charts view registered");
 }
