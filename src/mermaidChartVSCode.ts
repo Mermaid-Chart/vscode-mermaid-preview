@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { MermaidChart } from "./mermaidAPI";
+import { MermaidChart } from "@mermaidchart/sdk";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
 
 export class MermaidChartVSCode extends MermaidChart {
