@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.erDiagram",
-  "name": "erDiagram",
+  "name":"erDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

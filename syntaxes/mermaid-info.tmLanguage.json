@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.info",
-  "name": "info",
+  "name":"info",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

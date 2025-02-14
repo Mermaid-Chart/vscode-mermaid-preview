@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.sequenceDiagram",
-  "name": "sequenceDiagram",
+  "name":"sequenceDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

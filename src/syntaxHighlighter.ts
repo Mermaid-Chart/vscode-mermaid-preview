@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as vscode from "vscode";
+import * as fs from 'fs';
+import * as vscode from 'vscode';
 
 export function getFirstWord(text: string): string {
   const lines = text.split(/\r?\n/);
@@ -9,7 +9,7 @@ export function getFirstWord(text: string): string {
   for (let line of lines) {
     line = line.trim();
 
-    if (line === "---") {
+    if (line === '---') {
       insideConfigBlock = !insideConfigBlock;
       continue;
     }
@@ -17,14 +17,14 @@ export function getFirstWord(text: string): string {
       continue;
     }
 
-    if (line.startsWith("%%") && !line.endsWith("%%")) {
+    if (line.startsWith('%%') && !line.endsWith('%%')) {
       continue;
     }
 
-    if (line.startsWith("%%")) {
+    if (line.startsWith('%%')) {
       insideBlock = true;
     }
-    if (insideBlock && line.endsWith("%%")) {
+    if (insideBlock && line.endsWith('%%')) {
       insideBlock = false;
       continue;
     }
@@ -39,20 +39,13 @@ export function getFirstWord(text: string): string {
     }
   }
 
-  return "";
+  return '';
 }
 
 // Function to map the first word to a diagram type
-export function getDiagramTypeFromWord(
-  firstWord: string,
-  diagramMappings: Record<string, string[]>,
-): string | null {
+export function getDiagramTypeFromWord(firstWord: string, diagramMappings: Record<string, string[]>): string | null {
   for (const [diagramType, aliases] of Object.entries(diagramMappings)) {
-    if (
-      aliases
-        .map((alias) => alias.toLowerCase())
-        .includes(firstWord.toLowerCase())
-    ) {
+    if (aliases.map(alias => alias.toLowerCase()).includes(firstWord.toLowerCase())) {
       return diagramType;
     }
   }
@@ -62,7 +55,7 @@ export function getDiagramTypeFromWord(
 // Function to load the .tmLanguage file
 export function loadTmLanguage(filePath: string): any | null {
   try {
-    const content = fs.readFileSync(filePath, "utf-8");
+    const content = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(content);
   } catch (err) {
     console.error(`Error loading tmLanguage file: ${filePath}`, err);
@@ -71,10 +64,7 @@ export function loadTmLanguage(filePath: string): any | null {
 }
 
 // Function to apply syntax highlighting
-export function applySyntaxHighlighting(
-  document: vscode.TextDocument,
-  tmLanguageFilePath: string,
-) {
+export function applySyntaxHighlighting(document: vscode.TextDocument, tmLanguageFilePath: string) {
   const tmLanguage = loadTmLanguage(tmLanguageFilePath);
   if (tmLanguage) {
     const languageId = `mermaid.${tmLanguage.name}`; // Get languageId from tmLanguage name
@@ -85,8 +75,8 @@ export function applySyntaxHighlighting(
         // console.log(`Applied syntax highlighting for ${languageId}`);
       },
       (error) => {
-        console.error("Failed to apply syntax highlighting:", error);
-      },
+        console.error('Failed to apply syntax highlighting:', error);
+      }
     );
   }
 }

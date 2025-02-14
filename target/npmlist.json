@@ -1,5 +1,1 @@
-{
-  "version": "1.0.1",
-  "name": "vscode-mermaid-chart",
-  "dependencies": { "axios": { "version": "1.4.0" } }
-}
+{"version":"1.0.1","name":"vscode-mermaid-chart","dependencies":{"axios":{"version":"1.4.0"}}}

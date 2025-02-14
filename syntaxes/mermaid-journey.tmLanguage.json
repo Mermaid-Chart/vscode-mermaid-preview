@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.journey",
-  "name": "journey",
+  "name":"journey",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
