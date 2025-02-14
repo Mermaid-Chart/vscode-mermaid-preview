@@ -64,7 +64,10 @@
           "Mermaid Flowchart",
           "mermaid flowchart"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -73,7 +76,10 @@
           "Mermaid Sequence Diagram",
           "mermaid sequence diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -82,7 +88,10 @@
           "Mermaid Er Diagram",
           "mermaid er diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -91,7 +100,10 @@
           "Mermaid C4 Diagram",
           "mermaid c4 diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -100,7 +112,10 @@
           "Mermaid Class Diagram",
           "mermaid class diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -109,7 +124,10 @@
           "Mermaid Gantt",
           "mermaid gantt"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -118,7 +136,10 @@
           "Mermaid GitGraph",
           "mermaid gitgraph"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -127,7 +148,10 @@
           "Mermaid Info",
           "mermaid info"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -136,7 +160,10 @@
           "Mermaid Journey",
           "mermaid journey"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -145,7 +172,10 @@
           "Mermaid Pie",
           "mermaid pie"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -154,7 +184,10 @@
           "Mermaid Requirement Diagram",
           "mermaid requirement diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -163,7 +196,10 @@
           "Mermaid State Diagram",
           "mermaid state diagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -172,7 +208,10 @@
           "Mermaid quadrantChart",
           "mermaid QuadrantChart"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -181,7 +220,10 @@
           "Mermaid mindmap",
           "mermaid Mindmap"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -190,7 +232,10 @@
           "Mermaid timeline",
           "mermaid Timeline"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -199,7 +244,10 @@
           "Mermaid sankey",
           "mermaid SankeyDiagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -208,7 +256,10 @@
           "Mermaid xychart",
           "mermaid Xychart"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -217,7 +268,10 @@
           "Mermaid kanban",
           "mermaid Kanban"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -226,7 +280,10 @@
           "Mermaid blockDiagram",
           "mermaid BlockDiagram"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -235,7 +292,10 @@
           "Mermaid architecture",
           "mermaid Architecture"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -244,7 +304,10 @@
           "Mermaid packet",
           "mermaid Packet"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
@@ -253,11 +316,14 @@
           "Mermaid zenuml",
           "mermaid Zenuml"
         ],
-        "extensions": [".mmd", ".mermaid"],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
-   "themes": [
+    "themes": [
       {
         "label": "Mermaid Dark",
         "uiTheme": "vs-dark",
@@ -392,27 +458,26 @@
       }
     },
     "mermaid.vscode.dark": {
-        "type": "string",
-        "enum": [
-          "neo",
-          "neo dark"
-          
-        ],
-        "default": "NA",
-        "description": "Default mermaid theme used for dark theme"
-      },
-      "mermaid.vscode.light": {
-        "type": "string",
-        "enum": [
-          "base",
-          "dark",
-          "default",
-          "forest",
-          "neutral",
-          "mc"
-        ],
-        "default": "NA",
-        "description": "Default mermaid theme used for light theme"
+      "type": "string",
+      "enum": [
+        "neo",
+        "neo dark"
+      ],
+      "default": "NA",
+      "description": "Default mermaid theme used for dark theme"
+    },
+    "mermaid.vscode.light": {
+      "type": "string",
+      "enum": [
+        "base",
+        "dark",
+        "default",
+        "forest",
+        "neutral",
+        "mc"
+      ],
+      "default": "NA",
+      "description": "Default mermaid theme used for light theme"
     },
     "views": {
       "explorer": [
@@ -510,8 +575,12 @@
     "@vscode/vsce": "^2.19.0",
     "esbuild": "^0.18.13",
     "eslint": "^8.36.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
+    "prettier": "^3.5.1",
+    "prettier-plugin-svelte": "^3.3.3",
     "typescript": "^4.9.5"
   },
   "dependencies": {

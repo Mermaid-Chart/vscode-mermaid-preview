@@ -13,12 +13,14 @@ export class PreviewPanel {
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
 
-
-  private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    document: vscode.TextDocument,
+  ) {
     this.panel = panel;
     this.document = document;
-    this.diagnosticsCollection = vscode.languages.createDiagnosticCollection("mermaid");
-
+    this.diagnosticsCollection =
+      vscode.languages.createDiagnosticCollection("mermaid");
 
     this.update();
     this.setupListeners();
@@ -34,20 +36,23 @@ export class PreviewPanel {
       "mermaidPreview",
       "Mermaid Preview",
       vscode.ViewColumn.Beside,
-      { enableScripts: true }
+      { enableScripts: true },
     );
     PreviewPanel.currentPanel = new PreviewPanel(panel, document);
   }
 
   private update() {
-    const extensionPath = vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")?.extensionPath;
+    const extensionPath = vscode.extensions.getExtension(
+      "MermaidChart.vscode-mermaid-chart",
+    )?.extensionPath;
 
     if (!extensionPath) {
       throw new Error("Unable to resolve the extension path");
     }
-  
+
     // Get the current active theme (dark or light)
-    const isDarkTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
+    const isDarkTheme =
+      vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
 
     // Fetch the configuration from VSCode workspace
     const config = vscode.workspace.getConfiguration();
@@ -58,14 +63,23 @@ export class PreviewPanel {
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme
-      ? (darkTheme !== "NA" ? darkTheme : DEFAULT_DARK_THEME)
-      : (lightTheme !== "NA" ? lightTheme : DEFAULT_LIGHT_THEME);
+      ? darkTheme !== "NA"
+        ? darkTheme
+        : DEFAULT_DARK_THEME
+      : lightTheme !== "NA"
+        ? lightTheme
+        : DEFAULT_LIGHT_THEME;
 
     // Initial content to be used (defaults to a single space if empty)
     const initialContent = this.document.getText() || " ";
-  
+
     if (!this.panel.webview.html) {
-      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme);
+      this.panel.webview.html = getWebviewHTML(
+        this.panel,
+        extensionPath,
+        initialContent,
+        currentTheme,
+      );
     }
 
     this.panel.webview.postMessage({
@@ -87,25 +101,28 @@ export class PreviewPanel {
     }, this.disposables);
     vscode.window.onDidChangeActiveTextEditor((editor) => {
       if (
-        editor && 
-        editor?.document && 
-        (editor?.document?.fileName.endsWith('.mmd') || editor.document.fileName.endsWith('.mermaid') || editor.document.languageId.startsWith('mermaid')) && editor.document.uri.toString() !== this.document.uri.toString()
+        editor &&
+        editor?.document &&
+        (editor?.document?.fileName.endsWith(".mmd") ||
+          editor.document.fileName.endsWith(".mermaid") ||
+          editor.document.languageId.startsWith("mermaid")) &&
+        editor.document.uri.toString() !== this.document.uri.toString()
       ) {
-          this.document = editor.document; 
-          this.isFileChange = true; 
-          debouncedUpdate(); 
+        this.document = editor.document;
+        this.isFileChange = true;
+        debouncedUpdate();
       }
     }, this.disposables);
     vscode.window.onDidChangeActiveColorTheme(() => {
-      this.update(); 
-  }, this.disposables);
+      this.update();
+    }, this.disposables);
 
-    this.panel.webview. onDidReceiveMessage((message) => {
+    this.panel.webview.onDidReceiveMessage((message) => {
       if (message.type === "error" && message.message) {
         this.handleDiagramError(message.message);
       } else if (message.type === "clearError") {
         this.diagnosticsCollection.clear();
-    }
+      }
     });
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
@@ -114,42 +131,43 @@ export class PreviewPanel {
   private handleDiagramError(errorMessage: string) {
     const diagnostics: vscode.Diagnostic[] = [];
     const errorDetails = this.getErrorLine(errorMessage);
-  
+
     if (errorDetails) {
       const caretPositionMatch = errorMessage.match(/(\^)/);
       const lineText = errorMessage.split("\n")[1].trim();
       const caretIndex = caretPositionMatch?.index ?? 0;
       const wordsBeforeCaret = lineText.substring(0, caretIndex).split(/\s+/);
       const wordsAfterCaret = lineText.substring(caretIndex + 1).split(/\s+/);
-  
+
       const startWord = wordsBeforeCaret[wordsBeforeCaret.length - 1];
       const endWord = wordsAfterCaret[0];
-  
+
       const startCharacter = lineText.indexOf(startWord);
       const endCharacter = lineText.indexOf(endWord) + endWord.length;
-  
+
       const range = new vscode.Range(
-        errorDetails.line, 
-        startCharacter, 
-        errorDetails.line, 
-        endCharacter
+        errorDetails.line,
+        startCharacter,
+        errorDetails.line,
+        endCharacter,
       );
-  
+
       const diagnostic = new vscode.Diagnostic(
         range,
         `Syntax error: ${errorDetails.message}`,
-        vscode.DiagnosticSeverity.Error
+        vscode.DiagnosticSeverity.Error,
       );
-      
+
       diagnostics.push(diagnostic);
     }
-  
+
     this.diagnosticsCollection.clear();
     this.diagnosticsCollection.set(this.document.uri, diagnostics);
   }
-  
-  private getErrorLine(errorMessage: string): { line: number; message: string } | null {
-  
+
+  private getErrorLine(
+    errorMessage: string,
+  ): { line: number; message: string } | null {
     const match = errorMessage.match(/line (\d+):\s*([\s\S]+)/i); // Case-insensitive match for "line <number>: <message>"
     if (match) {
       const line = parseInt(match[1], 10) - 1; // Convert to zero-based index

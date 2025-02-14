@@ -11,62 +11,100 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
 
   async provideCodeLenses(
     document: vscode.TextDocument,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): Promise<vscode.CodeLens[]> {
     const codeLenses: vscode.CodeLens[] = [];
     const editor = vscode.window.activeTextEditor;
     if (!editor) return codeLenses;
-  
+
     const session = await vscode.authentication.getSession(
       MermaidChartAuthenticationProvider.id,
       [],
-      { createIfNone: true }
+      { createIfNone: true },
     );
-  
+
     for (const token of this.mermaidChartTokens) {
       const documentText = editor.document.getText(token.range);
       const diagramId = extractIdFromCode(documentText);
       const isAux = isAuxFile(editor.document.fileName);
-  
+
       if (isAux) {
         this.addAuxFileCodeLenses(codeLenses, token, session, diagramId);
       } else {
         this.addMainFileCodeLenses(codeLenses, token);
       }
     }
-  
+
     return codeLenses;
   }
-  
+
   private addAuxFileCodeLenses(
     codeLenses: vscode.CodeLens[],
     token: MermaidChartToken,
     session: vscode.AuthenticationSession | undefined,
-    diagramId: string | null
+    diagramId: string | null,
   ) {
     if (session && !diagramId) {
-      codeLenses.push(this.createCodeLens(token, "Connect Diagram", "mermaid.connectDiagram", [token.uri, token.range]));
+      codeLenses.push(
+        this.createCodeLens(
+          token,
+          "Connect Diagram",
+          "mermaid.connectDiagram",
+          [token.uri, token.range],
+        ),
+      );
     } else if (session && diagramId) {
-      codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [token.uuid]));
+      codeLenses.push(
+        this.createCodeLens(
+          token,
+          "Edit Diagram in Mermaid Chart",
+          "extension.editMermaidChart",
+          [token.uuid],
+        ),
+      );
     }
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaid.editAuxFile", [token.uri, token.range]));
+    codeLenses.push(
+      this.createCodeLens(token, "Edit Diagram", "mermaid.editAuxFile", [
+        token.uri,
+        token.range,
+      ]),
+    );
   }
-  
+
   private addMainFileCodeLenses(
     codeLenses: vscode.CodeLens[],
-    token: MermaidChartToken
+    token: MermaidChartToken,
   ) {
-    codeLenses.push(this.createCodeLens(token, "View Diagram", "extension.viewMermaidChart", [token.uuid]));
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [token.uuid]));
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaidChart.editLocally", [token.uuid]));
+    codeLenses.push(
+      this.createCodeLens(token, "View Diagram", "extension.viewMermaidChart", [
+        token.uuid,
+      ]),
+    );
+    codeLenses.push(
+      this.createCodeLens(
+        token,
+        "Edit Diagram in Mermaid Chart",
+        "extension.editMermaidChart",
+        [token.uuid],
+      ),
+    );
+    codeLenses.push(
+      this.createCodeLens(token, "Edit Diagram", "mermaidChart.editLocally", [
+        token.uuid,
+      ]),
+    );
   }
-  
+
   private createCodeLens(
     token: MermaidChartToken,
     title: string,
     command: string,
-    args: any[]
+    args: any[],
   ): vscode.CodeLens {
-    return new vscode.CodeLens(token.range, { title, command, arguments: args });
+    return new vscode.CodeLens(token.range, {
+      title,
+      command,
+      arguments: args,
+    });
   }
 }

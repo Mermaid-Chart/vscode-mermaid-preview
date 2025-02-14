@@ -1,27 +1,38 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import { applySyntaxHighlighting, getDiagramTypeFromWord, getFirstWord } from './syntaxHighlighter';
+import * as vscode from "vscode";
+import * as path from "path";
+import {
+  applySyntaxHighlighting,
+  getDiagramTypeFromWord,
+  getFirstWord,
+} from "./syntaxHighlighter";
 
 const firstWordCache: Map<string, string> = new Map();
-
 
 // Function to handle text document change events
 export function handleTextDocumentChange(
   event: vscode.TextDocumentChangeEvent | vscode.TextEditor | undefined,
   diagramMappings: { [key: string]: string[] },
-  isTextEditorChanged: boolean
+  isTextEditorChanged: boolean,
 ) {
-  const document = (event as vscode.TextDocumentChangeEvent)?.document || (event as vscode.TextEditor)?.document;
+  const document =
+    (event as vscode.TextDocumentChangeEvent)?.document ||
+    (event as vscode.TextEditor)?.document;
   if (!document) {
     return;
-  };
+  }
 
   const fileExt = path.extname(document.uri.fsPath);
-  if ((!document.isUntitled && (fileExt === ".mmd" || fileExt === ".mermaid")) || document.isUntitled) {
+  if (
+    (!document.isUntitled && (fileExt === ".mmd" || fileExt === ".mermaid")) ||
+    document.isUntitled
+  ) {
     const documentUri = document.uri.toString();
     const firstWord = getFirstWord(document.getText());
 
-    if ((firstWordCache.get(documentUri) === firstWord || firstWord === '') && !isTextEditorChanged) {
+    if (
+      (firstWordCache.get(documentUri) === firstWord || firstWord === "") &&
+      !isTextEditorChanged
+    ) {
       return;
     }
 
@@ -32,7 +43,12 @@ export function handleTextDocumentChange(
     const diagramType = getDiagramTypeFromWord(firstWord, diagramMappings);
 
     if (diagramType) {
-      const grammarPath = path.join(__dirname, '..', 'syntaxes', `mermaid-${diagramType}.tmLanguage.json`);
+      const grammarPath = path.join(
+        __dirname,
+        "..",
+        "syntaxes",
+        `mermaid-${diagramType}.tmLanguage.json`,
+      );
 
       // Apply the syntax highlighting from the appropriate .tmLanguage file
       applySyntaxHighlighting(document, grammarPath);

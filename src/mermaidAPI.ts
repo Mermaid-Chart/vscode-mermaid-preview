@@ -112,7 +112,7 @@ export class MermaidChart {
       response_type: "code",
       code_challenge_method: "S256",
       code_challenge: getEncodedSHA256Hash(
-        this.pendingStates[stateID].codeVerifier
+        this.pendingStates[stateID].codeVerifier,
       ),
       state: stateID,
       scope: scope ?? "email",
@@ -155,7 +155,7 @@ export class MermaidChart {
         redirect_uri: this.redirectURI,
         code_verifier: pendingState.codeVerifier,
         code: authorizationToken,
-      }
+      },
     );
 
     if (tokenResponse.status !== 200) {
@@ -172,9 +172,8 @@ export class MermaidChart {
    * @param accessToken access token to use for requests
    */
   public async setAccessToken(accessToken: string): Promise<void> {
-    this.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${accessToken}`;
+    this.axios.defaults.headers.common["Authorization"] =
+      `Bearer ${accessToken}`;
     // This is to verify that the token is valid
     await this.getUser();
     this.accessToken = accessToken;
@@ -204,14 +203,14 @@ export class MermaidChart {
 
   public async getProjects(): Promise<MCProject[]> {
     const projects = await this.axios.get<MCProject[]>(
-      this.URLS.rest.projects.list
+      this.URLS.rest.projects.list,
     );
     return projects.data;
   }
 
   public async getDocuments(projectID: string): Promise<MCDocument[]> {
     const projects = await this.axios.get<MCDocument[]>(
-      this.URLS.rest.projects.get(projectID).documents
+      this.URLS.rest.projects.get(projectID).documents,
     );
     return projects.data;
   }
@@ -223,32 +222,44 @@ export class MermaidChart {
 
   public async getRawDocument(
     document: Pick<MCDocument, "documentID" | "major" | "minor">,
-    theme: "light" | "dark"
+    theme: "light" | "dark",
   ) {
     const raw = await this.axios.get<string>(
-      this.URLS.raw(document, theme).svg
+      this.URLS.raw(document, theme).svg,
     );
     return raw.data;
   }
 
-  public async saveDocumentCode(code: string, documentID: string): Promise<MCDocument> {
-      const response = await this.axios.patch(this.URLS.rest.documents.patch(documentID), {
+  public async saveDocumentCode(
+    code: string,
+    documentID: string,
+  ): Promise<MCDocument> {
+    const response = await this.axios.patch(
+      this.URLS.rest.documents.patch(documentID),
+      {
         code: code,
-      });
-      return response.data;
-  }
-  public async createDocumentWithDiagram(code: string, projectID: string): Promise<MCDocument> {
-    const response = await this.axios.post(this.URLS.rest.projects.get(projectID).documents, {
-      code : code
-    });
+      },
+    );
     return response.data;
-}
+  }
+  public async createDocumentWithDiagram(
+    code: string,
+    projectID: string,
+  ): Promise<MCDocument> {
+    const response = await this.axios.post(
+      this.URLS.rest.projects.get(projectID).documents,
+      {
+        code: code,
+      },
+    );
+    return response.data;
+  }
 
   private URLS = {
     oauth: {
       authorize: (params: OAuthAuthorizationParams) =>
         `/oauth/authorize?${new URLSearchParams(
-          Object.entries(params)
+          Object.entries(params),
         ).toString()}`,
       token: `/oauth/token`,
     },
@@ -260,9 +271,9 @@ export class MermaidChart {
         get: (documentID: string) => {
           return `/rest-api/documents/${documentID}`;
         },
-        patch: (documentID : string) => {
+        patch: (documentID: string) => {
           return `/rest-api/documents/${documentID}`;
-        }
+        },
       },
       projects: {
         list: `/rest-api/projects`,
@@ -275,7 +286,7 @@ export class MermaidChart {
     },
     raw: (
       document: Pick<MCDocument, "documentID" | "major" | "minor">,
-      theme: "light" | "dark"
+      theme: "light" | "dark",
     ) => {
       const base = `/raw/${document.documentID}?version=v${document.major}.${document.minor}&theme=${theme}&format=`;
       return {

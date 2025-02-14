@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.classDiagram",
-  "name":"classDiagram",
+  "name": "classDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },
@@ -67,7 +67,7 @@
         }
       ]
     },
-   "variables": {
+    "variables": {
       "patterns": [
         {
           "name": "support.type.mermaid",
@@ -79,7 +79,7 @@
         }
       ]
     },
-   "transitions": {
+    "transitions": {
       "patterns": [
         {
           "name": "keyword.control.transition.mermaid",

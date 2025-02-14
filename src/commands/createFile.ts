@@ -5,7 +5,7 @@ import { TempFileCache } from "../cache/tempFileCache";
 export async function createMermaidFile(
   context: vscode.ExtensionContext,
   diagramContent: string | null,
-  isTempFile: boolean
+  isTempFile: boolean,
 ): Promise<vscode.TextEditor | null> {
   const exampleContent = `flowchart TD
     %% Nodes
@@ -38,7 +38,7 @@ export async function createMermaidFile(
   try {
     const document = await vscode.workspace.openTextDocument({
       language: "mermaid",
-      content: diagramContent ?? exampleContent
+      content: diagramContent ?? exampleContent,
     });
 
     const editor = await vscode.window.showTextDocument(document);
@@ -63,18 +63,24 @@ export async function createMermaidFile(
 
 export function getPreview() {
   const activeEditor = vscode.window.activeTextEditor;
-  
+
   if (!activeEditor) {
-    vscode.window.showErrorMessage("No active editor. Open a .mmd file to preview.");
+    vscode.window.showErrorMessage(
+      "No active editor. Open a .mmd file to preview.",
+    );
     return;
   }
 
   const document = activeEditor.document;
-  if (document.languageId !== "plaintext" && 
-      !document.fileName.endsWith(".mmd") && 
-      !document.fileName.endsWith(".mermaid") && 
-      !document.languageId.startsWith('mermaid')) {
-    vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");
+  if (
+    document.languageId !== "plaintext" &&
+    !document.fileName.endsWith(".mmd") &&
+    !document.fileName.endsWith(".mermaid") &&
+    !document.languageId.startsWith("mermaid")
+  ) {
+    vscode.window.showErrorMessage(
+      "Mermaid Preview is only available for mermaid files.",
+    );
     return;
   }
   PreviewPanel.createOrShow(document);

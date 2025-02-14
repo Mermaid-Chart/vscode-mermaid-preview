@@ -1,17 +1,14 @@
 import type { WebviewApi } from "vscode-webview";
 
-
 class VSCodeAPIWrapper {
   private readonly vsCodeApi: WebviewApi<unknown> | undefined;
 
   constructor() {
-   
     if (typeof acquireVsCodeApi === "function") {
       this.vsCodeApi = acquireVsCodeApi();
     }
   }
 
- 
   public postMessage(message: unknown) {
     if (this.vsCodeApi) {
       this.vsCodeApi.postMessage(message);
@@ -19,7 +16,6 @@ class VSCodeAPIWrapper {
       console.log(message);
     }
   }
-
 
   public getState(): unknown | undefined {
     if (this.vsCodeApi) {
@@ -34,7 +30,10 @@ class VSCodeAPIWrapper {
     if (this.vsCodeApi) {
       return this.vsCodeApi.setState(newState);
     } else {
-      localStorage.setItem("mermaidChart.vscodeState", JSON.stringify(newState));
+      localStorage.setItem(
+        "mermaidChart.vscodeState",
+        JSON.stringify(newState),
+      );
       return newState;
     }
   }

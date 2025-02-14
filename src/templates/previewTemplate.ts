@@ -1,9 +1,14 @@
 import * as vscode from "vscode";
 import * as path from "path";
 
-export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string, initialContent: string, currentTheme:string): string {
+export function getWebviewHTML(
+  panel: vscode.WebviewPanel,
+  extensionPath: string,
+  initialContent: string,
+  currentTheme: string,
+): string {
   const scriptUri = panel.webview.asWebviewUri(
-    vscode.Uri.file(path.join(extensionPath, "out", "svelte", "bundle.js"))
+    vscode.Uri.file(path.join(extensionPath, "out", "svelte", "bundle.js")),
   );
 
   return /*html*/ `

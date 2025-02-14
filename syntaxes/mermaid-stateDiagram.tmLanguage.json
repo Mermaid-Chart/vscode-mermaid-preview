@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.stateDiagram",
-  "name":"stateDiagram",
+  "name": "stateDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

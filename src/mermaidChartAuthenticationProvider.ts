@@ -42,23 +42,21 @@ export class MermaidChartAuthenticationProvider
 
   static getInstance(
     mcAPI: MermaidChartVSCode,
-    context: ExtensionContext
+    context: ExtensionContext,
   ): MermaidChartAuthenticationProvider {
     if (!MermaidChartAuthenticationProvider.instance) {
-      MermaidChartAuthenticationProvider.instance = new MermaidChartAuthenticationProvider(
-        mcAPI,
-        context
-      );
+      MermaidChartAuthenticationProvider.instance =
+        new MermaidChartAuthenticationProvider(mcAPI, context);
     }
     return MermaidChartAuthenticationProvider.instance;
   }
 
   constructor(
     private readonly mcAPI: MermaidChartVSCode,
-    private readonly context: ExtensionContext
+    private readonly context: ExtensionContext,
   ) {
     this._disposable = Disposable.from(
-      window.registerUriHandler(this._uriHandler)
+      window.registerUriHandler(this._uriHandler),
     );
     this.mcAPI.setRedirectURI(this.redirectUri);
   }
@@ -80,7 +78,7 @@ export class MermaidChartAuthenticationProvider
    */
   public async getSessions(
     scopes: readonly string[] | undefined,
-    options: AuthenticationProviderSessionOptions
+    options: AuthenticationProviderSessionOptions,
   ): Promise<AuthenticationSession[]> {
     const allSessions = await this.context.secrets.get(this.sessionsKey);
 
@@ -116,7 +114,7 @@ export class MermaidChartAuthenticationProvider
 
       await this.context.secrets.store(
         this.sessionsKey,
-        JSON.stringify([session])
+        JSON.stringify([session]),
       );
 
       this._sessionChangeEmitter.fire({
@@ -147,7 +145,7 @@ export class MermaidChartAuthenticationProvider
       this.mcAPI.resetAccessToken();
       await this.context.secrets.store(
         this.sessionsKey,
-        JSON.stringify(sessions)
+        JSON.stringify(sessions),
       );
 
       if (session) {
@@ -183,12 +181,12 @@ export class MermaidChartAuthenticationProvider
         await env.openExternal(uri);
 
         let codeExchangePromise = this._codeExchangePromises.get(
-          authData.scope
+          authData.scope,
         );
         if (!codeExchangePromise) {
           codeExchangePromise = promiseFromEvent(
             this._uriHandler.event,
-            this.handleUri(scopes)
+            this.handleUri(scopes),
           );
           this._codeExchangePromises.set(authData.scope, codeExchangePromise);
         }
@@ -197,20 +195,20 @@ export class MermaidChartAuthenticationProvider
           return await Promise.race([
             codeExchangePromise.promise,
             new Promise<string>((_, reject) =>
-              setTimeout(() => reject("Cancelled"), 60000)
+              setTimeout(() => reject("Cancelled"), 60000),
             ),
             promiseFromEvent<any, any>(
               token.onCancellationRequested,
               (_, __, reject) => {
                 reject("User Cancelled");
-              }
+              },
             ).promise,
           ]);
         } finally {
           codeExchangePromise?.cancel.fire();
           this._codeExchangePromises.delete(authData.scope);
         }
-      }
+      },
     );
   }
 
@@ -220,11 +218,11 @@ export class MermaidChartAuthenticationProvider
    * @returns
    */
   private handleUri: (
-    scopes: readonly string[]
+    scopes: readonly string[],
   ) => PromiseAdapter<Uri, string> =
     (scopes) => async (uri, resolve, reject) => {
       await this.mcAPI.handleAuthorizationResponse(
-        new URLSearchParams(uri.query)
+        new URLSearchParams(uri.query),
       );
       resolve("done");
     };

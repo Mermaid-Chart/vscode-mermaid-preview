@@ -1,6 +1,6 @@
 {
   "scopeName": "source.mermaid.requirementDiagram",
-  "name":"requirementDiagram",
+  "name": "requirementDiagram",
   "patterns": [
     { "include": "#configDirective" },
     { "include": "#typeKeywords" },

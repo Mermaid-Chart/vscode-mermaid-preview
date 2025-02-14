@@ -27,13 +27,13 @@ export class MCTreeItem extends vscode.TreeItem {
     range: vscode.Range,
     title: string,
     code: string,
-    children?: MCTreeItem[]
+    children?: MCTreeItem[],
   ) {
     super(
       title,
       children === undefined
         ? vscode.TreeItemCollapsibleState.None
-        : vscode.TreeItemCollapsibleState.Collapsed
+        : vscode.TreeItemCollapsibleState.Collapsed,
     );
     this.uuid = uuid;
     this.code = code || "";
@@ -55,7 +55,7 @@ class Document implements MCTreeItem {
     range: vscode.Range,
     title: string,
     code: string,
-    collapsibleState: vscode.TreeItemCollapsibleState.None
+    collapsibleState: vscode.TreeItemCollapsibleState.None,
   ) {
     this.uuid = uuid;
     this.range = range;
@@ -84,7 +84,7 @@ class Project implements MCTreeItem {
     title: string,
     code: string,
     collapsibleState: vscode.TreeItemCollapsibleState,
-    children?: MCTreeItem[]
+    children?: MCTreeItem[],
   ) {
     this.uuid = uuid;
     this.range = range;
@@ -197,7 +197,7 @@ export class MermaidChartProvider
             new vscode.Range(0, 0, 0, 1),
             document.title,
             document.code,
-            vscode.TreeItemCollapsibleState.None
+            vscode.TreeItemCollapsibleState.None,
           );
           projectDocuments.push(treeViewDocument);
         }
@@ -207,7 +207,7 @@ export class MermaidChartProvider
           project.title,
           "",
           vscode.TreeItemCollapsibleState.None,
-          projectDocuments
+          projectDocuments,
         );
 
         allTreeViewProjects.push(treeViewProject);

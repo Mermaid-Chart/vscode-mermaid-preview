@@ -23,9 +23,7 @@
       "endCaptures": {
         "0": { "name": "punctuation.definition.directive.end.mermaid" }
       },
-      "patterns": [
-        { "name": "source.js.embedded.mermaid", "match": ".*" }
-      ]
+      "patterns": [{ "name": "source.js.embedded.mermaid", "match": ".*" }]
     },
     "typeKeywords": {
       "patterns": [
@@ -34,18 +32,27 @@
     },
     "blockKeywords": {
       "patterns": [
-        { "name": "keyword.control.block.mermaid", "match": "\\b(root|subgraph|end)\\b" }
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(root|subgraph|end)\\b"
+        }
       ]
     },
     "keywords": {
       "patterns": [
-        { "name": "keyword.other.mermaid", "match": "\\b(style|direction|class|classDef)\\b" }
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(style|direction|class|classDef)\\b"
+        }
       ]
     },
     "strings": {
       "patterns": [
         { "name": "string.quoted.double.mermaid", "match": "\".*?\"" },
-        { "name": "string.quoted.bracket.mermaid", "match": "\\[[^\\[\\]]+\\]" },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
         { "name": "string.quoted.curly.mermaid", "match": "\\{[^{}]+\\}" },
         { "name": "string.quoted.parenthesis.mermaid", "match": "\\([^()]+\\)" }
       ]
@@ -90,7 +97,10 @@
     },
     "relationships": {
       "patterns": [
-        { "name": "keyword.control.relationship.mermaid", "match": "--|---|===|:::" }
+        {
+          "name": "keyword.control.relationship.mermaid",
+          "match": "--|---|===|:::"
+        }
       ]
     }
   },
