@@ -488,8 +488,8 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm compile",
-    "precompile": "cd webview && pnpm install && pnpm build",
-    "compile": "pnpm install && tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "precompile": "pnpm --filter ./webview build",
+    "compile": "tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "tsc -p ./ --noEmit --watch",
     "pretest": "pnpm compile && pnpm lint",
     "lint": "eslint src --ext ts",
