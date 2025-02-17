@@ -1,47 +1,6 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 
-export function getFirstWord(text: string): string {
-  const lines = text.split(/\r?\n/);
-  let insideBlock = false;
-  let insideConfigBlock = false;
-
-  for (let line of lines) {
-    line = line.trim();
-
-    if (line === '---') {
-      insideConfigBlock = !insideConfigBlock;
-      continue;
-    }
-    if (insideConfigBlock) {
-      continue;
-    }
-
-    if (line.startsWith('%%') && !line.endsWith('%%')) {
-      continue;
-    }
-
-    if (line.startsWith('%%')) {
-      insideBlock = true;
-    }
-    if (insideBlock && line.endsWith('%%')) {
-      insideBlock = false;
-      continue;
-    }
-    if (insideBlock) {
-      continue;
-    }
-
-    const regex = /^\s*(\w+)/;
-    const match = line.match(regex);
-    if (match) {
-      return match[1].toLowerCase();
-    }
-  }
-
-  return '';
-}
-
 // Function to map the first word to a diagram type
 export function getDiagramTypeFromWord(firstWord: string, diagramMappings: Record<string, string[]>): string | null {
   for (const [diagramType, aliases] of Object.entries(diagramMappings)) {

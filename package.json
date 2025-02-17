@@ -257,7 +257,7 @@
         "configuration": "./language-configuration.json"
       }
     ],
-   "themes": [
+    "themes": [
       {
         "label": "Mermaid Dark",
         "uiTheme": "vs-dark",
@@ -392,27 +392,26 @@
       }
     },
     "mermaid.vscode.dark": {
-        "type": "string",
-        "enum": [
-          "neo",
-          "neo dark"
-          
-        ],
-        "default": "NA",
-        "description": "Default mermaid theme used for dark theme"
-      },
-      "mermaid.vscode.light": {
-        "type": "string",
-        "enum": [
-          "base",
-          "dark",
-          "default",
-          "forest",
-          "neutral",
-          "mc"
-        ],
-        "default": "NA",
-        "description": "Default mermaid theme used for light theme"
+      "type": "string",
+      "enum": [
+        "neo",
+        "neo dark"
+      ],
+      "default": "NA",
+      "description": "Default mermaid theme used for dark theme"
+    },
+    "mermaid.vscode.light": {
+      "type": "string",
+      "enum": [
+        "base",
+        "dark",
+        "default",
+        "forest",
+        "neutral",
+        "mc"
+      ],
+      "default": "NA",
+      "description": "Default mermaid theme used for light theme"
     },
     "views": {
       "explorer": [
@@ -516,6 +515,7 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yaml": "^2.7.0"
   }
 }

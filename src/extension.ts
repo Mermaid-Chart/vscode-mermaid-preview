@@ -4,9 +4,6 @@ import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,
-  ensureConfigBlock,
-  extractIdFromCode,
-  extractMermaidCode,
   findComments,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
@@ -20,6 +17,7 @@ import { createMermaidFile, getPreview } from "./commands/createFile";
 import { handleTextDocumentChange } from "./eventHandlers";
 import path = require("path");
 import { TempFileCache } from "./cache/tempFileCache";
+import { ensureIdField, extractIdFromCode, extractMermaidCode } from "./frontmatter";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -161,7 +159,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // Create the Mermaid file if diagramCode is found
       if (diagramCode) {
         const diagramId = uuid;
-        const processedCode = ensureConfigBlock(diagramCode, diagramId);
+        const processedCode = ensureIdField(diagramCode, diagramId);
         createMermaidFile(context, processedCode, true);
       } else {
         vscode.window.showErrorMessage("Diagram not found for the given UUID.");
@@ -215,7 +213,7 @@ context.subscriptions.push(
 
     const response = await mcAPI.createDocumentWithDiagram(diagramCode, selectedProject.projectId)
 
-    const processedCode = ensureConfigBlock(diagramCode, response.documentID);
+    const processedCode = ensureIdField(diagramCode, response.documentID);
        const editor= await await createMermaidFile(context, processedCode, true);
        if(editor){
         syncAuxFile(editor.document.uri.toString(), uri,range);
