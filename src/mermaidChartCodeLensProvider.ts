@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
-import { extractIdFromCode, isAuxFile, MermaidChartToken } from "./util";
+import { isAuxFile, MermaidChartToken } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
+import { extractIdFromCode, extractMermaidCode } from "./frontmatter";
+import path = require("path");
 
 export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   constructor(private mermaidChartTokens: MermaidChartToken[]) {}
@@ -25,9 +27,9 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   
     for (const token of this.mermaidChartTokens) {
       const documentText = editor.document.getText(token.range);
-      const diagramId = extractIdFromCode(documentText);
+      const mermaidCode = extractMermaidCode(documentText, path.extname(editor.document.fileName)).join("\n\n");
+      const diagramId = extractIdFromCode(mermaidCode);
       const isAux = isAuxFile(editor.document.fileName);
-  
       if (isAux) {
         this.addAuxFileCodeLenses(codeLenses, token, session, diagramId);
       } else {
@@ -47,7 +49,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     if (session && !diagramId) {
       codeLenses.push(this.createCodeLens(token, "Connect Diagram", "mermaid.connectDiagram", [token.uri, token.range]));
     } else if (session && diagramId) {
-      codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [token.uuid]));
+      codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [diagramId]));
     }
     codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaid.editAuxFile", [token.uri, token.range]));
   }

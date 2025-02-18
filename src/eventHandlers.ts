@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { applySyntaxHighlighting, getDiagramTypeFromWord, getFirstWord } from './syntaxHighlighter';
+import { applySyntaxHighlighting, getDiagramTypeFromWord, } from './syntaxHighlighter';
+import { getFirstWordFromDiagram } from './frontmatter';
 
 const firstWordCache: Map<string, string> = new Map();
 
@@ -19,7 +20,7 @@ export function handleTextDocumentChange(
   const fileExt = path.extname(document.uri.fsPath);
   if ((!document.isUntitled && (fileExt === ".mmd" || fileExt === ".mermaid")) || document.isUntitled) {
     const documentUri = document.uri.toString();
-    const firstWord = getFirstWord(document.getText());
+    const firstWord = getFirstWordFromDiagram(document.getText());
 
     if ((firstWordCache.get(documentUri) === firstWord || firstWord === '') && !isTextEditorChanged) {
       return;

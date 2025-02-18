@@ -4,9 +4,6 @@ import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,
-  ensureConfigBlock,
-  extractIdFromCode,
-  extractMermaidCode,
   findComments,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
@@ -20,6 +17,7 @@ import { createMermaidFile, getPreview } from "./commands/createFile";
 import { handleTextDocumentChange } from "./eventHandlers";
 import path = require("path");
 import { TempFileCache } from "./cache/tempFileCache";
+import { ensureIdField, extractIdFromCode, extractMermaidCode } from "./frontmatter";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -161,7 +159,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // Create the Mermaid file if diagramCode is found
       if (diagramCode) {
         const diagramId = uuid;
-        const processedCode = ensureConfigBlock(diagramCode, diagramId);
+        const processedCode = ensureIdField(diagramCode, diagramId);
         createMermaidFile(context, processedCode, true);
       } else {
         vscode.window.showErrorMessage("Diagram not found for the given UUID.");
@@ -227,7 +225,7 @@ context.subscriptions.push(
         code: diagramCode,
       });
 
-      const processedCode = ensureConfigBlock(diagramCode, newDocument.documentID);
+      const processedCode = ensureIdField(diagramCode, newDocument.documentID);
       mermaidChartProvider.refresh();
       const editor = await createMermaidFile(context, processedCode, true);
 
@@ -239,6 +237,7 @@ context.subscriptions.push(
     }
   })
 );
+
 vscode.workspace.onWillSaveTextDocument(async (event) => {
   if (event.document.languageId.startsWith("mermaid")) {
     event.waitUntil(Promise.resolve([]));
