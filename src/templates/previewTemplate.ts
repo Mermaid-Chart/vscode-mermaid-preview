@@ -12,7 +12,7 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Svelte Mermaid Preview</title>
+      <title>Mermaid Preview</title>
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"

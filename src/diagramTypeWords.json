@@ -16,6 +16,7 @@
   "flowchart": [
     "flowchart",
     "flowchart-v2",
+    "flowchart-elk",
     "graph"
   ],
   "gantt": [

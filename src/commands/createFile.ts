@@ -2,11 +2,11 @@ import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
 import { TempFileCache } from "../cache/tempFileCache";
 
-export function createMermaidFile(
+export async function createMermaidFile(
   context: vscode.ExtensionContext,
   diagramContent: string | null,
   isTempFile: boolean
-): Thenable<vscode.TextEditor | null> {
+): Promise<vscode.TextEditor | null> {
   const exampleContent = `flowchart TD
     %% Nodes
         A("fab:fa-youtube Starter Guide")
@@ -35,36 +35,47 @@ export function createMermaidFile(
 
     %% You can add notes with two "%" signs in a row!`;
 
-  return vscode.workspace.openTextDocument({language: "mermaid", content: diagramContent ? diagramContent : exampleContent})
-    .then((document) => vscode.window.showTextDocument(document))
-    .then((editor) => {
-      if (editor?.document) {
-        if (isTempFile) {
-          TempFileCache.addTempUri(context, editor.document.uri.toString());
-        } else {
-          TempFileCache.removeTempUri(context, editor.document.uri.toString());
-        }
-        PreviewPanel.createOrShow(editor.document);
-        return editor;
-      }
-      return null;
+  try {
+    const document = await vscode.workspace.openTextDocument({
+      language: "mermaid",
+      content: diagramContent ?? exampleContent
     });
+
+    const editor = await vscode.window.showTextDocument(document);
+    if (!editor?.document) {
+      return null;
+    }
+
+    const uri = editor.document.uri.toString();
+
+    if (isTempFile) {
+      TempFileCache.addTempUri(context, uri);
+    } else {
+      TempFileCache.removeTempUri(context, uri);
+    }
+    PreviewPanel.createOrShow(editor.document);
+    return editor;
+  } catch (error) {
+    console.error("Error creating Mermaid file:", error);
+    return null;
+  }
 }
 
 export function getPreview() {
   const activeEditor = vscode.window.activeTextEditor;
   
-      if (!activeEditor) {
-        vscode.window.showErrorMessage("No active editor. Open a .mmd file to preview.");
-        return;
-      }
-  
-      const document = activeEditor?.document;
-      if (document && document?.languageId !== "plaintext" && !document.fileName.endsWith(".mmd") && !document.fileName.endsWith(".mermaid") && !document.languageId.startsWith('mermaid')) {
-        vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");
-        return;
-      }
-      if (document) {
-        PreviewPanel.createOrShow(document);
-      }
+  if (!activeEditor) {
+    vscode.window.showErrorMessage("No active editor. Open a .mmd file to preview.");
+    return;
+  }
+
+  const document = activeEditor.document;
+  if (document.languageId !== "plaintext" && 
+      !document.fileName.endsWith(".mmd") && 
+      !document.fileName.endsWith(".mermaid") && 
+      !document.languageId.startsWith('mermaid')) {
+    vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");
+    return;
+  }
+  PreviewPanel.createOrShow(document);
 }

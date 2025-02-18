@@ -7,9 +7,11 @@ import {
   ITEM_TYPE_DOCUMENT,
 } from "./mermaidChartProvider";
 import path = require("path");
+import { extractIdFromCode } from "./frontmatter";
 
 const configIdPattern = /^---\s*config:\s*([\s\S]*?)id:\s*(\S+)\s*\n/m;
 const activeListeners = new Map<string, vscode.Disposable>();
+const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
 
 
 export const pattern : Record<string, RegExp> = {
@@ -136,11 +138,12 @@ export function findMermaidChartTokensFromAuxFiles(document: vscode.TextDocument
       document.positionAt(match.index),
       document.positionAt(match.index + match[0].length)
     );
+    const extractedId = extractIdFromCode(document.getText(range)) || "";
     mermaidChartTokens.push({
-      title: `Chart - ${extractIdFromCode(document.getText(range)) || ""}`,
+      title: `Chart - ${extractedId}`,
       uri: document.uri,
       range,
-      uuid: extractIdFromCode(document.getText(range)) || "",
+      uuid: extractedId,
     });
   }
 
@@ -208,8 +211,8 @@ export async function viewMermaidChart(
   const svgContent = await mcAPI.getRawDocument(
     {
       documentID: uuid,
-      major: "0",
-      minor: "1",
+      major: 0,
+      minor: 1,
     },
     themeParameter
   );
@@ -233,17 +236,23 @@ export async function editMermaidChart(
   uuid: string,
   provider: MermaidChartProvider
 ) {
-  // const project = provider.getProjectOfDocument(uuid);
-  // const projectUuid = project?.uuid;
-  // if (!projectUuid) {
-  //   vscode.window.showErrorMessage(
-  //     "Diagram not found in project. Diagram might have moved to a different project."
-  //   );
-  //   return;
-  // }
+  // Retrieve the document details to get the required fields
+  const document = await mcAPI.getDocument({ documentID: uuid });
+
+  if (!document || !document.projectID) {
+    vscode.window.showErrorMessage(
+      "Document details not found. Unable to edit the chart."
+    );
+    return;
+  }
+
   const editUrl = await mcAPI.getEditURL({
-    documentID: uuid,
+    documentID: document.documentID,
+    major: document.major,
+    minor: document.minor,
+    projectID: document.projectID,
   });
+
   vscode.env.openExternal(vscode.Uri.parse(editUrl));
 }
 
@@ -293,115 +302,17 @@ const getCommentLine = (editor: vscode.TextEditor, uuid: string): string => {
 };
 
 
-/**
- * Ensures the diagram code has a config block with the given ID.
- * @param code The original diagram code.
- * @param diagramId The ID to include in the config block.
- * @returns The updated diagram code.
- */
-export function ensureConfigBlock(code: string, diagramId: string): string {
-  const configPattern = /^---\s*config:\s*([\s\S]*?)---/m; // Regex to match the config block
-  const idLine = `    id: ${diagramId}\n`;
 
-  if (configPattern.test(code)) {
-    // If config block exists, update or append the ID
-    const updatedCode = code.replace(configPattern, (match, configContent) => {
-      if (configContent.includes("id:")) {
-        // Update the existing ID
-        return match.replace(/id:\s*.+/m, idLine.trim());
-      } else {
-        // Append the ID
-        return match.replace("config:", `config:\n${idLine}`);
-      }
-    });
-
-    // Check for and remove empty lines below the id field
-    return updatedCode.replace(/(id:\s*.+)\n\s*\n/m, "$1\n");
-  } else {
-    // If config block doesn't exist, add the entire block
-    const configBlock = `---\nconfig:\n${idLine}---\n\n`;
-    return configBlock + code;
-  }
-}
-
-export function hasConfigId(code: string): boolean {
-  return configIdPattern.test(code);
-}
-
-// Function to extract the 'id' from the code block using a regex
-export function extractIdFromCode(code: string): string | null {
-  const configPattern = /^---\s*config:\s*([\s\S]*?)---/m;
-  const idPattern = /id:\s*(\S+)/;
-
-  const match = configPattern.exec(code);
-  if (match && match[1]) {
-    // Match the id inside the config block
-    const idMatch = idPattern.exec(match[1]);
-    if (idMatch) {
-      return idMatch[1]; // Return the ID found
-    }
-  }
-  return null; // Return null if no ID is found
-}
-
-export function extractMermaidCode(content: string, fileExt: string): string[] {
-  try {
-    const mermaidRegex = pattern[fileExt];
-    if (!mermaidRegex) {
-      console.warn(`No regex pattern found for file extension: ${fileExt}`);
-      return [];
-    }
-
-    const matches: string[] = [];
-    let match;
-
-    while ((match = mermaidRegex.exec(content)) !== null) {
-      if (match[1]) {
-        if (fileExt === ".rst") {
-          let extractedCode = match[1].trim(); // Trim leading & trailing spaces
-  
-          // Ensure `---` lines have no indentation, but `config:` is indented
-          extractedCode = extractedCode.replace(
-            /^\s*---\s*\n\s*(config:\s*\n[\s\S]*?)\n\s*---\s*/m,
-            (fullMatch, configContent) => {
-              // Ensure `config:` and its contents are indented correctly
-              const indentedConfig = configContent
-                .split("\n")
-                .map((line: any) => `  ${line.trimStart()}`) // Indent each line by 2 spaces
-                .join("\n");
-  
-              return `---\n${indentedConfig}\n---`;
-            }
-          );
-          matches.push(extractedCode);
-        } else {
-          matches.push(match[1].trim());
-        }
-      }
-    }
-
-    if (matches.length === 0) {
-      console.warn("No valid Mermaid code blocks found.");
-    }
-
-    return matches;
-  } catch (error) {
-    console.error("Error extracting Mermaid code:", error);
-    return [];
-  }
-}
-
-export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,range: vscode.Range) {
+export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri, range: vscode.Range) {
   
   if (activeListeners.has(tempFileUri)) {
-    
     activeListeners.get(tempFileUri)?.dispose();
     activeListeners.delete(tempFileUri);
   }
 
   const disposable = vscode.workspace.onDidChangeTextDocument((event) => {
     if (event.document.uri.toString() === tempFileUri) {
-      syncFiles(originalFileUri, event.document.getText(),range);
+      syncFiles(originalFileUri, event.document.getText(), range);
     }
   });
 
@@ -413,11 +324,13 @@ export function syncAuxFile(tempFileUri: string, originalFileUri: vscode.Uri,ran
         const isReopened = vscode.workspace.textDocuments.some(
           (doc) => doc.uri.toString() === tempFileUri
         );
+        
+        // Only remove the listener if the file was not reopened
         if (!isReopened) {
           activeListeners.get(tempFileUri)?.dispose();
           activeListeners.delete(tempFileUri);
         } 
-      }, 500);
+      }, REOPEN_CHECK_DELAY_MS);
     }
   });
 }
@@ -491,20 +404,6 @@ export function syncFiles(
       match = regex.exec(text); 
     }
   });
-}
-
-
-export function checkDiagramId(range: vscode.Range): boolean {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    vscode.window.showErrorMessage('No active editor found!');
-    return false; 
-  }
-
-  const documentText = editor.document.getText(range);
-
-
-  return !!extractIdFromCode(documentText); 
 }
 
 export function isAuxFile(fileName: string): boolean {

@@ -1,16 +1,12 @@
 import * as vscode from "vscode";
-import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, Document } from "./mermaidChartProvider";
+import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, getProjectIdForDocument, Document } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,
-  ensureConfigBlock,
-  extractIdFromCode,
-  extractMermaidCode,
   findComments,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
-  hasConfigId,
   insertMermaidChartToken,
   isAuxFile,
   syncAuxFile,
@@ -23,6 +19,7 @@ import path = require("path");
 import { TempFileCache } from "./cache/tempFileCache";
 import { PreviewPanel } from "./panels/previewPanel";
 import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
+import { ensureIdField, extractIdFromCode, extractMermaidCode } from "./frontmatter";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -164,7 +161,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // Create the Mermaid file if diagramCode is found
       if (diagramCode) {
         const diagramId = uuid;
-        const processedCode = ensureConfigBlock(diagramCode, diagramId);
+        const processedCode = ensureIdField(diagramCode, diagramId);
         createMermaidFile(context, processedCode, true);
       } else {
         vscode.window.showErrorMessage("Diagram not found for the given UUID.");
@@ -196,47 +193,72 @@ context.subscriptions.push(
     }
   })
 );
+ 
+context.subscriptions.push(
+  vscode.commands.registerCommand('mermaid.connectDiagram', async (uri: vscode.Uri, range: vscode.Range) => {
+    const document = await vscode.workspace.openTextDocument(uri);
+    const content = document.getText();
+    const fileExt = path.extname(document.fileName);
+    const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end));
+    const diagramCode = extractMermaidCode(blockContent, fileExt).join("\n\n");
+    const projects = getAllTreeViewProjectsCache();
 
-  context.subscriptions.push(
-  vscode.commands.registerCommand('mermaid.connectDiagram',async(uri: vscode.Uri, range:vscode.Range)=>{
-      const document = await vscode.workspace.openTextDocument(uri);
-      const content = document.getText();
-      const fileExt = path.extname(document.fileName);
-      const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end));
-      const diagramCode = extractMermaidCode(blockContent, fileExt).join("\n\n");
-      const projects = getAllTreeViewProjectsCache();
+    const selectedProject = await vscode.window.showQuickPick(
+      projects.map((p) => ({ label: p.title, description: p.title, projectId: p.uuid })),
+      { placeHolder: "Select a project to save the diagram" }
+    );
 
-      const selectedProject = await vscode.window.showQuickPick(
-        projects.map((p) => ({ label: p.title, description: p.title, projectId: p.uuid })),
-        { placeHolder: "Select a project to save the diagram" }
-      );
-      
-      if (!selectedProject || !selectedProject?.projectId) {
-          vscode.window.showInformationMessage("Operation cancelled.");
-          return;
+    if (!selectedProject || !selectedProject?.projectId) {
+      vscode.window.showInformationMessage("Operation cancelled.");
+      return;
+    }
+
+    try {
+      const newDocument = await mcAPI.createDocument(selectedProject.projectId);
+
+      if (!newDocument || !newDocument.documentID) {
+        vscode.window.showErrorMessage("Failed to create a new document.");
+        return;
       }
-      
-      const response = await mcAPI.createDocumentWithDiagram(diagramCode, selectedProject.projectId)
 
-      const processedCode = ensureConfigBlock(diagramCode, response.documentID);
-       const editor= await await createMermaidFile(context, processedCode, true);
-       if(editor){
-        syncAuxFile(editor.document.uri.toString(), uri,range);
+      await mcAPI.setDocument({
+        documentID: newDocument.documentID,
+        projectID: selectedProject.projectId,
+        code: diagramCode,
+      });
+
+      const processedCode = ensureIdField(diagramCode, newDocument.documentID);
+      mermaidChartProvider.refresh();
+      const editor = await createMermaidFile(context, processedCode, true);
+
+      if (editor) {
+        syncAuxFile(editor.document.uri.toString(), uri, range);
       }
-    })
-  )
+    } catch (error) {
+        vscode.window.showErrorMessage(`Error creating or connecting document: ${error instanceof Error ? error.message : "Unknown error occurred."}`);
+    }
+  })
+);
 
-  vscode.workspace.onWillSaveTextDocument(async (event) => {
-    if (event.document.languageId.startsWith("mermaid")) {
-      event.waitUntil(Promise.resolve([]));
-      const content = event.document.getText();
-      const diagramId = extractIdFromCode(content);
-      if (diagramId) {
-          await mcAPI.saveDocumentCode(content, diagramId);
-          vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
+vscode.workspace.onWillSaveTextDocument(async (event) => {
+  if (event.document.languageId.startsWith("mermaid")) {
+    event.waitUntil(Promise.resolve([]));
+    const content = event.document.getText();
+    const diagramId = extractIdFromCode(content);
+    if (diagramId) {
+      const projectId = getProjectIdForDocument(diagramId);
+
+      if (projectId) {
+        await mcAPI.setDocument({
+          documentID: diagramId,
+          projectID: projectId,
+          code: content,
+        });
+        vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
       }
     }
-  });
+  }
+});
 
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.syncDiagramWithMermaid', async () => {
@@ -252,7 +274,15 @@ context.subscriptions.push(
         try {
             const diagramId = extractIdFromCode(content);
             if (TempFileCache.hasTempUri(context, document.uri.toString()) && diagramId) {
-                await mcAPI.saveDocumentCode(content, diagramId);
+                const projectId = getProjectIdForDocument(diagramId);
+
+                if (projectId) {
+                  await mcAPI.setDocument({
+                    documentID: diagramId,
+                    projectID: projectId,
+                    code: content,
+                  });
+                }
                 vscode.window.showInformationMessage(`Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`);
             } else if (TempFileCache.hasTempUri(context, document.uri.toString())){
               vscode.window.showInformationMessage('This is temporary buffer, this can not be saved locally');
@@ -278,9 +308,10 @@ context.subscriptions.push(
     }
 
     const content = document.getText();
+    const id = extractIdFromCode(content);
     
     // Check if the document is already connected
-    if (hasConfigId(content)) {
+    if (id) {
       vscode.window.showWarningMessage("This diagram is already connected to Mermaid Chart.");
       return;
     }
@@ -296,9 +327,21 @@ context.subscriptions.push(
       return;
     }
 
-    const response = await mcAPI.createDocumentWithDiagram(content, selectedProject.projectId);
+    const newDocument = await mcAPI.createDocument(selectedProject.projectId);
 
-    const processedCode = ensureConfigBlock(content, response.documentID);
+    if (!newDocument || !newDocument.documentID) {
+      vscode.window.showErrorMessage("Failed to create a new document.");
+      return;
+    }
+
+    await mcAPI.setDocument({
+      documentID: newDocument.documentID,
+      projectID: selectedProject.projectId,
+      code: content,
+    });
+
+    const processedCode = ensureIdField(content, newDocument.documentID);
+    mermaidChartProvider.refresh();
 
     // Apply the new processedCode to the document
     await activeEditor.edit((editBuilder) => {
@@ -320,7 +363,7 @@ context.subscriptions.push(
       vscode.window.showErrorMessage("No code found for this diagram.");
       return;
     }
-    const processedCode = ensureConfigBlock(item.code, item.uuid);
+    const processedCode = ensureIdField(item.code, item.uuid);
     createMermaidFile(context, processedCode, false)
   });
 

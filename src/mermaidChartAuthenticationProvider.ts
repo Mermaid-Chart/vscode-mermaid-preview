@@ -182,15 +182,14 @@ export class MermaidChartAuthenticationProvider
         const uri = Uri.parse(authData.url);
         await env.openExternal(uri);
 
-        let codeExchangePromise = this._codeExchangePromises.get(
-          authData.scope
-        );
+        const scope = authData.scope.join(" ");
+        let codeExchangePromise = this._codeExchangePromises.get(scope);
         if (!codeExchangePromise) {
           codeExchangePromise = promiseFromEvent(
             this._uriHandler.event,
             this.handleUri(scopes)
           );
-          this._codeExchangePromises.set(authData.scope, codeExchangePromise);
+          this._codeExchangePromises.set(scope, codeExchangePromise);
         }
 
         try {
@@ -208,7 +207,7 @@ export class MermaidChartAuthenticationProvider
           ]);
         } finally {
           codeExchangePromise?.cancel.fire();
-          this._codeExchangePromises.delete(authData.scope);
+          this._codeExchangePromises.delete(scope);
         }
       }
     );
@@ -223,9 +222,7 @@ export class MermaidChartAuthenticationProvider
     scopes: readonly string[]
   ) => PromiseAdapter<Uri, string> =
     (scopes) => async (uri, resolve, reject) => {
-      await this.mcAPI.handleAuthorizationResponse(
-        new URLSearchParams(uri.query)
-      );
+      await this.mcAPI.handleAuthorizationResponse(`?${uri.query}`);
       resolve("done");
     };
 
