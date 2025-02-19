@@ -11,10 +11,9 @@
   let diagramContent: string = diagramData;
  
   let errorMessage = "";
-  let isToggled = true;
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
-  let isErrorOccured= false;
+  let hasErrorOccured= false;
   let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
   $: zoomLevel = 100;
   $: sidebarBackgroundColor = theme === "dark" || theme === "neo-dark" ? "#4d4d4d" : "white";
@@ -72,7 +71,7 @@
         const currentPan = panzoomInstance?.getPan() || { x: 0, y: 0 };
         const { svg } = await mermaid.render("diagram-graph", diagramContent);
         element.innerHTML = svg;
-        if (theme && (theme === "dark" || theme === "neo-dark" )) {
+        if (theme?.endsWith("dark")) {
           element.style.backgroundColor= "#1e1e1e"
         } else {
           element.style.backgroundColor =  "white"
@@ -96,34 +95,17 @@
             updateZoomLevel();
           });        
         }
-          if (!isToggled) {
-          if (panzoomInstance) {
-            panzoomInstance.destroy();
-          }
-          panzoomInstance = Panzoom(element, {
-            maxScale: 5,
-            minScale: 0.5,
-            contain: "outside",
-          });
 
-          element.addEventListener("wheel", (event) => {
-            panzoomInstance?.zoomWithWheel(event);
-            updateZoomLevel();
-          });
-        }
-
-        if (isToggled) {
           panzoomInstance.zoom(currentScale, { animate: false });
           panzoomInstance.pan(currentPan.x, currentPan.y, { animate: false });
-        }
 
           updateCursorStyle();
         }
-        if(isErrorOccured){
+        if(hasErrorOccured){
           vscode.postMessage({
             type: "clearError", 
           });
-          isErrorOccured = false
+          hasErrorOccured = false
         }
       } catch (error) {
         errorMessage = `Syntax error in text: ${error.message || error}`;
@@ -131,7 +113,7 @@
           type: "error",
           message: errorMessage,
         });
-        isErrorOccured = true
+        hasErrorOccured = true
       }
     }
   }

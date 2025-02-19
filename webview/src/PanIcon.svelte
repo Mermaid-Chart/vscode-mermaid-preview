@@ -1,5 +1,5 @@
-<script>
-    export let stroke;
+<script lang="ts">
+    export let stroke: string;
   </script>
   <style>
     svg {

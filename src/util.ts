@@ -6,7 +6,7 @@ import {
   MermaidChartProvider,
   ITEM_TYPE_DOCUMENT,
 } from "./mermaidChartProvider";
-import path = require("path");
+import * as path from 'path';
 import { extractIdFromCode } from "./frontmatter";
 
 const configIdPattern = /^---\s*config:\s*([\s\S]*?)id:\s*(\S+)\s*\n/m;
@@ -130,19 +130,29 @@ export function findMermaidChartTokens(
 export function findMermaidChartTokensFromAuxFiles(document: vscode.TextDocument): MermaidChartToken[] {
   const mermaidChartTokens: MermaidChartToken[] = [];
   const text = document.getText();
-  const regex = pattern[path.extname(document.fileName)];
+  const fileExt = path.extname(document.fileName);
+  const regex = pattern[fileExt];
   let match: RegExpExecArray | null;
 
   while ((match = regex.exec(text)) !== null) {
-    const range = new vscode.Range(
+    // Get the full match range
+    const fullRange = new vscode.Range(
       document.positionAt(match.index),
       document.positionAt(match.index + match[0].length)
     );
-    const extractedId = extractIdFromCode(document.getText(range)) || "";
+
+    // Extract only the Mermaid content (match[1] contains the content between delimiters)
+    const contentStart = match.index + match[0].indexOf(match[1]);
+    const contentRange = new vscode.Range(
+      document.positionAt(contentStart),
+      document.positionAt(contentStart + match[1].length)
+    );
+
+    const extractedId = extractIdFromCode(match[1]) || "";
     mermaidChartTokens.push({
       title: `Chart - ${extractedId}`,
       uri: document.uri,
-      range,
+      range: contentRange, // Use the content-only range
       uuid: extractedId,
     });
   }

@@ -1,8 +1,7 @@
 import * as vscode from "vscode";
 import { isAuxFile, MermaidChartToken } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
-import { extractIdFromCode, extractMermaidCode } from "./frontmatter";
-import path = require("path");
+import { extractIdFromCode } from "./frontmatter";
 
 export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   constructor(private mermaidChartTokens: MermaidChartToken[]) {}
@@ -27,8 +26,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   
     for (const token of this.mermaidChartTokens) {
       const documentText = editor.document.getText(token.range);
-      const mermaidCode = extractMermaidCode(documentText, path.extname(editor.document.fileName)).join("\n\n");
-      const diagramId = extractIdFromCode(mermaidCode);
+      const diagramId = extractIdFromCode(documentText);
       const isAux = isAuxFile(editor.document.fileName);
       if (isAux) {
         this.addAuxFileCodeLenses(codeLenses, token, session, diagramId);
@@ -44,7 +42,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     codeLenses: vscode.CodeLens[],
     token: MermaidChartToken,
     session: vscode.AuthenticationSession | undefined,
-    diagramId: string | null
+    diagramId: string | undefined
   ) {
     if (session && !diagramId) {
       codeLenses.push(this.createCodeLens(token, "Connect Diagram", "mermaid.connectDiagram", [token.uri, token.range]));

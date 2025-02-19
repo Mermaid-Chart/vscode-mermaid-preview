@@ -2,9 +2,7 @@ import { parseDocument, type Document, YAMLMap, isMap, parse, stringify } from '
 import { pattern } from './util';
 
 
-const frontMatterRegex = /^-{3}\s*[\n\r](.*?[\n\r])-{3}\s*[\n\r]+/s;
-const YAML_BLOCK_REGEX = /^\s*---[\r\n]+([\s\S]+?)[\r\n]+\s*---/gm;
-const EMPTY_BLOCK_REGEX = /^\s*---\s*\n\s*---\s*\n?/;
+// const frontMatterRegex = /^-{3}\s*[\n\r](.*?[\n\r])-{3}\s*[\n\r]+/s;
 const COMMENT_REGEX = /^\s*%%(?!{)[^\n]+\n?/gm;
 const DIRECTIVE_REGEX = /%{2}{\s*(?:(\w+)\s*:|(\w+))\s*(?:(\w+)|((?:(?!}%{2}).|\r?\n)*))?\s*(?:}%{2})?/gi;
 const FIRST_WORD_REGEX = /^\s*(\w+)/;
@@ -20,18 +18,30 @@ function parseFrontMatterYAML(frontMatterYaml: string): Document<YAMLMap, false>
 }
 
 function splitFrontMatter(text: string) {
-    const matches = text.match(frontMatterRegex);
-    if (!matches || !matches[1]) {
-      return {
-        diagramText: text,
-        frontMatter: '',
-      };
-    } else {
-      return {
-        diagramText: text.slice(matches[0].length),
-        frontMatter: matches[1],
-      };
+    // Normalize line endings and trim the text
+    const normalizedText = text.replace(/\r\n?/g, '\n').trim();
+    
+    // More flexible regex that handles indentation before front matter
+    const frontMatterRegex = /^\s*-{3}[\s\S]*?[\n\r]\s*-{3}/;
+    
+    const matches = normalizedText.match(frontMatterRegex);
+    
+    if (!matches) {
+        return {
+            diagramText: normalizedText,
+            frontMatter: '',
+        };
     }
+
+    const frontMatter = matches[0]
+        .replace(/^\s*---/, '') // Remove opening dashes with any preceding whitespace
+        .replace(/\s*---$/, '') // Remove closing dashes with any trailing whitespace
+        .trim();
+
+    return {
+        diagramText: normalizedText.slice(matches[0].length).trim(),
+        frontMatter: frontMatter,
+    };
 }
 
 
@@ -56,77 +66,14 @@ export function ensureIdField(code: string, diagramId: string): string {
  * @param code The input code containing YAML frontmatter.
  * @returns The extracted ID, or null if not found.
  */
-export function extractIdFromCode(code: string): string | null {
+export function extractIdFromCode(code: string): string | undefined {
     const { frontMatter } = splitFrontMatter(code);
-    if (!frontMatter) return null; // No frontmatter present
+    if (!frontMatter) return undefined; // No frontmatter present
 
     const document = parseFrontMatterYAML(frontMatter);
     const id = document.contents.get('id');
 
-    return typeof id === 'string' ? id : null; // Ensure 'id' is a string
-}
-
-/**
- * Normalizes a YAML block by removing empty frontmatter and reformatting valid YAML.
- * @param block - The YAML block to normalize.
- * @returns The normalized YAML block as a string.
- */
-function normalizeYamlBlock(block: string): string {
-  block = block.replace(EMPTY_BLOCK_REGEX, "");
-
-  return block.replace(YAML_BLOCK_REGEX, (_, yamlContent) => {
-    try {
-      const parsedYaml = parse(yamlContent);
-      return `---\n${stringify(parsedYaml)}\n---`;
-    } catch (error) {
-      return block;
-    }
-  });
-}
-
-/**
- * Adjusts indentation for Mermaid diagram blocks.
- * Determines the minimum indentation and normalizes all lines accordingly.
- * @param block - The Mermaid diagram block.
- * @returns The indentation-normalized block.
- */
-function normalizeMermaidIndentation(block: string): string {
-  const lines = block.split('\n');
-  const minIndent = Math.min(
-    ...lines.filter(line => line.trim() && !/^---/.test(line))
-      .map(line => line.match(/^\s*/)?.[0]?.length || 0)
-  );
-  return lines.map(line => (line.startsWith('---') ? line : line.slice(minIndent))).join('\n');
-}
-
-/**
- * Extracts Mermaid diagram code blocks from the given content based on the file extension.
- * @param content - The full text content to scan for Mermaid code.
- * @param fileExt - The file extension used to determine the regex pattern.
- * @returns An array of extracted Mermaid code blocks.
- */
-export function extractMermaidCode(content: string, fileExt: string): string[] {
-  try {
-    const mermaidRegex = pattern[fileExt];
-    if (!mermaidRegex) {
-      console.warn(`No regex pattern found for file extension: ${fileExt}`);
-      return [];
-    }
-
-    const matches = [...content.matchAll(mermaidRegex)].map(match => {
-      let block = match[1];
-      return normalizeMermaidIndentation(normalizeYamlBlock(block));
-    });
-
-    if (matches.length === 0) {
-      console.warn("No valid Mermaid code blocks found.");
-    }
-
-    return matches;
-  } catch (error) {
-    console.error("Error extracting Mermaid code:", error);
-    return [];
-  }
+    return typeof id === 'string' ? id : undefined; // Ensure 'id' is a string
 }
 
 const cleanupText = (code: string) => {
@@ -181,4 +128,20 @@ export function getFirstWordFromDiagram(text: string): string {
     return match[1].toLowerCase(); // Return the first word in lowercase
   }
   return ''; // Return an empty string if no word is found
+}
+
+/**
+ * Normalizes Mermaid diagram text by properly formatting the front matter and content.
+ * @param code The original diagram code.
+ * @returns The normalized diagram code.
+ */
+export function normalizeMermaidText(code: string): string {
+  const { diagramText, frontMatter } = splitFrontMatter(code);
+  
+  if (!frontMatter) {
+    return diagramText;
+  }
+
+  // Reconstruct the text with proper formatting
+  return `---\n${frontMatter.trim()}\n---\n${diagramText}`;
 }

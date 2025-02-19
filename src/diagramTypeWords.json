@@ -76,7 +76,8 @@
    "architecture"
   ],
   "packet": [
-    "packet"
+    "packet",
+    "packet-beta"
   ],
   "zenuml": [
     "zenuml"

@@ -1,7 +1,7 @@
-<script>
-    export let fill;
-  </script>
-  <style>
+<script lang="ts">
+    export let fill: string;
+</script>
+<style>
     svg {
         width: 25px;
         height: 25px;
