@@ -125,25 +125,27 @@ export class MermaidChartProvider
     this._onDidChangeTreeData.fire();
   }
 
+ 
   getItemTypeFromUuid(uuid: string): string {
-    let allProjects: Project[] = [];
     if (allTreeViewProjectsCache.length === 0) {
-      this.refresh();
+        this.refresh();
     }
-    allProjects = allTreeViewProjectsCache;
-    for (const project of allProjects) {
-      if (project.uuid === uuid) {
-        return ITEM_TYPE_PROJECT;
-      }
-      for (const document of project.children ?? []) {
-        if (document.uuid === uuid) {
-          return ITEM_TYPE_DOCUMENT;
-        }
-      }
-    }
-    return ITEM_TYPE_UNKNOWN;
-  }
 
+    const findItemType = (items: MCTreeItem[]): string => {
+        for (const item of items) {
+            if (item.uuid === uuid) {
+                return item instanceof Project ? ITEM_TYPE_PROJECT : ITEM_TYPE_DOCUMENT;
+            }
+            const type = item.children?.length ? findItemType(item.children) : ITEM_TYPE_UNKNOWN;
+            if (type !== ITEM_TYPE_UNKNOWN) return type;
+        }
+        return ITEM_TYPE_UNKNOWN;
+    };
+
+    return findItemType(allTreeViewProjectsCache);
+}
+
+  
   getProjectOfDocument(uuid: string): Project | undefined {
     let allProjects: Project[] = [];
     if (allTreeViewProjectsCache.length === 0) {
@@ -159,7 +161,7 @@ export class MermaidChartProvider
     }
     return undefined;
   }
-
+ 
   getTreeItem(element: MCTreeItem): vscode.TreeItem {
     let collapsibleState: vscode.TreeItemCollapsibleState;
     if (element instanceof Document) {
@@ -169,20 +171,21 @@ export class MermaidChartProvider
     } else {
       collapsibleState = vscode.TreeItemCollapsibleState.None;
     }
- 
+  
     const treeItem = new vscode.TreeItem(`${element.title}`, collapsibleState);
-
+  
+   
     treeItem.command = {
       command: "mermaidChart.insertUuidIntoEditor",
-      title: "Insert UUID into Editor",
-      arguments: [element.uuid],
+      title: "Insert UUID",
+      arguments: [element]
     };
- 
+     
     treeItem.contextValue = element.children ? "project" : "document";
-
+  
     return treeItem;
   }
-
+  
   async getChildren(element?: MCTreeItem): Promise<MCTreeItem[]> {
     if (!element) {
       if (allTreeViewProjectsCache.length > 0) {

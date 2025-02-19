@@ -5,6 +5,7 @@ import {
   applyMermaidChartTokenHighlighting,
   editMermaidChart,
   findComments,
+  findDiagramCode,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
   getHelpUrl,
@@ -185,15 +186,14 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("mermaidChart.editLocally", (uuid: string) => {
       const projects = getAllTreeViewProjectsCache();
-  
+   
       // Find the diagram code based on the UUID
-      const diagramCode = projects
-        .flatMap((project) => project?.children ?? [])
-        .find((child) => child.uuid === uuid)?.code;
-  
+       const diagramCode = findDiagramCode(projects,uuid);
+        
       // Create the Mermaid file if diagramCode is found
       if (diagramCode) {
         const diagramId = uuid;
+        
         const processedCode = ensureIdField(diagramCode, diagramId);
         createMermaidFile(context, processedCode, true);
       } else {

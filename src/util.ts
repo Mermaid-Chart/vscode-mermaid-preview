@@ -5,6 +5,7 @@ import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   MermaidChartProvider,
   ITEM_TYPE_DOCUMENT,
+  MCTreeItem,
 } from "./mermaidChartProvider";
 import * as path from 'path';
 import { extractIdFromCode } from "./frontmatter";
@@ -514,3 +515,17 @@ export const getHelpUrl = (diagramType: string) => {
     ? (`https://mermaid.js.org/syntax/${diagramType}.html` as const)
     : ('https://mermaid.js.org/intro/' as const);
 };
+
+
+export const findDiagramCode = (items: MCTreeItem[], uuid: string): string | undefined => {
+  for (const item of items) {
+    if (item.uuid === uuid) return item.code;
+    if (item.children?.length) {
+      const foundCode = findDiagramCode(item.children, uuid);
+      if (foundCode) return foundCode;
+    }
+  }
+  return undefined;
+};
+
+
