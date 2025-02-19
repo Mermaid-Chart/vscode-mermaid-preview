@@ -3,8 +3,7 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 const DARK_THEME_KEY = "mermaid.vscode.dark";
 const LIGHT_THEME_KEY = "mermaid.vscode.light";
-const DEFAULT_DARK_THEME = "neo-dark";
-const DEFAULT_LIGHT_THEME = "neo";
+
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
   private readonly panel: vscode.WebviewPanel;
@@ -53,13 +52,12 @@ export class PreviewPanel {
     const config = vscode.workspace.getConfiguration();
 
     // Get the theme settings from configuration
-    const darkTheme = config.get<string>(DARK_THEME_KEY, "NA");
-    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "NA");
+    const darkTheme = config.get<string>(DARK_THEME_KEY, "neo-dark");
+    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "neo");
 
     // Determine the current theme based on the user's preference and the active color theme
-    const currentTheme = isDarkTheme
-      ? (darkTheme !== "NA" ? darkTheme : DEFAULT_DARK_THEME)
-      : (lightTheme !== "NA" ? lightTheme : DEFAULT_LIGHT_THEME);
+    const currentTheme = isDarkTheme ? darkTheme : lightTheme;
+
 
     // Initial content to be used (defaults to a single space if empty)
     const initialContent = this.document.getText() || " ";

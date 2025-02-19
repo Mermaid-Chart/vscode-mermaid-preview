@@ -7,10 +7,13 @@ import {
   findComments,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
+  getHelpUrl,
+  getMermaidChartTokenDecoration,
   insertMermaidChartToken,
   isAuxFile,
   MermaidChartToken,
   syncAuxFile,
+  updateViewVisibility,
   viewMermaidChart,
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
@@ -19,19 +22,32 @@ import { handleTextDocumentChange } from "./eventHandlers";
 import { TempFileCache } from "./cache/tempFileCache";
 import { PreviewPanel } from "./panels/previewPanel";
 import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
-import { ensureIdField, extractIdFromCode, normalizeMermaidText } from "./frontmatter";
+import { ensureIdField, extractIdFromCode, getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
+import { customErrorMessage } from "./constants/errorMessages";
+import { MermaidWebviewProvider } from "./panels/loginPanel";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 
-export async function activate(context: vscode.ExtensionContext) {
 
+export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
+
+  const isUserLoggedIn = context.globalState.get<boolean>("isUserLoggedIn", false);
+  const mermaidWebviewProvider = new MermaidWebviewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider("mermaidWebview", mermaidWebviewProvider)
+  );
+  updateViewVisibility(isUserLoggedIn);
+
+ 
 
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.preview', getPreview)
   );
+ 
+
 
   const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor && !isExtensionStarted) {
@@ -45,12 +61,18 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.window.onDidChangeActiveTextEditor((event) =>
     handleTextDocumentChange(event, diagramMappings, true)
   );
+
+  
   vscode.commands.registerCommand('mermaidChart.createMermaidFile', async () => {
     createMermaidFile(context, null, false)
   })
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.logout', async () => {
       mcAPI.logout(context);
+      const userLoggedIn = false; 
+
+      await context.globalState.update("isUserLoggedIn", userLoggedIn);
+      updateViewVisibility(false);
     })
   );
 
@@ -58,6 +80,12 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.login', async () => {
       await mcAPI.login();
+      const userLoggedIn = true; 
+
+  await context.globalState.update("isUserLoggedIn", userLoggedIn);
+  updateViewVisibility(true);
+  mermaidChartProvider.refresh()
+
     })
   );
 
@@ -67,14 +95,18 @@ export async function activate(context: vscode.ExtensionContext) {
     mcAPI
   );
 
-  const mermaidChartTokenDecoration =
-    vscode.window.createTextEditorDecorationType({
-      backgroundColor: "rgba(255, 71, 123, 0.3)", // Adjust the background color as desired
-      color: "rgb(255, 255, 255)", // Adjust the text color as desired
-      gutterIconPath: vscode.Uri.file(
-        context.asAbsolutePath("images/mermaid-icon-16.png")
-      ), // Add the icon file path
-      gutterIconSize: "8x8", // Adjust the icon size as desired
+ let  mermaidChartTokenDecoration: vscode.TextEditorDecorationType;
+  mermaidChartTokenDecoration = getMermaidChartTokenDecoration();
+  vscode.window.onDidChangeActiveColorTheme(() => {
+    mermaidChartTokenDecoration.dispose(); 
+    mermaidChartTokenDecoration = getMermaidChartTokenDecoration(); 
+  });
+  
+
+
+    const mermaidChartGutterIconDecoration = vscode.window.createTextEditorDecorationType({
+      gutterIconPath: vscode.Uri.file(context.asAbsolutePath("images/mermaid-icon-16.png")), // Add the icon file path
+      gutterIconSize: "8x8",// Adjust the icon size as desired
     });
   let codeLensProvider: MermaidChartCodeLensProvider | undefined;
 
@@ -95,7 +127,8 @@ export async function activate(context: vscode.ExtensionContext) {
       applyMermaidChartTokenHighlighting(
         activeEditor,
         mermaidChartTokens,
-        mermaidChartTokenDecoration
+        mermaidChartTokenDecoration,
+        mermaidChartGutterIconDecoration
       );
 
       if (!codeLensProvider) {
@@ -232,8 +265,14 @@ context.subscriptions.push(
         syncAuxFile(editor.document.uri.toString(), uri, range);
       }
     } catch (error) {
-        vscode.window.showErrorMessage(`Error creating or connecting document: ${error instanceof Error ? error.message : "Unknown error occurred."}`);
-    }
+      if (error instanceof Error ) {
+        const errMessage = error.message; 
+        const matchedError = Object.keys(customErrorMessage).find((key) =>errMessage.includes(key));
+        vscode.window.showErrorMessage(matchedError ? customErrorMessage[matchedError] : `Error: ${errMessage}`);
+        } else {
+        vscode.window.showErrorMessage("Unknown error occurred.");
+        }
+      }
   })
 );
 
@@ -414,6 +453,7 @@ context.subscriptions.push(
   context.subscriptions.push(
     vscode.commands.registerCommand("mermaidChart.refresh", () => {
       mermaidChartProvider.refresh();
+ 
     })
   );
 
@@ -428,12 +468,13 @@ context.subscriptions.push(
   );
   context.subscriptions.push(disposable);
 
-  const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
-    "mermaidChart.insertUuidIntoEditor",
-    (uuid: string) => {
-      return insertMermaidChartToken(uuid, mermaidChartProvider);
-    }
-  );
+const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
+  "mermaidChart.insertUuidIntoEditor",
+  ({ uuid }: MCTreeItem) =>
+      uuid ? insertMermaidChartToken(uuid, mermaidChartProvider) 
+           : vscode.window.showErrorMessage("Invalid item selected. No UUID found.")
+);
+
   context.subscriptions.push(insertUuidIntoEditorDisposable);
 
   context.subscriptions.push(
@@ -443,6 +484,25 @@ context.subscriptions.push(
   );
 
   mermaidChartProvider.refresh();
+
+context.subscriptions.push(
+  vscode.commands.registerCommand("mermaidChart.diagramHelp", () => {
+      const activeEditor = vscode.window.activeTextEditor;
+      if (activeEditor) {
+          const documentText = activeEditor.document.getText();
+          const firstWord = getFirstWordFromDiagram(documentText);
+
+          if (firstWord) {
+              const helpUrl = getHelpUrl(firstWord);
+              vscode.env.openExternal(vscode.Uri.parse(helpUrl));
+          } else {
+              vscode.window.showWarningMessage("Unable to determine diagram type.");
+          }
+      } else {
+          vscode.window.showWarningMessage("No active editor found.");
+      }
+  })
+);
 
   const provider = vscode.languages.registerCompletionItemProvider(
     [

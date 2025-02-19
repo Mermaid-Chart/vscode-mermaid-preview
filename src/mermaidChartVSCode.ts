@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { MermaidChart } from "@mermaidchart/sdk";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
+import { defaultBaseURL, updateViewVisibility } from "./util";
 
 export class MermaidChartVSCode extends MermaidChart {
   constructor() {
@@ -51,17 +52,31 @@ export class MermaidChartVSCode extends MermaidChart {
       )
     );
 
+    
     /**
      * Sessions are changed when a user logs in or logs out.
      */
     context.subscriptions.push(
       vscode.authentication.onDidChangeSessions(async (e) => {
         if (e.provider.id === MermaidChartAuthenticationProvider.id) {
+          const session = await vscode.authentication.getSession(
+            MermaidChartAuthenticationProvider.id,
+            [],
+            { silent: true }
+          );
+  
+          if (!session) {
+            await context.globalState.update("isUserLoggedIn", false);
+            updateViewVisibility(false);
+          } else {
+            await context.globalState.update("isUserLoggedIn", true);
+            updateViewVisibility(true);
+          }
+          
           await this.setupAPI();
         }
       })
     );
-
     /**
      * When the configuration is changed, we need to refresh the base URL.
      */
@@ -89,7 +104,6 @@ export class MermaidChartVSCode extends MermaidChart {
   }
 }
 
-const defaultBaseURL = "https://www.mermaidchart.com";
 
 export function getBaseUrl(): string | undefined {
   const config = vscode.workspace.getConfiguration("mermaidChart");

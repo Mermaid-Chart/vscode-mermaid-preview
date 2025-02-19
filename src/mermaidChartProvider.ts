@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
+import { MCProject } from "./types";
 
 export const ITEM_TYPE_PROJECT = "project";
 export const ITEM_TYPE_DOCUMENT = "document";
@@ -168,7 +169,7 @@ export class MermaidChartProvider
     } else {
       collapsibleState = vscode.TreeItemCollapsibleState.None;
     }
-
+ 
     const treeItem = new vscode.TreeItem(`${element.title}`, collapsibleState);
 
     treeItem.command = {
@@ -176,60 +177,73 @@ export class MermaidChartProvider
       title: "Insert UUID into Editor",
       arguments: [element.uuid],
     };
-
+ 
     treeItem.contextValue = element.children ? "project" : "document";
 
     return treeItem;
   }
 
   async getChildren(element?: MCTreeItem): Promise<MCTreeItem[]> {
-    const allTreeViewProjects: Project[] = [];
-
     if (!element) {
       if (allTreeViewProjectsCache.length > 0) {
         return Promise.resolve(allTreeViewProjectsCache);
       }
-      // Fetch all projects and associated documents
-      // and build a tree view
-      const mermaidChartProjects = await this.mcAPI.getProjects();
+
+      const mermaidChartProjects: MCProject[] = await this.mcAPI.getProjects();
+      const projectMap = new Map<string, Project>();
+      const allTreeViewProjects: Project[] = [];
+
       for (const project of mermaidChartProjects) {
-        const projectDocuments = [];
-        const mermaidChartDocuments = await this.mcAPI.getDocuments(project.id);
-
-        // Get all documents for a project and insert as children of project
-        for (const document of mermaidChartDocuments) {
-          if (document.title === null) {
-            document.title = "Untitled Diagram";
-          }
-
-          const treeViewDocument = new Document(
-            document.documentID,
-            new vscode.Range(0, 0, 0, 1),
-            document.title,
-            document.code || "",
-            vscode.TreeItemCollapsibleState.None
-          );
-          projectDocuments.push(treeViewDocument);
-        }
-        const treeViewProject = new Project(
+        const projectInstance = new Project(
           project.id,
           new vscode.Range(0, 0, 0, 1),
           project.title,
           "",
-          vscode.TreeItemCollapsibleState.None,
-          projectDocuments
+          vscode.TreeItemCollapsibleState.Collapsed,
+          []
         );
-
-        allTreeViewProjects.push(treeViewProject);
+        projectMap.set(project.id, projectInstance);
       }
 
-      if (allTreeViewProjectsCache.length === 0) {
-        allTreeViewProjectsCache.push(...allTreeViewProjects);
+      for (const project of mermaidChartProjects) {
+        const projectInstance = projectMap.get(project.id);
+        if (!projectInstance) continue;
+
+        if (project.parentID) {
+          const parentProject = projectMap.get(project.parentID);
+          if (parentProject) {
+            if (!parentProject.children) {
+              parentProject.children = [];
+            }
+            parentProject.children.push(projectInstance);
+          }
+        } else {
+          allTreeViewProjects.push(projectInstance);
+        }
       }
+
+      for (const [projectId, projectInstance] of projectMap) {
+        const mermaidChartDocuments = await this.mcAPI.getDocuments(projectId);
+        for (const document of mermaidChartDocuments) {
+          const documentTitle = document.title || "Untitled Diagram";
+          const treeViewDocument = new Document(
+            document.documentID,
+            new vscode.Range(0, 0, 0, 1),
+            documentTitle,
+            document.code || "",
+            vscode.TreeItemCollapsibleState.None
+          );
+          if (!projectInstance.children) {
+            projectInstance.children = [];
+          }
+          projectInstance.children.push(treeViewDocument);
+        }
+      }
+
+      allTreeViewProjectsCache = allTreeViewProjects;
       return Promise.resolve(allTreeViewProjects);
     } else {
-      // Get the children of the element
-      return element.children!;
+      return element.children ?? [];
     }
   }
 }

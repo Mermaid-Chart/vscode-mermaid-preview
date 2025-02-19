@@ -9,9 +9,15 @@ import {
 import * as path from 'path';
 import { extractIdFromCode } from "./frontmatter";
 
-const configIdPattern = /^---\s*config:\s*([\s\S]*?)id:\s*(\S+)\s*\n/m;
 const activeListeners = new Map<string, vscode.Disposable>();
 const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
+import { MermaidWebviewProvider } from "./panels/loginPanel";
+const config = vscode.workspace.getConfiguration();
+export const defaultBaseURL = config.get<string>('mermaidChart.baseUrl', 'https://www.mermaidchart.com');
+const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
+const LIGHT_BACKGROUND = "#FDE0EE";
+const DARK_COLOR = "#FFFFFF";
+const LIGHT_COLOR = "#1E1A2E";
 
 
 export const pattern : Record<string, RegExp> = {
@@ -163,12 +169,17 @@ export function findMermaidChartTokensFromAuxFiles(document: vscode.TextDocument
 export function applyMermaidChartTokenHighlighting(
   editor: vscode.TextEditor,
   mermaidChartTokens: MermaidChartToken[],
-  mermaidChartTokenDecoration: vscode.TextEditorDecorationType
+  mermaidChartTokenDecoration: vscode.TextEditorDecorationType,
+  mermaidChartGutterIconDecoration: vscode.TextEditorDecorationType
 ) {
-  editor.setDecorations(
-    mermaidChartTokenDecoration,
-    mermaidChartTokens.map((token) => token.range)
-  );
+  const fullBlockDecorations: vscode.DecorationOptions[] = mermaidChartTokens.map(token => ({
+    range: token.range, 
+  }));
+  const gutterIconDecorations: vscode.DecorationOptions[] = mermaidChartTokens.map(token => ({
+    range: new vscode.Range(token.range.start, token.range.start), // Only first line for gutter icon
+  }));
+  editor.setDecorations(mermaidChartTokenDecoration, fullBlockDecorations);
+  editor.setDecorations(mermaidChartGutterIconDecoration, gutterIconDecorations);
 }
 
 export function findComments(document: vscode.TextDocument): vscode.Range[] {
@@ -289,6 +300,28 @@ export async function insertMermaidChartToken(
     );
   });
 }
+export function updateViewVisibility(isLoggedIn: boolean,webviewProvider?: MermaidWebviewProvider) {
+  vscode.commands.executeCommand("setContext", "mermaid.showChart", isLoggedIn);
+  vscode.commands.executeCommand("setContext", "mermaid.showWebview", !isLoggedIn);
+  if (!isLoggedIn) webviewProvider?.refresh()
+}
+
+export function getMermaidChartTokenDecoration(): vscode.TextEditorDecorationType {
+
+  // Determine the current theme
+  const isDarkTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
+
+  // Set the decoration type based on the theme
+  const backgroundColor = isDarkTheme ? DARK_BACKGROUND : LIGHT_BACKGROUND;
+  const color = isDarkTheme ? DARK_COLOR : LIGHT_COLOR;
+
+  return vscode.window.createTextEditorDecorationType({
+    backgroundColor,
+    color,
+  });
+}
+  
+
 
 const getCommentLine = (editor: vscode.TextEditor, uuid: string): string => {
   const languageId = editor.document.languageId;
@@ -422,3 +455,62 @@ export function isAuxFile(fileName: string): boolean {
 
   return allowedExt.includes(fileExt);
 }
+export const getHelpUrl = (diagramType: string) => {
+  switch (diagramType) {
+    case 'erdiagram': {
+      diagramType = 'entityRelationshipDiagram';
+
+      break;
+    }
+    case 'gitgraph': {
+      diagramType = 'gitgraph';
+
+      break;
+    }
+    case 'journey': {
+      diagramType = 'userJourney';
+
+      break;
+    }
+    case 'classdiagram': {
+      diagramType = 'classDiagram';
+
+      break;
+    }
+  
+    case 'statediagram': {
+      diagramType = 'stateDiagram';
+
+      break;
+    }
+    case 'sequencediagram': {
+      diagramType = 'sequenceDiagram';
+
+      break;
+    }
+    case 'requirementdiagram': {
+      diagramType = 'requirementDiagram';
+
+      break;
+    }
+    case 'xychart': {
+      diagramType = 'xyChart';
+
+      break;
+    }
+    case 'quadrantchart':{
+      diagramType = 'quadrantChart';
+
+      break;
+    }
+    case 'c4context':{
+      diagramType = 'c4';
+
+      break;
+    }
+    // No default
+  }
+  return diagramType
+    ? (`https://mermaid.js.org/syntax/${diagramType}.html` as const)
+    : ('https://mermaid.js.org/intro/' as const);
+};

@@ -33,6 +33,9 @@ The Mermaid Chart extension for Visual Studio Code seamlessly integrates with th
 This extension contributes the following settings:
 
 - `mermaidChart.baseUrl`: This points to the instance of mermaid chart you are running, for the public service this is `https://www.mermaidchart.com/`.
+- `mermaid.vscode.dark`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
+- `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
+By setting these options in your VS Code settings, you can customize the appearance of Mermaid diagrams to match your preferred theme.
 
 ## Release Notes
 
