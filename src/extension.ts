@@ -70,10 +70,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.logout', async () => {
       mcAPI.logout(context);
-      const userLoggedIn = false; 
-
-      await context.globalState.update("isUserLoggedIn", userLoggedIn);
-      updateViewVisibility(false);
+     
     })
   );
 
@@ -81,11 +78,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.login', async () => {
       await mcAPI.login();
-      const userLoggedIn = true; 
-
-  await context.globalState.update("isUserLoggedIn", userLoggedIn);
-  updateViewVisibility(true);
-  mermaidChartProvider.refresh()
+   
 
     })
   );
