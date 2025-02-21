@@ -26,7 +26,7 @@ The other link opens the diagram for editing in a browser window.
 
 ## Requirements
 
-The Mermaid Chart extension for Visual Studio Code seamlessly integrates with the Mermaid Chart service, requiring an account to use. Choose between the free tier (limited to 5 diagrams) or the pro tier (unlimited diagrams). Collaborate by setting up teams and sharing diagrams within your development organisation. Simplify diagram management and enhance your workflow with Mermaid Chart for Visual Studio Code.
+The Mermaid Chart extension for Visual Studio Code seamlessly integrates with the Mermaid Chart service, requiring an account to use. Choose between the free tier (limited to 3 diagrams) or the pro tier (unlimited diagrams). Collaborate by setting up teams and sharing diagrams within your development organisation. Simplify diagram management and enhance your workflow with Mermaid Chart for Visual Studio Code.
 
 ## Extension Settings
 

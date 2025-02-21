@@ -19,124 +19,121 @@ export function generateWebviewContent(
             --vscode-foreground: var(--vscode-editor-foreground);
         }
 
-        body {
-            height: 100vh;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--vscode-bg);
-            color: var(--vscode-foreground);
-            font-family: Arial, sans-serif;
-        }
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--vscode-bg);
+      color: var(--vscode-foreground);
+      font-family: Recursive;
+      overflow: hidden;
+    }
 
-        .container {
-            width: 90%;
-            max-width: 384px;
-            height: auto;
-            min-height: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            padding: 20px;
-            background-color: var(--vscode-bg);
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    .container {
+      min-width: 100px; 
+      max-width: 304px; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      padding: 20px;
+      background-color: var(--vscode-bg);
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        .logo-container {
-            width: 100%;
-            max-width: 344px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+    .logo-container {
+      width: 100%;
+      max-width: 344px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
 
-        .logo {
-            width: 80px;
-            height: auto;
-        }
+    .logo {
+      width: 80px;
+      height: auto;
+    }
+    .welcome-msg{
+      margin: 0;
+      font-size: 24px;
+      line-height: 38px;
+      font-weight:420;    
+    }
 
-        .description {
-            width: 100%;
-            max-width: 384px;
-            text-align: center;
-        }
+    .description {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 0;
+        text-align: center;
+    }
 
-       .bulletin {
-    width: 100%;
-    max-width: 344px;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-}
+    .bulletin {
+        font-size: 14px;
+        line-height: 20px;
+        text-align: left;
+    }
+    .login-btn{
+         display: flex;
+         justify-content: center;
+     }
 
-.bulletin ul {
-    list-style-type: disc; /* Ensures bullet points are shown */
-    padding-left: 16px;  /* Adjust based on preference */
-    margin: 0;
-}
+    .bulletin ul {
+        padding-left: 16px;  
+        margin: 0;
+        text-align: left;
+    }
 
-.bulletin li {
-    margin: 4px 0; /* Reduces unnecessary space */
-    padding: 0;
-}
+    .bulletin li {
+        margin: 4px 0; 
+    }
 
-        .highlight-text {
-            width: 90%;
-            max-width: 330px;
-            font-weight: bold;
-            text-align: center;
-        }
+    .highlight-text {
+        margin: 0;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: center;
+    }
 
-        button {
-            width: 80%;
-            max-width: 234px;
-            height: 50px;
-            padding: 12px;
-            border-radius: 12px;
-            background: #E0095F;
+    button {
+        width: 100%;
+        max-width: 234px;
+        height: 60px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #E0095F;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 32px;
+    }
+
+    button:hover {
+        background: #c40065;
+    }
             
+    body, .container {
+    color: var(--vscode-editor-foreground);
+    }
 
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
+    .vscode-dark body, .vscode-dark .container {
+    color: var(--Color-Storm-Grey-300, #BDBCCC);
+    }
 
-        button:hover {
-            background: #c40065;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body, .container {
-                background-color: var(--dark-bg);
-            }
-        }
-
-        @media (prefers-color-scheme: light) {
-            body, .container {
-                background-color: var(--light-bg);
-            }
-        }
-
-        @media (max-width: 300px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-
-            button {
-                width: 100%;
-            }
-        }
+    .vscode-light body, .vscode-light .container {
+    color: var(--Color-Deep-Purple-800, #1E1A2E);
+    }
 
     </style>
 </head>
@@ -144,10 +141,14 @@ export function generateWebviewContent(
     <div class="container">
         <div class="logo-container">
             <img class="logo" src="${logoSrc}" alt="Mermaid Logo">
-            <h2>Welcome to the Official Mermaid Plugin</h2>
+            <h2 class="welcome-msg">Welcome to the 
+            <br>
+            Official Mermaid Plugin
+            </br></h2>
         </div>
         <p class="description">
             Created by the team behind Mermaid open source, this extension elevates your diagramming experience.
+             Sign in to unlock
         </p>
         <div class="bulletin">
     <ul>
@@ -157,7 +158,9 @@ export function generateWebviewContent(
 </div>
 
         <p class="highlight-text">Join now and supercharge your workflow!</p>
+        <div class="login-btn"> 
         <button id="signInButton">Sign in</button>
+        </div>
     </div>
      <script>
         const vscode = acquireVsCodeApi();

@@ -301,10 +301,12 @@ export async function insertMermaidChartToken(
     );
   });
 }
-export function updateViewVisibility(isLoggedIn: boolean,webviewProvider?: MermaidWebviewProvider) {
+
+
+export function updateViewVisibility(isLoggedIn: boolean,webviewProvider?: MermaidWebviewProvider,mermaidChartProvider?: MermaidChartProvider) {
   vscode.commands.executeCommand("setContext", "mermaid.showChart", isLoggedIn);
   vscode.commands.executeCommand("setContext", "mermaid.showWebview", !isLoggedIn);
-  if (!isLoggedIn) webviewProvider?.refresh()
+  (isLoggedIn ? mermaidChartProvider : webviewProvider)?.refresh();
 }
 
 export function getMermaidChartTokenDecoration(): vscode.TextEditorDecorationType {
