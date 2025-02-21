@@ -52,8 +52,8 @@ export class PreviewPanel {
     const config = vscode.workspace.getConfiguration();
 
     // Get the theme settings from configuration
-    const darkTheme = config.get<string>(DARK_THEME_KEY, "neo-dark");
-    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "neo");
+    const darkTheme = config.get<string>(DARK_THEME_KEY, "dark");
+    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "default");
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme ? darkTheme : lightTheme;

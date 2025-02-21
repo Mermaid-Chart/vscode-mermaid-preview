@@ -1,8 +1,8 @@
 <script lang="ts">
-  import mermaid from '@mermaid-chart/mermaid';
+  import mermaid from 'mermaid';
   import Panzoom from '@panzoom/panzoom';
   import { onMount } from 'svelte';
-  import layouts from '@mermaid-chart/layout-elk';
+  import layouts from '@mermaid-js/layout-elk';
   import { vscode } from './utility/vscode'
   import ErrorMessage from './ErrorMessage.svelte';
   import Sidebar from './Sidebar.svelte';
@@ -14,12 +14,12 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let hasErrorOccured= false;
-  let theme: "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null" = "neo"; 
+  let theme: "default" | "base" | "dark" | "forest" | "neutral" | "null" = "default"; 
   $: zoomLevel = 100;
-  $: sidebarBackgroundColor = theme === "dark" || theme === "neo-dark" ? "#4d4d4d" : "white";
-  $: iconBackgroundColor = theme === "dark" || theme === "neo-dark" ? "#4d4d4d" : "white";
-  $: svgColor = theme === "neo-dark" || theme === "dark" ? "white" : "#2329D6";
-  $: shadowColor = theme === "dark" || theme === "neo-dark" ? "#6b6b6b" : "#A3BDFF";
+  $: sidebarBackgroundColor = theme === "dark"? "#4d4d4d" : "white";
+  $: iconBackgroundColor = theme === "dark" ? "#4d4d4d" : "white";
+  $: svgColor = theme === "dark" ? "white" : "#2329D6";
+  $: shadowColor = theme === "dark"? "#6b6b6b" : "#A3BDFF";
 
 
     async function initializeMermaid() {
@@ -173,7 +173,7 @@
     console.log('initialContent', initialContent)
     if (initialContent) {
       diagramContent = decodeURIComponent(initialContent);
-      theme = decodeURIComponent(currentTheme) as "default" | "base" | "dark" | "forest" | "neutral" | "neo" | "neo-dark" | "mc" | "null";
+      theme = decodeURIComponent(currentTheme) as "default" | "base" | "dark" | "forest" | "neutral" | "null";
       renderDiagram();
     } else {
       renderDiagram();
