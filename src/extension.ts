@@ -26,11 +26,10 @@ import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
 import { ensureIdField, extractIdFromCode, getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
 import { customErrorMessage } from "./constants/errorMessages";
 import { MermaidWebviewProvider } from "./panels/loginPanel";
+import analytics from "./analytics";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
-
-
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
@@ -42,13 +41,9 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   updateViewVisibility(isUserLoggedIn);
 
- 
-
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.preview', getPreview)
   );
- 
-
 
   const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor && !isExtensionStarted) {
@@ -70,7 +65,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.logout', async () => {
       mcAPI.logout(context);
-     
+      analytics.trackLogout();
     })
   );
 
@@ -78,8 +73,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.login', async () => {
       await mcAPI.login();
-   
-
+      analytics.trackLogin();
     })
   );
 
@@ -213,6 +207,7 @@ context.subscriptions.push(
         syncAuxFile(editor.document.uri.toString(), uri, range);
       }
     } catch (error) {
+      analytics.trackException(error);
       vscode.window.showErrorMessage(`Error processing Mermaid diagram: ${error instanceof Error ? error.message : "Unknown error occurred."}`);
     }
   })
@@ -265,6 +260,7 @@ context.subscriptions.push(
         } else {
         vscode.window.showErrorMessage("Unknown error occurred.");
         }
+        analytics.trackException(error);
       }
   })
 );
@@ -353,6 +349,7 @@ vscode.workspace.onWillSaveTextDocument(async (event) => {
 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error occurred.";
+        analytics.trackException(error);
         vscode.window.showErrorMessage(`Failed to sync file: ${errorMessage}`);
     }
 };
@@ -545,6 +542,19 @@ context.subscriptions.push(
   context.subscriptions.push(provider, triggerCompletions);
 
   console.log("Mermaid Charts view registered");
+
+  // Global error handling
+  process.on('uncaughtException', (error) => {
+    analytics.trackException(error);
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    if (reason instanceof Error) {
+      analytics.trackException(reason);
+    } else {
+      analytics.trackException(new Error('Unhandled rejection'));
+    }
+  });
 }
 
 // This method is called when your extension is deactivated

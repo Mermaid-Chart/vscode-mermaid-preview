@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
 import { TempFileCache } from "../cache/tempFileCache";
+import analytics from "../analytics";
 
 export async function createMermaidFile(
   context: vscode.ExtensionContext,
@@ -57,6 +58,7 @@ export async function createMermaidFile(
     return editor;
   } catch (error) {
     console.error("Error creating Mermaid file:", error);
+    analytics.trackException(error);
     return null;
   }
 }

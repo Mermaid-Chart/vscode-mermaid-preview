@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import analytics from './analytics';
 
 // Function to map the first word to a diagram type
 export function getDiagramTypeFromWord(firstWord: string, diagramMappings: Record<string, string[]>): string | null {
@@ -16,8 +17,9 @@ export function loadTmLanguage(filePath: string): any | null {
   try {
     const content = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(content);
-  } catch (err) {
-    console.error(`Error loading tmLanguage file: ${filePath}`, err);
+  } catch (error) {
+    console.error(`Error loading tmLanguage file: ${filePath}`, error);
+    analytics.trackException(error);
     return null;
   }
 }

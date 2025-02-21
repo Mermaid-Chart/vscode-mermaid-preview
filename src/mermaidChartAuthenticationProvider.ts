@@ -16,6 +16,7 @@ import {
 import { v4 as uuid } from "uuid";
 import { PromiseAdapter, promiseFromEvent } from "./util";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
+import analytics from "./analytics";
 
 class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   public handleUri(uri: Uri) {
@@ -129,6 +130,7 @@ export class MermaidChartAuthenticationProvider
       return session;
     } catch (e) {
       window.showErrorMessage(`Sign in failed: ${e}`);
+      analytics.trackException(e);
       throw e;
     }
   }
