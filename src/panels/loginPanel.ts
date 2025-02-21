@@ -14,6 +14,7 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
       localResourceRoots: [
         vscode.Uri.joinPath(this.context.extensionUri, "images"),
+        vscode.Uri.joinPath(this.context.extensionUri, "media"),
       ],
     };
     this.updateWebviewContent();

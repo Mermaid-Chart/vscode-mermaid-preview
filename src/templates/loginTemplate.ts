@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+
 export function generateWebviewContent(
   webview: vscode.Webview,
   extensionUri: vscode.Uri
@@ -6,6 +7,11 @@ export function generateWebviewContent(
   const logoSrc = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "images", "panel.svg")
   );
+  const fontUrl = webview.asWebviewUri(
+    vscode.Uri.joinPath(extensionUri, "media","recursive-latin-full-normal.woff2")
+  );
+  console.log("Font URL:", fontUrl.toString());
+  
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -13,43 +19,48 @@ export function generateWebviewContent(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MermaidChart</title>
+
+
     <style>
-        :root {
+
+@font-face {
+  font-family: "Recursive";
+  src: url("${fontUrl}") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+}
+
+
+    :root {
             --vscode-bg: var(--vscode-editor-background);
             --vscode-foreground: var(--vscode-editor-foreground);
-        }
+            
+         }
 
     body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
+     
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: var(--vscode-bg);
-      color: var(--vscode-foreground);
-      font-family: Recursive;
-      overflow: hidden;
+      
+       font-family: "Recursive", serif;
+
     }
 
     .container {
-      min-width: 100px; 
-      max-width: 304px; 
-      min-height: 100vh;
+      
+      max-width: 340px; 
+      
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      align-items: center;
       gap: 24px;
-      padding: 20px;
-      background-color: var(--vscode-bg);
-      border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
     }
 
     .logo-container {
-      width: 100%;
-      max-width: 344px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -59,7 +70,7 @@ export function generateWebviewContent(
 
     .logo {
       width: 80px;
-      height: auto;
+      height: 80px  ;
     }
     .welcome-msg{
       margin: 0;
@@ -69,70 +80,69 @@ export function generateWebviewContent(
     }
 
     .description {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        margin: 0;
-        text-align: center;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      margin: 0;
+      text-align: center;
     }
 
     .bulletin {
-        font-size: 14px;
-        line-height: 20px;
-        text-align: left;
+      width: 100%;
     }
+    
     .login-btn{
-         display: flex;
-         justify-content: center;
+       display: flex;
+       justify-content: center;
      }
 
     .bulletin ul {
-        padding-left: 16px;  
-        margin: 0;
-        text-align: left;
+      color:#8585A4;
+      padding-left: 16px;
     }
 
     .bulletin li {
-        margin: 4px 0; 
+      margin: 4px 0; 
     }
 
     .highlight-text {
-        margin: 0;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 24px;
-        text-align: center;
+      margin: 0;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
     }
 
     button {
-        width: 100%;
-        max-width: 234px;
-        height: 60px;
-        padding: 12px;
-        border-radius: 12px;
-        background: #E0095F;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        line-height: 32px;
+      padding: 12px 84px;
+      border-radius: 12px;
+      background: #E0095F;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: semi-bold;
+      font-family: "Recursive", serif;
+      letter-spacing: -2%;
     }
 
     button:hover {
-        background: #c40065;
+      background: #c40065;
     }
             
     body, .container {
-    color: var(--vscode-editor-foreground);
+      color: var(--vscode-editor-foreground);
     }
 
     .vscode-dark body, .vscode-dark .container {
-    color: var(--Color-Storm-Grey-300, #BDBCCC);
+      color: var(--Color-Storm-Grey-300, #BDBCCC);
     }
 
     .vscode-light body, .vscode-light .container {
-    color: var(--Color-Deep-Purple-800, #1E1A2E);
+      color: var(--Color-Deep-Purple-800, #1E1A2E);
+    }
+
+    .vscode-light body, .vscode-light .container .bulletin ul {
+      color: #272040;
     }
 
     </style>
@@ -147,11 +157,11 @@ export function generateWebviewContent(
             </br></h2>
         </div>
         <p class="description">
-            Created by the team behind Mermaid open source, this extension elevates your diagramming experience.
-             Sign in to unlock
+          Created by the team behind Mermaid open source, this extension offers an advanced and seamless Mermaid editing experience.
         </p>
         <div class="bulletin">
-    <ul>
+        <p>Sign in to unlock</p>
+    <ul style="font-size=14px,font-weight=400px">
         <li>Diagram Sync Seamlessly</li>
         <li>Clickable Diagram References</li>
     </ul>
