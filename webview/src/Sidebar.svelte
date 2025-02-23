@@ -11,7 +11,7 @@
     .sidebar {
         position: absolute;
         top: 5px;
-        right: 5px;
+        right: 20px;
         display: flex;
         align-items: center;
         justify-content: center;

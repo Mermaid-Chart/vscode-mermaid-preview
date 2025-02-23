@@ -16,10 +16,10 @@
   let hasErrorOccured= false;
   let theme: "default" | "base" | "dark" | "forest" | "neutral" | "null" = "default"; 
   $: zoomLevel = 100;
-  $: sidebarBackgroundColor = theme === "dark"? "#4d4d4d" : "white";
-  $: iconBackgroundColor = theme === "dark" ? "#4d4d4d" : "white";
-  $: svgColor = theme === "dark" ? "white" : "#2329D6";
-  $: shadowColor = theme === "dark"? "#6b6b6b" : "#A3BDFF";
+  $: sidebarBackgroundColor = theme?.endsWith("dark")? "#4d4d4d" : "white";
+  $: iconBackgroundColor = theme?.endsWith("dark") ? "#4d4d4d" : "white";
+  $: svgColor = theme?.endsWith("dark") ? "white" : "#2329D6";
+  $: shadowColor = theme?.endsWith("dark")? "#6b6b6b" : "#A3BDFF";
 
 
     async function initializeMermaid() {
@@ -63,8 +63,9 @@
       }
       try {
         const parsed = await mermaid.parse(diagramContent || 'info')
-        if (parsed?.config?.theme) {
-          theme = parsed?.config?.theme;
+        if (parsed?.config?.theme && 
+            ["default", "base", "dark", "forest", "neutral", "null"].includes(parsed.config.theme)) {
+          theme = parsed.config.theme;
         }
         errorMessage = "";
         const currentScale = panzoomInstance?.getScale() || 1;

@@ -21,7 +21,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     const session = await vscode.authentication.getSession(
       MermaidChartAuthenticationProvider.id,
       [],
-      { createIfNone: true }
+      { createIfNone: false }
     );
   
     for (const token of this.mermaidChartTokens) {

@@ -77,23 +77,35 @@ export class PreviewPanel {
 
   private setupListeners() {
     const debouncedUpdate = debounce(() => this.update(), 300);
+    const debouncedCloseCheck = debounce(() => {
+      // Check if any editor (visible or not) has a Mermaid file
+      const hasMermaidFileOpen = vscode.workspace.textDocuments.some(
+        doc => doc.languageId.startsWith('mermaid')
+      );
+
+      if (!hasMermaidFileOpen) {
+        // If no Mermaid files are open, close the preview
+        this.panel.dispose();
+        this.dispose();
+      }
+    }, 500); // 1 second delay before checking and potentially closing
 
     vscode.workspace.onDidChangeTextDocument((event) => {
       if (event.document === this.document) {
         debouncedUpdate();
       }
     }, this.disposables);
+
     vscode.window.onDidChangeActiveTextEditor((editor) => {
-      if (
-        editor && 
-        editor?.document && 
-        (editor?.document?.fileName.endsWith('.mmd') || editor.document.fileName.endsWith('.mermaid') || editor.document.languageId.startsWith('mermaid')) && editor.document.uri.toString() !== this.document.uri.toString()
-      ) {
+      if (editor?.document?.languageId.startsWith('mermaid')) {
           this.document = editor.document; 
           this.isFileChange = true; 
-          debouncedUpdate(); 
+          debouncedUpdate();
+      } else {
+        debouncedCloseCheck();
       }
     }, this.disposables);
+
     vscode.window.onDidChangeActiveColorTheme(() => {
       this.update(); 
   }, this.disposables);

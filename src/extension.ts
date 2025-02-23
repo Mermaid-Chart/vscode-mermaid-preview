@@ -34,12 +34,30 @@ let isExtensionStarted = false;
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
 
-  const isUserLoggedIn = context.globalState.get<boolean>("isUserLoggedIn", false);
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
+
+  const mcAPI = new MermaidChartVSCode();
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mermaidChart.login', async () => {
+      await mcAPI.login();
+      mermaidChartProvider.refresh();
+      analytics.trackLogin();
+    })
+  );
+
+  await mcAPI.initialize(context, mermaidWebviewProvider);
+
+  const isUserLoggedIn = context.globalState.get<boolean>("isUserLoggedIn", false);
+
+  const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider(
+    mcAPI
+  );
+
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("mermaidWebview", mermaidWebviewProvider)
   );
-  updateViewVisibility(isUserLoggedIn);
+  
+  updateViewVisibility(isUserLoggedIn, mermaidWebviewProvider, mermaidChartProvider);
 
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.preview', getPreview)
@@ -67,20 +85,6 @@ export async function activate(context: vscode.ExtensionContext) {
       mcAPI.logout(context);
       analytics.trackLogout();
     })
-  );
-
-  const mcAPI = new MermaidChartVSCode();
-  context.subscriptions.push(
-    vscode.commands.registerCommand('mermaidChart.login', async () => {
-      await mcAPI.login();
-      analytics.trackLogin();
-    })
-  );
-
-  await mcAPI.initialize(context);
-
-  const mermaidChartProvider: MermaidChartProvider = new MermaidChartProvider(
-    mcAPI
   );
 
  let  mermaidChartTokenDecoration: vscode.TextEditorDecorationType;
@@ -384,6 +388,7 @@ context.subscriptions.push(
       return;
     }
 
+    try {
     const newDocument = await mcAPI.createDocument(selectedProject.projectId);
 
     if (!newDocument || !newDocument.documentID) {
@@ -411,6 +416,16 @@ context.subscriptions.push(
 
     PreviewPanel.createOrShow(document);
     vscode.window.showInformationMessage(`Diagram connected successfully with Mermaid chart.`);
+    }   catch(error) {
+      if (error instanceof Error ) {
+        const errMessage = error.message;
+        const matchedError = Object.keys(customErrorMessage).find((key) =>errMessage.includes(key));
+        vscode.window.showErrorMessage(matchedError ? customErrorMessage[matchedError] : `Error: ${errMessage}`);
+        } else {
+        vscode.window.showErrorMessage("Unknown error occurred.");
+        }
+        analytics.trackException(error);
+    }
 
   })
 );

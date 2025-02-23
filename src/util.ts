@@ -306,7 +306,11 @@ export async function insertMermaidChartToken(
 export function updateViewVisibility(isLoggedIn: boolean,webviewProvider?: MermaidWebviewProvider,mermaidChartProvider?: MermaidChartProvider) {
   vscode.commands.executeCommand("setContext", "mermaid.showChart", isLoggedIn);
   vscode.commands.executeCommand("setContext", "mermaid.showWebview", !isLoggedIn);
-  (isLoggedIn ? mermaidChartProvider : webviewProvider)?.refresh();
+  if (isLoggedIn) {
+    mermaidChartProvider?.refresh();
+  } else {
+    webviewProvider?.refresh();
+  }
 }
 
 export function getMermaidChartTokenDecoration(): vscode.TextEditorDecorationType {
