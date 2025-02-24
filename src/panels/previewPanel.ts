@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
+import { isAuxFile } from "../util";
 const DARK_THEME_KEY = "mermaid.vscode.dark";
 const LIGHT_THEME_KEY = "mermaid.vscode.light";
 
@@ -11,6 +12,8 @@ export class PreviewPanel {
   private readonly disposables: vscode.Disposable[] = [];
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
+  private lastContent: string = " ";
+
 
 
   private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
@@ -28,7 +31,7 @@ export class PreviewPanel {
       PreviewPanel.currentPanel.panel.reveal();
       return;
     }
-
+  
     const panel = vscode.window.createWebviewPanel(
       "mermaidPreview",
       "Mermaid Preview",
@@ -40,7 +43,8 @@ export class PreviewPanel {
 
   private update() {
     const extensionPath = vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")?.extensionPath;
-
+    const activeEditor = vscode.window.activeTextEditor;
+    
     if (!extensionPath) {
       throw new Error("Unable to resolve the extension path");
     }
@@ -57,9 +61,14 @@ export class PreviewPanel {
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme ? darkTheme : lightTheme;
+ 
+    const isPreviewable = activeEditor && !isAuxFile(activeEditor.document.fileName);
 
+    if (isPreviewable) {
+      this.lastContent = this.document.getText() || " ";
+    }
 
-    // Initial content to be used (defaults to a single space if empty)
+// Initial content to be used (defaults to a single space if empty)
     const initialContent = this.document.getText() || " ";
   
     if (!this.panel.webview.html) {
@@ -68,7 +77,7 @@ export class PreviewPanel {
 
     this.panel.webview.postMessage({
       type: "update",
-      content: this.document.getText() || " ",
+      content:this.lastContent,
       currentTheme: currentTheme,
       isFileChange: this.isFileChange,
     });
@@ -77,19 +86,6 @@ export class PreviewPanel {
 
   private setupListeners() {
     const debouncedUpdate = debounce(() => this.update(), 300);
-    const debouncedCloseCheck = debounce(() => {
-      // Check if any editor (visible or not) has a Mermaid file
-      const hasMermaidFileOpen = vscode.workspace.textDocuments.some(
-        doc => doc.languageId.startsWith('mermaid')
-      );
-
-      if (!hasMermaidFileOpen) {
-        // If no Mermaid files are open, close the preview
-        this.panel.dispose();
-        this.dispose();
-      }
-    }, 500); // 1 second delay before checking and potentially closing
-
     vscode.workspace.onDidChangeTextDocument((event) => {
       if (event.document === this.document) {
         debouncedUpdate();
@@ -101,9 +97,7 @@ export class PreviewPanel {
           this.document = editor.document; 
           this.isFileChange = true; 
           debouncedUpdate();
-      } else {
-        debouncedCloseCheck();
-      }
+      } 
     }, this.disposables);
 
     vscode.window.onDidChangeActiveColorTheme(() => {
