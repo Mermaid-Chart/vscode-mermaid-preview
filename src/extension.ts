@@ -496,13 +496,8 @@ context.subscriptions.push(
       if (activeEditor) {
           const documentText = activeEditor.document.getText();
           const firstWord = getFirstWordFromDiagram(documentText);
-
-          if (firstWord) {
-              const helpUrl = getHelpUrl(firstWord);
-              vscode.env.openExternal(vscode.Uri.parse(helpUrl));
-          } else {
-              vscode.window.showWarningMessage("Unable to determine diagram type.");
-          }
+          const helpUrl = getHelpUrl(firstWord);
+          vscode.env.openExternal(vscode.Uri.parse(helpUrl));
       } else {
           vscode.window.showWarningMessage("No active editor found.");
       }
