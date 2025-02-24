@@ -579,8 +579,8 @@
       "activitybar": [
         {
           "id": "mermaidActivityBar",
-          "title": "MermaidChart",
-          "icon": "images/mermaid-icon-32-preview.png"
+          "title": "Mermaid Chart",
+          "icon": "images/mermaid-icon-32-preview.svg"
         }
       ]
     },
@@ -594,7 +594,7 @@
         },
         {
           "id": "mermaidWebview",
-          "name": "MermaidChart",
+          "name": "Mermaid Chart",
           "type": "webview",
           "contextualOnly": true,
           "when": "mermaid.showWebview"

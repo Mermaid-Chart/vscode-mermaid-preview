@@ -345,7 +345,7 @@ vscode.workspace.onWillSaveTextDocument(async (event) => {
         
         if (diagramId) {
             vscode.window.showInformationMessage(
-                `Local file saved successfully. Diagram ID: ${diagramId}`
+                `Diagram synced successfully with Mermaid chart. Diagram ID: ${diagramId}`
             );
         } else {
             vscode.window.showInformationMessage('Local file saved successfully.');
