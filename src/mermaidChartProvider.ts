@@ -112,6 +112,7 @@ class Project implements MCTreeItem {
 export class MermaidChartProvider
   implements vscode.TreeDataProvider<MCTreeItem>
 {
+  public static isSyncing: boolean = false;
   constructor(private mcAPI: MermaidChartVSCode) {}
 
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -125,7 +126,23 @@ export class MermaidChartProvider
     this._onDidChangeTreeData.fire();
   }
 
- 
+  public static async waitForSync(): Promise<boolean> {
+    if (!MermaidChartProvider.isSyncing) {
+      return true;
+    }
+
+    return new Promise((resolve) => {
+      const checkSync = () => {
+        if (!MermaidChartProvider.isSyncing) {
+          resolve(true);
+        } else {
+          setTimeout(checkSync, 100);
+        }
+      };
+      checkSync();
+    });
+  }
+
   getItemTypeFromUuid(uuid: string): string {
     if (allTreeViewProjectsCache.length === 0) {
         this.refresh();
@@ -192,59 +209,73 @@ export class MermaidChartProvider
         return Promise.resolve(allTreeViewProjectsCache);
       }
 
-      const mermaidChartProjects: MCProject[] = await this.mcAPI.getProjects();
-      const projectMap = new Map<string, Project>();
-      const allTreeViewProjects: Project[] = [];
+      try {
+        MermaidChartProvider.isSyncing = true;
+        return vscode.window.withProgress({
+          location: vscode.ProgressLocation.Notification,
+          title: "Mermaid Chart",
+          cancellable: false
+        }, async (progress) => {
+          progress.report({ message: "Syncing diagrams from Mermaid..." });
+          
+          const mermaidChartProjects: MCProject[] = await this.mcAPI.getProjects();
+          const projectMap = new Map<string, Project>();
+          const allTreeViewProjects: Project[] = [];
 
-      for (const project of mermaidChartProjects) {
-        const projectInstance = new Project(
-          project.id,
-          new vscode.Range(0, 0, 0, 1),
-          project.title,
-          "",
-          vscode.TreeItemCollapsibleState.Collapsed,
-          []
-        );
-        projectMap.set(project.id, projectInstance);
-      }
+          for (const project of mermaidChartProjects) {
+              const projectInstance = new Project(
+                project.id,
+                new vscode.Range(0, 0, 0, 1),
+                project.title,
+                "",
+              vscode.TreeItemCollapsibleState.Collapsed,
+              []
+              );
+              projectMap.set(project.id, projectInstance);
+          }
 
-      for (const project of mermaidChartProjects) {
-        const projectInstance = projectMap.get(project.id);
-        if (!projectInstance) continue;
+          for (const project of mermaidChartProjects) {
+            const projectInstance = projectMap.get(project.id);
+            if (!projectInstance) continue;
 
-        if (project.parentID) {
-          const parentProject = projectMap.get(project.parentID);
-          if (parentProject) {
-            if (!parentProject.children) {
-              parentProject.children = [];
+            if (project.parentID) {
+                const parentProject = projectMap.get(project.parentID);
+                if (parentProject) {
+                  if (!parentProject.children) {
+                    parentProject.children = [];
+                  }
+                  parentProject.children.push(projectInstance);
+                }
+            } else {
+              allTreeViewProjects.push(projectInstance);
             }
-            parentProject.children.push(projectInstance);
           }
-        } else {
-          allTreeViewProjects.push(projectInstance);
-        }
-      }
 
-      for (const [projectId, projectInstance] of projectMap) {
-        const mermaidChartDocuments = await this.mcAPI.getDocuments(projectId);
-        for (const document of mermaidChartDocuments) {
-          const documentTitle = document.title || "Untitled Diagram";
-          const treeViewDocument = new Document(
-            document.documentID,
-            new vscode.Range(0, 0, 0, 1),
-            documentTitle,
-            document.code || "",
-            vscode.TreeItemCollapsibleState.None
-          );
-          if (!projectInstance.children) {
-            projectInstance.children = [];
+          for (const [projectId, projectInstance] of projectMap) {
+            const mermaidChartDocuments = await this.mcAPI.getDocuments(projectId);
+            for (const document of mermaidChartDocuments) {
+              const documentTitle = document.title || "Untitled Diagram";
+              const treeViewDocument = new Document(
+                document.documentID,
+                  new vscode.Range(0, 0, 0, 1),
+                documentTitle,
+                document.code || "",
+                  vscode.TreeItemCollapsibleState.None
+              );
+              if (!projectInstance.children) {
+                projectInstance.children = [];
           }
-          projectInstance.children.push(treeViewDocument);
-        }
-      }
+              projectInstance.children.push(treeViewDocument);
+            }
+          }
 
-      allTreeViewProjectsCache = allTreeViewProjects;
-      return Promise.resolve(allTreeViewProjects);
+          allTreeViewProjectsCache = allTreeViewProjects;
+          MermaidChartProvider.isSyncing = false;
+          return allTreeViewProjects;
+        });
+      } finally {
+        console.log('ending MermaidChartProvider.isSyncing', MermaidChartProvider.isSyncing)
+      }
     } else {
       return element.children ?? [];
     }

@@ -10,7 +10,6 @@ export function generateWebviewContent(
   const fontUrl = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "media","recursive-latin-full-normal.woff2")
   );
-  console.log("Font URL:", fontUrl.toString());
   
 
   return `<!DOCTYPE html>

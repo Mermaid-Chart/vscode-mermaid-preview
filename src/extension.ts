@@ -303,6 +303,11 @@ vscode.workspace.onWillSaveTextDocument(async (event) => {
         return;
     }
 
+    if (MermaidChartProvider.isSyncing) {
+      vscode.window.showInformationMessage('Please wait, diagrams are being synchronized...');
+      await MermaidChartProvider.waitForSync();
+    }
+
     const content = document.getText();
     
     // Early return if content is empty
@@ -324,8 +329,8 @@ vscode.workspace.onWillSaveTextDocument(async (event) => {
 
             const projectId = getProjectIdForDocument(diagramId);
             if (!projectId) {
-                vscode.window.showErrorMessage('No project ID found for this diagram.');
-                return;
+            vscode.window.showErrorMessage('No project ID found for this diagram.');
+            return;
             }
 
             await mcAPI.setDocument({
