@@ -253,6 +253,7 @@ context.subscriptions.push(
 
       const processedCode = ensureIdField(normalizedContent, newDocument.documentID);
       mermaidChartProvider.refresh();
+      mermaidChartProvider.syncMermaidChart();
       const editor = await createMermaidFile(context, processedCode, true);
 
       if (editor) {
@@ -411,6 +412,7 @@ context.subscriptions.push(
 
     const processedCode = ensureIdField(content, newDocument.documentID);
     mermaidChartProvider.refresh();
+    mermaidChartProvider.syncMermaidChart();
 
     // Apply the new processedCode to the document
     await activeEditor.edit((editBuilder) => {
