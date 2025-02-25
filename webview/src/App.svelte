@@ -115,6 +115,7 @@
           message: errorMessage,
         });
         hasErrorOccured = true
+        element.innerHTML = "";
       }
     }
   }
@@ -192,7 +193,6 @@
     align-items: center;
   }
   #app-container {
-    display: flex;
     flex-direction: column;
     width: 100%;
     height: 100vh;
