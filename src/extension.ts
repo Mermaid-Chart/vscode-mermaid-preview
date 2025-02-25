@@ -53,6 +53,8 @@ export async function activate(context: vscode.ExtensionContext) {
     mcAPI
   );
 
+  mermaidChartProvider.syncMermaidChart();
+  
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("mermaidWebview", mermaidWebviewProvider)
   );
@@ -492,8 +494,6 @@ const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
       mermaidChartProvider.refresh();
     })
   );
-
-  mermaidChartProvider.refresh();
 
 context.subscriptions.push(
   vscode.commands.registerCommand("mermaidChart.diagramHelp", () => {

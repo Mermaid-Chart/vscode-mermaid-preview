@@ -16,7 +16,7 @@ export class MermaidChartVSCode extends MermaidChart {
 
   public async initialize(context: vscode.ExtensionContext, mermaidWebviewProvider?: MermaidWebviewProvider) {
     await this.registerListeners(context, mermaidWebviewProvider);
-    this.setupAPI();
+    await this.setupAPI();
   }
 
   public async login() {
