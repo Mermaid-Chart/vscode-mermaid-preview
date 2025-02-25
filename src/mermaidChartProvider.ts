@@ -16,11 +16,19 @@ export function getAllTreeViewProjectsCache(): Project[] {
   return allTreeViewProjectsCache;
 }
 export function getProjectIdForDocument(diagramId: string): string {
-  return (
-    allTreeViewProjectsCache.find((project) =>
-      project?.children?.some((child) => child.uuid === diagramId)
-    )?.uuid || ""
-  );
+  function findProjectId(projects: any[]): string | null {
+    for (const project of projects) {
+      if (project?.children) {
+        if (project.children.some((child: any) => child.uuid === diagramId)) {
+          return project.uuid;
+        }
+        const foundId = findProjectId(project.children);
+        if (foundId) return foundId;
+      }
+    }
+    return null;
+  }
+  return findProjectId(allTreeViewProjectsCache) || "";
 }
 
 export class MCTreeItem extends vscode.TreeItem {
