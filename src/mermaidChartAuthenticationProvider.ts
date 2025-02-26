@@ -109,7 +109,7 @@ export class MermaidChartAuthenticationProvider
         id: uuid(),
         accessToken: token,
         account: {
-          label: user.fullName,
+          label: user.fullName ? user.fullName:user.emailAddress,
           id: user.emailAddress,
         },
         scopes: [],

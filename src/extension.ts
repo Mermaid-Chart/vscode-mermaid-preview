@@ -224,6 +224,10 @@ context.subscriptions.push(
     const document = await vscode.workspace.openTextDocument(uri);
     const content = document.getText();
     const blockContent = content.substring(document.offsetAt(range.start), document.offsetAt(range.end)).trim();
+    if (MermaidChartProvider.isSyncing) {
+      vscode.window.showInformationMessage('Please wait, diagrams are being synchronized...');
+      await MermaidChartProvider.waitForSync();
+    }
     const projects = getAllTreeViewProjectsCache();
 
     const selectedProject = await vscode.window.showQuickPick(
@@ -383,6 +387,10 @@ context.subscriptions.push(
     if (id) {
       vscode.window.showWarningMessage("This diagram is already connected to Mermaid Chart.");
       return;
+    }
+    if (MermaidChartProvider.isSyncing) {
+      vscode.window.showInformationMessage('Please wait, diagrams are being synchronized...');
+      await MermaidChartProvider.waitForSync();
     }
 
     const projects = getAllTreeViewProjectsCache();
