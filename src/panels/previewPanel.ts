@@ -94,9 +94,11 @@ export class PreviewPanel {
 
     vscode.window.onDidChangeActiveTextEditor((editor) => {
       if (editor?.document?.languageId.startsWith('mermaid')) {
+        if (editor.document.uri.toString() !== this.document?.uri.toString()) {
           this.document = editor.document; 
           this.isFileChange = true; 
           debouncedUpdate();
+        }
       } 
     }, this.disposables);
 

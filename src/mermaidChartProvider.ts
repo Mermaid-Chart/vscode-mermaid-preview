@@ -31,6 +31,46 @@ export function getProjectIdForDocument(diagramId: string): string {
   return findProjectId(allTreeViewProjectsCache) || "";
 }
 
+
+export function getDiagramFromCache(diagramId: string): Document | null {
+  function findDiagram(projects: MCTreeItem[]): Document | null {
+      for (const project of projects) {
+          if (project?.children) {
+              const foundDiagram = project.children.find(
+                  (child) => child.uuid === diagramId && child instanceof Document
+              );
+              if (foundDiagram && foundDiagram instanceof Document) {
+                  return foundDiagram;
+              }
+              const nestedDiagram = findDiagram(project.children);
+              if (nestedDiagram) return nestedDiagram;
+          }
+      }
+      return null;
+  }
+  return findDiagram(allTreeViewProjectsCache);
+}
+
+export function updateDiagramInCache(diagramId: string, newCode: string): void {
+    function updateDiagram(projects: MCTreeItem[]): boolean {
+        for (const project of projects) {
+            if (project?.children) {
+                const foundDiagram = project.children.find(
+                    (child) => child.uuid === diagramId && child instanceof Document
+                );
+                if (foundDiagram && foundDiagram instanceof Document) {
+                    foundDiagram.code = newCode;
+                    return true;
+                }
+                const updated = updateDiagram(project.children);
+                if (updated) return true;
+            }
+        }
+        return false;
+    }
+    updateDiagram(allTreeViewProjectsCache);
+}
+
 export class MCTreeItem extends vscode.TreeItem {
   uuid: string;
   range: vscode.Range;
@@ -231,6 +271,7 @@ export class MermaidChartProvider
       }, async (progress) => {
         progress.report({ message: "Syncing diagrams from Mermaid..." });
         const projects = await this.fetchAndProcessProjects();
+        this._onDidChangeTreeData.fire();
         MermaidChartProvider.isSyncing = false;
         return projects;
       });
