@@ -1,7 +1,6 @@
 import httpClient from './httpClient';
 import * as vscode from "vscode";
 class Analytics {
-  private isActivated: boolean = false;
 
   public sendEvent(eventName: string, errorMessage?: string) {
     const analyticsID = vscode.env.machineId;
@@ -17,10 +16,7 @@ class Analytics {
   }
 
   public trackActivation() {
-    if (!this.isActivated) {
       this.sendEvent('VS Code Extension Activated');
-      this.isActivated = true;
-    }
   }
 
   public trackException(error: any) {

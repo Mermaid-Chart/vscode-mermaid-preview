@@ -34,6 +34,7 @@ let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
+  analytics.trackActivation();
 
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
@@ -621,17 +622,17 @@ context.subscriptions.push(
   console.log("Mermaid Charts view registered");
 
   // Global error handling
-  process.on('uncaughtException', (error) => {
-    analytics.trackException(error);
-  });
+  // process.on('uncaughtException', (error) => {
+  //   analytics.trackException(error);
+  // });
 
-  process.on('unhandledRejection', (reason) => {
-    if (reason instanceof Error) {
-      analytics.trackException(reason);
-    } else {
-      analytics.trackException(new Error('Unhandled rejection'));
-    }
-  });
+  // process.on('unhandledRejection', (reason) => {
+  //   if (reason instanceof Error) {
+  //     analytics.trackException(reason);
+  //   } else {
+  //     analytics.trackException(new Error('Unhandled rejection'));
+  //   }
+  // });
 }
 
 // This method is called when your extension is deactivated

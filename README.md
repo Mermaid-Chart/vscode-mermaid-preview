@@ -127,6 +127,9 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 2.0.2 - 2025-02-28
+- Broken images fix
+
 ### 2.0.0 - 2025-02-28
 New General Features
 Real-Time Local Edit & Preview

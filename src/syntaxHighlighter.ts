@@ -19,7 +19,6 @@ export function loadTmLanguage(filePath: string): any | null {
     return JSON.parse(content);
   } catch (error) {
     console.error(`Error loading tmLanguage file: ${filePath}`, error);
-    analytics.trackException(error);
     return null;
   }
 }
