@@ -178,7 +178,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(editCommandDisposable);
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("mermaidChart.editLocally", (uuid: string) => {
+    vscode.commands.registerCommand("mermaidChart.editLocally", async (uuid: string) => {
       const projects = getAllTreeViewProjectsCache();
    
       // Find the diagram code based on the UUID
@@ -186,10 +186,19 @@ export async function activate(context: vscode.ExtensionContext) {
         
       // Create the Mermaid file if diagramCode is found
       if (diagramCode) {
-        const diagramId = uuid;
-        
-        const processedCode = ensureIdField(diagramCode, diagramId);
-        createMermaidFile(context, processedCode, true);
+      const diagramId = uuid;
+      const processedCode = ensureIdField(diagramCode, diagramId);
+      const projectId = getProjectIdForDocument(diagramId);
+
+      if (projectId) {
+        await mcAPI.setDocument({
+          documentID: diagramId,
+          projectID: projectId,
+          code: processedCode,
+        });
+        updateDiagramInCache(diagramId, processedCode);
+      }
+      createMermaidFile(context, processedCode, true);
       } else {
         vscode.window.showErrorMessage("Diagram not found for the given UUID.");
       }

@@ -612,6 +612,11 @@
           "command": "mermaidChart.diagramHelp",
           "when": "view == mermaidChart",
           "group": "navigation"
+        },
+        {
+          "command": "mermaidChart.diagramHelp",
+          "when": "view == mermaidWebview",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
