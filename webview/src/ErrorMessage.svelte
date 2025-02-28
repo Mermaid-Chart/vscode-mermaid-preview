@@ -4,6 +4,8 @@
   
   <style>
     #error-message {
+        position: fixed;
+        z-index: 1000;
         background-color: #ffdddd;
         color: #d8000c;
         padding: 10px;
