@@ -250,13 +250,12 @@ context.subscriptions.push(
       }
 
       const normalizedContent = normalizeMermaidText(blockContent);
+      const processedCode = ensureIdField(normalizedContent, newDocument.documentID);
       await mcAPI.setDocument({
         documentID: newDocument.documentID,
         projectID: selectedProject.projectId,
-        code: normalizedContent,
+        code: processedCode,
       });
-
-      const processedCode = ensureIdField(normalizedContent, newDocument.documentID);
       mermaidChartProvider.syncMermaidChart();
       const editor = await createMermaidFile(context, processedCode, true);
 
@@ -446,13 +445,12 @@ context.subscriptions.push(
       return;
     }
 
+    const processedCode = ensureIdField(content, newDocument.documentID);
     await mcAPI.setDocument({
       documentID: newDocument.documentID,
       projectID: selectedProject.projectId,
-      code: content,
+      code: processedCode,
     });
-
-    const processedCode = ensureIdField(content, newDocument.documentID);
     mermaidChartProvider.syncMermaidChart();
 
     // Apply the new processedCode to the document
@@ -485,8 +483,20 @@ context.subscriptions.push(
       vscode.window.showErrorMessage("No code found for this diagram.");
       return;
     }
+
+    const projectId = getProjectIdForDocument(item.uuid);
+    if (!projectId) {
+        vscode.window.showErrorMessage('No project ID found for this diagram.');
+        return;
+    }
     const processedCode = ensureIdField(item.code, item.uuid);
-    createMermaidFile(context, processedCode, false)
+    await mcAPI.setDocument({
+      documentID: item.uuid,
+      projectID: projectId,
+      code: processedCode,
+    });
+    updateDiagramInCache(item.uuid, processedCode);
+    createMermaidFile(context, processedCode, false);
   });
 
   context.subscriptions.push(
