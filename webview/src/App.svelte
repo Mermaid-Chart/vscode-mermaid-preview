@@ -58,9 +58,6 @@
 
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
-      if (diagramContent === " ") { 
-            element.innerHTML = ""; 
-      }
       try {
         const parsed = await mermaid.parse(diagramContent || 'info')
         if (parsed?.config?.theme && 
