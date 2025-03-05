@@ -126,6 +126,10 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 2.0.3 - 2025-03-05
+- Fixed performance issues with auto-save
+- Improved handling of save operations for Mermaid files
+
 ### 2.0.2 - 2025-02-28
 - Broken images fix
 
