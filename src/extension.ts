@@ -286,6 +286,11 @@ context.subscriptions.push(
 );
 
 vscode.workspace.onWillSaveTextDocument(async (event) => {
+  if (event.reason !== vscode.TextDocumentSaveReason.Manual) {
+    if (event.document.languageId.startsWith("mermaid")) {
+      return;
+    }
+  }
   if (event.document.languageId.startsWith("mermaid")) {
     const content = event.document.getText();
     const diagramId = extractIdFromCode(content);

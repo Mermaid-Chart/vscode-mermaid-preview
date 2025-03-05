@@ -20,7 +20,7 @@ export class MermaidChartVSCode extends MermaidChart {
   }
 
   public async login() {
-    await this.loginTOMermaidChart();
+    await this.loginToMermaidChart();
   }
 
   public async logout(context: vscode.ExtensionContext): Promise<void> {
@@ -68,7 +68,7 @@ export class MermaidChartVSCode extends MermaidChart {
           if (session) {
             this.setAccessToken(session.accessToken);
           } else {
-            this.setAccessToken("");
+            this.resetAccessToken();
           }
   
           if (!session) {
@@ -104,7 +104,7 @@ export class MermaidChartVSCode extends MermaidChart {
     }
   }
 
-  private async loginTOMermaidChart() {
+  private async loginToMermaidChart() {
     const session = await vscode.authentication.getSession(
       MermaidChartAuthenticationProvider.id,
       [],
