@@ -18,7 +18,7 @@ import {
   viewMermaidChart,
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
-import { createMermaidFile, getPreview } from "./commands/createFile";
+import { createMermaidFile, getPreview, openMermaidPreview } from "./commands/createFile";
 import { handleTextDocumentChange } from "./eventHandlers";
 import { TempFileCache } from "./cache/tempFileCache";
 import { PreviewPanel } from "./panels/previewPanel";
@@ -28,6 +28,7 @@ import { customErrorMessage } from "./constants/errorMessages";
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
+import { aiHandler } from "./services/aiService";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -35,6 +36,9 @@ let isExtensionStarted = false;
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
   analytics.trackActivation();
+
+  const tutor = vscode.chat.createChatParticipant("mermaid-ai", aiHandler);
+  tutor.iconPath = vscode.Uri.joinPath(context.extensionUri, "images", "mermaid-icon.svg");
 
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
@@ -638,6 +642,16 @@ context.subscriptions.push(
   //     analytics.trackException(new Error('Unhandled rejection'));
   //   }
   // });
+
+context.subscriptions.push(
+  vscode.commands.registerCommand('mermaidChart.openResponsePreview', async (mermaidCode: string) => {
+    if (!mermaidCode) {
+      vscode.window.showErrorMessage("No Mermaid code provided");
+      return;
+    }
+    await openMermaidPreview(context, mermaidCode);
+  })
+);
 }
 
 // This method is called when your extension is deactivated

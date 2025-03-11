@@ -145,3 +145,41 @@ export function normalizeMermaidText(code: string): string {
   // Reconstruct the text with proper formatting
   return `---\n${frontMatter.trim()}\n---\n${diagramText}`;
 }
+
+/**
+ * Adds metadata to the frontmatter of a Mermaid diagram
+ * @param code The original diagram code
+ * @param metadata The metadata to add (query, references, generationTime)
+ * @returns The diagram code with updated frontmatter
+ */
+export function addMetadataToFrontmatter(
+  code: string, 
+  metadata: {
+    query?: string;
+    references?: string[];
+    generationTime?: Date;
+    model?: string;
+  }
+): string {
+  const { diagramText, frontMatter } = splitFrontMatter(code);
+  const document = parseFrontMatterYAML(frontMatter);
+  
+  // Add metadata fields if they exist
+  if (metadata.query) {
+    document.contents.set('query', metadata.query);
+  }
+  
+  if (metadata.references && metadata.references.length > 0) {
+    document.contents.set('references', metadata.references);
+  }
+  
+  if (metadata.generationTime) {
+    document.contents.set('generationTime', metadata.generationTime.toISOString());
+  }
+
+  if (metadata.model) {
+    document.contents.set('model', metadata.model);
+  }
+  
+  return `---\n${document.toString()}---\n${diagramText}`;
+}
