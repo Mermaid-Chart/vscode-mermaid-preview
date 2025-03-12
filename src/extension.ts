@@ -29,6 +29,8 @@ import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { aiHandler } from "./services/aiService";
+import { ReferenceChecker } from "./referenceChecker";
+import { DiagramRegenerator } from './diagramRegenerator';
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -650,6 +652,16 @@ context.subscriptions.push(
       return;
     }
     await openMermaidPreview(context, mermaidCode);
+  })
+);
+
+// Initialize reference checker
+const referenceChecker = new ReferenceChecker(context);
+
+// Register command to regenerate diagram
+context.subscriptions.push(
+  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], model?: string, metadata?: any) => {
+    await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, model, metadata);
   })
 );
 }

@@ -17,7 +17,7 @@ function parseFrontMatterYAML(frontMatterYaml: string): Document<YAMLMap, false>
     return document as unknown as Document<YAMLMap, false>;
 }
 
-function splitFrontMatter(text: string) {
+export function splitFrontMatter(text: string) {
     // Normalize line endings and trim the text
     const normalizedText = text.replace(/\r\n?/g, '\n').trim();
     
@@ -182,4 +182,54 @@ export function addMetadataToFrontmatter(
   }
   
   return `---\n${document.toString()}---\n${diagramText}`;
+}
+
+/**
+ * Extracts metadata from the YAML frontmatter of a Mermaid diagram
+ * @param code The diagram code with frontmatter
+ * @returns Object containing metadata (references, generationTime, query, model)
+ */
+export function extractMetadataFromCode(code: string): {
+  references: string[];
+  generationTime?: Date;
+  query?: string;
+  model?: string;
+} {
+  const { frontMatter } = splitFrontMatter(code);
+  if (!frontMatter) {
+    return { references: [] };
+  }
+  
+  const document = parseFrontMatterYAML(frontMatter);
+  const result: {
+    references: string[];
+    generationTime?: Date;
+    query?: string;
+    model?: string;
+  } = {
+    references: []
+  };
+  
+  // Extract references
+  if (document.contents && document.contents.items) {
+    document.contents.items.forEach((item: any) => {
+      if (item.key && item.key.value === 'references' && item.value && item.value.items) {
+        result.references = item.value.items.map((ref: any) => 
+          ref.value ? String(ref.value) : String(ref)
+        );
+      } else if (item.key && item.key.value === 'generationTime' && item.value) {
+        try {
+          result.generationTime = new Date(String(item.value));
+        } catch (error) {
+          console.error('Error parsing generation time:', error);
+        }
+      } else if (item.key && item.key.value === 'query' && item.value) {
+        result.query = String(item.value);
+      } else if (item.key && item.key.value === 'model' && item.value) {
+        result.model = String(item.value);
+      }
+    });
+  }
+  
+  return result;
 }
