@@ -2,11 +2,9 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { 
-  extractMetadataFromCode, 
   splitFrontMatter, 
   addMetadataToFrontmatter 
 } from './frontmatter';
-import * as os from 'os';
 
 /**
  * Class responsible for regenerating Mermaid diagrams
@@ -207,57 +205,6 @@ export class DiagramRegenerator {
           return fullResponse.trim();
         }
       }
-
-
-
-
-
-
-
-
-
-
-//       // Get available models
-//       const models = await vscode.extensions.getExtension('github.copilot')?.exports?.getLanguageModels();
-//       if (!models || models.length === 0) {
-//         throw new Error('No language models available');
-//       }
-      
-//       // Select the model to use
-//       let selectedModel = models[0]; // Default to first available model
-//       if (modelName) {
-//         const matchingModel = models.find((m: any) => 
-//           m.name.toLowerCase().includes(modelName.toLowerCase())
-//         );
-//         if (matchingModel) {
-//           selectedModel = matchingModel;
-//         }
-//       }
-      
-//       // Create messages array with the correct enum values
-//       const messages = [
-//         // System message with instructions
-//         new vscode.LanguageModelChatMessage(1, `
-// You are an expert in Mermaid diagrams. Your task is to update an existing Mermaid diagram based on changes to reference files.
-
-// Follow these guidelines:
-// 1. Maintain the same diagram type and overall structure
-// 2. Update only the parts that need to change based on the modified files
-// 3. Keep the same styling and formatting as the original diagram
-// 4. Ensure the diagram is valid Mermaid syntax
-// 5. Return ONLY the Mermaid diagram code without any explanations
-
-// Respond with only the updated Mermaid diagram code in a code block.`),
-        
-//         // User message with the prompt
-//         vscode.LanguageModelChatMessage.User(prompt)
-//       ];
-      
-      // Send request to language model
-      // const chatResponse = await selectedModel.sendRequest(messages, {});
-      
-      // Extract the response text
-
     } catch (error) {
       console.error('Error getting updated diagram from AI:', error);
       throw new Error(`Failed to generate diagram: ${error instanceof Error ? error.message : String(error)}`);
@@ -279,7 +226,7 @@ export class DiagramRegenerator {
   ): Promise<void> {
     // Get the original diagram content
     const content = document.getText();
-    const { diagramText, frontMatter } = splitFrontMatter(content);
+    const { diagramText } = splitFrontMatter(content);
     
     // If diagrams are identical, no need to show suggestion
     if (diagramText.trim() === updatedDiagram.trim()) {

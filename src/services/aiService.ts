@@ -57,12 +57,12 @@ export class MermaidAIService {
     let fullResponse = '';
     for await (const fragment of chatResponse.text) {
       fullResponse += fragment;
-      stream.markdown(fragment);
     }
     
     // After streaming the full response, extract any mermaid code blocks
     const mermaidRegex = /```mermaid\s*([\s\S]*?)```/g;
     const mermaidBlocks: string[] = [];
+    const mermaidBlocksWithMetadata: string[] = [];
     
     let match;
     while ((match = mermaidRegex.exec(fullResponse)) !== null) {
@@ -78,6 +78,8 @@ export class MermaidAIService {
         
         // Add metadata to the mermaid code
         const codeWithMetadata = addMetadataToFrontmatter(mermaidCode, metadata);
+        const mermaidCodeBlock = `\`\`\`mermaid\n${codeWithMetadata}\n\`\`\``;
+        mermaidBlocksWithMetadata.push(mermaidCodeBlock);
         mermaidBlocks.push(codeWithMetadata);
       }
     }
@@ -85,6 +87,7 @@ export class MermaidAIService {
     // If mermaid blocks were found, add a button to preview them
     if (mermaidBlocks.length > 0) {      
       for (let i = 0; i < mermaidBlocks.length; i++) {
+        stream.markdown(mermaidBlocksWithMetadata[i]);
         stream.button({
           title: `Preview Diagram ${mermaidBlocks.length > 1 ? (i + 1) : ''}`,
           command: "mermaidChart.openResponsePreview",

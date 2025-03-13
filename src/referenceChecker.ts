@@ -42,7 +42,7 @@ export class ReferenceChecker {
    */
   private async checkDocumentReferences(document: vscode.TextDocument) {
     // Only process Mermaid files
-    if (!document.fileName.endsWith('.mmd') && document.languageId !== 'mermaid') {
+    if (!document?.languageId.startsWith('mermaid')) {
       return;
     }
 
@@ -107,7 +107,7 @@ export class ReferenceChecker {
       if (selection === 'Update Diagram') {
         // Extract metadata to get the model
         vscode.workspace.openTextDocument(documentUri).then(document => {
-          const content = document.getText();
+          // const content = document.getText();
           // const metadata = extractMetadataFromCode(content);
           
           // Pass the original query, changed files, and model to the regenerate command
