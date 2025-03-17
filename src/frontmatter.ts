@@ -149,7 +149,7 @@ export function normalizeMermaidText(code: string): string {
 /**
  * Adds metadata to the frontmatter of a Mermaid diagram
  * @param code The original diagram code
- * @param metadata The metadata to add (query, references)
+ * @param metadata The metadata to add (query, references, generationTime)
  * @returns The diagram code with updated frontmatter
  */
 export function addMetadataToFrontmatter(
@@ -157,6 +157,7 @@ export function addMetadataToFrontmatter(
   metadata: {
     query?: string;
     references?: string[];
+    generationTime?: Date;
     model?: string;
   }
 ): string {
@@ -170,6 +171,10 @@ export function addMetadataToFrontmatter(
   
   if (metadata.references && metadata.references.length > 0) {
     document.contents.set('references', metadata.references);
+  }
+
+  if (metadata.generationTime) {
+    document.contents.set('generationTime', metadata.generationTime.toISOString());
   }
 
   if (metadata.model) {
@@ -186,6 +191,7 @@ export function addMetadataToFrontmatter(
  */
 export function extractMetadataFromCode(code: string): {
   references: string[];
+  generationTime?: Date;
   query?: string;
   model?: string;
 } {
@@ -197,6 +203,7 @@ export function extractMetadataFromCode(code: string): {
   const document = parseFrontMatterYAML(frontMatter);
   const result: {
     references: string[];
+    generationTime?: Date;
     query?: string;
     model?: string;
   } = {
@@ -210,6 +217,12 @@ export function extractMetadataFromCode(code: string): {
         result.references = item.value.items.map((ref: any) => 
           ref.value ? String(ref.value) : String(ref)
         );
+      }  else if (item.key && item.key.value === 'generationTime' && item.value) {
+        try {
+          result.generationTime = new Date(String(item.value));
+        } catch (error) {
+          console.error('Error parsing generation time:', error);
+        }
       } else if (item.key && item.key.value === 'query' && item.value) {
         result.query = String(item.value);
       } else if (item.key && item.key.value === 'model' && item.value) {
@@ -221,21 +234,21 @@ export function extractMetadataFromCode(code: string): {
   return result;
 }
 
-export function checkReferencedFiles(metadata: any, workspacePath: string = '', documentPath?: string): string[] {
+export function checkReferencedFiles(metadata: any, workspacePath: string = ''): string[] {
   const changedReferences: string[] = [];
   
-  // Get document modification time if path is provided
-  let documentModTime = 0;
-  if (documentPath && fs.existsSync(documentPath)) {
-    try {
-      const documentStats = fs.statSync(documentPath);
-      documentModTime = documentStats.mtimeMs;
-      console.log('Document modification time:', new Date(documentModTime).toISOString());
-    } catch (error) {
-      console.error('Error getting document stats:', error);
-    }
+  // If no references, return empty array
+  if (!metadata.references || !Array.isArray(metadata.references) || metadata.references.length === 0) {
+    return changedReferences;
+  }
+  
+  // Get generation time from metadata
+  let generationTime = 0;
+  if (metadata.generationTime) {
+    generationTime = new Date(metadata.generationTime).getTime();
+    console.log('Generation time from metadata:', new Date(generationTime).toISOString());
   } else {
-    console.log('No document path or generation time available');
+    console.log('No generation time available in metadata');
   }
   
   for (const reference of metadata.references) {
@@ -244,7 +257,6 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = '', 
     if (!match) continue;
     
     let filePath = match[1].trim();
-
     console.log('Original filePath:', filePath);
     console.log('Is absolute path:', path.isAbsolute(filePath));
     console.log('Workspace path:', workspacePath);
@@ -280,9 +292,9 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = '', 
     const lastModified = stats.mtimeMs;
     console.log(`File ${path.basename(filePath)} modified:`, new Date(lastModified).toISOString());
     
-    // If reference file was modified after document was last modified
-    if (documentModTime > 0 && lastModified > documentModTime) {
-      console.log(`File ${path.basename(filePath)} is newer than document`);
+    // If reference file was modified after generation time
+    if (generationTime > 0 && lastModified > generationTime) {
+      console.log(`File ${path.basename(filePath)} is newer than generation time`);
       changedReferences.push(path.basename(filePath));
     }
   }

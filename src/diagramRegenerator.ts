@@ -257,6 +257,7 @@ export class DiagramRegenerator {
     const updatedMetadata = {
       query: metadata.query,
       references: metadata.references,
+      generationTime: new Date(),
       model: metadata.model
     };
     
@@ -264,10 +265,26 @@ export class DiagramRegenerator {
     const updatedContent = addMetadataToFrontmatter(updatedDiagram, updatedMetadata);
     
     // Create a temporary file with the updated content
-    const tempDir = vscode.Uri.joinPath(uri.with({ path: uri.path.split('/').slice(0, -1).join('/') }), '.temp');
-    const tempUri = vscode.Uri.joinPath(tempDir, `${path.basename(uri.fsPath)}.new`);
+    let tempDir: vscode.Uri;
+    let tempUri: vscode.Uri;
     
     try {
+      // Handle untitled files differently
+      if (uri.scheme === 'untitled') {
+        // For untitled files, use a temp directory in the first workspace folder
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders || workspaceFolders.length === 0) {
+          throw new Error("Cannot create temp files without a workspace folder");
+        }
+        
+        tempDir = vscode.Uri.joinPath(workspaceFolders[0].uri, '.temp');
+        tempUri = vscode.Uri.joinPath(tempDir, `untitled-diagram-${Date.now()}.new`);
+      } else {
+        // For regular files, use the containing directory
+        tempDir = vscode.Uri.joinPath(uri.with({ path: uri.path.split('/').slice(0, -1).join('/') }), '.temp');
+        tempUri = vscode.Uri.joinPath(tempDir, `${path.basename(uri.fsPath)}.new`);
+      }
+      
       // Ensure temp directory exists
       await vscode.workspace.fs.createDirectory(tempDir);
       
@@ -298,11 +315,18 @@ export class DiagramRegenerator {
         await vscode.workspace.applyEdit(edit);
         
         // Create a temporary file with the original content for diff view
-        const originalTempUri = vscode.Uri.joinPath(tempDir, `${path.basename(uri.fsPath)}.original`);
+        let originalTempUri: vscode.Uri;
+        
+        if (uri.scheme === 'untitled') {
+          originalTempUri = vscode.Uri.joinPath(tempDir, `untitled-diagram-${Date.now()}.original`);
+        } else {
+          originalTempUri = vscode.Uri.joinPath(tempDir, `${path.basename(uri.fsPath)}.original`);
+        }
+        
         await vscode.workspace.fs.writeFile(originalTempUri, Buffer.from(content));
         
         // Show diff view with original on left and updated on right
-        const diffTitle = `Diagram Update: ${path.basename(uri.fsPath)}`;
+        const diffTitle = `Diagram Update: ${uri.scheme === 'untitled' ? 'Untitled Diagram' : path.basename(uri.fsPath)}`;
         await vscode.commands.executeCommand('vscode.diff', originalTempUri, uri, diffTitle, {
           preview: true,
           viewColumn: vscode.ViewColumn.Beside

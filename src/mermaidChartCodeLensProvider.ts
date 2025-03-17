@@ -77,18 +77,34 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   private provideCodeLensesForMermaid(document: vscode.TextDocument, codeLenses: vscode.CodeLens[], session: vscode.AuthenticationSession | undefined) {
     const metadata = extractMetadataFromCode(document.getText());
     if (metadata?.references) {
-      const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-      const workspacePath = workspaceFolder ? workspaceFolder.uri.fsPath : '';
-      const  changedReferencesList  = checkReferencedFiles(metadata, workspacePath, document.uri.fsPath);
+      let workspacePath = '';
+      
+      // Handle untitled files differently
+      if (document.uri.scheme === 'untitled') {
+        // Use the first workspace folder as fallback for untitled files
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (workspaceFolders && workspaceFolders.length > 0) {
+          workspacePath = workspaceFolders[0].uri.fsPath;
+        }
+      } else {
+        // For regular files, use the containing workspace folder
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+        workspacePath = workspaceFolder ? workspaceFolder.uri.fsPath : '';
+      }
+      
+      // Only proceed with checking references if we have a valid workspace path
+      if (workspacePath) {
+        const changedReferencesList = checkReferencedFiles(metadata, workspacePath);
         if (changedReferencesList?.length > 0) {
-            codeLenses.push(
-              new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
-                title: "Update Diagram",
-                command: "mermaidChart.regenerateDiagram",
-                arguments: [document.uri, metadata.query, changedReferencesList, metadata.model, metadata, session ? true: false],
-              })
-            );
+          codeLenses.push(
+            new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
+              title: "Update Diagram",
+              command: "mermaidChart.regenerateDiagram",
+              arguments: [document.uri, metadata.query, changedReferencesList, metadata.model, metadata, session ? true: false],
+            })
+          );
         }
       }
+    }
   }
 }
