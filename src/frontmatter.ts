@@ -1,6 +1,6 @@
 import { parseDocument, type Document, YAMLMap, isMap, parse, stringify } from 'yaml';
-import { pattern } from './util';
-
+import * as fs from 'fs';
+import * as path from 'path';
 
 // const frontMatterRegex = /^-{3}\s*[\n\r](.*?[\n\r])-{3}\s*[\n\r]+/s;
 const COMMENT_REGEX = /^\s*%%(?!{)[^\n]+\n?/gm;
@@ -149,7 +149,7 @@ export function normalizeMermaidText(code: string): string {
 /**
  * Adds metadata to the frontmatter of a Mermaid diagram
  * @param code The original diagram code
- * @param metadata The metadata to add (query, references, generationTime)
+ * @param metadata The metadata to add (query, references)
  * @returns The diagram code with updated frontmatter
  */
 export function addMetadataToFrontmatter(
@@ -157,7 +157,6 @@ export function addMetadataToFrontmatter(
   metadata: {
     query?: string;
     references?: string[];
-    generationTime?: Date;
     model?: string;
   }
 ): string {
@@ -172,10 +171,6 @@ export function addMetadataToFrontmatter(
   if (metadata.references && metadata.references.length > 0) {
     document.contents.set('references', metadata.references);
   }
-  
-  if (metadata.generationTime) {
-    document.contents.set('generationTime', metadata.generationTime.toISOString());
-  }
 
   if (metadata.model) {
     document.contents.set('model', metadata.model);
@@ -187,11 +182,10 @@ export function addMetadataToFrontmatter(
 /**
  * Extracts metadata from the YAML frontmatter of a Mermaid diagram
  * @param code The diagram code with frontmatter
- * @returns Object containing metadata (references, generationTime, query, model)
+ * @returns Object containing metadata (references, query, model)
  */
 export function extractMetadataFromCode(code: string): {
   references: string[];
-  generationTime?: Date;
   query?: string;
   model?: string;
 } {
@@ -203,7 +197,6 @@ export function extractMetadataFromCode(code: string): {
   const document = parseFrontMatterYAML(frontMatter);
   const result: {
     references: string[];
-    generationTime?: Date;
     query?: string;
     model?: string;
   } = {
@@ -217,12 +210,6 @@ export function extractMetadataFromCode(code: string): {
         result.references = item.value.items.map((ref: any) => 
           ref.value ? String(ref.value) : String(ref)
         );
-      } else if (item.key && item.key.value === 'generationTime' && item.value) {
-        try {
-          result.generationTime = new Date(String(item.value));
-        } catch (error) {
-          console.error('Error parsing generation time:', error);
-        }
       } else if (item.key && item.key.value === 'query' && item.value) {
         result.query = String(item.value);
       } else if (item.key && item.key.value === 'model' && item.value) {
@@ -232,4 +219,73 @@ export function extractMetadataFromCode(code: string): {
   }
   
   return result;
+}
+
+export function checkReferencedFiles(metadata: any, workspacePath: string = '', documentPath?: string): string[] {
+  const changedReferences: string[] = [];
+  
+  // Get document modification time if path is provided
+  let documentModTime = 0;
+  if (documentPath && fs.existsSync(documentPath)) {
+    try {
+      const documentStats = fs.statSync(documentPath);
+      documentModTime = documentStats.mtimeMs;
+      console.log('Document modification time:', new Date(documentModTime).toISOString());
+    } catch (error) {
+      console.error('Error getting document stats:', error);
+    }
+  } else {
+    console.log('No document path or generation time available');
+  }
+  
+  for (const reference of metadata.references) {
+    // Extract file path from reference (assuming format "File: /path/to/file")
+    const match = reference.match(/File: (.*?)(\s|$|\()/);
+    if (!match) continue;
+    
+    let filePath = match[1].trim();
+
+    console.log('Original filePath:', filePath);
+    console.log('Is absolute path:', path.isAbsolute(filePath));
+    console.log('Workspace path:', workspacePath);
+    
+    // If path is not absolute and we have a workspace path, resolve it
+    if (!path.isAbsolute(filePath) && workspacePath) {
+      console.log('Resolving relative path...');
+      
+      // Check if the relative path starts with the workspace folder name
+      const workspaceFolderName = path.basename(workspacePath);
+      if (filePath.startsWith(workspaceFolderName + '/')) {
+        // Remove the duplicate workspace folder name from the path
+        const relativePath = filePath.substring(workspaceFolderName.length + 1);
+        filePath = path.join(workspacePath, relativePath);
+      } else {
+        filePath = path.join(workspacePath, filePath);
+      }
+      
+      console.log('Resolved path:', filePath);
+    }
+    
+    // Check if file exists
+    const fileExists = fs.existsSync(filePath);
+    console.log('File exists:', fileExists);
+    
+    if (!fileExists) {
+      changedReferences.push(`${path.basename(filePath)} (deleted)`);
+      continue;
+    }
+    
+    // Get last modification time of the reference file
+    const stats = fs.statSync(filePath);
+    const lastModified = stats.mtimeMs;
+    console.log(`File ${path.basename(filePath)} modified:`, new Date(lastModified).toISOString());
+    
+    // If reference file was modified after document was last modified
+    if (documentModTime > 0 && lastModified > documentModTime) {
+      console.log(`File ${path.basename(filePath)} is newer than document`);
+      changedReferences.push(path.basename(filePath));
+    }
+  }
+  
+  return changedReferences;
 }

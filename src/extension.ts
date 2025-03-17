@@ -29,7 +29,6 @@ import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { aiHandler } from "./services/aiService";
-import { ReferenceChecker } from "./referenceChecker";
 import { DiagramRegenerator } from './diagramRegenerator';
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
@@ -656,12 +655,25 @@ context.subscriptions.push(
 );
 
 // Initialize reference checker
-const referenceChecker = new ReferenceChecker(context);
+// const referenceChecker = new ReferenceChecker(context);
 
 // Register command to regenerate diagram
 context.subscriptions.push(
-  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], model?: string, metadata?: any) => {
-    await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, model, metadata);
+  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], model?: string, metadata?: any, isLoggedIn?: boolean) => {
+    if (isLoggedIn) {
+      await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, model, metadata);
+    } else {
+      const result = await vscode.window.showInformationMessage(
+        'Please login to Mermaid Chart to regenerate diagrams.',
+        { modal: true }, 
+        'Login',
+      );
+      if (result === 'Login') {
+        await mcAPI.login();
+      } else {
+        console.log('Login cancelled');
+      }
+    }
   })
 );
 }

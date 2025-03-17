@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { isAuxFile, MermaidChartToken } from "./util";
+import {  isAuxFile, MermaidChartToken } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
-import { extractIdFromCode } from "./frontmatter";
+import { extractIdFromCode, extractMetadataFromCode, checkReferencedFiles } from "./frontmatter";
 
 export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   constructor(private mermaidChartTokens: MermaidChartToken[]) {}
@@ -23,15 +23,19 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
       [],
       { createIfNone: false }
     );
-  
-    for (const token of this.mermaidChartTokens) {
-      const documentText = editor.document.getText(token.range);
-      const diagramId = extractIdFromCode(documentText);
-      const isAux = isAuxFile(editor.document.fileName);
-      if (isAux) {
-        this.addAuxFileCodeLenses(codeLenses, token, session, diagramId);
-      } else {
-        this.addMainFileCodeLenses(codeLenses, token);
+
+    if (editor?.document?.languageId.startsWith('mermaid')){
+      this.provideCodeLensesForMermaid(document, codeLenses, session);
+    } else {
+      for (const token of this.mermaidChartTokens) {
+        const documentText = editor.document.getText(token.range);
+        const diagramId = extractIdFromCode(documentText);
+        const isAux = isAuxFile(editor.document.fileName);
+        if (isAux) {
+          this.addAuxFileCodeLenses(codeLenses, token, session, diagramId);
+        } else {
+          this.addMainFileCodeLenses(codeLenses, token);
+        }
       }
     }
   
@@ -68,5 +72,23 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     args: any[]
   ): vscode.CodeLens {
     return new vscode.CodeLens(token.range, { title, command, arguments: args });
+  }
+
+  private provideCodeLensesForMermaid(document: vscode.TextDocument, codeLenses: vscode.CodeLens[], session: vscode.AuthenticationSession | undefined) {
+    const metadata = extractMetadataFromCode(document.getText());
+    if (metadata?.references) {
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+      const workspacePath = workspaceFolder ? workspaceFolder.uri.fsPath : '';
+      const  changedReferencesList  = checkReferencedFiles(metadata, workspacePath, document.uri.fsPath);
+        if (changedReferencesList?.length > 0) {
+            codeLenses.push(
+              new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
+                title: "Update Diagram",
+                command: "mermaidChart.regenerateDiagram",
+                arguments: [document.uri, metadata.query, changedReferencesList, metadata.model, metadata, session ? true: false],
+              })
+            );
+        }
+      }
   }
 }

@@ -72,7 +72,6 @@ export class MermaidAIService {
         const metadata = {
           query: request.prompt,
           references: await this.extractReferenceInfo(request.references),
-          generationTime: new Date(),
           model: request.model.name
         };
         
@@ -89,7 +88,7 @@ export class MermaidAIService {
       for (let i = 0; i < mermaidBlocks.length; i++) {
         stream.markdown(mermaidBlocksWithMetadata[i]);
         stream.button({
-          title: `Preview Diagram ${mermaidBlocks.length > 1 ? (i + 1) : ''}`,
+          title: `Go to Diagram ${mermaidBlocks.length > 1 ? (i + 1) : ''}`,
           command: "mermaidChart.openResponsePreview",
           arguments: [mermaidBlocks[i]]
         });
@@ -121,10 +120,12 @@ export class MermaidAIService {
         
         if (value instanceof vscode.Uri) {
           // For file references, just store the path
-          referenceInfo.push(`File: ${value.path}`);
+          const relativePath = vscode.workspace.asRelativePath(value, true);
+          referenceInfo.push(`File: ${relativePath}`);
         } else if (value instanceof vscode.Location) {
+          const relativePath = vscode.workspace.asRelativePath(value.uri, true);
           // For location references, store the path and line numbers
-          referenceInfo.push(`File: ${value.uri.path} (lines ${value.range.start.line + 1}-${value.range.end.line + 1})`);
+          referenceInfo.push(`File: ${relativePath} (lines ${value.range.start.line + 1}-${value.range.end.line + 1})`);
         } else if (typeof value === 'string') {
           // For string references
           referenceInfo.push(`Reference: ${value}`);

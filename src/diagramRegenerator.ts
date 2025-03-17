@@ -106,12 +106,31 @@ export class DiagramRegenerator {
     const unchangedFiles: string[] = [];
     const deletedFiles: string[] = [];
     
+    // Get workspace folder path to resolve relative paths
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    const workspacePath = workspaceFolders && workspaceFolders.length > 0 
+      ? workspaceFolders[0].uri.fsPath 
+      : '';
+    
     for (const reference of allReferences) {
       const match = reference.match(/File: (.*?)(\s|$|\()/);
       if (!match) continue;
       
-      const filePath = match[1].trim();
+      let filePath = match[1].trim();
       const fileName = path.basename(filePath);
+      
+      // Resolve relative paths if needed
+      if (!path.isAbsolute(filePath) && workspacePath) {
+        // Check if the relative path starts with the workspace folder name
+        const workspaceFolderName = path.basename(workspacePath);
+        if (filePath.startsWith(workspaceFolderName + '/')) {
+          // Remove the duplicate workspace folder name from the path
+          const relativePath = filePath.substring(workspaceFolderName.length + 1);
+          filePath = path.join(workspacePath, relativePath);
+        } else {
+          filePath = path.join(workspacePath, filePath);
+        }
+      }
       
       // Check if this is a changed file
       const isChanged = changedFiles && changedFiles.some(cf => 
@@ -238,7 +257,6 @@ export class DiagramRegenerator {
     const updatedMetadata = {
       query: metadata.query,
       references: metadata.references,
-      generationTime: new Date(),
       model: metadata.model
     };
     
@@ -256,32 +274,50 @@ export class DiagramRegenerator {
       // Write updated content to temp file
       await vscode.workspace.fs.writeFile(tempUri, Buffer.from(updatedContent));
       
-      // Show diff view
-      const diffTitle = `Diagram Update: ${path.basename(uri.fsPath)}`;
-      await vscode.commands.executeCommand('vscode.diff', uri, tempUri, diffTitle, {
-        preview: true,
-        viewColumn: vscode.ViewColumn.Active
-      });
-      
-      // Show accept/reject buttons
-      const acceptButton = 'Accept Changes';
-      const rejectButton = 'Reject Changes';
+      // Show options directly without redirecting first
+      const applyButton = 'Apply Changes';
+      const applyAndViewDiffButton = 'Apply and View Diff';
       
       const choice = await vscode.window.showInformationMessage(
-        'Review the proposed changes to your Mermaid diagram.',
+        'Mermaid diagram has been updated. What would you like to do?',
         { modal: false },
-        acceptButton,
-        rejectButton
+        applyButton,
+        applyAndViewDiffButton
       );
       
-      if (choice === acceptButton) {
-        // Apply the changes
+      if (choice === applyButton) {
+        // Apply the changes directly
         const edit = new vscode.WorkspaceEdit();
         edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), updatedContent);
         await vscode.workspace.applyEdit(edit);
         vscode.window.showInformationMessage("Diagram updated successfully");
-      } else {
-        vscode.window.showInformationMessage("Diagram update cancelled");
+      } else if (choice === applyAndViewDiffButton) {
+        // First apply the changes
+        const edit = new vscode.WorkspaceEdit();
+        edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), updatedContent);
+        await vscode.workspace.applyEdit(edit);
+        
+        // Create a temporary file with the original content for diff view
+        const originalTempUri = vscode.Uri.joinPath(tempDir, `${path.basename(uri.fsPath)}.original`);
+        await vscode.workspace.fs.writeFile(originalTempUri, Buffer.from(content));
+        
+        // Show diff view with original on left and updated on right
+        const diffTitle = `Diagram Update: ${path.basename(uri.fsPath)}`;
+        await vscode.commands.executeCommand('vscode.diff', originalTempUri, uri, diffTitle, {
+          preview: true,
+          viewColumn: vscode.ViewColumn.Beside
+        });
+        
+        vscode.window.showInformationMessage("Diagram updated successfully and diff view opened");
+        
+        // Clean up original temp file after a delay
+        setTimeout(async () => {
+          try {
+            await vscode.workspace.fs.delete(originalTempUri);
+          } catch (error) {
+            // Ignore errors on delayed cleanup
+          }
+        }, 60000); // Clean up after 1 minute
       }
       
       // Clean up temp file
@@ -291,10 +327,10 @@ export class DiagramRegenerator {
         console.error('Error deleting temp file:', error);
       }
     } catch (error) {
-      console.error('Error showing diff view:', error);
-      vscode.window.showErrorMessage(`Error showing diagram diff: ${error instanceof Error ? error.message : String(error)}`);
+      console.error('Error processing diagram update:', error);
+      vscode.window.showErrorMessage(`Error updating diagram: ${error instanceof Error ? error.message : String(error)}`);
       
-      // Fallback to direct edit if diff view fails
+      // Fallback to direct edit if there's an error
       const acceptFallback = await vscode.window.showInformationMessage(
         'Would you like to apply the changes directly?',
         'Yes', 'No'
