@@ -574,6 +574,28 @@
           ],
           "default": "default",
           "description": "Default mermaid theme used for light theme"
+        },
+        "mermaidChart.aiVendor": {
+          "type": "string",
+          "default": "copilot",
+          "enum": ["copilot", "openai", "anthropic"],
+          "enumDescriptions": [
+            "GitHub Copilot",
+            "OpenAI models"
+          ],
+          "description": "The AI vendor to use for diagram generation"
+        },
+        "mermaidChart.aiModelFamily": {
+          "type": "string",
+          "default": "gpt-4o",
+          "enum": ["gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"],
+          "enumDescriptions": [
+            "GPT-4o (Recommended for best results)",
+            "GPT-4",
+            "gpt-4-turbo",
+            "GPT-3.5 Turbo"
+          ],
+          "description": "The AI model family to use for diagram generation"
         }
       }
     },

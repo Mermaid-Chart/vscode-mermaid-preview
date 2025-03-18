@@ -158,7 +158,6 @@ export function addMetadataToFrontmatter(
     query?: string;
     references?: string[];
     generationTime?: Date;
-    model?: string;
   }
 ): string {
   const { diagramText, frontMatter } = splitFrontMatter(code);
@@ -176,10 +175,6 @@ export function addMetadataToFrontmatter(
   if (metadata.generationTime) {
     document.contents.set('generationTime', metadata.generationTime.toISOString());
   }
-
-  if (metadata.model) {
-    document.contents.set('model', metadata.model);
-  }
   
   return `---\n${document.toString()}---\n${diagramText}`;
 }
@@ -187,13 +182,12 @@ export function addMetadataToFrontmatter(
 /**
  * Extracts metadata from the YAML frontmatter of a Mermaid diagram
  * @param code The diagram code with frontmatter
- * @returns Object containing metadata (references, query, model)
+ * @returns Object containing metadata (references, query)
  */
 export function extractMetadataFromCode(code: string): {
   references: string[];
   generationTime?: Date;
   query?: string;
-  model?: string;
 } {
   const { frontMatter } = splitFrontMatter(code);
   if (!frontMatter) {
@@ -205,7 +199,6 @@ export function extractMetadataFromCode(code: string): {
     references: string[];
     generationTime?: Date;
     query?: string;
-    model?: string;
   } = {
     references: []
   };
@@ -225,8 +218,6 @@ export function extractMetadataFromCode(code: string): {
         }
       } else if (item.key && item.key.value === 'query' && item.value) {
         result.query = String(item.value);
-      } else if (item.key && item.key.value === 'model' && item.value) {
-        result.model = String(item.value);
       }
     });
   }
@@ -246,7 +237,6 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
   let generationTime = 0;
   if (metadata.generationTime) {
     generationTime = new Date(metadata.generationTime).getTime();
-    console.log('Generation time from metadata:', new Date(generationTime).toISOString());
   } else {
     console.log('No generation time available in metadata');
   }
@@ -257,13 +247,9 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
     if (!match) continue;
     
     let filePath = match[1].trim();
-    console.log('Original filePath:', filePath);
-    console.log('Is absolute path:', path.isAbsolute(filePath));
-    console.log('Workspace path:', workspacePath);
     
     // If path is not absolute and we have a workspace path, resolve it
     if (!path.isAbsolute(filePath) && workspacePath) {
-      console.log('Resolving relative path...');
       
       // Check if the relative path starts with the workspace folder name
       const workspaceFolderName = path.basename(workspacePath);
@@ -274,13 +260,10 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
       } else {
         filePath = path.join(workspacePath, filePath);
       }
-      
-      console.log('Resolved path:', filePath);
-    }
+  }
     
     // Check if file exists
     const fileExists = fs.existsSync(filePath);
-    console.log('File exists:', fileExists);
     
     if (!fileExists) {
       changedReferences.push(`${path.basename(filePath)} (deleted)`);
@@ -290,11 +273,9 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
     // Get last modification time of the reference file
     const stats = fs.statSync(filePath);
     const lastModified = stats.mtimeMs;
-    console.log(`File ${path.basename(filePath)} modified:`, new Date(lastModified).toISOString());
     
     // If reference file was modified after generation time
     if (generationTime > 0 && lastModified > generationTime) {
-      console.log(`File ${path.basename(filePath)} is newer than generation time`);
       changedReferences.push(path.basename(filePath));
     }
   }

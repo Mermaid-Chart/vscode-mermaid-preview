@@ -28,7 +28,6 @@ export class RemoteSyncHandler {
                 vscode.window.showErrorMessage('Please resolve merge conflicts before saving.');
                 return 'abort';
             }
-
             const remoteVersion = await this.mcAPI.getDocument({ documentID: diagramId });
             const originalDiagram = getDiagramFromCache(diagramId);
 

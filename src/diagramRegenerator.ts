@@ -15,13 +15,11 @@ export class DiagramRegenerator {
    * @param uri The URI of the diagram file
    * @param originalQuery The original query used to generate the diagram
    * @param changedFiles Array of changed file names
-   * @param model The model to use for regeneration
    */
   public static async regenerateDiagram(
     uri: vscode.Uri, 
     originalQuery?: string, 
     changedFiles?: string[], 
-    model?: string,
     metadata?: any
   ): Promise<void> {
     try {
@@ -47,7 +45,7 @@ export class DiagramRegenerator {
       }, async (progress) => {
         try {
           // Get the model and send the request
-          const updatedDiagram = await this.getUpdatedDiagramFromAI(fullPrompt, model || metadata.model);
+          const updatedDiagram = await this.getUpdatedDiagramFromAI(fullPrompt);
           
           // Update the document
           await this.updateDocument(uri, document, updatedDiagram, metadata);
@@ -184,16 +182,35 @@ export class DiagramRegenerator {
   /**
    * Gets an updated diagram from the AI
    * @param prompt The prompt to send to the AI
-   * @param modelName The name of the model to use
    * @returns The updated diagram text
    */
-  private static async getUpdatedDiagramFromAI(prompt: string, modelName?: string): Promise<any> {
+  private static async getUpdatedDiagramFromAI(prompt: string): Promise<any> {
     try {
+      // Get user configuration for AI vendor and model family
+      const config = vscode.workspace.getConfiguration('mermaidChart');
+      const configuredVendor = config.get<string>('aiVendor') || 'copilot';
+      const configuredFamily = config.get<string>('aiModelFamily') || 'gpt-4o';
 
+      // Use the configured values or fallback to defaults
       let [model] = await vscode.lm.selectChatModels({
-        vendor: 'copilot',
-        family: 'gpt-4o'
+        vendor: configuredVendor,
+        family: configuredFamily
       });
+      
+      // If no model was found with the specific configuration, try to get any model from the vendor
+      if (!model) {
+        [model] = await vscode.lm.selectChatModels({
+          vendor: configuredVendor
+        });
+        
+        // If still no model, fall back to any available model
+        if (!model) {
+          [model] = await vscode.lm.selectChatModels({});
+          if (!model) {
+            throw new Error('No AI models available. Please check your AI service configuration.');
+          }
+        }
+      }
   
       // init the chat message
       const messages = [
@@ -258,7 +275,6 @@ export class DiagramRegenerator {
       query: metadata.query,
       references: metadata.references,
       generationTime: new Date(),
-      model: metadata.model
     };
     
     // Use the existing addMetadataToFrontmatter function from frontmatter.ts

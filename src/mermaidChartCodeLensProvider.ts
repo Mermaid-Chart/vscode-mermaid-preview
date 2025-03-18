@@ -100,7 +100,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
             new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
               title: "Update Diagram",
               command: "mermaidChart.regenerateDiagram",
-              arguments: [document.uri, metadata.query, changedReferencesList, metadata.model, metadata, session ? true: false],
+              arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })
           );
         }

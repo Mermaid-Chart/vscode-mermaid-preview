@@ -73,7 +73,6 @@ export class MermaidAIService {
           query: request.prompt,
           references: await this.extractReferenceInfo(request.references),
           generationTime: new Date(),
-          model: request.model.name
         };
         
         // Add metadata to the mermaid code

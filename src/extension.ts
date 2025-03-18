@@ -379,7 +379,6 @@ vscode.workspace.onWillSaveTextDocument(async (event) => {
                 }
 
                 progress.report({ message: 'Checking for remote changes...' });
-                
                 // Create a promise that resolves when remote sync is complete
                 const remoteSyncHandler = new RemoteSyncHandler(mcAPI);
                 const syncDecision = await remoteSyncHandler.handleRemoteChanges(
@@ -659,9 +658,9 @@ context.subscriptions.push(
 
 // Register command to regenerate diagram
 context.subscriptions.push(
-  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], model?: string, metadata?: any, isLoggedIn?: boolean) => {
+  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], metadata?: any, isLoggedIn?: boolean) => {
     if (isLoggedIn) {
-      await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, model, metadata);
+      await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, metadata);
     } else {
       const result = await vscode.window.showInformationMessage(
         'Please login to Mermaid Chart to regenerate diagrams.',
