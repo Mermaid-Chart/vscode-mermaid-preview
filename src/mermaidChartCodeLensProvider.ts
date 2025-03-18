@@ -98,7 +98,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
         if (changedReferencesList?.length > 0) {
           codeLenses.push(
             new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
-              title: "Update Diagram",
+              title: "Update Diagram with Latest Changes",
               command: "mermaidChart.regenerateDiagram",
               arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })
