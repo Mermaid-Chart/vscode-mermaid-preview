@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { PROMPT_TEMPLATES } from "../constants/prompts";
-import { addMetadataToFrontmatter } from "../frontmatter";
+import { PROMPT_TEMPLATES } from "./prompts";
+import { addMetadataToFrontmatter } from "../../frontmatter";
 
 /**
  * AI service to handle chat requests related to Mermaid diagrams
@@ -144,11 +144,7 @@ export class MermaidAIService {
    * @returns Array of initial messages
    */
   private static initializeMessages(request: vscode.ChatRequest): vscode.LanguageModelChatMessage[] {
-    const prompt = request.command === 'diagram-types' 
-      ? PROMPT_TEMPLATES.DIAGRAM_TYPES 
-      : PROMPT_TEMPLATES.BASE;
-    
-    return [vscode.LanguageModelChatMessage.User(prompt)];
+    return [vscode.LanguageModelChatMessage.User(PROMPT_TEMPLATES.BASE)];
   }
   
   /**

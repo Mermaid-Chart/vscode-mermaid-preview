@@ -28,19 +28,20 @@ import { customErrorMessage } from "./constants/errorMessages";
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
-import { aiHandler } from "./services/aiService";
-import { DiagramRegenerator } from './diagramRegenerator';
+import { aiHandler } from './commercial/ai/aiService';
+import { DiagramRegenerator } from './commercial/sync/diagramRegenerator';
+import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
+import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
+
   analytics.trackActivation();
-
-  const tutor = vscode.chat.createChatParticipant("mermaid-ai", aiHandler);
-  tutor.iconPath = vscode.Uri.joinPath(context.extensionUri, "images", "mermaid-icon.svg");
-
+  initializeAIChatParticipant(context);
+  
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
   const mcAPI = new MermaidChartVSCode();
@@ -642,6 +643,30 @@ context.subscriptions.push(
   //     analytics.trackException(new Error('Unhandled rejection'));
   //   }
   // });
+  context.subscriptions.push(
+    vscode.commands.registerCommand("extension.openCopilotChat", async () => {
+      const copilotExtension = vscode.extensions.getExtension("GitHub.copilot-chat");
+      if (!copilotExtension) {
+        const installOption = "Install GitHub Copilot Chat";
+        const selection = await vscode.window.showErrorMessage(
+          "GitHub Copilot Chat extension is not installed. Please install it from the VS Code Marketplace.",
+          installOption
+        );
+  
+        if (selection === installOption) {
+          await vscode.commands.executeCommand("extension.open", "GitHub.copilot-chat");
+        }
+        return;
+      }
+      await vscode.commands.executeCommand(
+        "workbench.panel.chat.view.copilot.focus"
+      );
+    
+      await vscode.commands.executeCommand("workbench.action.chat.focusInput");
+      await vscode.commands.executeCommand("deleteAllLeft");
+      await vscode.commands.executeCommand("default:type", { text: "@mermaid-ai " });
+    })
+  );
 
 context.subscriptions.push(
   vscode.commands.registerCommand('mermaidChart.openResponsePreview', async (mermaidCode: string) => {
@@ -653,28 +678,8 @@ context.subscriptions.push(
   })
 );
 
-// Initialize reference checker
-// const referenceChecker = new ReferenceChecker(context);
-
-// Register command to regenerate diagram
-context.subscriptions.push(
-  vscode.commands.registerCommand('mermaidChart.regenerateDiagram', async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], metadata?: any, isLoggedIn?: boolean) => {
-    if (isLoggedIn) {
-      await DiagramRegenerator.regenerateDiagram(uri, originalQuery, changedFiles, metadata);
-    } else {
-      const result = await vscode.window.showInformationMessage(
-        'Please login to Mermaid Chart to regenerate diagrams.',
-        { modal: true }, 
-        'Login',
-      );
-      if (result === 'Login') {
-        await mcAPI.login();
-      } else {
-        console.log('Login cancelled');
-      }
-    }
-  })
-);
+// Register the regenerate command from commercial directory
+registerRegenerateCommand(context, mcAPI);
 }
 
 // This method is called when your extension is deactivated

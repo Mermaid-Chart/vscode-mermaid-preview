@@ -1,10 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { 
-  splitFrontMatter, 
-  addMetadataToFrontmatter 
-} from './frontmatter';
+import { addMetadataToFrontmatter, splitFrontMatter } from '../../frontmatter';
 
 /**
  * Class responsible for regenerating Mermaid diagrams
