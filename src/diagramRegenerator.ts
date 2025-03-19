@@ -283,6 +283,7 @@ export class DiagramRegenerator {
     // Create a temporary file with the updated content
     let tempDir: vscode.Uri;
     let tempUri: vscode.Uri;
+    let originalTempUri: vscode.Uri;
     
     try {
       // Handle untitled files differently
@@ -309,13 +310,13 @@ export class DiagramRegenerator {
       
       // Show options directly without redirecting first
       const applyButton = 'Apply Changes';
-      const applyAndViewDiffButton = 'Apply and View Diff';
+      const viewDiffAndApplyButton = 'View Diff and Apply Changes';
       
       const choice = await vscode.window.showInformationMessage(
         'Mermaid diagram has been updated. What would you like to do?',
         { modal: false },
         applyButton,
-        applyAndViewDiffButton
+        viewDiffAndApplyButton
       );
       
       if (choice === applyButton) {
@@ -324,15 +325,8 @@ export class DiagramRegenerator {
         edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), updatedContent);
         await vscode.workspace.applyEdit(edit);
         vscode.window.showInformationMessage("Diagram updated successfully");
-      } else if (choice === applyAndViewDiffButton) {
-        // First apply the changes
-        const edit = new vscode.WorkspaceEdit();
-        edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), updatedContent);
-        await vscode.workspace.applyEdit(edit);
-        
+      } else if (choice === viewDiffAndApplyButton) {
         // Create a temporary file with the original content for diff view
-        let originalTempUri: vscode.Uri;
-        
         if (uri.scheme === 'untitled') {
           originalTempUri = vscode.Uri.joinPath(tempDir, `untitled-diagram-${Date.now()}.original`);
         } else {
@@ -341,14 +335,58 @@ export class DiagramRegenerator {
         
         await vscode.workspace.fs.writeFile(originalTempUri, Buffer.from(content));
         
-        // Show diff view with original on left and updated on right
+        // Show diff view with updated on left and original on right
         const diffTitle = `Diagram Update: ${uri.scheme === 'untitled' ? 'Untitled Diagram' : path.basename(uri.fsPath)}`;
-        await vscode.commands.executeCommand('vscode.diff', originalTempUri, uri, diffTitle, {
+        await vscode.commands.executeCommand('vscode.diff', tempUri, originalTempUri, diffTitle, {
           preview: true,
           viewColumn: vscode.ViewColumn.Beside
         });
         
-        vscode.window.showInformationMessage("Diagram updated successfully and diff view opened");
+        vscode.window.showInformationMessage("Diff view opened. Changes to either side will update the original file.");
+        
+        // Listen for when the diff editor is closed
+        const diffEditorClosed = vscode.workspace.onDidCloseTextDocument(async (closedDocument) => {
+          if (closedDocument.uri.toString() === tempUri.toString() || 
+              closedDocument.uri.toString() === originalTempUri.toString()) {
+            // Apply changes from the temp file to the original document
+            try {
+              // Try to read from the right-hand side (original) first, as it might have user edits
+              const contentToApply = await this.getLatestDiffContent(originalTempUri, tempUri);
+              
+              const edit = new vscode.WorkspaceEdit();
+              edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), contentToApply);
+              await vscode.workspace.applyEdit(edit);
+              
+              vscode.window.showInformationMessage("Changes from diff view applied successfully");
+            } catch (error) {
+              console.error('Error applying changes:', error);
+            }
+            
+            // Clean up event listener
+            diffEditorClosed.dispose();
+            if (changeListener) changeListener.dispose();
+          }
+        });
+        
+        // Listen for changes in either of the diff files and update original file
+        const changeListener = vscode.workspace.onDidChangeTextDocument(async (event) => {
+          const changedUri = event.document.uri.toString();
+          
+          // Check if the changed document is one of our diff files
+          if (changedUri === originalTempUri.toString() || changedUri === tempUri.toString()) {
+            try {
+              // Get content from the changed document
+              const contentToApply = event.document.getText();
+              
+              // Apply changes to the original file
+              const edit = new vscode.WorkspaceEdit();
+              edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), contentToApply);
+              await vscode.workspace.applyEdit(edit);
+            } catch (error) {
+              console.error('Error auto-updating from diff view:', error);
+            }
+          }
+        });
         
         // Clean up original temp file after a delay
         setTimeout(async () => {
@@ -382,6 +420,24 @@ export class DiagramRegenerator {
         await vscode.workspace.applyEdit(edit);
         vscode.window.showInformationMessage("Diagram updated successfully");
       }
+    }
+  }
+  
+  /**
+   * Gets the latest content from the diff view, prioritizing the right-hand side if it exists
+   * @param rightSideUri URI of the right side document (original with user edits)
+   * @param leftSideUri URI of the left side document (AI generated content)
+   * @returns The content to apply to the original document
+   */
+  private static async getLatestDiffContent(rightSideUri: vscode.Uri, leftSideUri: vscode.Uri): Promise<string> {
+    try {
+      // Try to get content from the right-hand side first (user edits)
+      const rightSideBuffer = await vscode.workspace.fs.readFile(rightSideUri);
+      return rightSideBuffer.toString();
+    } catch (error) {
+      // If right side is not available, fall back to left side
+      const leftSideBuffer = await vscode.workspace.fs.readFile(leftSideUri);
+      return leftSideBuffer.toString();
     }
   }
 }
