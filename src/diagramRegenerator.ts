@@ -335,11 +335,11 @@ export class DiagramRegenerator {
         
         await vscode.workspace.fs.writeFile(originalTempUri, Buffer.from(content));
         
-        // Show diff view with updated on left and original on right
+        // Show diff view with updated on right and original on left (swapped order)
         const diffTitle = `Diagram Update: ${uri.scheme === 'untitled' ? 'Untitled Diagram' : path.basename(uri.fsPath)}`;
-        await vscode.commands.executeCommand('vscode.diff', tempUri, originalTempUri, diffTitle, {
-          preview: true,
-          viewColumn: vscode.ViewColumn.Beside
+        await vscode.commands.executeCommand('vscode.diff', originalTempUri, tempUri, diffTitle, {
+          preview: false,
+          viewColumn: vscode.ViewColumn.Active
         });
         
         vscode.window.showInformationMessage("Diff view opened. Changes to either side will update the original file.");
@@ -348,35 +348,75 @@ export class DiagramRegenerator {
         const diffEditorClosed = vscode.workspace.onDidCloseTextDocument(async (closedDocument) => {
           if (closedDocument.uri.toString() === tempUri.toString() || 
               closedDocument.uri.toString() === originalTempUri.toString()) {
-            // Apply changes from the temp file to the original document
-            try {
-              // Try to read from the right-hand side (original) first, as it might have user edits
-              const contentToApply = await this.getLatestDiffContent(originalTempUri, tempUri);
-              
-              const edit = new vscode.WorkspaceEdit();
-              edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), contentToApply);
-              await vscode.workspace.applyEdit(edit);
-              
-              vscode.window.showInformationMessage("Changes from diff view applied successfully");
-            } catch (error) {
-              console.error('Error applying changes:', error);
-            }
+            let contentToApply: string | undefined;
             
-            // Clean up event listener
-            diffEditorClosed.dispose();
-            if (changeListener) changeListener.dispose();
+            try {
+              // Check if the temp file exists before trying to read it
+              try {
+                await vscode.workspace.fs.stat(tempUri);
+                // File exists, proceed with reading
+                const rightSideDoc = await vscode.workspace.openTextDocument(tempUri);
+                
+                // Check if the document was saved
+                if (rightSideDoc.isDirty) {
+                  vscode.window.showInformationMessage("Changes were not saved, keeping original content");
+                  return;
+                }
+                
+                // Store the content
+                contentToApply = rightSideDoc.getText();
+              } catch (statError) {
+                // File doesn't exist, silently continue to cleanup
+                console.log('Temp file already deleted, skipping content read');
+                return;
+              }
+              
+            } catch (error) {
+              // Only show error message for unexpected errors
+              console.error('Unexpected error:', error);
+              return;
+            } finally {
+              // Clean up event listeners
+              diffEditorClosed.dispose();
+              if (changeListener) changeListener.dispose();
+              
+              // Clean up temp files if they exist
+              try {
+                await vscode.workspace.fs.delete(tempUri, { recursive: true });
+              } catch (error) {
+                // Ignore deletion errors
+              }
+              try {
+                await vscode.workspace.fs.delete(originalTempUri, { recursive: true });
+              } catch (error) {
+                // Ignore deletion errors
+              }
+            }
+
+            // Apply the changes after cleanup if we have content
+            if (contentToApply) {
+              try {
+                const edit = new vscode.WorkspaceEdit();
+                edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), contentToApply);
+                await vscode.workspace.applyEdit(edit);
+                vscode.window.showInformationMessage("Saved changes from diff view applied successfully");
+              } catch (error) {
+                console.error('Error applying changes:', error);
+                vscode.window.showErrorMessage(`Failed to apply changes: ${error instanceof Error ? error.message : String(error)}`);
+              }
+            }
           }
         });
         
-        // Listen for changes in either of the diff files and update original file
-        const changeListener = vscode.workspace.onDidChangeTextDocument(async (event) => {
-          const changedUri = event.document.uri.toString();
+        // Update the change listener to only sync after explicit save
+        const changeListener = vscode.workspace.onDidSaveTextDocument(async (savedDocument) => {
+          const savedUri = savedDocument.uri.toString();
           
-          // Check if the changed document is one of our diff files
-          if (changedUri === originalTempUri.toString() || changedUri === tempUri.toString()) {
+          // Only sync changes from the right side (AI generated content) when explicitly saved
+          if (savedUri === tempUri.toString()) {
             try {
-              // Get content from the changed document
-              const contentToApply = event.document.getText();
+              // Get content from the saved document
+              const contentToApply = savedDocument.getText();
               
               // Apply changes to the original file
               const edit = new vscode.WorkspaceEdit();
@@ -420,24 +460,6 @@ export class DiagramRegenerator {
         await vscode.workspace.applyEdit(edit);
         vscode.window.showInformationMessage("Diagram updated successfully");
       }
-    }
-  }
-  
-  /**
-   * Gets the latest content from the diff view, prioritizing the right-hand side if it exists
-   * @param rightSideUri URI of the right side document (original with user edits)
-   * @param leftSideUri URI of the left side document (AI generated content)
-   * @returns The content to apply to the original document
-   */
-  private static async getLatestDiffContent(rightSideUri: vscode.Uri, leftSideUri: vscode.Uri): Promise<string> {
-    try {
-      // Try to get content from the right-hand side first (user edits)
-      const rightSideBuffer = await vscode.workspace.fs.readFile(rightSideUri);
-      return rightSideBuffer.toString();
-    } catch (error) {
-      // If right side is not available, fall back to left side
-      const leftSideBuffer = await vscode.workspace.fs.readFile(leftSideUri);
-      return leftSideBuffer.toString();
     }
   }
 }
