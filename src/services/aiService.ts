@@ -111,31 +111,31 @@ export class MermaidAIService {
     if (!references || references.length === 0) {
       return [];
     }
-    
-    const referenceInfo: string[] = [];
-    
+
+    const referenceInfo: Set<string> = new Set();
+
     for (const reference of references) {
       try {
         const value = reference.value;
-        
+
         if (value instanceof vscode.Uri) {
           // For file references, just store the path
           const relativePath = vscode.workspace.asRelativePath(value, true);
-          referenceInfo.push(`File: ${relativePath}`);
+          referenceInfo.add(`File: ${relativePath}`);
         } else if (value instanceof vscode.Location) {
           const relativePath = vscode.workspace.asRelativePath(value.uri, true);
-          // For location references, store the path and line numbers
-          referenceInfo.push(`File: ${relativePath} (lines ${value.range.start.line + 1}-${value.range.end.line + 1})`);
-        } else if (typeof value === 'string') {
-          // For string references
-          referenceInfo.push(`Reference: ${value}`);
+          referenceInfo.add(`File: ${relativePath}`);
+        }
+        else if (typeof value === 'string') {
+          referenceInfo.add(`Reference: ${value}`);
         }
       } catch (error) {
         console.error(`Error extracting reference info: ${error}`);
       }
     }
-    
-    return referenceInfo;
+
+    return Array.from(referenceInfo);
+  
   }
   
   /**

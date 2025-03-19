@@ -264,11 +264,26 @@ export class DiagramRegenerator {
     const content = document.getText();
     const { diagramText } = splitFrontMatter(content);
     
-    // If diagrams are identical, no need to show suggestion
+  
     if (diagramText.trim() === updatedDiagram.trim()) {
-      vscode.window.showInformationMessage("No changes needed to the diagram");
+      // Update the generation time in metadata even if content is unchanged
+      const updatedMetadata = {
+        ...metadata,
+        generationTime: new Date(),
+      };
+    
+      const updatedContent = addMetadataToFrontmatter(updatedDiagram, updatedMetadata);
+    
+      // Apply metadata update without modifying diagram text
+      if (updatedContent.trim() !== content.trim()) {
+        const edit = new vscode.WorkspaceEdit();
+        edit.replace(uri, new vscode.Range(0, 0, document.lineCount, 0), updatedContent);
+        await vscode.workspace.applyEdit(edit);
+        vscode.window.showInformationMessage("No changes needed to the diagram.");
+      } 
       return;
     }
+    
     
     // Update metadata
     const updatedMetadata = {
