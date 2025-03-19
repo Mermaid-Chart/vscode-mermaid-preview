@@ -1,10 +1,9 @@
-# Mixed License
+Copyright (c) 2023–2025 Mermaid Chart
 
-This project contains both MIT licensed and proprietary components.
-
-## MIT License (Base Plugin)
-
-Copyright (c) 2023 Mermaid Chart
+Portions of this software are licensed as follows:
+* All content that resides under the "src/commercial/" directory of this repository, if that directory exists, is licensed under the license defined in "src/commercial/LICENSE.md".
+* All third-party components incorporated into the plugin are licensed under the original license provided by the owner of the applicable component.
+* Content outside of the above mentioned directories or restrictions above is available under the "MIT" license as defined below.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +22,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-## Proprietary Components
-
-The following components are proprietary and require authentication with Mermaid Chart:
-
-- AI-assisted diagram generation (src/commercial/*)
-- Automatic diagram updates (src/commercial/*)
-
-These features are available only to authenticated Mermaid Chart users and are not covered by the MIT license. 
