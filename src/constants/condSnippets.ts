@@ -1,7 +1,7 @@
 export interface SnippetData {
   id: string;
-  diagram: "flowchart" | "sequenceDiagram";
-  section: "shapes" | "notes" | "edges" | "other" | "messages";
+  diagram: "flowchart" | "sequenceDiagram" | "classDiagram";
+  section: "shapes" | "notes" | "edges" | "other" | "messages" | "relationships";
   name: string;
   code?: string;
   completion?: string;
@@ -440,6 +440,186 @@ const snippets: SnippetData[] = [
     sample: "aId --) jId: Message text\n",
     image: "/img/sequenceDiagram/message_dotted_async",
   },
+    // Class Diagram
+    {
+      id: 'mmcl-basic-class',
+      diagram: 'classDiagram',
+      section: 'shapes',
+      name: 'Basic Class',
+      completion: `class \${1:cId}
+      \${1:cId} : +String owner
+      \${1:cId} : +deposit(amount)`,
+      sample: `class BankAccount
+      BankAccount : +String owner
+      BankAccount : +deposit(amount) bool`,
+      image: '',
+    },
+    {
+      id: 'mmcl-generics',
+      diagram: 'classDiagram',
+      section: 'shapes',
+      name: 'Generics',
+      completion: `class \${1:className}~\${2:Gen}~ {
+        int id
+        List~int~ position
+        -List~string~ messages
+        setPoints(List~int~ points)
+        getPoints() List~int~
+        +setMessages(List~string~ messages)
+        +getMessages() List~string~
+        +getDistanceMatrix() List~List~int~~
+      }`,
+      sample: `class BankAccount
+      BankAccount : +String owner
+      BankAccount : +deposit(amount) bool`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-inheritance',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Inheritance',
+      completion: `\${1:class1} --|> \${2:class2}`,
+      sample: `classA --|> classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-composition',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Composition',
+      completion: `\${1:class1} --* \${2:class2}`,
+      sample: `classC --* classD`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-aggregation',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Aggregation',
+      completion: `\${1:class1} --o \${2:class2}`,
+      sample: `classE --o classF`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-association',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Association',
+      completion: `\${1:class1} --> \${2:class2}`,
+      sample: `classK --> classL`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-link',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Link',
+      completion: `\${1:class1} -- \${2:class2}`,
+      sample: `classI -- classJ`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-dependency',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Dependency',
+      completion: `\${1:class1} ..> \${2:class2}`,
+      sample: `classA ..> classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-realization',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'realization',
+      completion: `\${1:class1} ..|> \${2:class2}`,
+      sample: `classA ..|> classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-rel-dashed-link',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Link (Dashed)',
+      completion: `\${1:class1} .. \${2:class2}`,
+      sample: `classA .. classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-lollipop',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Lollipop',
+      completion: `\${1:class1} --() \${2:class2}`,
+      sample: `classA --() classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-anno-interface',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Interface',
+      completion: `<<interface>> \${1:class1}`,
+      sample: `classA --() classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-anno-abstract',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Abstract',
+      completion: `<<abstract>> \${1:class1}`,
+      sample: `classA --() classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-anno-service',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Service',
+      completion: `<<service>> \${1:class1}`,
+      sample: `classA --() classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-anno-enumeration',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Enumeration',
+      completion: `<<enumeration>> \${1:class1}`,
+      sample: `classA --() classB`,
+      image: '',
+    },
+    {
+      id: 'mmcl-direction',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'Direction',
+      completion: `direction LR`,
+      sample: `direction LR`,
+      image: '',
+    },
+    {
+      id: 'mmcl-classdef',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'classDef',
+      completion: `classDef \${1:name} \${2:fill:#f9f,stroke:#333,stroke-width:4px;}
+  `,
+      sample: `classDef purple fill:#f9f,stroke:#333,stroke-width:4px;
+  `,
+      image: '',
+    },
+    {
+      id: 'mmcl-css-class',
+      diagram: 'classDiagram',
+      section: 'relationships',
+      name: 'classDef',
+      completion: `cssClass "\${1:name}" \${2:purpleClass}`,
+      sample: `cssClass "Animal" cssClassName`,
+      image: '',
+    },
 ];
 
 export const getSnippetsBasedOnDiagram = (languageId: string) => {
