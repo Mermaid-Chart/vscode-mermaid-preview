@@ -3,11 +3,7 @@
   "publisher": "MermaidChart",
   "displayName": "Mermaid Chart",
   "description": "The \"official\" Mermaid Editor plugin by the team behind the Mermaid open source project.",
-  "version": "2.0.4",
-  "license": {
-    "type": "Mixed",
-    "url": "https://github.com/Mermaid-Chart/vscode-mermaid-chart/blob/main/LICENSE.md"
-  },
+  "version": "2.0.5",
   "icon": "images/mermaid-chart.png",
   "repository": "github:Mermaid-Chart/vscode-mermaid-chart",
   "engines": {
