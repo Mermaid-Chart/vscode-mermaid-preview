@@ -32,6 +32,7 @@ import { aiHandler } from './commercial/ai/aiService';
 import { DiagramRegenerator } from './commercial/sync/diagramRegenerator';
 import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
+import { registerTools } from './commercial/ai/tools';
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -41,6 +42,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   analytics.trackActivation();
   initializeAIChatParticipant(context);
+  
+  // Register Copilot Agent Mode tools
+  registerTools(context);
   
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 

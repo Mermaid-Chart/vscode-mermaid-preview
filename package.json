@@ -753,6 +753,31 @@
         "description": "create you mermaid diagram?",
         "isSticky": true
       }
+    ],
+    "languageModelTools": [
+      {
+        "name": "mermaid-diagram-creator",
+        "tags": ["vscode_editing"],
+        "displayName": "Mermaid Diagram Creator",
+        "modelDescription": "Create diagrams using Mermaid syntax from natural language descriptions",
+        "icon": "$(pencil)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "Natural language description of the diagram to create"
+            },
+            "type": {
+              "type": "string",
+              "enum": ["flowchart", "sequence", "class", "state", "er", "gantt", "pie"],
+              "description": "Specific diagram type to create (optional)",
+              "default": "flowchart"
+            }
+          },
+          "required": ["description"]
+        }
+      }
     ]
   },
   "scripts": {
@@ -791,5 +816,6 @@
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource/recursive": "^5.1.1"
   },
-  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247",
+  "enabledApiProposals": ["languageModelToolsForAgent"]
 }
