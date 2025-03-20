@@ -743,6 +743,10 @@
       {
         "command": "mermaidChart.showCompletions",
         "title": "Trigger Mermaid Completions"
+      },
+      {
+        "command": "extension.openCopilotChat",
+        "title": "Open Copilot Chat"
       }
     ],
     "chatParticipants": [

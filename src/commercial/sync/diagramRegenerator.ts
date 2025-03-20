@@ -73,6 +73,7 @@ export class DiagramRegenerator {
   ): string {
     let prompt = `Update this Mermaid diagram based on changes to the following files: ${changedFiles?.join(', ')}.\n\n`;
     prompt += "Stay as close as possible to the attached diagram generated in a previous diagram generation.\n\n";
+    prompt += `Ensure that any fields removed from the following files:${changedFiles?.join(', ')} are also removed from the diagram.\n\n`;
     
     if (originalQuery) {
       prompt += `Original query: ${originalQuery}\n\n`;

@@ -25,11 +25,11 @@ export class MermaidAIService {
       
       // Process previous conversation history
       await this.addPreviousMessages(messages, context.history);
-      
+  
       // Process current user request with references
       const userPrompt = await this.processUserPromptWithReferences(request);
       messages.push(vscode.LanguageModelChatMessage.User(userPrompt));
-      
+  
       // Send request to language model
       const chatResponse = await request.model.sendRequest(messages, {}, token);
       
@@ -185,11 +185,11 @@ export class MermaidAIService {
     request: vscode.ChatRequest
   ): Promise<string> {
     let userPrompt = request.prompt;
-    
+  
     if (request.references?.length) {
       userPrompt = await this.appendReferences(userPrompt, request.references);
     }
-    
+  
     return userPrompt;
   }
   
@@ -257,7 +257,11 @@ export class MermaidAIService {
     const fileContent = await vscode.workspace.fs.readFile(uri);
     const fileText = new TextDecoder().decode(fileContent);
     const fileName = uri.path.split('/').pop() || 'file';
-    
+    const documentUri = vscode.window.activeTextEditor?.document.uri;
+    if(uri.path === documentUri?.path){
+      return `${message}\n\nReference file: ${fileName}\n\`\`\`\n${fileText}\n\`\`\``;
+    }
+  
     const lines = fileText.split('\n');
     const startLine = range.start.line;
     const endLine = range.end.line;
