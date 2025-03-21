@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { PROMPT_TEMPLATES } from "./prompts";
-import { addMetadataToFrontmatter } from "../../frontmatter";
+import { addMetadataToFrontmatter, getFirstWordFromDiagram } from "../../frontmatter";
+import analytics from "../../analytics";
 
 /**
  * AI service to handle chat requests related to Mermaid diagrams
@@ -20,6 +21,7 @@ export class MermaidAIService {
     token: vscode.CancellationToken
   ): Promise<void> {
     try {
+      analytics.trackAIChatInvocation();
       // Initialize messages with appropriate system prompt
       const messages = await this.initializeMessages(request);
       
@@ -77,6 +79,11 @@ export class MermaidAIService {
         
         // Add metadata to the mermaid code
         const codeWithMetadata = addMetadataToFrontmatter(mermaidCode, metadata);
+        const firstWord = getFirstWordFromDiagram(codeWithMetadata);
+        if (firstWord) {
+          // Track the diagram type
+          analytics.trackAIGeneratedDiagram(firstWord);
+        }
         const mermaidCodeBlock = `\`\`\`mermaid\n${codeWithMetadata}\n\`\`\``;
         mermaidBlocksWithMetadata.push(mermaidCodeBlock);
         mermaidBlocks.push(codeWithMetadata);

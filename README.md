@@ -1,6 +1,6 @@
 # Mermaid Chart extension for Visual Studio Code
 
-Official Mermaid extension for Visual Studio Code enables developers to seamlessly create, edit, preview and integrate mermaid diagrams from within the VS Code.
+The official Mermaid extension for Visual Studio Code enables developers to seamlessly create, edit, preview and integrate mermaid diagrams from within the VS Code.
 
 ## Now with AI-Powered Diagramming! ✨
 
@@ -42,12 +42,15 @@ Currently supported diagrams and charts:
 - XY chart
 - Zenuml
 
-### AI-Powered Diagramming ✨
-Transform your ideas into diagrams effortlessly with our new AI integration. Our extension includes an AI Chat Participant - simply mention `@mermaid-chart` in any VS Code Github copilot chat and describe what diagram you want to create. The AI assistant will generate the appropriate Mermaid code and preview instantly.
+### Generate AI-powered diagrams directly from your code!
+Transform your ideas and source code into clear, insightful diagrams with our new AI integration in VS Code.<br>
+Just mention **@mermaid-chart** in any GitHub Copilot Chat and describe the diagram you want to create — even link specific source code files!<br>
+ Whether it's a class diagram, sequence diagram, entity relationship diagram, or more — the AI assistant will analyze the code, generate the appropriate Mermaid syntax, and instantly show a live preview.<br>
+Let your code speak for itself — effortlessly.
 
 ![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/ai-generate-diagram.gif)
 
-With Smart Diagram Regeneration, when your source code or requirements change, the extension can detect these changes and offer to update related diagrams with a single click. You can iteratively improve and update your diagrams with Update button.
+With Smart Diagram Regeneration, when your source code or requirements change, the extension can detect these changes and offer to update related diagrams with a single click.
 
 ![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/vscode-plugin-update-diagram.gif)
 
