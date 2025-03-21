@@ -1,8 +1,8 @@
 <script lang="ts">
-  import mermaid from 'mermaid';
+  import mermaid from '@mermaid-chart/mermaid';
   import Panzoom from '@panzoom/panzoom';
   import { onMount } from 'svelte';
-  import layouts from '@mermaid-js/layout-elk';
+  import layouts from '@mermaid-chart/layout-elk';
   import { vscode } from './utility/vscode'
   import ErrorMessage from './ErrorMessage.svelte';
   import Sidebar from './Sidebar.svelte';
@@ -14,7 +14,7 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let hasErrorOccured= false;
-  let theme: "default" | "base" | "dark" | "forest" | "neutral" | "null" = "default"; 
+  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'mc' | 'null' = 'neo'; 
   $: zoomLevel = 100;
   $: sidebarBackgroundColor = theme?.endsWith("dark")? "#4d4d4d" : "white";
   $: iconBackgroundColor = theme?.endsWith("dark") ? "#4d4d4d" : "white";
@@ -61,7 +61,7 @@
       try {
         const parsed = await mermaid.parse(diagramContent || 'info')
         if (parsed?.config?.theme && 
-            ["default", "base", "dark", "forest", "neutral", "null"].includes(parsed.config.theme)) {
+            ["default", "base", "dark", "forest", "neutral", "neo", "neo-dark", "redux", "redux-dark", "mc", "null"].includes(parsed.config.theme)) {
           theme = parsed.config.theme;
         }
         errorMessage = "";
