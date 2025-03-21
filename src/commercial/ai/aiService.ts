@@ -22,6 +22,13 @@ export class MermaidAIService {
   ): Promise<void> {
     try {
       analytics.trackAIChatInvocation();
+      
+      // Check if model is available (GitHub Copilot is installed)
+      if (!request?.model) {
+        stream.markdown("**GitHub Copilot Required**\n\nTo use the Mermaid Chart AI features, you need to have the GitHub Copilot extension installed and properly configured. Please install GitHub Copilot from the VS Code marketplace and try again.");
+        return;
+      }
+      
       // Initialize messages with appropriate system prompt
       const messages = await this.initializeMessages(request);
       
@@ -40,7 +47,9 @@ export class MermaidAIService {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error(`Error in AI handler: ${errorMessage}`);
-      stream.markdown(`Sorry, I encountered an error: ${errorMessage}`);
+      
+      // Provide a friendly error message with troubleshooting steps
+      stream.markdown(`**Error: Unable to use AI features**\n\nI encountered an error: ${errorMessage}\n\n**Troubleshooting steps:**\n1. Make sure GitHub Copilot extension is installed and properly configured\n2. Check your GitHub Copilot subscription status\n3. Try restarting VS Code`);
     }
   }
   
@@ -59,6 +68,7 @@ export class MermaidAIService {
     let fullResponse = '';
     for await (const fragment of chatResponse.text) {
       fullResponse += fragment;
+      stream.markdown(fragment); // Stream each fragment to the user as it arrives
     }
     
     // After streaming the full response, extract any mermaid code blocks
@@ -84,16 +94,13 @@ export class MermaidAIService {
           // Track the diagram type
           analytics.trackAIGeneratedDiagram(firstWord);
         }
-        const mermaidCodeBlock = `\`\`\`mermaid\n${codeWithMetadata}\n\`\`\``;
-        mermaidBlocksWithMetadata.push(mermaidCodeBlock);
         mermaidBlocks.push(codeWithMetadata);
       }
     }
     
-    // If mermaid blocks were found, add a button to preview them
+    // If mermaid blocks were found, add buttons to preview them
     if (mermaidBlocks.length > 0) {      
       for (let i = 0; i < mermaidBlocks.length; i++) {
-        stream.markdown(mermaidBlocksWithMetadata[i]);
         stream.button({
           title: `Go to Diagram ${mermaidBlocks.length > 1 ? (i + 1) : ''}`,
           command: "mermaidChart.openResponsePreview",

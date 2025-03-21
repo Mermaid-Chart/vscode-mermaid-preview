@@ -8,6 +8,9 @@ Transform ideas into diagrams instantly with our AI integration! Our extension n
 - **AI Chat Participant**: Simply describe your diagram needs in natural language with `@mermaid-chart` and watch as beautiful diagrams materialize
 - **Smart Diagram Regeneration**: Auto-detect changes in your source files and instantly update referenced diagrams with one click
 
+> **Note**<br/>
+> To use the AI diagramming feature, you must have the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension installed.
+
 Now we offer a feature rich experience to create, visualize and edit Mermaid diagrams locally without needing to create any account. Made with ❤️ from the creators of Mermaid.js and we strive to provide the best Mermaid experience and provide regular updates.
 
 Optionally, by creating a free MermaidChart account you can save and sync diagrams on the cloud, explore Mermaid AI, and experience the intuitive best-in-class drag-drop UI for Mermaid diagrams. 
@@ -143,6 +146,9 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.1.1 - 2025-03-21
+- Bug fix for Ai chat requests
 
 ### 2.1.0 - 2025-03-21
 - Added AI-powered diagramming capabilities
