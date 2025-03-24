@@ -16,6 +16,7 @@
   let hasErrorOccured= false;
   let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'mc' | 'null' = 'neo'; 
   $: zoomLevel = 100;
+  let maxZoomLevel = 5;
   $: sidebarBackgroundColor = theme?.endsWith("dark")? "#4d4d4d" : "white";
   $: iconBackgroundColor = theme?.endsWith("dark") ? "#4d4d4d" : "white";
   $: svgColor = theme?.endsWith("dark") ? "white" : "#2329D6";
@@ -83,7 +84,7 @@
 
           if (!panzoomInstance) {
           panzoomInstance = Panzoom(element, {
-            maxScale: 5,
+            maxScale: maxZoomLevel,
             minScale: 0.5,
             contain: "outside",
           });
@@ -153,15 +154,20 @@
   }
 
   window.addEventListener("message", async (event) => {
-    const { type, content, currentTheme,isFileChange} = event.data;
+    const { type, content, currentTheme,isFileChange,maxZoom} = event.data;
+   
     if (type === "update" && content) {
       diagramContent = content;
       theme = currentTheme;
+      maxZoomLevel=maxZoom;
       if (isFileChange) {
       panzoomInstance?.reset();
       updateZoomLevel()
     }
       await renderDiagram();
+      if (panzoomInstance) {
+      panzoomInstance.setOptions({ maxScale: maxZoomLevel });
+    } 
     }
   });
 

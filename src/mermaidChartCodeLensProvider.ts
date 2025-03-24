@@ -60,7 +60,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     codeLenses: vscode.CodeLens[],
     token: MermaidChartToken
   ) {
-    codeLenses.push(this.createCodeLens(token, "View Diagram", "extension.viewMermaidChart", [token.uuid]));
+    codeLenses.push(this.createCodeLens(token, "View Diagram", "mermaidChart.viewMermaidChart", [token.uuid]));
     codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [token.uuid]));
     codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaidChart.editLocally", [token.uuid]));
   }

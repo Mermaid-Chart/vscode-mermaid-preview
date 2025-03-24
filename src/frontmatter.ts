@@ -152,6 +152,7 @@ export function normalizeMermaidText(code: string): string {
  * @param metadata The metadata to add (query, references, generationTime)
  * @returns The diagram code with updated frontmatter
  */
+
 export function addMetadataToFrontmatter(
   code: string, 
   metadata: {
@@ -162,10 +163,18 @@ export function addMetadataToFrontmatter(
 ): string {
   const { diagramText, frontMatter } = splitFrontMatter(code);
   const document = parseFrontMatterYAML(frontMatter);
-  
+
+
+  function sanitizeQuery(query: string): string {
+    return query
+      .split("\n")
+      .filter(line => !line.includes("^") && !line.trim().startsWith("---")) // Remove lines with ^ and ---
+      .join("\n"); 
+  }
+
   // Add metadata fields if they exist
   if (metadata.query) {
-    document.contents.set('query', metadata.query);
+    document.contents.set('query', sanitizeQuery(metadata.query)); // Cleaned query
   }
   
   if (metadata.references && metadata.references.length > 0) {
@@ -175,7 +184,7 @@ export function addMetadataToFrontmatter(
   if (metadata.generationTime) {
     document.contents.set('generationTime', metadata.generationTime.toISOString());
   }
-  
+
   return `---\n${document.toString()}---\n${diagramText}`;
 }
 

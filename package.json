@@ -551,7 +551,7 @@
       "properties": {
         "mermaidChart.baseUrl": {
           "type": "string",
-          "default": "https://www.mermaidchart.com",
+          "default": "https://test.mermaidchart.com",
           "description": "Base URL for Mermaid Chart"
         },
         "mermaid.vscode.dark": {
@@ -601,7 +601,12 @@
             "GPT-3.5 Turbo"
           ],
           "description": "The AI model family to use for diagram generation"
-        }
+        },
+        "mermaid.vscode.maxZoom": {
+        "type": "number",
+        "default": 5,
+        "description": "Set the maximum zoom level for diagrams."
+      }
       }
     },
     "viewsContainers": {
