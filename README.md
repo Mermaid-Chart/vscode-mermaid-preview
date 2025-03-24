@@ -1,6 +1,15 @@
 # Mermaid Chart extension for Visual Studio Code
 
-Official Mermaid extension for Visual Studio Code enables developers to seamlessly create, edit, preview and integrate mermaid diagrams from within the VS Code.
+The official Mermaid extension for Visual Studio Code enables developers to seamlessly create, edit, preview and integrate mermaid diagrams from within the VS Code.
+
+## Now with AI-Powered Diagramming! ✨
+
+Transform ideas into diagrams instantly with our AI integration! Our extension now includes:
+- **AI Chat Participant**: Simply describe your diagram needs in natural language with `@mermaid-chart` and watch as beautiful diagrams materialize
+- **Smart Diagram Regeneration**: Auto-detect changes in your source files and instantly update referenced diagrams with one click
+
+> **Note**<br/>
+> To use the AI diagramming feature, you must have the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension installed.
 
 Now we offer a feature rich experience to create, visualize and edit Mermaid diagrams locally without needing to create any account. Made with ❤️ from the creators of Mermaid.js and we strive to provide the best Mermaid experience and provide regular updates.
 
@@ -35,6 +44,18 @@ Currently supported diagrams and charts:
 - User Journey
 - XY chart
 - Zenuml
+
+### Generate AI-powered diagrams directly from your code!
+Transform your ideas and source code into clear, insightful diagrams with our new AI integration in VS Code.<br>
+Just mention **@mermaid-chart** in any GitHub Copilot Chat and describe the diagram you want to create — even link specific source code files!<br>
+ Whether it's a class diagram, sequence diagram, entity relationship diagram, or more — the AI assistant will analyze the code, generate the appropriate Mermaid syntax, and instantly show a live preview.<br>
+Let your code speak for itself — effortlessly.
+
+![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/ai-generate-diagram.gif)
+
+With Smart Diagram Regeneration, when your source code or requirements change, the extension can detect these changes and offer to update related diagrams with a single click.
+
+![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/vscode-plugin-update-diagram.gif)
 
 ### Real-Time local Edit & Preview 
 Now you get a side-by-side real time preview of the mermaid diagram while editing the diagram locally. This helps the user to see the true power of a mermaid's text-based diagram, where each change in text is reflected immediately on the diagram.
@@ -125,6 +146,14 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.1.1 - 2025-03-21
+- Bug fix for Ai chat requests
+
+### 2.1.0 - 2025-03-21
+- Added AI-powered diagramming capabilities
+- Introduced AI chat participant with `@mermaid-chart` command
+- Added smart diagram regeneration based on source file changes
 
 ### 2.0.4 - 2025-03-13
 - Supports mermaid 11.5.0

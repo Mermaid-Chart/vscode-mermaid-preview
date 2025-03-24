@@ -648,7 +648,7 @@ context.subscriptions.push(
   //   }
   // });
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.openCopilotChat", async () => {
+    vscode.commands.registerCommand("mermaidChart.openCopilotChat", async () => {
       const copilotExtension = vscode.extensions.getExtension("GitHub.copilot-chat");
       if (!copilotExtension) {
         const installOption = "Install GitHub Copilot Chat";

@@ -16,7 +16,7 @@ class Analytics {
   }
 
   public trackActivation() {
-      this.sendEvent('VS Code Extension Activated');
+    this.sendEvent('VS Code Extension Activated');
   }
 
   public trackException(error: any) {
@@ -33,6 +33,18 @@ class Analytics {
 
   public trackLogout() {
     this.sendEvent('VS Code User Logged Out');
+  }
+
+  public trackAIChatInvocation() {
+    this.sendEvent('VS Code AI Chat Participant Invoked');
+  }
+  
+  public trackAIGeneratedDiagram(diagramType: string) {
+    this.sendEvent(`VS Code AI Generated Diagram: ${diagramType}`);
+  }
+  
+  public trackRegenerateCommandInvoked() {
+    this.sendEvent('VS Code Regenerate Command Invoked');
   }
 }
 

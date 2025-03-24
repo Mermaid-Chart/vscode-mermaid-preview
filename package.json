@@ -2,8 +2,8 @@
   "name": "vscode-mermaid-chart",
   "publisher": "MermaidChart",
   "displayName": "Mermaid Chart",
-  "description": "The \"official\" Mermaid Editor plugin by the team behind the Mermaid open source project.",
-  "version": "2.0.5",
+  "description": "The \"official\" Mermaid Editor plugin by the Mermaid open source team, now with AI-powered diagramming! Create, edit and preview diagrams seamlessly within VS Code",
+  "version": "2.1.1",
   "icon": "images/mermaid-chart.png",
   "repository": "github:Mermaid-Chart/vscode-mermaid-chart",
   "engines": {
@@ -557,28 +557,33 @@
         "mermaid.vscode.dark": {
           "type": "string",
           "enum": [
+            "neo-dark",
+            "redux-dark",
             "dark"
           ],
-          "default": "dark",
+          "default": "neo-dark",
           "description": "Default mermaid theme used for dark theme"
         },
         "mermaid.vscode.light": {
           "type": "string",
           "enum": [
+            "neo",
+            "redux",
+            "mc",
+            "null",
             "default",
             "base",
-            "default",
             "forest",
             "neutral",
             "mc"
           ],
-          "default": "default",
+          "default": "neo",
           "description": "Default mermaid theme used for light theme"
         },
         "mermaidChart.aiVendor": {
           "type": "string",
           "default": "copilot",
-          "enum": ["copilot", "openai", "anthropic"],
+          "enum": ["copilot", "openai"],
           "enumDescriptions": [
             "GitHub Copilot",
             "OpenAI models"
@@ -741,16 +746,16 @@
         "title": "Trigger Mermaid Completions"
       },
       {
-        "command": "extension.openCopilotChat",
-        "title": "Open Copilot Chat"
+        "command": "mermaidChart.openCopilotChat",
+        "title": "MermaidChart: Open AI Chat"
       }
     ],
     "chatParticipants": [
       {
-        "id": "mermaid-ai",
-        "fullName": "Mermaid AI Chat",
-        "name": "mermaid-ai",
-        "description": "create you mermaid diagram?",
+        "id": "mermaid-chart",
+        "fullName": "Mermaid Chart AI Chat",
+        "name": "mermaid-chart",
+        "description": "Official VS Code Extension for AI Chat",
         "isSticky": true
       }
     ],
