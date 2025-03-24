@@ -53,6 +53,28 @@
       }
     }
 
+  async function validateDiagramOnly(content: string) {
+    try {
+      await initializeMermaid();
+      
+      // Just parse the diagram without rendering
+      await mermaid.parse(content || 'info');
+      console.log('validationResult', true)
+      // If no error was thrown, the diagram is valid
+      vscode.postMessage({
+        type: "validationResult",
+        valid: true
+      });
+    } catch (error) {
+      // Send back the validation error
+      vscode.postMessage({
+        type: "validationResult",
+        valid: false,
+        message: `Syntax error in text: ${error.message || error}`
+      });
+    }
+  }
+
   async function renderDiagram() {
       await initializeMermaid();
 
@@ -153,15 +175,22 @@
   }
 
   window.addEventListener("message", async (event) => {
-    const { type, content, currentTheme,isFileChange} = event.data;
-    if (type === "update" && content) {
-      diagramContent = content;
-      theme = currentTheme;
-      if (isFileChange) {
-      panzoomInstance?.reset();
-      updateZoomLevel()
-    }
-      await renderDiagram();
+    const { type, content, currentTheme, isFileChange, validateOnly } = event.data;
+    
+    if (type === "update") {
+      if (validateOnly && content) {
+        // Just validate without updating UI
+        await validateDiagramOnly(content);
+      } else if (content) {
+        // Regular rendering flow
+        diagramContent = content;
+        theme = currentTheme;
+        if (isFileChange) {
+          panzoomInstance?.reset();
+          updateZoomLevel();
+        }
+        await renderDiagram();
+      }
     }
   });
 

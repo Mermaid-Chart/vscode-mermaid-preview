@@ -761,26 +761,42 @@
     ],
     "languageModelTools": [
       {
-        "name": "mermaid-diagram-creator",
+        "name": "mermaid-diagram-preview",
         "tags": ["vscode_editing"],
-        "displayName": "Mermaid Diagram Creator",
-        "modelDescription": "Create diagrams using Mermaid syntax from natural language descriptions",
-        "icon": "$(pencil)",
+        "displayName": "Mermaid Diagram Preview",
+        "modelDescription": "Preview a Mermaid diagram from its code",
+        "icon": "$(eye)",
         "inputSchema": {
           "type": "object",
           "properties": {
-            "description": {
+            "code": {
               "type": "string",
-              "description": "Natural language description of the diagram to create"
+              "description": "The Mermaid diagram code to preview"
             },
-            "type": {
-              "type": "string",
-              "enum": ["flowchart", "sequence", "class", "state", "er", "gantt", "pie"],
-              "description": "Specific diagram type to create (optional)",
-              "default": "flowchart"
+            "showSource": {
+              "type": "boolean",
+              "description": "Whether to also open the source code in an editor",
+              "default": true
             }
           },
-          "required": ["description"]
+          "required": ["code"]
+        }
+      },
+      {
+        "name": "mermaid-diagram-validator",
+        "tags": ["vscode_editing"],
+        "displayName": "Mermaid Diagram Validator",
+        "modelDescription": "Validate Mermaid diagram syntax",
+        "icon": "$(check)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "The Mermaid diagram code to validate"
+            }
+          },
+          "required": ["code"]
         }
       }
     ]
