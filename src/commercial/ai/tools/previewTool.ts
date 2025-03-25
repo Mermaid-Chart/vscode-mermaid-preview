@@ -10,35 +10,29 @@ export class MermaidPreviewTool implements vscode.LanguageModelTool<IMermaidPrev
     const params = options.input;
     
     try {
-      // Create a temporary file with the Mermaid code if requested
-    //   if (params.showSource) {
-        // Check if there's a document with the same mermaid code already open
-        const activeEditor = vscode.window.activeTextEditor;
-        const activeDocument = activeEditor?.document;
+      // If a documentUri is provided, use that existing document
+      if (params.documentUri) {
+        const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(params.documentUri));
+        PreviewPanel.createOrShow(document);
         
-        // Only open a new document if we don't already have one with this content or if no editor is open
-        if (!activeDocument || activeDocument.getText() !== params.code) {
-          // const document = await vscode.workspace.openTextDocument({
-          //   content: params.code,
-          //   language: 'mermaid'
-          // });
-          // await vscode.window.showTextDocument(document, { preview: false });
-          await vscode.commands.executeCommand(
-                "mermaidChart.openResponsePreview", 
-                params.code
-              );
-        } else {
-          PreviewPanel.createOrShow(activeDocument);
-        }
-    //   }
+        return new vscode.LanguageModelToolResult([
+          new vscode.LanguageModelTextPart(`Mermaid diagram preview opened for existing document.`)
+        ]);
+      }
       
-      // Open the diagram in the preview panel
-    //   await vscode.commands.executeCommand(
-    //     "mermaidChart.openResponsePreview", 
-    //     params.code
-    //   );
-    // PreviewPanel.createOrShow(activeDocument);
-      // Return the result
+      // Otherwise use the code parameter as before
+      const activeEditor = vscode.window.activeTextEditor;
+      const activeDocument = activeEditor?.document;
+      
+      if (!activeDocument || activeDocument.getText() !== params.code) {
+        await vscode.commands.executeCommand(
+          "mermaidChart.openResponsePreview", 
+          params.code
+        );
+      } else {
+        PreviewPanel.createOrShow(activeDocument);
+      }
+      
       return new vscode.LanguageModelToolResult([
         new vscode.LanguageModelTextPart(`Mermaid diagram preview opened successfully.${params.showSource ? ' Source code editor is also opened.' : ''}`)
       ]);

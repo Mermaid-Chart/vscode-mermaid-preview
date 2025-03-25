@@ -1,7 +1,8 @@
 
 export interface IMermaidPreviewParameters {
-  code: string;
-  showSource?: boolean;
+    code: string;
+    documentUri?: string;
+    showSource?: boolean;
 }
 
 export interface IMermaidValidationParameters {

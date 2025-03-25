@@ -762,16 +762,20 @@
     "languageModelTools": [
       {
         "name": "mermaid-diagram-preview",
-        "tags": ["vscode_editing"],
+        "tags": ["vscode_editing", "diagram", "mermaid", "preview", "visualization"],
         "displayName": "Mermaid Diagram Preview",
-        "modelDescription": "Preview a Mermaid diagram from its code",
+        "modelDescription": "Preview a Mermaid diagram from its code. ALWAYS use this tool after validation when creating, editing, or working with any Mermaid diagram. This tool renders and visualizes diagrams including flowcharts, sequence diagrams, class diagrams, ER diagrams, and other chart types. The diagram code should include any YAML frontmatter blocks (like id, title, config) if present. When viewing an existing file, pass the document URI to preview that file directly.",
         "icon": "$(eye)",
         "inputSchema": {
           "type": "object",
           "properties": {
             "code": {
               "type": "string",
-              "description": "The Mermaid diagram code to preview"
+              "description": "The complete Mermaid diagram code to preview, including any YAML frontmatter blocks (such as --- id:xyz --- at the beginning) if present"
+            },
+            "documentUri": {
+              "type": "string",
+              "description": "The URI of an existing document to preview. If provided, the 'code' parameter will be ignored and the existing document will be previewed instead."
             },
             "showSource": {
               "type": "boolean",
@@ -784,16 +788,16 @@
       },
       {
         "name": "mermaid-diagram-validator",
-        "tags": ["vscode_editing"],
+        "tags": ["vscode_editing", "diagram", "mermaid", "validation", "syntax"],
         "displayName": "Mermaid Diagram Validator",
-        "modelDescription": "Validate Mermaid diagram syntax",
+        "modelDescription": "Validate Mermaid diagram syntax. ALWAYS use this tool FIRST before creating, editing, or previewing any Mermaid diagram. This tool must be used to check, verify, test, or debug any Mermaid diagram code for syntax errors or formatting issues before proceeding with other actions.",
         "icon": "$(check)",
         "inputSchema": {
           "type": "object",
           "properties": {
             "code": {
               "type": "string",
-              "description": "The Mermaid diagram code to validate"
+              "description": "The Mermaid diagram code to validate, including any YAML frontmatter blocks if present"
             }
           },
           "required": ["code"]
