@@ -551,7 +551,7 @@
       "properties": {
         "mermaidChart.baseUrl": {
           "type": "string",
-          "default": "https://test.mermaidchart.com",
+          "default": "https://www.mermaidchart.com",
           "description": "Base URL for Mermaid Chart"
         },
         "mermaid.vscode.dark": {

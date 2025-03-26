@@ -92,10 +92,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.5.0-b.1)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.1)
       '@mermaid-chart/mermaid':
-        specifier: 11.5.0-b.1
-        version: 11.5.0-b.1
+        specifier: 11.6.0-b.1
+        version: 11.6.0-b.1
       '@panzoom/panzoom':
         specifier: ^4.5.1
         version: 4.6.0
@@ -558,11 +558,11 @@ packages:
     peerDependencies:
       '@mermaid-chart/mermaid': ^11.0.0
 
-  '@mermaid-chart/mermaid@11.5.0-b.1':
-    resolution: {integrity: sha512-i8mbDlEgjRPAL7fEbYxNM0BxsRMqyUOQuGb96GHr4OWf5wbwd+09ZGqN7cGhBdDoVNQHf8Ie+cEQY+cWISNiBA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.5.0-b.1/e3b8fea85f35bd976aa82d25b579bf518800faad}
+  '@mermaid-chart/mermaid@11.6.0-b.1':
+    resolution: {integrity: sha512-ZvNqQN7xQCLVPJ3lzs+ibTi2uudx1ZlGbzGI8VFxUdjIoXKMnvvZ4iZJ5JN7ePm6vP1Gx4dT9tuGUrnMdEcjUg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.1/b4d8654fc4424bd0994c5d2d111120656bd636b8}
 
-  '@mermaid-js/parser@0.3.1-rc.1':
-    resolution: {integrity: sha512-gYXEGLui3Cfp+P37TBz2no4LuoEY2fEnK1MTh9YPbuAta7kVbZXPpTeay9ahtV7Zi6GkfW3yAUGM9fJ1KkoiWA==}
+  '@mermaid-js/parser@0.4.0':
+    resolution: {integrity: sha512-wla8XOWvQAwuqy+gxiZqY+c7FokraOTHRWMsbB4AgRx9Sy7zKslNyejy7E+a77qHfey5GXw/ik3IXv/NHMJgaA==}
 
   '@mermaidchart/sdk@0.2.1-alpha.1':
     resolution: {integrity: sha512-HLNzJF7z5DR7RP8qqgs2jor9QqHV5JmDcetk8JRL7Keq9Y+VkNy6m/cz0eavMJZpsLjJdpYFa9eO1L03cTCIbg==}
@@ -1947,8 +1947,8 @@ packages:
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
 
-  langium@3.0.0:
-    resolution: {integrity: sha512-+Ez9EoiByeoTu/2BXmEaZ06iPNXM6thWJp02KfBO/raSMyCJ4jw7AkWWa+zBCTm0+Tw1Fj9FOxdqSskyN5nAwg==}
+  langium@3.3.1:
+    resolution: {integrity: sha512-QJv/h939gDpvT+9SiLVlY7tZC3xB2qK57v0J04Sh9wpMb6MP1q8gB21L3WIo8T5P1MSMg3Ep14L7KkDCFG3y4w==}
     engines: {node: '>=16.0.0'}
 
   layout-base@1.0.2:
@@ -3068,17 +3068,17 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.5.0-b.1)':
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.1)':
     dependencies:
-      '@mermaid-chart/mermaid': 11.5.0-b.1
+      '@mermaid-chart/mermaid': 11.6.0-b.1
       d3: 7.9.0
       elkjs: 0.9.3
 
-  '@mermaid-chart/mermaid@11.5.0-b.1':
+  '@mermaid-chart/mermaid@11.6.0-b.1':
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
-      '@mermaid-js/parser': 0.3.1-rc.1
+      '@mermaid-js/parser': 0.4.0
       '@types/d3': 7.4.3
       cytoscape: 3.31.1
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.31.1)
@@ -3099,9 +3099,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-js/parser@0.3.1-rc.1':
+  '@mermaid-js/parser@0.4.0':
     dependencies:
-      langium: 3.0.0
+      langium: 3.3.1
 
   '@mermaidchart/sdk@0.2.1-alpha.1':
     dependencies:
@@ -4635,7 +4635,7 @@ snapshots:
 
   kolorist@1.8.0: {}
 
-  langium@3.0.0:
+  langium@3.3.1:
     dependencies:
       chevrotain: 11.0.3
       chevrotain-allstar: 0.3.1(chevrotain@11.0.3)
