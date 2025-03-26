@@ -146,6 +146,10 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+### 2.1.2 -2025-03-26
+- Supports mermaid 11.6.0
+- Renamed `Update Diagram with Latest Changes` to `Regenerate Diagram`
+- Added Redux as Default Theme
 
 ### 2.1.1 - 2025-03-21
 - Bug fix for Ai chat requests

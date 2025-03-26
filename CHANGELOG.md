@@ -1,4 +1,11 @@
 # Change Log
+### 2.1.2 -2025-03-26
+
+### Changed 
+- Upgraded to Mermaid `v11.6.0`
+- Renamed `Update Diagram with Latest Changes` to `Regenerate Diagram`
+- Added Redux as Default Theme
+
 
 ### 2.1.1 - 2025-03-21
 ### Fixed
