@@ -561,7 +561,7 @@
             "redux-dark",
             "dark"
           ],
-          "default": "neo-dark",
+          "default": "redux-dark",
           "description": "Default mermaid theme used for dark theme"
         },
         "mermaid.vscode.light": {
@@ -577,7 +577,7 @@
             "neutral",
             "mc"
           ],
-          "default": "neo",
+          "default": "redux",
           "description": "Default mermaid theme used for light theme"
         },
         "mermaidChart.aiVendor": {

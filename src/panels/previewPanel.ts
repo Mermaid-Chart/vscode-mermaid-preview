@@ -59,8 +59,8 @@ export class PreviewPanel {
     const config = vscode.workspace.getConfiguration();
 
     // Get the theme settings from configuration
-    const darkTheme = config.get<string>(DARK_THEME_KEY, "dark");
-    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "default");
+    const darkTheme = config.get<string>(DARK_THEME_KEY, "redux-dark");
+    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "redux");
     const maxZoom = config.get<number>(MAX_ZOOM, 5);
 
     // Determine the current theme based on the user's preference and the active color theme

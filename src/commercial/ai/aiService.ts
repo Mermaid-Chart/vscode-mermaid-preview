@@ -25,6 +25,7 @@ export class MermaidAIService {
       
       // Check if model is available (GitHub Copilot is installed)
       if (!request?.model) {
+        analytics.trackModelNotFound();
         stream.markdown("**GitHub Copilot Required**\n\nTo use the Mermaid Chart AI features, you need to have the GitHub Copilot extension installed and properly configured. Please install GitHub Copilot from the VS Code marketplace and try again.");
         return;
       }
@@ -270,17 +271,12 @@ export class MermaidAIService {
 ): Promise<string> {
   const { uri, range } = location;
   const fileName = uri.path.split('/').pop() || 'file';
-  
-
-
   const openDoc = vscode.workspace.textDocuments.find(doc => doc.uri.toString() === uri.toString());
 
   let fileText: string;
   if (openDoc) {
-   
     fileText = openDoc.getText();
   } else {
-   
     const fileContent = await vscode.workspace.fs.readFile(uri);
     fileText = new TextDecoder().decode(fileContent);
   }

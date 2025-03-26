@@ -1,5 +1,46 @@
 # Change Log
 
+### 2.1.1 - 2025-03-21
+### Fixed
+- Resolved bug in AI chat requests.
+
+### 2.1.0 - 2025-03-21
+### New Features
+- AI-powered diagramming capabilities.
+- AI chat participant with `@mermaid-chart` command.
+- Smart diagram regeneration based on source file changes.
+
+### 2.0.4 - 2025-03-13
+### Changed
+- Upgraded to Mermaid `v11.5.0`.
+
+### 2.0.3 - 2025-03-05
+### Fixed
+- Performance issues with auto-save.
+- Improved Improved handling of save operations for Mermaid files
+
+### 2.0.2 - 2025-02-28
+### Fixed
+- Broken image rendering issue.
+
+### 2.0.0 - 2025-02-28
+### New Features 
+- **General Features:**
+  - Real-time local edit & preview.
+  - Syntax highlighting for all Mermaid diagrams.
+  - Pan & zoom support in diagram preview.
+  - Error highlighting.
+  - Auto-detection of `.mmd` file extensions.
+  - Handling of Mermaid diagrams in Markdown files.
+  - Support for code snippets.
+  - Direct links to official documentation via "Diagram Help".
+- **For Mermaid Chart Users:**
+  - Smart sync & save functionality.
+  - Refresh diagram option.
+- **Upgrades:**
+  - Updated to Mermaid `v11.4.1`.
+
+
 ### 1.0.3 - 2023-07-17
 
 - Added OAuth support for the MermaidChart plugin.

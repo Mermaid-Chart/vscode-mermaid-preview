@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import {  isAuxFile, MermaidChartToken } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
-import { extractIdFromCode, extractMetadataFromCode, checkReferencedFiles } from "./frontmatter";
+import { extractIdFromCode, extractMetadataFromCode, checkReferencedFiles, findDiagramContentStartPosition } from "./frontmatter";
 
 export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   constructor(private mermaidChartTokens: MermaidChartToken[]) {}
@@ -75,7 +75,8 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   }
 
   private provideCodeLensesForMermaid(document: vscode.TextDocument, codeLenses: vscode.CodeLens[], session: vscode.AuthenticationSession | undefined) {
-    const metadata = extractMetadataFromCode(document.getText());
+    const text = document.getText();
+    const metadata = extractMetadataFromCode(text);
     if (metadata?.references) {
       let workspacePath = '';
       
@@ -96,9 +97,16 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
       if (workspacePath) {
         const changedReferencesList = checkReferencedFiles(metadata, workspacePath);
         if (changedReferencesList?.length > 0) {
+          // Get the position where diagram text starts
+          const diagramStartIndex = findDiagramContentStartPosition(text);
+          const diagramStartPosition = document.positionAt(diagramStartIndex);
+          
+          // Create a range at the beginning of the line where diagram text starts
+          const codeLensPosition = new vscode.Range(diagramStartPosition.line, 0, diagramStartPosition.line, 0);
+          
           codeLenses.push(
-            new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
-              title: "Update Diagram with Latest Changes",
+            new vscode.CodeLens(codeLensPosition, {
+              title: "▷ Regenerate Diagram",
               command: "mermaidChart.regenerateDiagram",
               arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })

@@ -163,14 +163,9 @@ export function addMetadataToFrontmatter(
 ): string {
   const { diagramText, frontMatter } = splitFrontMatter(code);
   const document = parseFrontMatterYAML(frontMatter);
+  
 
 
-  function sanitizeQuery(query: string): string {
-    return query
-      .split("\n")
-      .filter(line => !line.includes("^") && !line.trim().startsWith("---")) // Remove lines with ^ and ---
-      .join("\n"); 
-  }
 
   // Add metadata fields if they exist
   if (metadata.query) {
@@ -234,6 +229,13 @@ export function extractMetadataFromCode(code: string): {
   return result;
 }
 
+function sanitizeQuery(query: string): string {
+  return query
+    .split("\n")
+    .filter(line => !line.includes("^") && !line.trim().startsWith("---")) // Remove lines with ^ and ---
+    .join("\n"); 
+}
+
 export function checkReferencedFiles(metadata: any, workspacePath: string = ''): string[] {
   const changedReferences: string[] = [];
   
@@ -241,7 +243,7 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
   if (!metadata.references || !Array.isArray(metadata.references) || metadata.references.length === 0) {
     return changedReferences;
   }
-  
+
   // Get generation time from metadata
   let generationTime = 0;
   if (metadata.generationTime) {
@@ -249,45 +251,70 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
   } else {
     console.log('No generation time available in metadata');
   }
-  
+
   for (const reference of metadata.references) {
     // Extract file path from reference (assuming format "File: /path/to/file")
     const match = reference.match(/File: (.*?)(\s|$|\()/);
     if (!match) continue;
-    
+
     let filePath = match[1].trim();
-    
+
+    // Early return if reference only contains a filename without a path
+    if (!filePath.includes('/') && !filePath.includes('\\')) {
+      console.log(`Skipping reference without path: ${filePath}`);
+      return [];
+    }
+
     // If path is not absolute and we have a workspace path, resolve it
     if (!path.isAbsolute(filePath) && workspacePath) {
-      
-      // Check if the relative path starts with the workspace folder name
       const workspaceFolderName = path.basename(workspacePath);
       if (filePath.startsWith(workspaceFolderName + '/')) {
-        // Remove the duplicate workspace folder name from the path
-        const relativePath = filePath.substring(workspaceFolderName.length + 1);
-        filePath = path.join(workspacePath, relativePath);
+        filePath = path.join(workspacePath, filePath.substring(workspaceFolderName.length + 1));
       } else {
         filePath = path.join(workspacePath, filePath);
       }
-  }
-    
+    }
+
     // Check if file exists
-    const fileExists = fs.existsSync(filePath);
-    
-    if (!fileExists) {
+    if (!fs.existsSync(filePath)) {
       changedReferences.push(`${path.basename(filePath)} (deleted)`);
       continue;
     }
-    
+
     // Get last modification time of the reference file
     const stats = fs.statSync(filePath);
     const lastModified = stats.mtimeMs;
-    
+
     // If reference file was modified after generation time
     if (generationTime > 0 && lastModified > generationTime) {
       changedReferences.push(path.basename(filePath));
     }
   }
-  
+
   return changedReferences;
+}
+/**
+ * Finds the position where diagram content starts (after frontmatter if any)
+ * @param text The complete document text
+ * @returns The index where actual diagram content begins
+ */
+export function findDiagramContentStartPosition(text: string): number {
+  const { diagramText } = splitFrontMatter(text);
+  
+  // Find the first non-whitespace character in diagram text
+  const firstNonWhitespaceMatch = diagramText.match(/\S/);
+  
+  if (firstNonWhitespaceMatch) {
+    // Get the offset of the first non-whitespace character
+    const firstContentCharOffset = diagramText.indexOf(firstNonWhitespaceMatch[0]);
+    
+    // Find where diagramText begins in the original text
+    const diagramTextOffset = text.indexOf(diagramText);
+    
+    // Return the position of the first content character
+    return diagramTextOffset + firstContentCharOffset;
+  }
+  
+  // Return 0 if no content found
+  return 0;
 }

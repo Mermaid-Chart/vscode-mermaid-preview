@@ -14,7 +14,7 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let hasErrorOccured= false;
-  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'mc' | 'null' = 'neo'; 
+  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'mc' | 'null' = 'redux'; 
   $: zoomLevel = 100;
   let maxZoomLevel = 5;
   $: sidebarBackgroundColor = theme?.endsWith("dark")? "#4d4d4d" : "white";
