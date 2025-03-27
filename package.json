@@ -420,6 +420,22 @@
           ".mermaid"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "mermaid.radar",
+        "aliases": [
+          "Mermaid radar",
+          "mermaid Radar"
+        ],
+        "icon": {
+          "light": "./images/VS-code-file-icon.svg",
+          "dark": "./images/VS-code-file-icon.svg"
+        },
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "themes": [
@@ -544,6 +560,11 @@
         "language": "mermaid.zenuml",
         "scopeName": "source.mermaid.zenuml",
         "path": "./syntaxes/mermaid-zenuml.tmLanguage.json"
+      },
+      {
+        "language": "mermaid.radar",
+        "scopeName": "source.mermaid.radar",
+        "path": "./syntaxes/mermaid-radar.tmLanguage.json"
       }
     ],
     "configuration": {

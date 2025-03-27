@@ -1,0 +1,121 @@
+{
+    "scopeName": "source.mermaid.radar",
+    "name": "radar",
+    "patterns": [
+      { "include": "#configDirective" },
+      { "include": "#typeKeywords" },
+      { "include": "#title" },
+      { "include": "#axis" },
+      { "include": "#curve" },
+      {"include": "#blockKeywords"},
+      { "include": "#minMax" },
+      { "include": "#comments" },
+      { "include": "#strings" },
+      { "include": "#variables" }
+    ],
+    "repository": {
+      "configDirective": {
+        "name": "meta.directive.config.mermaid",
+        "begin": "^\\s*%%(?=\\{)",
+        "beginCaptures": {
+          "0": {
+            "name": "punctuation.definition.directive.mermaid"
+          }
+        },
+        "end": "\\}",
+        "endCaptures": {
+          "0": {
+            "name": "punctuation.definition.directive.end.mermaid"
+          }
+        },
+        "patterns": [
+          {
+            "name": "source.js.embedded.mermaid",
+            "match": ".*"
+          }
+        ]
+      },
+      "typeKeywords": {
+        "patterns": [
+          {
+            "name": "keyword.control.type.mermaid",
+            "match": "\\b(radar-beta)\\b"
+          }
+        ]
+      },
+      "variables": {
+        "patterns": [
+          {
+            "name": "variable.name.mermaid",
+            "match": "\\b[A-Za-z][\\w$]*\\b"
+          }
+        ]
+      },
+      "title": {
+        "patterns": [
+          {
+            "name": "keyword.control.title.mermaid",
+            "match": "^---\\s*title:\\s*\"[^\"]+\"\\s*---"
+          }
+        ]
+      },
+      "axis": {
+        "patterns": [
+          {
+            "name": "keyword.other.axis.mermaid",
+            "match": "\\b(axis)\\b"
+          }
+        ]
+      },
+      "curve": {
+        "patterns": [
+          {
+            "name": "keyword.other.curve.mermaid",
+            "match": "\\b(curve)\\b"
+          },
+          {
+            "name": "string.quoted.bracket.mermaid",
+            "match": "\\[[^\\[\\]]+\\]"
+          },
+          {
+            "name": "string.quoted.curly.mermaid",
+            "match": "\\{[^{}]+\\}"
+          }
+        ]
+      },
+      "blockKeywords": {
+  "patterns": [
+    {
+      "name": "keyword.other.blockKeywords.mermaid",
+      "match": "\\b(graticule|ticks|showLegend|max|min|title)\\b"
+    }
+  ]
+},
+"comments": {
+        "patterns": [
+          {
+            "name": "comment.line.double-percent.mermaid",
+            "match": "%%.*$"
+          }
+        ]
+      },
+      "strings": {
+        "patterns": [
+          {
+            "name": "string.quoted.double.mermaid",
+            "match": "\".*?\""
+          },
+          {
+            "name": "string.quoted.bracket.mermaid",
+            "match": "\\[[^\\[\\]]+\\]"
+          },
+          {
+            "name": "string.quoted.curly.mermaid",
+            "match": "\\{[^{}]+\\}"
+          }
+        ]
+      }
+    },
+    "fileTypes": ["mmd", "mermaid"]
+  }
+  

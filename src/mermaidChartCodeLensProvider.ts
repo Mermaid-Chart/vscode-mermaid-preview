@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import {  isAuxFile, MermaidChartToken } from "./util";
+import {  applyGutterIconDecoration, isAuxFile, MermaidChartToken } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
 import { extractIdFromCode, extractMetadataFromCode, checkReferencedFiles, findDiagramContentStartPosition } from "./frontmatter";
 
@@ -111,6 +111,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
               arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })
           );
+          applyGutterIconDecoration(codeLensPosition);
         }
       }
     }
