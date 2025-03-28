@@ -5,6 +5,8 @@
       { "include": "#configDirective" },
       { "include": "#typeKeywords" },
       { "include": "#title" },
+      { "include": "#keywords" },
+      { "include": "#stringsAfterKeywords" },
       { "include": "#axis" },
       { "include": "#curve" },
       {"include": "#blockKeywords"},
@@ -51,14 +53,25 @@
           }
         ]
       },
-      "title": {
-        "patterns": [
-          {
-            "name": "keyword.control.title.mermaid",
-            "match": "^---\\s*title:\\s*\"[^\"]+\"\\s*---"
+      "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(title)\\b"
+        }
+      ]
+    },
+    "stringsAfterKeywords": {
+      "patterns": [
+        {
+          "name": "string.after.keyword.mermaid",
+          "match": "(?<=\\b(title)\\b)[ \\t]+([^\\n]+)",
+          "captures": {
+            "2": { "name": "string.quoted.double.mermaid" }
           }
-        ]
-      },
+        }
+      ]
+    },
       "axis": {
         "patterns": [
           {
@@ -87,7 +100,7 @@
   "patterns": [
     {
       "name": "keyword.other.blockKeywords.mermaid",
-      "match": "\\b(graticule|ticks|showLegend|max|min|title)\\b"
+      "match": "\\b(graticule|ticks|showLegend|max|min)\\b"
     }
   ]
 },
