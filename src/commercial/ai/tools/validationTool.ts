@@ -77,24 +77,24 @@ export class MermaidValidationTool implements vscode.LanguageModelTool<IMermaidV
       const currentTheme = isDarkTheme ? darkTheme : lightTheme;
       
       // Use the same template as the preview panel
-      panel.webview.html = getWebviewHTML(panel, extensionPath, code, currentTheme);
+      panel.webview.html = getWebviewHTML(panel, extensionPath, code, currentTheme, true);
       
       // We need to wait for the webview to load before hiding it
       setTimeout(() => {
         // Try to hide the panel by moving it to background
         panel.reveal(vscode.ViewColumn.Two, true);
-      }, 100);
+      }, 200);
 
       // Set a timeout for validation
       const timeoutId = setTimeout(() => {
         resolve({ valid: false, error: 'Validation timed out' });
         panel.dispose();
-      }, 15000); // Increased timeout to 15 seconds
+      }, 20000); // Increased timeout to 15 seconds
       
       // Listen for validation results from the webview
       const disposable = panel.webview.onDidReceiveMessage(
         message => {
-          if (message.type === 'validationResult') {
+          // if (message.type === 'validationResult') {
             clearTimeout(timeoutId);
             resolve({
               valid: message.valid,
@@ -102,7 +102,7 @@ export class MermaidValidationTool implements vscode.LanguageModelTool<IMermaidV
             });
             panel.dispose();
             disposable.dispose();
-          }
+          // }
         }
       );
       

@@ -177,7 +177,6 @@
 
   window.addEventListener("message", async (event) => {
     const { type, content, currentTheme, isFileChange, validateOnly } = event.data;
-    
     if (type === "update") {
       if (validateOnly && content) {
         // Just validate without updating UI

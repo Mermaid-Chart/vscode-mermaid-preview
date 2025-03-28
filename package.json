@@ -786,7 +786,7 @@
         "name": "mermaid-diagram-preview",
         "tags": ["vscode_editing", "diagram", "mermaid", "preview", "visualization", "essential", "mandatory", "show", "view"],
         "displayName": "Mermaid Diagram Preview",
-        "modelDescription": "Preview a Mermaid diagram. ALWAYS use this tool after validation when creating, editing, or working with any Mermaid diagram. IMPORTANT USAGE PATTERN: For EXISTING Mermaid diagram files, ALWAYS pass the documentUri parameter (NOT the code). Only use the code parameter for NEW diagrams that don't exist in files yet. This tool renders and visualizes diagrams including flowcharts, sequence diagrams, class diagrams, ER diagrams, and other chart types. The diagram code should include any YAML frontmatter blocks (like id, title, config) if present. When viewing an existing file, pass the document URI to preview that file directly.",
+        "modelDescription": "Preview a Mermaid diagram. ALWAYS use this tool after validation when creating, editing, or working with any Mermaid diagram. The code paramter of this MUST CONTAIN ONLY the Mermaid code block without any surrounding or other content. IMPORTANT USAGE PATTERN: For EXISTING Mermaid diagram files, ALWAYS pass the documentUri parameter (NOT the code). Only use the code parameter for NEW diagrams that don't exist in files yet or when you've extracted ONLY the Mermaid code block from markdown. This tool renders and visualizes diagrams including flowcharts, sequence diagrams, class diagrams, ER diagrams, and other chart types. The diagram code should include any YAML frontmatter blocks (like id, title, config) if present.",
         "icon": "$(eye)",
         "inputSchema": {
           "type": "object",
@@ -797,7 +797,7 @@
             },
             "code": {
               "type": "string",
-              "description": "The complete Mermaid diagram code to preview. ONLY use this parameter for NEW diagrams that don't exist in files yet."
+              "description": "The complete Mermaid diagram code to preview. This MUST BE ONLY the Mermaid code block syntax without any surrounding content. ONLY use this parameter for NEW diagrams"
             },
             "showSource": {
               "type": "boolean",

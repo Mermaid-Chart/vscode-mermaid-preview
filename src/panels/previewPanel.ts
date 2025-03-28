@@ -76,7 +76,7 @@ export class PreviewPanel {
     const initialContent = this.document.getText() || " ";
   
     if (!this.panel.webview.html) {
-      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme);
+      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme, false);
     }
 console.log("In Preview Panel",maxZoom);
     this.panel.webview.postMessage({
