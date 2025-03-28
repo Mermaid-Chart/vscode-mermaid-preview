@@ -25,6 +25,7 @@ export class MermaidAIService {
       
       // Check if model is available (GitHub Copilot is installed)
       if (!request?.model) {
+        analytics.trackModelNotFound();
         stream.markdown("**GitHub Copilot Required**\n\nTo use the Mermaid Chart AI features, you need to have the GitHub Copilot extension installed and properly configured. Please install GitHub Copilot from the VS Code marketplace and try again.");
         return;
       }
@@ -263,29 +264,40 @@ export class MermaidAIService {
    * @param location - File location
    * @returns Message with appended location content
    */
-  private static async appendLocationReference(
-    message: string, 
-    location: vscode.Location
-  ): Promise<string> {
-    const { uri, range } = location;
-    const fileContent = await vscode.workspace.fs.readFile(uri);
-    const fileText = new TextDecoder().decode(fileContent);
-    const fileName = uri.path.split('/').pop() || 'file';
-    const documentUri = vscode.window.activeTextEditor?.document.uri;
-    if(uri.path === documentUri?.path){
-      return `${message}\n\nReference file: ${fileName}\n\`\`\`\n${fileText}\n\`\`\``;
-    }
   
-    const lines = fileText.split('\n');
-    const startLine = range.start.line;
-    const endLine = range.end.line;
-    const startChar = range.start.character;
-    const endChar = range.end.character;
-    
-    const selectedText = this.extractTextFromRange(lines, startLine, endLine, startChar, endChar);
-    
-    return `${message}\n\nReference file: ${fileName} (lines ${startLine + 1}-${endLine + 1})\n\`\`\`\n${selectedText}\n\`\`\``;
+  private static async appendLocationReference(
+  message: string, 
+  location: vscode.Location
+): Promise<string> {
+  const { uri, range } = location;
+  const fileName = uri.path.split('/').pop() || 'file';
+  const openDoc = vscode.workspace.textDocuments.find(doc => doc.uri.toString() === uri.toString());
+
+  let fileText: string;
+  if (openDoc) {
+    fileText = openDoc.getText();
+  } else {
+    const fileContent = await vscode.workspace.fs.readFile(uri);
+    fileText = new TextDecoder().decode(fileContent);
   }
+  const documentUri = vscode.window.activeTextEditor?.document.uri;
+
+  if(uri.path === documentUri?.path) {
+    return `${message}\n\nReference file: ${fileName}\n\`\`\`\n${fileText}\n\`\`\``;
+  }
+
+  // Extract the selected range text
+  const lines = fileText.split('\n');
+  const startLine = range.start.line;
+  const endLine = range.end.line;
+  const startChar = range.start.character;
+  const endChar = range.end.character;
+
+  const selectedText = this.extractTextFromRange(lines, startLine, endLine, startChar, endChar);
+
+  return `${message}\n\nReference file: ${fileName} (lines ${startLine + 1}-${endLine + 1})\n\`\`\`\n${selectedText}\n\`\`\``;
+}
+
   
   /**
    * Extract text from a range in lines of text

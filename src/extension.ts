@@ -167,8 +167,9 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   const viewCommandDisposable = vscode.commands.registerCommand(
-    "extension.viewMermaidChart",
+    "mermaidChart.viewMermaidChart",
     (uuid: string) => {
+      console.log("Viewing Mermaid Chart with UUID: ", uuid);
       return viewMermaidChart(mcAPI, uuid);
     }
   );
@@ -668,7 +669,7 @@ context.subscriptions.push(
     
       await vscode.commands.executeCommand("workbench.action.chat.focusInput");
       await vscode.commands.executeCommand("deleteAllLeft");
-      await vscode.commands.executeCommand("default:type", { text: "@mermaid-ai " });
+      await vscode.commands.executeCommand("default:type", { text: "@mermaid-chart" });
     })
   );
 

@@ -46,6 +46,9 @@ class Analytics {
   public trackRegenerateCommandInvoked() {
     this.sendEvent('VS Code Regenerate Command Invoked');
   }
+  public trackModelNotFound() {
+    this.sendEvent('VS Code AI  Model Not Found');
+  }
 }
 
 export default new Analytics(); 

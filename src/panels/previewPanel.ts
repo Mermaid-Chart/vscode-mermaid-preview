@@ -4,6 +4,9 @@ import { getWebviewHTML } from "../templates/previewTemplate";
 import { isAuxFile } from "../util";
 const DARK_THEME_KEY = "mermaid.vscode.dark";
 const LIGHT_THEME_KEY = "mermaid.vscode.light";
+const MAX_ZOOM= "mermaid.vscode.maxZoom";
+
+
 
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
@@ -56,8 +59,9 @@ export class PreviewPanel {
     const config = vscode.workspace.getConfiguration();
 
     // Get the theme settings from configuration
-    const darkTheme = config.get<string>(DARK_THEME_KEY, "dark");
-    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "default");
+    const darkTheme = config.get<string>(DARK_THEME_KEY, "redux-dark");
+    const lightTheme = config.get<string>(LIGHT_THEME_KEY, "redux");
+    const maxZoom = config.get<number>(MAX_ZOOM, 5);
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme ? darkTheme : lightTheme;
@@ -74,12 +78,13 @@ export class PreviewPanel {
     if (!this.panel.webview.html) {
       this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme);
     }
-
+console.log("In Preview Panel",maxZoom);
     this.panel.webview.postMessage({
       type: "update",
       content:this.lastContent,
       currentTheme: currentTheme,
       isFileChange: this.isFileChange,
+      maxZoom: maxZoom
     });
     this.isFileChange = false;
   }

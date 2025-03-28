@@ -9,3 +9,5 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 !images/**  # ✅ Allow all images
+.npmrc
+webview/.npmrc
