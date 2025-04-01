@@ -28,11 +28,11 @@ import { customErrorMessage } from "./constants/errorMessages";
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
-import { aiHandler } from './commercial/ai/aiService';
-import { DiagramRegenerator } from './commercial/sync/diagramRegenerator';
-import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
-import { registerTools } from './commercial/ai/tools';
+import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
+import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
+import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
+import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -42,9 +42,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   analytics.trackActivation();
   initializeAIChatParticipant(context);
-  
-  // Register Copilot Agent Mode tools
   registerTools(context);
+  // Initialize the bridge for commercial tools
+  setPreviewBridge(new PreviewBridgeImpl());
+  setValidationBridge(new ValidationBridgeImpl());
   
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
@@ -636,18 +637,6 @@ context.subscriptions.push(
 
   console.log("Mermaid Charts view registered");
 
-  // Global error handling
-  // process.on('uncaughtException', (error) => {
-  //   analytics.trackException(error);
-  // });
-
-  // process.on('unhandledRejection', (reason) => {
-  //   if (reason instanceof Error) {
-  //     analytics.trackException(reason);
-  //   } else {
-  //     analytics.trackException(new Error('Unhandled rejection'));
-  //   }
-  // });
   context.subscriptions.push(
     vscode.commands.registerCommand("mermaidChart.openCopilotChat", async () => {
       const copilotExtension = vscode.extensions.getExtension("GitHub.copilot-chat");

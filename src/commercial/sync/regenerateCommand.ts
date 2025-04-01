@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
-import { DiagramRegenerator } from './diagramRegenerator';
 import { MermaidChartVSCode } from "../../mermaidChartVSCode";
 import analytics from "../../analytics";
+import { DiagramRegenerator } from '@mermaid-chart/vscode-utils';
+
 
 export function registerRegenerateCommand(context: vscode.ExtensionContext, mcAPI: MermaidChartVSCode) {
   context.subscriptions.push(
