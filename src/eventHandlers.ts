@@ -31,12 +31,10 @@ export function handleTextDocumentChange(
 
     // Check if the first word matches any diagram type
     const diagramType = getDiagramTypeFromWord(firstWord, diagramMappings);
-    console.log("In handleTextDocumentChange",diagramType);
 
     if (diagramType) {
    
       const grammarPath = path.join(__dirname, '..', 'syntaxes', `mermaid-${diagramType}.tmLanguage.json`);
-      console.log("The Grammer Path is",grammarPath);
 
       // Apply the syntax highlighting from the appropriate .tmLanguage file
       applySyntaxHighlighting(document, grammarPath);

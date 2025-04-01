@@ -2,9 +2,9 @@ import httpClient from './httpClient';
 import * as vscode from "vscode";
 class Analytics {
 
-  public sendEvent(eventName: string, eventID:string,errorMessage?: string,diagramType?:string) {
+  public sendEvent(eventName: string, eventID:string, errorMessage?: string, diagramType?:string) {
     const analyticsID = vscode.env.machineId;
-    const pluginID= "MERMAIDCHART_PLUGIN";
+    const pluginID= "MERMAIDCHART_VS_CODE_PLUGIN";
     const payload = {
       analyticsID,
       pluginID,
@@ -20,12 +20,12 @@ class Analytics {
   }
 
   public trackActivation() {
-    this.sendEvent('VS Code Extension Activated','VS_CODE_PLUGIN_Activation');
+    this.sendEvent('VS Code Extension Activated','VS_CODE_PLUGIN_ACTIVATION');
   }
 
   public trackException(error: any) {
     if (error instanceof Error) {
-      this.sendEvent('VS Code Extension Exception', 'VS_CODE_PLUGIN_EXCEPTION',error.message);
+      this.sendEvent('VS Code Extension Exception', 'VS_CODE_PLUGIN_EXCEPTION', error.message);
     } else {
       this.sendEvent('VS Code Extension Exception','VS_CODE_PLUGIN_EXCEPTION', "Unknown error occurred");
     }
@@ -40,11 +40,11 @@ class Analytics {
   }
 
   public trackAIChatInvocation() {
-    this.sendEvent('VS Code AI Chat Participant Invoked','VS_CODE_PLUGIN_AI_CHAT');
+    this.sendEvent('VS Code AI Chat Participant Invoked','VS_CODE_PLUGIN_AI_CHAT_INVOCATION');
   }
   
   public trackAIGeneratedDiagram(diagramType: string) {
-    this.sendEvent(`VS Code AI Generated Diagram`,'VS_CODE_PLUGIN_GENERATE_DIAGRAM',undefined,diagramType);
+    this.sendEvent(`VS Code AI Chat Generated Diagram`, 'VS_CODE_PLUGIN_AI_CHAT_GENERATE_DIAGRAM', undefined, diagramType);
   }
   
   public trackRegenerateCommandInvoked() {

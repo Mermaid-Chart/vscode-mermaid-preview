@@ -424,8 +424,8 @@
       {
         "id": "mermaid.radar",
         "aliases": [
-          "Mermaid radar",
-          "mermaid Radar"
+          "Mermaid Radar",
+          "mermaid radar"
         ],
         "icon": {
           "light": "./images/VS-code-file-icon.svg",
