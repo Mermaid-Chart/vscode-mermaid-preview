@@ -81,5 +81,9 @@
   ],
   "zenuml": [
     "zenuml"
+  ],
+  "radar": [
+    "radar",
+    "radar-beta"
   ]
 }
