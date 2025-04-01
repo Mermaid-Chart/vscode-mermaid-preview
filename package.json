@@ -774,6 +774,10 @@
       {
         "command": "mermaidChart.openCopilotChat",
         "title": "MermaidChart: Open AI Chat"
+      },
+      {
+        "command": "mermaidChart.insertMermaidTemplate",
+        "title": "Insert Mermaid Template"
       }
     ],
     "chatParticipants": [
