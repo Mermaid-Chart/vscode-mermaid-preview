@@ -689,7 +689,7 @@
       "editor/context": [
         {
           "command": "mermaidChart.preview",
-          "when": "resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/",
+          "when": "resourceExtname =~ /^\\.(mmd|mermaid|md)$/ || resourceLangId =~ /^mermaid/",
           "group": "navigation"
         },
         {

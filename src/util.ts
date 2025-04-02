@@ -13,6 +13,7 @@ import { extractIdFromCode } from "./frontmatter";
 const activeListeners = new Map<string, vscode.Disposable>();
 const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
 import { MermaidWebviewProvider } from "./panels/loginPanel";
+import { allDiagrams } from "./constants/diagramTemplates";
 const config = vscode.workspace.getConfiguration();
 export const defaultBaseURL = config.get<string>('mermaidChart.baseUrl', 'https://www.mermaidchart.com');
 const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
@@ -546,6 +547,12 @@ export function applyGutterIconDecoration(position: vscode.Range) {
     position,
   ]);
 }
+
+
+export function getDiagramTemplates() {
+  return allDiagrams; 
+}
+
 
 
 

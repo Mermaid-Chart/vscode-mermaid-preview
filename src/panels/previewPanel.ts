@@ -30,11 +30,19 @@ export class PreviewPanel {
   }
 
   public static createOrShow(document: vscode.TextDocument) {
+    // Check if the document is a Markdown file
+    if (document.languageId === "markdown") {
+      console.log("Markdown file detected");
+      // Open the Markdown preview instead of the Mermaid preview
+      vscode.commands.executeCommand("markdown.showPreview", document.uri);
+      return;
+    }
+
     if (PreviewPanel.currentPanel) {
       PreviewPanel.currentPanel.panel.reveal();
       return;
     }
-  
+
     const panel = vscode.window.createWebviewPanel(
       "mermaidPreview",
       "Mermaid Preview",

@@ -8,6 +8,7 @@ import {
   findDiagramCode,
   findMermaidChartTokens,
   findMermaidChartTokensFromAuxFiles,
+  getDiagramTemplates,
   getHelpUrl,
   getMermaidChartTokenDecoration,
   insertMermaidChartToken,
@@ -33,7 +34,7 @@ import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
-import { getDiagramTemplates } from "./constants/codesnippets";
+
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -672,38 +673,54 @@ context.subscriptions.push(
     await openMermaidPreview(context, mermaidCode);
   })
 );
+
+
 context.subscriptions.push(
-  vscode.commands.registerCommand("mermaidChart.insertMermaidTemplate", async () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
+  vscode.languages.registerCompletionItemProvider(
+    [
+      { scheme: 'file' },
+      { scheme: 'untitled' }
+    ],
+    {
+      provideCompletionItems(document) {
+        if (document.getText().trim() === "") {
+          const templates = getDiagramTemplates();
 
-    const templates = getDiagramTemplates();
-    const selected = await vscode.window.showQuickPick(
-      templates.map((t) => t.name),
-      { placeHolder: "Select a Mermaid diagram template" }
-    );
-
-    if (selected) {
-      const template = templates.find((t) => t.name === selected);
-      if (template) {
-        editor.edit((editBuilder) => {
-          editBuilder.insert(editor.selection.active, template.completion??"");
-        });
-      }
-    }
-  })
+          // Map templates to completion items
+          const suggestions = templates.map(template => {
+            const item = new vscode.CompletionItem(
+              template.name,
+              vscode.CompletionItemKind.Snippet
+            );
+            item.insertText = new vscode.SnippetString(template.code);
+            item.documentation = new vscode.MarkdownString(
+              `**${template.name}**\n\n\`\`\`mermaid\n${template.code}\n\`\`\``
+            );
+            return item;
+          });
+          return suggestions;
+        }
+        return [];
+      },
+    },
+  )
 );
+ 
 
 
 vscode.workspace.onDidOpenTextDocument((document) => {
   if (document.languageId.startsWith("mermaid")) {
     setTimeout(() => {
       if (document.getText().trim() === "") {
-        console.log("Inserting template into empty document");
-        vscode.commands.executeCommand("mermaidChart.insertMermaidTemplate");
-      }
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.document === document) {
+          vscode.commands.executeCommand("editor.action.triggerSuggest");
+        } else {
+          console.log("Editor not active or document mismatch");
+        }
+      } 
     }, 100); // Small delay to allow VS Code to fully load the document
-  }
+  } 
 });
 // Register the regenerate command from commercial directory
 registerRegenerateCommand(context, mcAPI);
