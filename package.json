@@ -791,6 +791,33 @@
     ],
     "languageModelTools": [
       {
+        "name": "get-syntax-docs-mermaid",
+        "tags": ["mermaid", "documentation", "get_syntax_docs"],
+        "toolReferenceName": "get_syntax_docs",
+        "displayName": "Get Syntax Documentation",
+        "modelDescription": "Get the syntax documentation for a specific diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart",
+        "icon": "$(files)",
+        "canBeReferencedInPrompt": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "enum": [
+                "architecture.md", "block.md", "c4.md", "classDiagram.md", 
+                "entityRelationshipDiagram.md", "flowchart.md", "gantt.md", 
+                "gitgraph.md", "kanban.md", "mindmap.md", "packet.md", 
+                "pie.md", "quadrantChart.md", "requirementDiagram.md", 
+                "sankey.md", "sequenceDiagram.md", "stateDiagram.md", 
+                "timeline.md", "userJourney.md", "xyChart.md"
+              ],
+              "description": "The filename of the diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart"
+            }
+          },
+          "required": ["file"]
+        }
+      },
+      {
         "name": "mermaid-diagram-validator",
         "tags": ["vscode_editing", "diagram", "mermaid", "before-preview", "before-visualization", "validation", "syntax", "errors", "essential", "mandatory", "pre-check", "check", "verify", "test", "debug"],
         "displayName": "Mermaid Diagram Validator",

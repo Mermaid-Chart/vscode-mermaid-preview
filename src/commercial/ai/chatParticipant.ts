@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { aiHandler } from '@mermaid-chart/vscode-utils';
+import { aiHandler } from "./aiService";
 
 
 export function initializeAIChatParticipant(context: vscode.ExtensionContext): vscode.ChatParticipant {

@@ -34,6 +34,7 @@ import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-c
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 import { getDiagramTemplates } from "./constants/codesnippets";
+import { SyntaxDocumentationTool } from './commercial/ai/tools/syntaxDocsTool';
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -42,11 +43,23 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
 
   analytics.trackActivation();
-  initializeAIChatParticipant(context);
-  registerTools(context);
-  // Initialize the bridge for commercial tools
-  setPreviewBridge(new PreviewBridgeImpl());
-  setValidationBridge(new ValidationBridgeImpl());
+  
+  // Register AI tools first to ensure they're available
+  try {
+    console.log("[MermaidExtension] Registering AI tools...");
+    registerTools(context);
+    
+    // Initialize the bridge for commercial tools
+    setPreviewBridge(new PreviewBridgeImpl());
+    setValidationBridge(new ValidationBridgeImpl());
+    
+    // Initialize AI chat participant after tools are registered
+    initializeAIChatParticipant(context);
+    
+    console.log("[MermaidExtension] AI tools registered successfully");
+  } catch (error) {
+    console.error("[MermaidExtension] Error registering AI tools:", error);
+  }
   
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
@@ -707,6 +720,11 @@ vscode.workspace.onDidOpenTextDocument((document) => {
 });
 // Register the regenerate command from commercial directory
 registerRegenerateCommand(context, mcAPI);
+
+// Register the tool
+context.subscriptions.push(
+  vscode.lm.registerTool('get-syntax-docs-mermaid', new SyntaxDocumentationTool())
+);
 }
 
 // This method is called when your extension is deactivated
