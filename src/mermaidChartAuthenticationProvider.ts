@@ -140,6 +140,7 @@ export class MermaidChartAuthenticationProvider
    * @param sessionId
    */
   public async removeSession(sessionId: string): Promise<void> {
+    analytics.trackLogout();
     const allSessions = await this.context.secrets.get(this.sessionsKey);
     if (allSessions) {
       let sessions = JSON.parse(allSessions) as AuthenticationSession[];
