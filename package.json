@@ -792,7 +792,7 @@
     "languageModelTools": [
       {
         "name": "get-syntax-docs-mermaid",
-        "tags": ["mermaid", "documentation", "get_syntax_docs"],
+        "tags": ["mermaid", "documentation", "get_syntax_docs", "chat-tools-sample"],
         "toolReferenceName": "get_syntax_docs",
         "displayName": "Get Syntax Documentation",
         "modelDescription": "Get the syntax documentation for a specific diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart",
@@ -896,8 +896,9 @@
     "yaml": "^2.7.0",
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource/recursive": "^5.1.1",
-    "@mermaid-chart/vscode-utils": "1.0.1"
-
+    "@mermaid-chart/vscode-utils": "1.0.1",
+    "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
+    "@vscode/prompt-tsx": "^0.3.0-alpha.12"
   },
   "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247",
   "enabledApiProposals": ["languageModelToolsForAgent"]
