@@ -553,6 +553,19 @@ export function getDiagramTemplates() {
   return allDiagrams; 
 }
 
+export function triggerSuggestIfEmpty(document: vscode.TextDocument) {
+  if (document.languageId.startsWith("mermaid") && document.getText().trim() === "") {
+    setTimeout(() => {
+      const editor = vscode.window.activeTextEditor;
+      if (editor && editor.document === document) {
+        vscode.commands.executeCommand("editor.action.triggerSuggest");
+      } else {
+        console.log("Editor not active or document mismatch");
+      }
+    }, 100);
+  }
+}
+
 
 
 

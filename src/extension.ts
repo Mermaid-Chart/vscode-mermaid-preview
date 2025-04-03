@@ -15,6 +15,7 @@ import {
   isAuxFile,
   MermaidChartToken,
   syncAuxFile,
+  triggerSuggestIfEmpty,
   updateViewVisibility,
   viewMermaidChart,
 } from "./util";
@@ -705,23 +706,16 @@ context.subscriptions.push(
     },
   )
 );
- 
-
-
 vscode.workspace.onDidOpenTextDocument((document) => {
-  if (document.languageId.startsWith("mermaid")) {
-    setTimeout(() => {
-      if (document.getText().trim() === "") {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document === document) {
-          vscode.commands.executeCommand("editor.action.triggerSuggest");
-        } else {
-          console.log("Editor not active or document mismatch");
-        }
-      } 
-    }, 100); // Small delay to allow VS Code to fully load the document
-  } 
+  triggerSuggestIfEmpty(document);
 });
+vscode.window.visibleTextEditors.forEach((editor) => {
+  triggerSuggestIfEmpty(editor.document);
+});
+vscode.workspace.onDidChangeTextDocument((event) => {
+  triggerSuggestIfEmpty(event.document);
+});
+
 // Register the regenerate command from commercial directory
 registerRegenerateCommand(context, mcAPI);
 }
