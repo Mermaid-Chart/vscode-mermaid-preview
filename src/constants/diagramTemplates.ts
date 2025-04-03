@@ -4,21 +4,6 @@ interface DiagramInfo {
     code: string;
   }
 
-  const diagrams:  readonly DiagramInfo[] = [
-    {
-      name: 'Flowchart',
-      code: diagramSamples.DefaultDiagramCode,
-    },
-    {
-      name: 'Class ',
-      code: diagramSamples.ClassDiagram,
-    },
-    {
-      name: 'Sequence ',
-      code: diagramSamples.SequenceDiagram,
-    },
-  ] as const;
-
   export const allDiagrams:  readonly DiagramInfo[] = [
     {
       name: 'Flowchart',
