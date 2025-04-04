@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import axios from 'axios';
-import { diagramTypeFiles } from '../types';
+import { diagramTypeFiles, GetSyntaxDocsParams } from '../types';
 
-interface GetSyntaxDocsParams {
-  file: string;
-}
+
 
 export class SyntaxDocumentationTool implements vscode.LanguageModelTool<GetSyntaxDocsParams> {
   private static readonly VALID_FILES = diagramTypeFiles;

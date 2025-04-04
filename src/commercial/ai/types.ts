@@ -46,6 +46,10 @@ export interface TsxToolUserMetadata {
     toolCallResults: Record<string, vscode.LanguageModelToolResult>;
   }
 
+  export interface GetSyntaxDocsParams {
+    file: string;
+  }
+
   export const diagramTypeFiles= [
     "architecture.md", "block.md", "c4.md", "classDiagram.md", 
     "entityRelationshipDiagram.md", "flowchart.md", "gantt.md", 
