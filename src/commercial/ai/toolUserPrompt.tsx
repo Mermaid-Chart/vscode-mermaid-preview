@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import {
-  BasePromptElementProps,
   PromptElement,
   PromptPiece,
   PromptReference,
@@ -15,11 +14,8 @@ import {
 } from '@vscode/prompt-tsx';
 import { ToolCallRound, ToolUserProps } from './aiService';
 import { Tag } from "@vscode/chat-extension-utils";
-import { ToolFunction } from "@vscode/prompt-tsx/dist/base/promptElements";
-interface PromptReferencesProps extends BasePromptElementProps {
-	references: ReadonlyArray<vscode.ChatPromptReference>;
-	excludeReferences?: boolean;
-}
+import { HistoryProps, PromptReferenceProps, PromptReferencesProps, ToolCall, ToolCallsProps, ToolResultElementProps, TsxToolUserMetadata } from "./types";
+
 export class ToolResultMetadata extends PromptMetadata {
 	constructor(
 		public toolCallId: string,
@@ -39,10 +35,6 @@ class PromptReferences extends PromptElement<PromptReferencesProps, void> {
 			</UserMessage>
 		);
 	}
-}
-interface PromptReferenceProps extends BasePromptElementProps {
-	ref: vscode.ChatPromptReference;
-	excludeReferences?: boolean;
 }
 
 class PromptReferenceElement extends PromptElement<PromptReferenceProps> {
@@ -141,16 +133,7 @@ class ToolCalls extends PromptElement<ToolCallsProps, void> {
 			</Chunk>);
 	}
 }
-interface ToolCallsProps extends BasePromptElementProps {
-	toolCallRounds: ToolCallRound[];
-	toolCallResults: Record<string, vscode.LanguageModelToolResult>;
-	toolInvocationToken: vscode.ChatParticipantToolToken | undefined;
-}
-export interface ToolCall {
-  id: string;
-  function: ToolFunction;
-  type: 'function';
-}
+
 class ToolResultElement extends PromptElement<ToolResultElementProps, void> {
 	async render(state: void, sizing: PromptSizing): Promise<PromptPiece | undefined> {
 		const tool = vscode.lm.tools.find(t => t.name === this.props.toolCall.name);
@@ -176,17 +159,7 @@ class ToolResultElement extends PromptElement<ToolResultElementProps, void> {
 	}
 }
 
-interface ToolResultElementProps extends BasePromptElementProps {
-	toolCall: vscode.LanguageModelToolCallPart;
-	toolInvocationToken: vscode.ChatParticipantToolToken | undefined;
-	toolCallResult: vscode.LanguageModelToolResult | undefined;
-}
 
-
-interface HistoryProps extends BasePromptElementProps {
-	priority: number;
-	context: vscode.ChatContext;
-}
 class History extends PromptElement<HistoryProps, void> {
 	render(_state: void, _sizing: PromptSizing) {
 		return (
@@ -236,11 +209,4 @@ export function isTsxToolUserMetadata(obj: unknown): obj is TsxToolUserMetadata 
   return !!obj &&
       !!(obj as TsxToolUserMetadata).toolCallsMetadata &&
       Array.isArray((obj as TsxToolUserMetadata).toolCallsMetadata.toolCallRounds);
-}
-export interface TsxToolUserMetadata {
-  toolCallsMetadata: ToolCallsMetadata;
-}
-export interface ToolCallsMetadata {
-  toolCallRounds: ToolCallRound[];
-  toolCallResults: Record<string, vscode.LanguageModelToolResult>;
 }
