@@ -115,11 +115,7 @@ export class MermaidAIService {
     context: vscode.ChatContext,
     stream: vscode.ChatResponseStream,
     token: vscode.CancellationToken
-  ): Promise<void> {    
-    if (request.command === 'list') {
-        stream.markdown(`Available tools: ${vscode.lm.tools.map(tool => tool.name).join(', ')}\n\n`);
-        return;
-    }
+  ): Promise<void> {
 
     let model = request.model;
     if (model.vendor === 'copilot' && model.family.startsWith('o1')) {
@@ -132,9 +128,7 @@ export class MermaidAIService {
     }
 
     // Use all tools, or tools with the tags that are relevant.
-    const tools = request.command === 'all' ?
-        vscode.lm.tools :
-        vscode.lm.tools.filter(tool => tool.tags.includes('chat-tools-sample'));
+    const tools = vscode.lm.tools.filter(tool => tool.tags.includes('mermaid-docs'));
     const options: vscode.LanguageModelChatRequestOptions = {
         justification: 'To make a request to @toolsTSX',
     };
@@ -180,12 +174,13 @@ export class MermaidAIService {
         let responseStr = '';
         for await (const part of response.stream) {
             if (part instanceof vscode.LanguageModelTextPart) {
-                stream.markdown(part.value);
+                // stream.markdown(part.value);
                 responseStr += part.value;
             } else if (part instanceof vscode.LanguageModelToolCallPart) {
                 toolCalls.push(part);
             }
         }
+        await this.streamResponseWithDiagramPreviews(response, stream, request);
 
         if (toolCalls.length) {
             // If the model called any tools, then we do another round- render the prompt with those tool calls (rendering the PromptElements will invoke the tools)
@@ -242,11 +237,20 @@ export class MermaidAIService {
   ): Promise<void> {
     // Stream the response
     let fullResponse = '';
-    for await (const fragment of chatResponse.text) {
-      fullResponse += fragment;
-      stream.markdown(fragment); // Stream each fragment to the user as it arrives
+    // for await (const fragment of chatResponse.text) {
+    //   fullResponse += fragment;
+    //   stream.markdown(fragment); // Stream each fragment to the user as it arrives
+    // }
+    for await (const part of chatResponse.text) {
+      const simulatedPart = new vscode.LanguageModelTextPart(part);
+      if (simulatedPart instanceof vscode.LanguageModelTextPart) {
+        fullResponse += simulatedPart.value;
+        stream.markdown(simulatedPart.value);
+      }
     }
-    
+   
+  
+  
     // After streaming the full response, extract any mermaid code blocks
     const mermaidRegex = /```mermaid\s*([\s\S]*?)```/g;
     const mermaidBlocks: string[] = [];

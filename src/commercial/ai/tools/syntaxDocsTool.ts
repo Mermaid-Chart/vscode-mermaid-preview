@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import axios from 'axios';
 
 interface GetSyntaxDocsParams {
   file: string;
@@ -24,10 +25,6 @@ export class SyntaxDocumentationTool implements vscode.LanguageModelTool<GetSynt
   ) {
     return {
       invocationMessage: `Fetching Mermaid documentation for ${options.input.file}`,
-      confirmationMessages: {
-        title: 'Fetch Mermaid Documentation',
-        message: new vscode.MarkdownString(`Fetch documentation for ${options.input.file}?`)
-      }
     };
   }
 
@@ -66,18 +63,14 @@ export class SyntaxDocumentationTool implements vscode.LanguageModelTool<GetSynt
       const url = `https://www.mermaidchart.com/rest-api/chatgpt/${MERMAID_DOCS_GIT_TAG}/docs/syntax/${filename}`;
       
       console.log(`[SyntaxDocsTool] Requesting documentation from: ${url}`);
-      const response = await fetch(url, {
+      const response = await axios.get(url, {
         headers: {
           'Accept': 'text/plain, text/markdown',
           'User-Agent': 'VSCode-MermaidChart-Extension'
         }
       });
       
-      if (!response.ok) {
-        throw new Error(`Failed to fetch documentation: ${response.status} ${response.statusText}`);
-      }
-      
-      const text = await response.text();
+      const text = await response.data;
       if (!text || text.trim().length === 0) {
         throw new Error(`Received empty documentation for ${filename}`);
       }
