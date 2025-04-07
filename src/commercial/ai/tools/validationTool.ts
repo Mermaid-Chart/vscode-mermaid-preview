@@ -55,15 +55,13 @@ export class ValidationBridgeImpl implements ValidationBridge {
        // Listen for validation results from the webview
        const disposable = panel.webview.onDidReceiveMessage(
          message => {
-           // if (message.type === 'validationResult') {
-             clearTimeout(timeoutId);
              resolve({
                valid: message.valid,
                error: message.valid ? undefined : message.message
              });
              panel.dispose();
              disposable.dispose();
-           // }
+             clearTimeout(timeoutId);
          }
        );
        

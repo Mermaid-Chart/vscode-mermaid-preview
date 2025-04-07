@@ -46,22 +46,16 @@ export async function activate(context: vscode.ExtensionContext) {
   analytics.trackActivation();
   
   // Register AI tools first to ensure they're available
-  try {
-    console.log("[MermaidExtension] Registering AI tools...");
-    registerTools(context);
-    
-    // Initialize the bridge for commercial tools
-    setPreviewBridge(new PreviewBridgeImpl());
-    setValidationBridge(new ValidationBridgeImpl());
-    
-    // Initialize AI chat participant after tools are registered
-    initializeAIChatParticipant(context);
-    
-    console.log("[MermaidExtension] AI tools registered successfully");
-  } catch (error) {
-    console.error("[MermaidExtension] Error registering AI tools:", error);
-  }
+  console.log("[MermaidExtension] Registering AI tools...");
+  registerTools(context);
   
+  // Initialize the bridge for commercial tools
+  setPreviewBridge(new PreviewBridgeImpl());
+  setValidationBridge(new ValidationBridgeImpl());
+  
+  // Initialize AI chat participant after tools are registered
+  initializeAIChatParticipant(context);
+    
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
   const mcAPI = new MermaidChartVSCode();

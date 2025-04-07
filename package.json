@@ -819,8 +819,10 @@
       },
       {
         "name": "mermaid-diagram-validator",
-        "tags": ["vscode_editing", "diagram", "mermaid", "before-preview", "before-visualization", "validation", "syntax", "errors", "essential", "mandatory", "pre-check", "check", "verify", "test", "debug"],
+        "tags": ["editing", "diagram", "mermaid", "before-preview", "before-visualization", "validation", "syntax", "errors", "essential", "mandatory", "pre-check", "check", "verify", "test", "debug"],
         "displayName": "Mermaid Diagram Validator",
+        "toolReferenceName": "mermaid-diagram-validator",
+        "canBeReferencedInPrompt": true,
         "modelDescription": "Validate a Mermaid diagram. ALWAYS use this tool after when creating, editing, or working with any Mermaid diagram and before preview. The Mermaid Diagram Validator is an ESSENTIAL tool for ensuring the accuracy and correctness of Mermaid diagrams. It MUST be used IMMEDIATELY AFTER CREATING, EDITING, or WORKING WITH any Mermaid diagram or BEFORE PREVIEWING it. This tool is CRUCIAL for checking, verifying, testing, and debugging any Mermaid diagram code for syntax errors or formatting issues. It ensures that diagrams are correctly formatted and free of errors before they are rendered or visualized. This includes diagrams created from any source file, such as TypeScript, Java, or any other programming language. By using this tool, you can prevent errors and ensure that your diagrams are accurate and reliable. ALWAYS validate your diagrams to maintain high-quality visualizations and avoid potential issues during rendering.",
         "icon": "$(check)",
         "inputSchema": {
@@ -836,8 +838,10 @@
       },
       {
         "name": "mermaid-diagram-preview",
-        "tags": ["vscode_editing", "diagram", "mermaid", "preview", "visualization", "essential", "mandatory", "show", "view"],
+        "tags": ["editing", "diagram", "mermaid", "preview", "visualization", "essential", "mandatory", "show", "view"],
         "displayName": "Mermaid Diagram Preview",
+        "toolReferenceName": "mermaid-diagram-preview",
+        "canBeReferencedInPrompt": true,
         "modelDescription": "Preview a Mermaid diagram. ALWAYS use this tool after validation when creating, editing, or working with any Mermaid diagram. The code paramter of this MUST CONTAIN ONLY the Mermaid code block without any surrounding or other content. IMPORTANT USAGE PATTERN: For EXISTING Mermaid diagram files, ALWAYS pass the documentUri parameter (NOT the code). Only use the code parameter for NEW diagrams that don't exist in files yet or when you've extracted ONLY the Mermaid code block from markdown. This tool renders and visualizes diagrams including flowcharts, sequence diagrams, class diagrams, ER diagrams, and other chart types. The diagram code should include any YAML frontmatter blocks (like id, title, config) if present.",
         "icon": "$(eye)",
         "inputSchema": {
@@ -896,7 +900,7 @@
     "yaml": "^2.7.0",
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource/recursive": "^5.1.1",
-    "@mermaid-chart/vscode-utils": "1.0.1",
+    "@mermaid-chart/vscode-utils": "file:../vscode-commercial",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
     "@vscode/prompt-tsx": "^0.3.0-alpha.12"
   },
