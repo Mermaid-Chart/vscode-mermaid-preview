@@ -34,7 +34,7 @@ export class PreviewPanel {
       PreviewPanel.currentPanel.panel.reveal();
       return;
     }
-  
+
     const panel = vscode.window.createWebviewPanel(
       "mermaidPreview",
       "Mermaid Preview",
