@@ -1,14 +1,19 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
+		"jsx": "react",
+		"jsxFactory": "vscpp",
+		"jsxFragmentFactory": "vscppf",
 		"target": "ES2020",
 		"outDir": "out",
 		"lib": [
 			"ES2020",
 			"DOM"
 		],
+		
 		"sourceMap": true,
 		"skipLibCheck": true,
+		
 		"rootDir": "src",
 		"strict": true   /* enable all strict type-checking options */
 		/* Additional Checks */

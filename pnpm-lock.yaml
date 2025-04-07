@@ -15,11 +15,17 @@ importers:
         specifier: ^5.1.1
         version: 5.2.5
       '@mermaid-chart/vscode-utils':
-        specifier: 1.0.1
-        version: 1.0.1(vscode@1.1.37)
+        specifier: file:../mermaid-vs-code-commercial
+        version: file:../mermaid-vs-code-commercial(vscode@1.1.37)
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
+      '@vscode/chat-extension-utils':
+        specifier: ^0.0.0-alpha.1
+        version: 0.0.0-alpha.5
+      '@vscode/prompt-tsx':
+        specifier: ^0.3.0-alpha.12
+        version: 0.3.0-alpha.22
       axios:
         specifier: ^1.7.9
         version: 1.8.4
@@ -568,8 +574,8 @@ packages:
   '@mermaid-chart/mermaid@11.6.0-b.1':
     resolution: {integrity: sha512-ZvNqQN7xQCLVPJ3lzs+ibTi2uudx1ZlGbzGI8VFxUdjIoXKMnvvZ4iZJ5JN7ePm6vP1Gx4dT9tuGUrnMdEcjUg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.1/b4d8654fc4424bd0994c5d2d111120656bd636b8}
 
-  '@mermaid-chart/vscode-utils@1.0.1':
-    resolution: {integrity: sha512-KNOvAGa3iVSRFpwh7rWSZ0ILQ6WIsZ/0GMXSsuwOCrwsLG6IwfQSOJSSv29WjAz/hy5I4pKofXfFCs8BphO9Bw==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.1/2ca18369b78d9b949bcf0a986bf4231691242af0}
+  '@mermaid-chart/vscode-utils@file:../mermaid-vs-code-commercial':
+    resolution: {directory: ../mermaid-vs-code-commercial, type: directory}
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
@@ -913,6 +919,12 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+
+  '@vscode/chat-extension-utils@0.0.0-alpha.5':
+    resolution: {integrity: sha512-EkfetTIGMDyClZkIx8oMOhprlXufnj0b/G1W4QGg4jhkWVUBE7kLRZsqEnpNjmtxHTugzc61gPQwT3zgH3HXgA==}
+
+  '@vscode/prompt-tsx@0.3.0-alpha.22':
+    resolution: {integrity: sha512-Js4eJB/34Q+hrAg5qIEGdSBh+e0ozqdBLeNpdd1ZBIdkzUElBO+guSppxm3rz8rFXA7qZA9qrQ6/udNEB2c1tg==}
 
   '@vscode/test-electron@2.4.1':
     resolution: {integrity: sha512-Gc6EdaLANdktQ1t+zozoBVRynfIsMKMc94Svu1QreOBC8y76x4tvaK32TljrLi1LI2+PK58sDVbL7ALdqf3VRQ==}
@@ -3115,8 +3127,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@1.0.1(vscode@1.1.37)':
+  '@mermaid-chart/vscode-utils@file:../mermaid-vs-code-commercial(vscode@1.1.37)':
     dependencies:
+      '@vscode/chat-extension-utils': 0.0.0-alpha.5
+      '@vscode/prompt-tsx': 0.3.0-alpha.22
       axios: 1.8.4
       uuid: 11.1.0
       vscode: 1.1.37
@@ -3476,6 +3490,12 @@ snapshots:
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.3.0': {}
+
+  '@vscode/chat-extension-utils@0.0.0-alpha.5':
+    dependencies:
+      '@vscode/prompt-tsx': 0.3.0-alpha.22
+
+  '@vscode/prompt-tsx@0.3.0-alpha.22': {}
 
   '@vscode/test-electron@2.4.1':
     dependencies:

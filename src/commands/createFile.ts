@@ -75,7 +75,6 @@ export function getPreview() {
   const document = activeEditor.document;
   if (document.languageId !== "plaintext" && 
       !document.fileName.endsWith(".mmd") && 
-      !document.fileName.endsWith(".md") &&
       !document.fileName.endsWith(".mermaid") && 
       !document.languageId.startsWith('mermaid')) {
     vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");

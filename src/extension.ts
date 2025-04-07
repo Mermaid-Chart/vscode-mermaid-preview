@@ -44,12 +44,18 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
 
   analytics.trackActivation();
-  initializeAIChatParticipant(context);
+  
+  // Register AI tools first to ensure they're available
+  console.log("[MermaidExtension] Registering AI tools...");
   registerTools(context);
+  
   // Initialize the bridge for commercial tools
   setPreviewBridge(new PreviewBridgeImpl());
   setValidationBridge(new ValidationBridgeImpl());
   
+  // Initialize AI chat participant after tools are registered
+  initializeAIChatParticipant(context);
+    
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
   const mcAPI = new MermaidChartVSCode();

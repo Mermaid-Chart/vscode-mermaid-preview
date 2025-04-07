@@ -201,7 +201,6 @@
     const appElement = document.getElementById("app");
     const initialContent = appElement?.dataset.initialContent;
     const currentTheme = appElement?.dataset.currentTheme;
-    console.log('initialContent', initialContent)
     if (initialContent) {
       diagramContent = decodeURIComponent(initialContent);
       theme = decodeURIComponent(currentTheme) as "default" | "base" | "dark" | "forest" | "neutral" | "null";
