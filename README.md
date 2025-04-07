@@ -89,11 +89,11 @@ Now we provide native support for the .mmd  extension. All the local mermaid dia
 ![Support .mmd file extension as Mermaid Markdown file](https://docs.mermaidchart.com/img/plugins/vscode-plugin-file-icons.png)
 
 ### Smart Auto-Suggest with code snippets
-Now based on the diagram type auto suggestions for code snippets will be triggered on type of “m”, and it will start showing relevant code snippets shorthand, that once selected, will expand to the proper code snippet.
+Now based on the diagram type auto suggestions for code snippets will be triggered on type of "m", and it will start showing relevant code snippets shorthand, that once selected, will expand to the proper code snippet.
 ![Smart Auto-Suggest with code snippets](https://docs.mermaidchart.com/img/plugins/vscode-plugin-code-suggestions.png)
 
 ### Diagram Help
-If you get stuck with a diagram’s syntax or want to learn about other features for a given diagram, now you can directly access the respective diagram's detailed documentation on the official mermaid.js docs. 
+If you get stuck with a diagram's syntax or want to learn about other features for a given diagram, now you can directly access the respective diagram's detailed documentation on the official mermaid.js docs. 
 ![Diagram Help](https://docs.mermaidchart.com/img/plugins/vscode-plugin-diagram-help.png)
 
 ### Advanced Features when linking with MermaidChart
@@ -146,6 +146,15 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+### 2.2.0 -2025-04-07
+- Added three specialized AI tools for improved Mermaid diagramming:
+  - **Syntax Documentation Tool**: Provides instant access to detailed diagram syntax guides
+  - **Diagram Validation Tool**: Ensures correct syntax before rendering diagrams
+  - **Diagram Preview Tool**: Streamlined visualization of Mermaid diagrams
+- Enhanced **VS Code Agent Mode** with dedicated **Mermaid tools** for improved accuracy
+- Improved AI chat participant capabilities with documentation-powered responses
+- Better integration with GitHub Copilot Chat for more reliable diagram generation
+
 ### 2.1.3 -2025-04-03
 - Bug fixes
 

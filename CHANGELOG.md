@@ -1,4 +1,18 @@
 # Change Log
+### 2.2.0 -2025-04-07
+### New Features
+- Added three specialized AI tools for improved Mermaid diagramming:
+  - **Syntax Documentation Tool**: Provides instant access to detailed diagram syntax guides
+  - **Diagram Validation Tool**: Ensures correct syntax before rendering diagrams
+  - **Diagram Preview Tool**: Streamlined visualization of Mermaid diagrams
+- Enhanced VS Code Agent Mode with dedicated Mermaid tools for improved accuracy
+- Improved AI chat participant capabilities with documentation-powered responses
+- Better integration with GitHub Copilot Chat for more reliable diagram generation
+
+### 2.1.3 -2025-04-03
+### Fixed
+- Resolved bugs.
+
 ### 2.1.2 -2025-03-26
 
 ### Changed 
