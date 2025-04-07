@@ -15,8 +15,8 @@ importers:
         specifier: ^5.1.1
         version: 5.2.5
       '@mermaid-chart/vscode-utils':
-        specifier: file:../vscode-commercial
-        version: file:../vscode-commercial(vscode@1.1.37)
+        specifier: file:../mermaid-vs-code-commercial
+        version: file:../mermaid-vs-code-commercial(vscode@1.1.37)
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
@@ -574,8 +574,8 @@ packages:
   '@mermaid-chart/mermaid@11.6.0-b.1':
     resolution: {integrity: sha512-ZvNqQN7xQCLVPJ3lzs+ibTi2uudx1ZlGbzGI8VFxUdjIoXKMnvvZ4iZJ5JN7ePm6vP1Gx4dT9tuGUrnMdEcjUg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.1/b4d8654fc4424bd0994c5d2d111120656bd636b8}
 
-  '@mermaid-chart/vscode-utils@file:../vscode-commercial':
-    resolution: {directory: ../vscode-commercial, type: directory}
+  '@mermaid-chart/vscode-utils@file:../mermaid-vs-code-commercial':
+    resolution: {directory: ../mermaid-vs-code-commercial, type: directory}
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
@@ -3127,7 +3127,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@file:../vscode-commercial(vscode@1.1.37)':
+  '@mermaid-chart/vscode-utils@file:../mermaid-vs-code-commercial(vscode@1.1.37)':
     dependencies:
       '@vscode/chat-extension-utils': 0.0.0-alpha.5
       '@vscode/prompt-tsx': 0.3.0-alpha.22
