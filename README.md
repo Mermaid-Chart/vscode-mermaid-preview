@@ -146,6 +146,10 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.2.1 -2025-04-07
+- Bug Fixes
+
 ### 2.2.0 -2025-04-07
 - Added three specialized AI tools for improved Mermaid diagramming:
   - **Syntax Documentation Tool**: Provides instant access to detailed diagram syntax guides

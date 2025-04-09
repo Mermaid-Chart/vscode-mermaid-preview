@@ -238,7 +238,7 @@ function sanitizeQuery(query: string): string {
 
 export function checkReferencedFiles(metadata: any, workspacePath: string = ''): string[] {
   const changedReferences: string[] = [];
-  
+
   // If no references, return empty array
   if (!metadata.references || !Array.isArray(metadata.references) || metadata.references.length === 0) {
     return changedReferences;
@@ -265,17 +265,11 @@ export function checkReferencedFiles(metadata: any, workspacePath: string = ''):
       return [];
     }
 
-    // If path is not absolute and we have a workspace path, resolve it
-    if (!path.isAbsolute(filePath) && workspacePath) {
-      const workspaceFolderName = path.basename(workspacePath);
-      if (filePath.startsWith(workspaceFolderName + '/')) {
-        filePath = path.join(workspacePath, filePath.substring(workspaceFolderName.length + 1));
-      } else {
-        filePath = path.join(workspacePath, filePath);
-      }
+    // If the path starts with '/', treat it as relative to workspace root
+    if (filePath.startsWith('/') && workspacePath) {
+      filePath = path.join(workspacePath, filePath);
     }
 
-    // Check if file exists
     if (!fs.existsSync(filePath)) {
       changedReferences.push(`${path.basename(filePath)} (deleted)`);
       continue;
