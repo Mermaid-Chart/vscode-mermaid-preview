@@ -900,7 +900,7 @@
     "yaml": "^2.7.0",
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource/recursive": "^5.1.1",
-    "@mermaid-chart/vscode-utils": "1.0.2",
+    "@mermaid-chart/vscode-utils": "1.0.4",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
     "@vscode/prompt-tsx": "^0.3.0-alpha.12"
   },
