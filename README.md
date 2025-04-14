@@ -147,7 +147,7 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 2.2.1 -2025-04-11
+### 2.2.1 -2025-04-14
 - Bug Fixes
 
 ### 2.2.0 -2025-04-07
