@@ -15,8 +15,8 @@ importers:
         specifier: ^5.1.1
         version: 5.2.5
       '@mermaid-chart/vscode-utils':
-        specifier: 1.0.2
-        version: 1.0.2(vscode@1.1.37)
+        specifier: 1.0.4
+        version: 1.0.4(vscode@1.1.37)
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
@@ -101,10 +101,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.1)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.6)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.1
-        version: 11.6.0-b.1
+        specifier: 11.6.0-b.6
+        version: 11.6.0-b.6
       '@panzoom/panzoom':
         specifier: ^4.5.1
         version: 4.6.0
@@ -571,11 +571,11 @@ packages:
     peerDependencies:
       '@mermaid-chart/mermaid': ^11.0.0
 
-  '@mermaid-chart/mermaid@11.6.0-b.1':
-    resolution: {integrity: sha512-ZvNqQN7xQCLVPJ3lzs+ibTi2uudx1ZlGbzGI8VFxUdjIoXKMnvvZ4iZJ5JN7ePm6vP1Gx4dT9tuGUrnMdEcjUg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.1/b4d8654fc4424bd0994c5d2d111120656bd636b8}
+  '@mermaid-chart/mermaid@11.6.0-b.6':
+    resolution: {integrity: sha512-OkG6MWTui7PdgPSQwE7U2t2QEguV/hh171qE/7nYWhWUGejMsPRjulFNU0R3i7gG/HgNtIQzqC9igvZ4VzafZQ==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.6/7619ce80ce06fe9831efad9b439638f735a23af9}
 
-  '@mermaid-chart/vscode-utils@1.0.2':
-    resolution: {integrity: sha512-fQFgDdwK4wy0g1x1GW4RWhUrckfOc5Lhia3SGHfB2vkxjpRs67MFiJsG9XxOKi527nS3Hnm5kf8qAn3u0t38GQ==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.2/1525a1c8f027f4dd96f67c20910964df0aae080c}
+  '@mermaid-chart/vscode-utils@1.0.4':
+    resolution: {integrity: sha512-XINfi6X3VRt//n9H7xZILTAdioq68HVi5uVfKEeQ2O63XnYSONYekVsVPIMunbI7kOlanGvf/DKPhYZAfJup5A==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.4/24a4773c2f6bbbcb4e6cdf782479c31fb26333eb}
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
@@ -3100,13 +3100,13 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.1)':
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.6)':
     dependencies:
-      '@mermaid-chart/mermaid': 11.6.0-b.1
+      '@mermaid-chart/mermaid': 11.6.0-b.6
       d3: 7.9.0
       elkjs: 0.9.3
 
-  '@mermaid-chart/mermaid@11.6.0-b.1':
+  '@mermaid-chart/mermaid@11.6.0-b.6':
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
@@ -3131,7 +3131,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@1.0.2(vscode@1.1.37)':
+  '@mermaid-chart/vscode-utils@1.0.4(vscode@1.1.37)':
     dependencies:
       '@vscode/chat-extension-utils': 0.0.0-alpha.5
       '@vscode/prompt-tsx': 0.3.0-alpha.22
