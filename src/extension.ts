@@ -4,6 +4,7 @@ import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, getProje
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
+  configSection,
   editMermaidChart,
   findComments,
   findDiagramCode,
@@ -36,13 +37,14 @@ import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
-import { configSection } from "./config";
-import { extendMarkdownItWithMermaid } from "./shared-md-mermaid";
-import { injectMermaidTheme } from "./themeing";
+import { injectMermaidTheme } from "./previewmarkdown/themeing";
+import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
+
 
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
+
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
@@ -755,6 +757,9 @@ context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
   }
 }));
 
+// Register the regenerate command from commercial directory
+registerRegenerateCommand(context, mcAPI);
+
 return {
   extendMarkdownIt(md: MarkdownIt) {
       extendMarkdownItWithMermaid(md, {
@@ -766,9 +771,6 @@ return {
       return md;
   }
 };
-
-// Register the regenerate command from commercial directory
-registerRegenerateCommand(context, mcAPI);
 }
 
 // This method is called when your extension is deactivated

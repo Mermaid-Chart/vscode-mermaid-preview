@@ -20,6 +20,7 @@ const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
 const LIGHT_BACKGROUND = "#FDE0EE";
 const DARK_COLOR = "#FFFFFF";
 const LIGHT_COLOR = "#1E1A2E";
+export const configSection = 'mermaid';
 
 
 export const pattern : Record<string, RegExp> = {

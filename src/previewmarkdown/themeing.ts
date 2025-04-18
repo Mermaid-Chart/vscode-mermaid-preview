@@ -1,6 +1,6 @@
 import type MarkdownIt from 'markdown-it';
 import * as vscode from 'vscode';
-import { configSection } from './config';
+import { configSection } from '../util';
 
 const defaultMermaidTheme = 'default';
 const validMermaidThemes = [

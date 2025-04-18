@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
   mode: 'production',
   target: 'web',
-  entry: './src/markdown-preview/index.ts',
+  entry: './src/previewmarkdown/markdown-preview/index.ts',
   output: {
     path: path.resolve(__dirname, '../dist-preview'),
     filename: 'bundle.js',
@@ -15,11 +15,22 @@ module.exports = {
     chunkLoading: false
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.mjs', '.json'],
     fallback: {
       "fs": false,
-      "path": false
+      "path": false,
+      "tty": false,
+      "util": false,
+      "os": false
+    },
+    mainFields: ['module', 'main'],
+    alias: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      '@mermaid-chart/layout-elk': path.resolve(__dirname, '../node_modules/@mermaid-chart/layout-elk/dist/mermaid-layout-elk.core.mjs')
     }
+  },
+  experiments: {
+    topLevelAwait: true
   },
   optimization: {
     removeAvailableModules: false,
@@ -35,11 +46,22 @@ module.exports = {
         use: [{
           loader: 'ts-loader',
           options: {
-            configFile: path.resolve(__dirname, '../src/markdown-preview/tsconfig.json'),
+            configFile: path.resolve(__dirname, '../tsconfig.json'),
             transpileOnly: true
           }
         }],
-        exclude: /node_modules/
+        exclude: /node_modules\/(?!@mermaid-chart)/
+      },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        type: "javascript/auto"
+      },
+      {
+        test: /\.json$/,
+        type: 'json'
       }
     ]
   },

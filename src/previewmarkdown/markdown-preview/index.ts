@@ -4,7 +4,7 @@
  * This runs in the markdown preview's webview.
  */
 
-import mermaid, { MermaidConfig } from 'mermaid';
+import mermaid, { MermaidConfig } from "@mermaid-chart/mermaid";
 import { registerMermaidAddons, renderMermaidBlocksInElement } from '../shared-mermaid';
 
 function init() { 

@@ -1,7 +1,7 @@
-import elkLayouts from '@mermaid-js/layout-elk';
-import zenuml from '@mermaid-js/mermaid-zenuml';
-import mermaid, { MermaidConfig } from 'mermaid';
-import { iconPackConfig, requireIconPack } from './iconPackConfig';
+import layouts from '@mermaid-chart/layout-elk';
+import mermaid, { MermaidConfig } from '@mermaid-chart/mermaid';
+
+
 
 function renderMermaidElement(
     mermaidContainer: HTMLElement,
@@ -64,30 +64,30 @@ export async function renderMermaidBlocksInElement(root: HTMLElement, writeOut: 
     }
 }
 
-function registerIconPacks(config: Array<{ prefix?: string; pack: string }>) {
-    const iconPacks = config.map((iconPack) => ({
-        name: iconPack.prefix || '',
-        loader: async () => {
-            try {
-                const module = await requireIconPack(`./${iconPack.pack.replace('@iconify-json/', '')}`);
-                if (!module.icons || !module.icons.prefix) {
-                    throw new Error('Invalid icon pack format');
-                }
-                return module.icons;
-            } catch (error) {
-                console.error(`Failed to load icon pack: ${iconPack.pack}`, error);
-                return { prefix: iconPack.prefix || '', icons: {} };
-            }
-        },
-    }));
 
-    mermaid.registerIconPacks(iconPacks);
-}
 
 export async function registerMermaidAddons() {
-    registerIconPacks(iconPackConfig);
-    mermaid.registerLayoutLoaders(elkLayouts);
-    await mermaid.registerExternalDiagrams([zenuml]);
+ 
+    mermaid.registerLayoutLoaders(layouts);
+    mermaid.registerIconPacks([
+        {
+          name: 'fa',
+          loader: () => import('@iconify-json/fa6-regular').then((m) => m.icons),
+        },
+        {
+          name: 'aws',
+          loader: () => import('@mermaid-chart/icons-aws').then((m) => m.icons),
+        },
+        {
+          name: 'azure',
+          loader: () => import('@mermaid-chart/icons-azure').then((m) => m.icons),
+        },
+        {
+          name: 'gcp',
+          loader: () => import('@mermaid-chart/icons-gcp').then((m) => m.icons),
+        },
+      ]);
+   
 }
 
 export function loadMermaidConfig(): MermaidConfig {
