@@ -10,7 +10,7 @@
 			"ES2020",
 			"DOM"
 		],
-		
+		"esModuleInterop": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
 		

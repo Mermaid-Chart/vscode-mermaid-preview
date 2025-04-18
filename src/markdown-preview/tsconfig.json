@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
+    "sourceMap": true,
+    "rootDir": "..",
+    "strict": true,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "baseUrl": "..",
+    "paths": {
+      "@mermaid-js/*": ["node_modules/@mermaid-js/*"]
+    }
+  },
+  "files": [
+    "./index.ts"
+  ],
+  "include": [
+    "../shared-mermaid/**/*.ts"
+  ]
+}

@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type MarkdownIt from 'markdown-it';
 import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, getProjectIdForDocument, Document, getDiagramFromCache, updateDiagramInCache } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
@@ -35,6 +36,9 @@ import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
+import { configSection } from "./config";
+import { extendMarkdownItWithMermaid } from "./shared-md-mermaid";
+import { injectMermaidTheme } from "./themeing";
 
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
@@ -55,6 +59,18 @@ export async function activate(context: vscode.ExtensionContext) {
   
   // Initialize AI chat participant after tools are registered
   initializeAIChatParticipant(context);
+
+  // Register markdown preview handler
+  context.subscriptions.push(
+    vscode.workspace.onDidOpenTextDocument((document) => {
+      if (document.languageId === 'markdown') {
+        const content = document.getText();
+        if (content.includes('```mermaid')) {
+          vscode.commands.executeCommand('markdown.preview.refresh');
+        }
+      }
+    })
+  );
     
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
@@ -102,8 +118,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
   
   vscode.commands.registerCommand('mermaidChart.createMermaidFile', async () => {
-    createMermaidFile(context, null, false)
-  })
+    createMermaidFile(context, null, false);
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand('mermaidChart.logout', async () => {
       mcAPI.logout(context);
@@ -136,7 +152,7 @@ export async function activate(context: vscode.ExtensionContext) {
           comments
         );
       } else {
-        mermaidChartTokens = findMermaidChartTokensFromAuxFiles(activeEditor.document)
+        mermaidChartTokens = findMermaidChartTokensFromAuxFiles(activeEditor.document);
       }
 
       applyMermaidChartTokenHighlighting(
@@ -720,6 +736,36 @@ vscode.window.visibleTextEditors.forEach((editor) => {
 vscode.workspace.onDidChangeTextDocument((event) => {
   triggerSuggestIfEmpty(event.document);
 });
+
+// Add this near the beginning of the activate function
+context.subscriptions.push(
+  vscode.workspace.onDidOpenTextDocument((document) => {
+    if (document.languageId === 'markdown') {
+      const content = document.getText();
+      if (content.includes('```mermaid')) {
+        // This will ensure our custom preview script is loaded
+        vscode.commands.executeCommand('markdown.preview.refresh');
+      }
+    }
+  })
+);
+context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
+  if (e.affectsConfiguration(configSection) || e.affectsConfiguration('workbench.colorTheme')) {
+      vscode.commands.executeCommand('markdown.preview.refresh');
+  }
+}));
+
+return {
+  extendMarkdownIt(md: MarkdownIt) {
+      extendMarkdownItWithMermaid(md, {
+          languageIds: () => {
+              return vscode.workspace.getConfiguration(configSection).get<string[]>('languages', ['mermaid']);
+          }
+      });
+      md.use(injectMermaidTheme);
+      return md;
+  }
+};
 
 // Register the regenerate command from commercial directory
 registerRegenerateCommand(context, mcAPI);

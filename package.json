@@ -52,6 +52,10 @@
         "m"
       ]
     },
+    "markdown.previewScripts": [
+      "./dist-preview/bundle.js"
+    ],
+    "markdown.markdownItPlugins": true,
     "languages": [
       {
         "id": "mermaid",
@@ -604,7 +608,10 @@
         "mermaidChart.aiVendor": {
           "type": "string",
           "default": "copilot",
-          "enum": ["copilot", "openai"],
+          "enum": [
+            "copilot",
+            "openai"
+          ],
           "enumDescriptions": [
             "GitHub Copilot",
             "OpenAI models"
@@ -614,7 +621,12 @@
         "mermaidChart.aiModelFamily": {
           "type": "string",
           "default": "gpt-4o",
-          "enum": ["gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"],
+          "enum": [
+            "gpt-4o",
+            "gpt-4",
+            "gpt-4-turbo",
+            "gpt-3.5-turbo"
+          ],
           "enumDescriptions": [
             "GPT-4o (Recommended for best results)",
             "GPT-4",
@@ -624,10 +636,10 @@
           "description": "The AI model family to use for diagram generation"
         },
         "mermaid.vscode.maxZoom": {
-        "type": "number",
-        "default": 5,
-        "description": "Set the maximum zoom level for diagrams."
-      }
+          "type": "number",
+          "default": 5,
+          "description": "Set the maximum zoom level for diagrams."
+        }
       }
     },
     "viewsContainers": {
@@ -792,7 +804,17 @@
     "languageModelTools": [
       {
         "name": "get-syntax-docs-mermaid",
-        "tags": ["mermaid", "documentation", "get_syntax_docs", "mermaid-docs", "validation", "syntax", "errors", "essential", "mandatory"],
+        "tags": [
+          "mermaid",
+          "documentation",
+          "get_syntax_docs",
+          "mermaid-docs",
+          "validation",
+          "syntax",
+          "errors",
+          "essential",
+          "mandatory"
+        ],
         "toolReferenceName": "get_syntax_docs",
         "displayName": "Get Syntax Documentation",
         "modelDescription": "ALWAYS use this tool Before creating, editing, or working with any Mermaid diagram. Get the syntax documentation for a specific diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart",
@@ -804,22 +826,54 @@
             "file": {
               "type": "string",
               "enum": [
-                "architecture.md", "block.md", "c4.md", "classDiagram.md", 
-                "entityRelationshipDiagram.md", "flowchart.md", "gantt.md", 
-                "gitgraph.md", "kanban.md", "mindmap.md", "packet.md", 
-                "pie.md", "quadrantChart.md", "requirementDiagram.md", 
-                "sankey.md", "sequenceDiagram.md", "stateDiagram.md", 
-                "timeline.md", "userJourney.md", "xyChart.md"
+                "architecture.md",
+                "block.md",
+                "c4.md",
+                "classDiagram.md",
+                "entityRelationshipDiagram.md",
+                "flowchart.md",
+                "gantt.md",
+                "gitgraph.md",
+                "kanban.md",
+                "mindmap.md",
+                "packet.md",
+                "pie.md",
+                "quadrantChart.md",
+                "requirementDiagram.md",
+                "sankey.md",
+                "sequenceDiagram.md",
+                "stateDiagram.md",
+                "timeline.md",
+                "userJourney.md",
+                "xyChart.md"
               ],
               "description": "The filename of the diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart"
             }
           },
-          "required": ["file"]
+          "required": [
+            "file"
+          ]
         }
       },
       {
         "name": "mermaid-diagram-validator",
-        "tags": ["editing", "diagram", "mermaid", "before-preview", "before-visualization", "validation", "syntax", "errors", "essential", "mandatory", "pre-check", "check", "verify", "test", "debug"],
+        "tags": [
+          "editing",
+          "diagram",
+          "mermaid",
+          "before-preview",
+          "before-visualization",
+          "validation",
+          "syntax",
+          "errors",
+          "essential",
+          "mandatory",
+          "pre-check",
+          "check",
+          "verify",
+          "test",
+          "debug"
+        ],
         "displayName": "Mermaid Diagram Validator",
         "toolReferenceName": "mermaid-diagram-validator",
         "canBeReferencedInPrompt": true,
@@ -833,12 +887,24 @@
               "description": "The complete Mermaid diagram code to validate, including any YAML frontmatter blocks if present. This code should be thoroughly checked for any syntax errors or formatting issues to ensure it is ready for rendering."
             }
           },
-          "required": ["code"]
+          "required": [
+            "code"
+          ]
         }
       },
       {
         "name": "mermaid-diagram-preview",
-        "tags": ["editing", "diagram", "mermaid", "preview", "visualization", "essential", "mandatory", "show", "view"],
+        "tags": [
+          "editing",
+          "diagram",
+          "mermaid",
+          "preview",
+          "visualization",
+          "essential",
+          "mandatory",
+          "show",
+          "view"
+        ],
         "displayName": "Mermaid Diagram Preview",
         "toolReferenceName": "mermaid-diagram-preview",
         "canBeReferencedInPrompt": true,
@@ -874,15 +940,18 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "package": "pnpm vsce package --no-dependencies",
-    "publish": "pnpm vsce publish --no-dependencies"
+    "publish": "pnpm vsce publish --no-dependencies",
+    "build-preview": "webpack --mode=production --config ./build/markdownPreview.webpack.config.js"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",
     "@types/glob": "^8.1.0",
+    "@types/markdown-it": "^14.1.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "18.x",
     "@types/uuid": "^9.0.2",
     "@types/vscode": "^1.77.0",
+    "@types/vscode-notebook-renderer": "^1.72.3",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "@vscode/test-electron": "^2.3.0",
@@ -891,19 +960,30 @@
     "eslint": "^8.36.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^4.9.5"
+    "ts-loader": "^9.5.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.99.5",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@mermaidchart/sdk": "0.2.1-alpha.1",
-    "axios": "^1.7.9",
-    "uuid": "^9.0.0",
-    "yaml": "^2.7.0",
     "@fontsource-variable/recursive": "^5.1.1",
     "@fontsource/recursive": "^5.1.1",
+    "@iconify-json/logos": "^1.2.4",
+    "@iconify-json/mdi": "^1.2.3",
     "@mermaid-chart/vscode-utils": "1.0.4",
+    "@mermaid-js/layout-elk": "^0.1.7",
+    "@mermaid-js/mermaid-zenuml": "^0.2.0",
+    "@mermaidchart/sdk": "file:../plugins/packages/sdk",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
-    "@vscode/prompt-tsx": "^0.3.0-alpha.12"
+    "@vscode/prompt-tsx": "^0.3.0-alpha.12",
+    "axios": "^1.7.9",
+    "markdown-it": "^14.1.0",
+    "mermaid": "^11.6.0",
+    "uuid": "^9.0.0",
+    "yaml": "^2.7.0"
   },
   "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247",
-  "enabledApiProposals": ["languageModelToolsForAgent"]
+  "enabledApiProposals": [
+    "languageModelToolsForAgent"
+  ]
 }
