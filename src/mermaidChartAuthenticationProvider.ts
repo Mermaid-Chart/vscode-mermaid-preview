@@ -181,11 +181,7 @@ export class MermaidChartAuthenticationProvider
         cancellable: true,
       },
       async (_, token) => {
-        const authData = await this.mcAPI.getAuthorizationData({
-          scope: scopes,
-          utm_source: 'mermaid_chart_vs_code',
-          utm_medium: env.uriScheme
-        });
+        const authData = await this.mcAPI.getAuthorizationData();
         const uri = Uri.parse(authData.url);
         await env.openExternal(uri);
 
