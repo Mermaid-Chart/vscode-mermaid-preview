@@ -1,4 +1,7 @@
 # Change Log
+### 2.2.3 -2025-04-21
+### New Features
+- Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
 ### 2.2.0 -2025-04-07
 ### New Features
 - Added three specialized AI tools for improved Mermaid diagramming:

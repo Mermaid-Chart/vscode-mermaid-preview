@@ -146,6 +146,11 @@ This extension contributes the following settings:
 - `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+### 2.2.3 -2025-04-21
+- Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
+
+### 2.2.2 -2025-04-16
+- Supports latest Mermaid version
 
 ### 2.2.1 -2025-04-14
 - Bug Fixes
