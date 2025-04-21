@@ -933,15 +933,14 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm compile",
-    "precompile": "pnpm --filter ./webview build",
+    "precompile": "pnpm --filter ./webview build && webpack --mode=production --config ./build/markdownPreview.webpack.config.js",
     "compile": "tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "tsc -p ./ --noEmit --watch",
     "pretest": "pnpm compile && pnpm lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "package": "pnpm vsce package --no-dependencies",
-    "publish": "pnpm vsce publish --no-dependencies",
-    "build-preview": "webpack --mode=production --config ./build/markdownPreview.webpack.config.js"
+    "publish": "pnpm vsce publish --no-dependencies"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",
