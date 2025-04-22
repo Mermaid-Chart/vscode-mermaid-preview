@@ -9,6 +9,7 @@ import {
 } from "./mermaidChartProvider";
 import * as path from 'path';
 import { extractIdFromCode } from "./frontmatter";
+import * as packageJson from '../package.json';
 
 const activeListeners = new Map<string, vscode.Disposable>();
 const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
@@ -538,7 +539,7 @@ export const findDiagramCode = (items: MCTreeItem[], uuid: string): string | und
 
 const mermaidChartGutterIconDecoration = vscode.window.createTextEditorDecorationType({
   gutterIconPath: vscode.Uri.file(
-    vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")!.extensionPath + "/images/mermaid-icon.svg"
+    vscode.extensions.getExtension(`${packageJson.publisher}.${packageJson.name}`)!.extensionPath + "/images/mermaid-icon.svg"
   ),
   gutterIconSize: "16x16",
 });

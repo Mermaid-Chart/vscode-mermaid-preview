@@ -1,6 +1,7 @@
 import { ValidationBridge } from '@mermaid-chart/vscode-utils';
 import * as vscode from 'vscode';
 import { getWebviewHTML } from '../../../templates/previewTemplate';
+import * as packageJson from '../../../../package.json';
 
 export class ValidationBridgeImpl implements ValidationBridge {
 
@@ -21,7 +22,7 @@ export class ValidationBridgeImpl implements ValidationBridge {
       );
       
       // Get extension path correctly
-      const extensionPath = vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")?.extensionPath;
+      const extensionPath = vscode.extensions.getExtension(`${packageJson.publisher}.${packageJson.name}`)?.extensionPath;
       
       if (!extensionPath) {
         panel.dispose();
