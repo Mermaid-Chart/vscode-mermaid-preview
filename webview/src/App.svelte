@@ -14,13 +14,13 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let hasErrorOccured= false;
-  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'mc' | 'null' = 'redux'; 
+  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'redux-color' | 'redux-dark-color' | 'mc' | 'null' = 'redux'; 
   $: zoomLevel = 100;
   let maxZoomLevel = 5;
-  $: sidebarBackgroundColor = theme?.endsWith("dark")? "#4d4d4d" : "white";
-  $: iconBackgroundColor = theme?.endsWith("dark") ? "#4d4d4d" : "white";
-  $: svgColor = theme?.endsWith("dark") ? "white" : "#2329D6";
-  $: shadowColor = theme?.endsWith("dark")? "#6b6b6b" : "#A3BDFF";
+  $: sidebarBackgroundColor = theme?.includes("dark")? "#4d4d4d" : "white";
+  $: iconBackgroundColor = theme?.includes("dark") ? "#4d4d4d" : "white";
+  $: svgColor = theme?.includes("dark") ? "white" : "#2329D6";
+  $: shadowColor = theme?.includes("dark")? "#6b6b6b" : "#A3BDFF";
 
 
     async function initializeMermaid() {
@@ -84,7 +84,7 @@
       try {
         const parsed = await mermaid.parse(diagramContent || 'info')
         if (parsed?.config?.theme && 
-            ["default", "base", "dark", "forest", "neutral", "neo", "neo-dark", "redux", "redux-dark", "mc", "null"].includes(parsed.config.theme)) {
+            ['default', 'base', 'dark' , 'forest' , 'neutral' , 'neo' , 'neo-dark' , 'redux' , 'redux-dark' , 'redux-color' , 'redux-dark-color' , 'mc' , 'null'].includes(parsed.config.theme)) {
           theme = parsed.config.theme;
         }
         errorMessage = "";
@@ -92,7 +92,7 @@
         const currentPan = panzoomInstance?.getPan() || { x: 0, y: 0 };
         const { svg } = await mermaid.render("diagram-graph", diagramContent);
         element.innerHTML = svg;
-        if (theme?.endsWith("dark")) {
+        if (theme?.includes("dark")) {
           element.style.backgroundColor= "#1e1e1e"
         } else {
           element.style.backgroundColor =  "white"

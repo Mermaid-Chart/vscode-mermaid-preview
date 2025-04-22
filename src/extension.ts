@@ -126,7 +126,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
     const mermaidChartGutterIconDecoration = vscode.window.createTextEditorDecorationType({
-      gutterIconPath: vscode.Uri.file(context.asAbsolutePath("images/mermaid-icon-16.png")), // Add the icon file path
+      gutterIconPath: vscode.Uri.file(context.asAbsolutePath("images/mermaid-icon.svg")), // Add the icon file path
       gutterIconSize: "8x8",// Adjust the icon size as desired
     });
   let codeLensProvider: MermaidChartCodeLensProvider | undefined;

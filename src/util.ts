@@ -538,7 +538,7 @@ export const findDiagramCode = (items: MCTreeItem[], uuid: string): string | und
 
 const mermaidChartGutterIconDecoration = vscode.window.createTextEditorDecorationType({
   gutterIconPath: vscode.Uri.file(
-    vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")!.extensionPath + "/images/mermaid-icon-16.png"
+    vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")!.extensionPath + "/images/mermaid-icon.svg"
   ),
   gutterIconSize: "16x16",
 });

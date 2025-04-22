@@ -27,7 +27,6 @@ Currently supported diagrams and charts:
 - Flowchart
 - Sequence
 - Block
-- Elk
 - Class
 - Entity Relationship
 - Gantt
@@ -37,13 +36,16 @@ Currently supported diagrams and charts:
 - Gitgraph
 - C4
 - Sankey
-- Block
 - Pie chart
 - Quadrant
 - Requirement
 - User Journey
+- Sankey
 - XY chart
-- Zenuml
+- Kanban
+- Architecture
+- Packet
+- Radar
 
 ### Generate AI-powered diagrams directly from your code!
 Transform your ideas and source code into clear, insightful diagrams with our new AI integration in VS Code.<br>

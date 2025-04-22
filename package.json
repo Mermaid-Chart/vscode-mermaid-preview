@@ -584,6 +584,7 @@
           "enum": [
             "neo-dark",
             "redux-dark",
+            "redux-dark-color",
             "dark"
           ],
           "default": "redux-dark",
@@ -594,12 +595,12 @@
           "enum": [
             "neo",
             "redux",
-            "mc",
             "null",
             "default",
             "base",
             "forest",
             "neutral",
+            "redux-color",
             "mc"
           ],
           "default": "redux",
@@ -769,7 +770,7 @@
       {
         "command": "mermaidChart.focus",
         "title": "Mermaid Charts: Focus on View",
-        "icon": "images/mermaid-icon-16.png"
+        "icon": "images/mermaid-icon.svg"
       },
       {
         "command": "mermaidChart.refresh",

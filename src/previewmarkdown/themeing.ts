@@ -13,8 +13,10 @@ const validMermaidThemes = [
     'forest',
     'dark',
     'neutral',
-    'neo-dark',
-    'redux-dark'
+    'neo-dark',             
+    'redux-dark',
+    'redux-color', 
+    'redux-dark-color'
 ];
 
 function sanitizeMermaidTheme(theme: string | undefined) {
