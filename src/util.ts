@@ -20,6 +20,7 @@ const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
 const LIGHT_BACKGROUND = "#FDE0EE";
 const DARK_COLOR = "#FFFFFF";
 const LIGHT_COLOR = "#1E1A2E";
+export const configSection = 'mermaid';
 
 
 export const pattern : Record<string, RegExp> = {
@@ -537,7 +538,7 @@ export const findDiagramCode = (items: MCTreeItem[], uuid: string): string | und
 
 const mermaidChartGutterIconDecoration = vscode.window.createTextEditorDecorationType({
   gutterIconPath: vscode.Uri.file(
-    vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")!.extensionPath + "/images/mermaid-icon-16.png"
+    vscode.extensions.getExtension("MermaidChart.vscode-mermaid-chart")!.extensionPath + "/images/mermaid-icon.svg"
   ),
   gutterIconSize: "16x16",
 });
