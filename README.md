@@ -85,6 +85,8 @@ The extension automatically detects mermaid diagrams in the markdown files using
 This gives a unique opportunity for the users, they can now preview and edit the diagrams by clicking the edit diagram link directly from within the markdown file.
 ![Auto-Detect Mermaid diagrams in Markdown files](https://docs.mermaidchart.com/img/plugins/vscode-plugin-markdown-view.png)
 
+### Mermaid Diagram Preview in Markdown File
+This extension enables **live preview of Mermaid diagrams** directly within the **Markdown preview** in VS Code. No need to leave your editor!
 
 ### Support .mmd file extension as Mermaid Markdown file
 Now we provide native support for the .mmd  extension. All the local mermaid diagrams will be loaded as a .mmd file. You can notice that the .mmd also has the Mermaid logo in the file explorer view.
@@ -150,6 +152,7 @@ This extension contributes the following settings:
 ## Release Notes
 ### 2.2.3 -2025-04-22
 - Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
+- Added support for redux-color & redux-dark-color theme
 
 ### 2.2.2 -2025-04-16
 - Supports latest Mermaid version

@@ -2,6 +2,7 @@
 ### 2.2.3 -2025-04-22
 ### New Features
 - Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
+- Added support for redux-color & redux-dark-color theme
 ### 2.2.0 -2025-04-07
 ### New Features
 - Added three specialized AI tools for improved Mermaid diagramming:
