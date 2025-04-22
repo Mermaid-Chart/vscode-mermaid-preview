@@ -4,11 +4,17 @@ import { configSection } from '../util';
 
 const defaultMermaidTheme = 'default';
 const validMermaidThemes = [
+    'neo',
+    'redux',
+    'mc',
+    'null',
+    'default',
     'base',
     'forest',
     'dark',
-    'default',
     'neutral',
+    'neo-dark',
+    'redux-dark'
 ];
 
 function sanitizeMermaidTheme(theme: string | undefined) {

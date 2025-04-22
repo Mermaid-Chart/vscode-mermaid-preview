@@ -62,18 +62,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // Initialize AI chat participant after tools are registered
   initializeAIChatParticipant(context);
 
-  // Register markdown preview handler
-  context.subscriptions.push(
-    vscode.workspace.onDidOpenTextDocument((document) => {
-      if (document.languageId === 'markdown') {
-        const content = document.getText();
-        if (content.includes('```mermaid')) {
-          vscode.commands.executeCommand('markdown.preview.refresh');
-        }
-      }
-    })
-  );
-    
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
   const mcAPI = new MermaidChartVSCode();
@@ -739,7 +727,7 @@ vscode.workspace.onDidChangeTextDocument((event) => {
   triggerSuggestIfEmpty(event.document);
 });
 
-// Add this near the beginning of the activate function
+// Register markdown preview handler
 context.subscriptions.push(
   vscode.workspace.onDidOpenTextDocument((document) => {
     if (document.languageId === 'markdown') {
