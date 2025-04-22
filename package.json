@@ -1,11 +1,22 @@
 {
-  "name": "vscode-mermaid-chart",
-  "publisher": "MermaidChart",
-  "displayName": "Mermaid Chart",
-  "description": "The \"official\" Mermaid Editor plugin by the Mermaid open source team, now with AI-powered diagramming! Create, edit and preview diagrams seamlessly within VS Code",
-  "version": "2.2.3",
-  "icon": "images/mermaid-chart.png",
-  "repository": "github:Mermaid-Chart/vscode-mermaid-chart",
+  "name": "vscode-mermaid-preview",
+  "displayName": "Mermaid Preview",
+  "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
+  "license": "MIT",
+  "version": "2.0.0",
+  "publisher": "vstirbu",
+  "bugs": {
+    "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vstirbu/vscode-mermaid-preview.git"
+  },
+  "icon": "images/logo.png",
+  "galleryBanner": {
+    "color": "#5c2d91",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.77.0"
   },
