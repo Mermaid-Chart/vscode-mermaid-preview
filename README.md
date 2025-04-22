@@ -87,6 +87,7 @@ This gives a unique opportunity for the users, they can now preview and edit the
 
 ### Mermaid Diagram Preview in Markdown File
 This extension enables **live preview of Mermaid diagrams** directly within the **Markdown preview** in VS Code. No need to leave your editor!
+![Markdown Preview](https://docs.mermaidchart.com/img/plugins/vscode-plugin-markdown-mermaid-preview.png)
 
 ### Support .mmd file extension as Mermaid Markdown file
 Now we provide native support for the .mmd  extension. All the local mermaid diagrams will be loaded as a .mmd file. You can notice that the .mmd also has the Mermaid logo in the file explorer view.
