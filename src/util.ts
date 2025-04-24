@@ -16,7 +16,7 @@ const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reop
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import { allDiagrams } from "./constants/diagramTemplates";
 const config = vscode.workspace.getConfiguration();
-export const defaultBaseURL = config.get<string>('mermaidChart.baseUrl', 'https://www.mermaidchart.com');
+export const defaultBaseURL = config.get<string>('preview.mermaidChart.baseUrl', 'https://www.mermaidchart.com');
 const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
 const LIGHT_BACKGROUND = "#FDE0EE";
 const DARK_COLOR = "#FFFFFF";

@@ -599,12 +599,12 @@
     "configuration": {
       "title": "Mermaid Preview",
       "properties": {
-        "mermaidChart.baseUrl": {
+        "preview.mermaidChart.baseUrl": {
           "type": "string",
           "default": "https://www.mermaidchart.com",
           "description": "Base URL for Mermaid Chart"
         },
-        "mermaid.vscode.dark": {
+        "mermaid.vscode.dark_theme": {
           "type": "string",
           "enum": [
             "neo-dark",
@@ -615,7 +615,7 @@
           "default": "redux-dark",
           "description": "Default mermaid theme used for dark theme"
         },
-        "mermaid.vscode.light": {
+        "mermaid.vscode.light_theme": {
           "type": "string",
           "enum": [
             "neo",
@@ -631,7 +631,7 @@
           "default": "redux",
           "description": "Default mermaid theme used for light theme"
         },
-        "mermaidChart.aiVendor": {
+        "mermaidChart.ai_Vendor": {
           "type": "string",
           "default": "copilot",
           "enum": [
@@ -644,7 +644,7 @@
           ],
           "description": "The AI vendor to use for diagram generation"
         },
-        "mermaidChart.aiModelFamily": {
+        "mermaidChart.ai_ModelFamily": {
           "type": "string",
           "default": "gpt-4o",
           "enum": [
@@ -661,7 +661,7 @@
           ],
           "description": "The AI model family to use for diagram generation"
         },
-        "mermaid.vscode.maxZoom": {
+        "mermaid.vscode.max_Zoom": {
           "type": "number",
           "default": 5,
           "description": "Set the maximum zoom level for diagrams."
@@ -681,14 +681,14 @@
     "views": {
       "mermaidActivityBar": [
         {
-          "id": "mermaidChart",
-          "name": "Diagrams",
+          "id": "preview_mermaidChart",
+          "name": "",
           "contextualOnly": false,
-          "when": "mermaidPreview:isActive"
+          "when": "mermaid.showChart && mermaidPreview:isActive"
         },
         {
-          "id": "mermaidWebview",
-          "name": "Mermaid Chart",
+          "id": "preview_mermaidWebview",
+          "name": "Mermaid Preview",
           "type": "webview",
           "when": "mermaidPreview:isActive && mermaid.showWebview"
         }
@@ -697,41 +697,42 @@
     "menus": {
       "view/title": [
         {
-          "command": "mermaidChart.refresh",
+          "command": "preview.mermaidChart.refresh",
           "group": "navigation",
-          "when": "view == mermaidChart && mermaidPreview:isActive"
+          "when": "view == preview_mermaidChart && mermaidPreview:isActive"
         },
         {
-          "command": "mermaidChart.diagramHelp",
-          "when": "view == mermaidChart && mermaidPreview:isActive",
+          "command": "preview.mermaidChart.diagramHelp",
+          "when": "view == preview_mermaidChart && mermaidPreview:isActive",
           "group": "navigation"
         },
         {
-          "command": "mermaidChart.diagramHelp",
-          "when": "view == mermaidWebview && mermaidPreview:isActive",
+          "command": "preview.mermaidChart.diagramHelp",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
           "group": "navigation"
         }
+       
       ],
       "view/item/context": [
         {
-          "command": "mermaidChart.insertUuidIntoEditor",
+          "command": "preview.mermaidChart.insertUuidIntoEditor",
           "when": "viewItem == document && mermaidPreview:isActive",
           "group": "inline@01"
         },
         {
-          "command": "mermaidChart.downloadDiagram",
+          "command": "preview.mermaidChart.downloadDiagram",
           "when": "viewItem == document && mermaidPreview:isActive",
           "group": "inline@02"
         }
       ],
       "editor/context": [
         {
-          "command": "mermaidChart.preview",
+          "command": "preview.mermaidChart.preview",
           "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
           "group": "navigation"
         },
         {
-          "command": "mermaidChart.connectDiagramToMermaidChart",
+          "command": "preview.mermaidChart.connectDiagramToMermaidChart",
           "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
           "group": "navigation"
         }
@@ -740,109 +741,109 @@
     "keybindings": [
       {
         "key": "ctrl+s",
-        "command": "mermaidChart.syncDiagramWithMermaid",
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
         "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive"
       },
       {
         "key": "cmd+s",
-        "command": "mermaidChart.syncDiagramWithMermaid",
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
         "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive",
         "mac": "cmd+s"
       },
       {
-        "command": "mermaidChart.showCompletions",
+        "command": "preview.mermaidChart.showCompletions",
         "key": "ctrl+shift+k",
         "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive"
       }
     ],
     "commands": [
       {
-        "command": "mermaidChart.diagramHelp",
+        "command": "preview.mermaidChart.diagramHelp",
         "title": "Diagram help",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.insertUuidIntoEditor",
+        "command": "preview.mermaidChart.insertUuidIntoEditor",
         "title": "Link Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.downloadDiagram",
+        "command": "preview.mermaidChart.downloadDiagram",
         "title": "Download",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.syncDiagramWithMermaid",
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
         "title": "Mermaid Preview: Sync Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.viewMermaidChart",
+        "command": "preview.mermaidChart.viewMermaidChart",
         "title": "Mermaid Preview: View Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.preview",
+        "command": "preview.mermaidChart.preview",
         "title": "Mermaid Preview: Preview Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.logout",
+        "command": "preview.mermaidChart.logout",
         "title": "Mermaid Preview: Logout",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.login",
+        "command": "preview.mermaidChart.login",
         "title": "Mermaid Preview: Login",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.createMermaidFile",
+        "command": "preview.mermaidChart.createMermaidFile",
         "title": "Mermaid Preview: Create Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.focus",
+        "command": "preview.mermaidChart.focus",
         "title": "Mermaid Preview: Focus on View",
         "icon": "images/mermaid-icon.svg",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.refresh",
+        "command": "preview.mermaidChart.refresh",
         "title": "Refresh Diagrams",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.connectDiagramToMermaidChart",
+        "command": "preview.mermaidChart.connectDiagramToMermaidChart",
         "title": "Mermaid Preview: Connect Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.showCompletions",
+        "command": "preview.mermaidChart.showCompletions",
         "title": "Trigger Mermaid Completions",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.openCopilotChat",
+        "command": "preview.mermaidChart.openCopilotChat",
         "title": "Mermaid Preview: Open AI Chat",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "mermaidChart.insertMermaidTemplate",
+        "command": "preview.mermaidChart.insertMermaidTemplate",
         "title": "Insert Mermaid Template",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"

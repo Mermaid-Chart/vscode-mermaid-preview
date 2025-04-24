@@ -33,8 +33,8 @@ export class ValidationBridgeImpl implements ValidationBridge {
       // Get the current active theme (dark or light)
       const isDarkTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark;
       const config = vscode.workspace.getConfiguration();
-      const darkTheme = config.get<string>("mermaid.vscode.dark", "dark");
-      const lightTheme = config.get<string>("mermaid.vscode.light", "default");
+      const darkTheme = config.get<string>("mermaid.vscode.dark_theme", "dark");
+      const lightTheme = config.get<string>("mermaid.vscode.light_theme", "default");
       const currentTheme = isDarkTheme ? darkTheme : lightTheme;
       
       // Flag to track if we've already handled this validation

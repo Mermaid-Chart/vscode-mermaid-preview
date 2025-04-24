@@ -241,7 +241,7 @@ export class MermaidChartProvider
   
    
     treeItem.command = {
-      command: "mermaidChart.insertUuidIntoEditor",
+      command: "preview.mermaidChart.insertUuidIntoEditor",
       title: "Insert UUID",
       arguments: [element]
     };
