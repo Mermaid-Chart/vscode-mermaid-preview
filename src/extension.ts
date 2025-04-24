@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import * as path from 'path';
+import * as fs from 'fs';
 import type MarkdownIt from 'markdown-it';
 import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, getProjectIdForDocument, Document, getDiagramFromCache, updateDiagramInCache } from "./mermaidChartProvider";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
@@ -42,7 +44,6 @@ import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid
 
 
 // --- Configuration for Conflict Check ---
-// IMPORTANT: Replace with the ACTUAL extension ID of your Mermaid Chart extension
 const MERMAID_CHART_EXTENSION_ID = 'MermaidChart.vscode-mermaid-chart'; // ID of the official extension (Verify!)
 const THIS_EXTENSION_ID = 'vstirbu.vscode-mermaid-preview'; // ID of this preview extension
 // --- End Configuration ---
@@ -63,21 +64,43 @@ export async function activate(context: vscode.ExtensionContext) {
     console.log(`[${THIS_EXTENSION_ID}] Detected conflicting extension: ${MERMAID_CHART_EXTENSION_ID}.`);
     console.log(`[${THIS_EXTENSION_ID}] Automatically uninstalling itself.`);
 
-    // Automatically trigger uninstall
     try {
-      await vscode.commands.executeCommand('workbench.extensions.uninstallExtension', THIS_EXTENSION_ID);
-      // Inform the user
-      vscode.window.showInformationMessage(
-        `The "Mermaid Preview" extension (${THIS_EXTENSION_ID}) is being automatically uninstalled because the preferred "${mermaidChartExtension.packageJSON.displayName || 'Mermaid Chart'}" extension (${MERMAID_CHART_EXTENSION_ID}) is installed. Please reload VS Code for the change to take effect.`
-      );
+        // --- Read Deprecation Notice Content from File ---
+        const noticeFilePath = path.join(context.extensionPath, 'DEPRECATION_NOTICE.md');
+        let noticeContent: string;
+        try {
+            noticeContent = fs.readFileSync(noticeFilePath, 'utf8');
+        } catch (readError) {
+            console.error(`[${THIS_EXTENSION_ID}] Failed to read DEPRECATION_NOTICE.md:`, readError);
+            // Fallback content if file reading fails
+            noticeContent = `# Deprecation Notice\n\nThis extension (${THIS_EXTENSION_ID}) is being uninstalled because the official Mermaid Chart extension (${MERMAID_CHART_EXTENSION_ID}) is installed. Please reload VS Code.`;
+        }
+        // --- End Reading Notice Content ---
+
+
+        // Create a temporary markdown file in global storage to display the notice
+        const tempNoticeUri = vscode.Uri.joinPath(context.globalStorageUri, 'MERMAID_PREVIEW_DEPRECATION_NOTICE.md');
+        await vscode.workspace.fs.writeFile(tempNoticeUri, Buffer.from(noticeContent, 'utf8'));
+
+        // --- Open the notice file in Markdown Preview ---
+        await vscode.commands.executeCommand('markdown.showPreview', tempNoticeUri);
+        // --- End Open Preview ---
+
+        // Show a brief notification pointing to the open tab (preview might not have a specific "tab name" easily referenced)
+        vscode.window.showInformationMessage(
+            `"Mermaid Preview" is being uninstalled due to conflict. See the open Markdown preview for details.`
+        );
+
+        // Now trigger the uninstall
+        await vscode.commands.executeCommand('workbench.extensions.uninstallExtension', THIS_EXTENSION_ID);
+
     } catch (error) {
-        console.error(`[${THIS_EXTENSION_ID}] Failed to trigger self-uninstall:`, error);
-        // Still show a message, but indicate potential failure
+        console.error(`[${THIS_EXTENSION_ID}] Failed to show deprecation notice page or trigger self-uninstall:`, error);
+        // Fallback to simpler warning message if showing the page failed
         vscode.window.showWarningMessage(
-          `The preferred "Mermaid Chart" extension (${MERMAID_CHART_EXTENSION_ID}) is installed. This "Mermaid Preview" extension (${THIS_EXTENSION_ID}) should be uninstalled. Automatic uninstallation may have failed. Please uninstall it manually and reload VS Code.`
+          `The official "Mermaid Chart" extension (${MERMAID_CHART_EXTENSION_ID}) is installed. Automatic uninstallation of the conflicting "Mermaid Preview" extension (${THIS_EXTENSION_ID}) failed or couldn't show details. Please uninstall "Mermaid Preview" manually via the Extensions view and reload VS Code.`
         );
     }
-
 
     // Deactivate this extension by simply returning early
     console.log(`[${THIS_EXTENSION_ID}] Deactivating after triggering uninstall.`);

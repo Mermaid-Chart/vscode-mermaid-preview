@@ -5,7 +5,7 @@
   "license": "MIT",
   "version": "2.0.0",
   "publisher": "vstirbu",
-  "deprecated": "This extension is deprecated. Please install the official 'Mermaid Chart' extension (ID: MermaidChart.vscode-mermaid-chart) instead.",
+  "deprecated": "This extension is being deprecated. Please install the official 'Mermaid Chart' extension (ID: MermaidChart.vscode-mermaid-chart) instead.",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
   },
@@ -21,9 +21,6 @@
   "engines": {
     "vscode": "^1.77.0"
   },
-  "extensionDependencies": [
-    "MermaidChart.vscode-mermaid-chart"
-  ],
   "categories": [
     "Visualization"
   ],
