@@ -7,7 +7,7 @@ import { MermaidWebviewProvider } from "./panels/loginPanel";
 export class MermaidChartVSCode extends MermaidChart {
   constructor() {
     const baseURL = getBaseUrl();
-    const clientID = `469e30a6-2602-4022-aff8-2ab36842dc57`;
+    const clientID = `6df22cdb-2b8a-4d1d-a911-e61f0fd77d2b`;
     super({
       baseURL,
       clientID,
