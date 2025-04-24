@@ -34,11 +34,12 @@ import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
 import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
-import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
+import { setPreviewBridge, registerTools, setValidationBridge,initializePlugin } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
+import * as packageJson from '../package.json'; 
 
 
 
@@ -48,7 +49,8 @@ let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating Mermaid Chart extension");
-
+  const pluginID= packageJson.name === "vscode-mermaid-chart" ?  "MERMAIDCHART_VS_CODE_PLUGIN" : "MERMAID_PREVIEW_VS_CODE_PLUGIN";
+  initializePlugin(pluginID);
   analytics.trackActivation();
   
   // Register AI tools first to ensure they're available
