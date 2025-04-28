@@ -46,22 +46,9 @@ let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWo
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
-  // Check for official extension conflict
-  if (!(await checkForOfficialExtension(context))) {
-    return;
-  }
-  
   // Continue with normal extension activation
   console.log(`Activating ${THIS_EXTENSION_ID}`);
   analytics.trackActivation();
-  
-  // Listen for extension changes (install/uninstall) while VS Code is running
-  context.subscriptions.push(
-    vscode.extensions.onDidChange(async () => {
-      // Re-check for official extension conflicts
-      await checkForOfficialExtension(context);
-    })
-  );
   
   // Register AI tools first to ensure they're available
   console.log("[MermaidExtension] Registering AI tools...");
