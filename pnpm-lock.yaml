@@ -33,8 +33,8 @@ importers:
         specifier: 11.6.0-b.7
         version: 11.6.0-b.7
       '@mermaid-chart/vscode-utils':
-        specifier: 1.0.6
-        version: 1.0.6(vscode@1.1.37)
+        specifier: 1.0.7
+        version: 1.0.7(vscode@1.1.37)
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
@@ -107,7 +107,7 @@ importers:
         version: 10.8.2
       ts-loader:
         specifier: ^9.5.2
-        version: 9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+        version: 9.5.2(typescript@4.9.5)(webpack@5.99.6)
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -613,8 +613,8 @@ packages:
   '@mermaid-chart/mermaid@11.6.0-b.7':
     resolution: {integrity: sha512-pKpD3MKSmQ6eG1d9mG8/64Knjpte5i9eRucbyPnHqZbGiMVS/76+PmC8Wx4e2CViYAIgbZOOF0NsltYrTS9xKA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.7/33a66a8f81d1121806554b7092e188b4d2329b6b}
 
-  '@mermaid-chart/vscode-utils@1.0.6':
-    resolution: {integrity: sha512-OYW4xgYodGxT9Kdqv86yFo7wIS0rhfmueStfu4EiuHES7E2g5ff+tpXU71uWEY5F/ospqVvyH1b6yaMW0L5hDQ==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.6/ab5295b6f2d68066f7660d6b983bff851831734c}
+  '@mermaid-chart/vscode-utils@1.0.7':
+    resolution: {integrity: sha512-GzZpAIs7oQ7iNlsYf/U0mFf8hSvKXPFl4Q9UxPFAS0b2ei7qkBSGx3T6DRsNrn/iLADufngrK79xJ4pVOMdQFA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.7/dd00f1a3be02c4381beaa921b2ea440248c952de}
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
@@ -3552,7 +3552,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@1.0.6(vscode@1.1.37)':
+  '@mermaid-chart/vscode-utils@1.0.7(vscode@1.1.37)':
     dependencies:
       '@vscode/chat-extension-utils': 0.0.0-alpha.5
       '@vscode/prompt-tsx': 0.3.0-alpha.24
@@ -4099,17 +4099,17 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
@@ -6004,7 +6004,7 @@ snapshots:
       readable-stream: 3.6.2
     optional: true
 
-  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.6):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -6039,7 +6039,7 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.6):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -6173,9 +6173,9 @@ snapshots:
   webpack-cli@6.0.1(webpack@5.99.6):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -6217,7 +6217,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.6)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:

@@ -771,43 +771,43 @@
       },
       {
         "command": "preview.mermaidChart.syncDiagramWithMermaid",
-        "title": "Mermaid Preview: Sync Diagram",
+        "title": "Sync Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.viewMermaidChart",
-        "title": "Mermaid Preview: View Diagram",
+        "title": "View Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.preview",
-        "title": "Mermaid Preview: Preview Diagram",
+        "title": "Preview Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.logout",
-        "title": "Mermaid Preview: Logout",
+        "title": "Logout",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.login",
-        "title": "Mermaid Preview: Login",
+        "title": "Login",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.createMermaidFile",
-        "title": "Mermaid Preview: Create Diagram",
+        "title": "Create Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
       {
         "command": "preview.mermaidChart.focus",
-        "title": "Mermaid Preview: Focus on View",
+        "title": "Focus on View",
         "icon": "images/mermaid-icon.svg",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
@@ -820,7 +820,7 @@
       },
       {
         "command": "preview.mermaidChart.connectDiagramToMermaidChart",
-        "title": "Mermaid Preview: Connect Diagram",
+        "title": "Connect Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
@@ -832,7 +832,7 @@
       },
       {
         "command": "preview.mermaidChart.openCopilotChat",
-        "title": "Mermaid Preview: Open AI Chat",
+        "title": "Open AI Chat",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
@@ -1026,7 +1026,7 @@
     "@mermaid-chart/icons-aws": "^1.0.1",
     "@mermaid-chart/icons-azure": "^1.0.0",
     "@mermaid-chart/icons-gcp": "^1.0.0",
-    "@mermaid-chart/vscode-utils": "1.0.6",
+    "@mermaid-chart/vscode-utils": "1.0.7",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
     "@mermaidchart/sdk": "0.2.1-alpha.1",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
