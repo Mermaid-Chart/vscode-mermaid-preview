@@ -39,17 +39,14 @@ import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
-import * as packageJson from '../package.json'; 
-import { IS_ACTIVE_CONTEXT_KEY, THIS_EXTENSION_ID, checkForOfficialExtension } from "./conflictHandle";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
   // Continue with normal extension activation
-  console.log(`Activating ${THIS_EXTENSION_ID}`);
   analytics.trackActivation();
-  
+
   // Register AI tools first to ensure they're available
   console.log("[MermaidExtension] Registering AI tools...");
   registerTools(context);
