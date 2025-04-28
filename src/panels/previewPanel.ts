@@ -3,7 +3,7 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import { isAuxFile } from "../util";
 import * as packageJson from "../../package.json";
-const DARK_THEME_KEY = "mmermaid.vscode.dark_theme";
+const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
 

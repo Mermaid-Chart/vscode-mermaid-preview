@@ -63,12 +63,7 @@
     "virtualWorkspaces": true
   },
   "activationEvents": [
-    "onLanguage:mermaid",
-    "onCommand:mermaidChart.preview",
-    "onCommand:mermaidChart.createMermaidFile",
-    "onWebviewPanel:mermaidPreview",
-    "onView:mermaidWebview",
-    "onAuthenticationRequest:mermaidChartAuthProvider"
+    "onLanguage"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -672,7 +667,7 @@
       "activitybar": [
         {
           "id": "mermaidActivityBar",
-          "title": "Mermaid Preview",
+          "title": "Mermaid Chart",
           "icon": "images/mermaid-icon-32-preview.svg",
           "when": "mermaidPreview:isActive"
         }
@@ -688,7 +683,7 @@
         },
         {
           "id": "preview_mermaidWebview",
-          "name": "Mermaid Preview",
+          "name": "Mermaid Chart",
           "type": "webview",
           "when": "mermaidPreview:isActive && mermaid.showWebview"
         }
@@ -820,7 +815,7 @@
       },
       {
         "command": "preview.mermaidChart.refresh",
-        "title": "Refresh Diagrams",
+        "title": "Refresh",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
@@ -1028,7 +1023,7 @@
     "@mermaid-chart/icons-aws": "^1.0.1",
     "@mermaid-chart/icons-azure": "^1.0.0",
     "@mermaid-chart/icons-gcp": "^1.0.0",
-    "@mermaid-chart/vscode-utils": "1.0.4",
+    "@mermaid-chart/vscode-utils": "file:../vscode-commercial",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
     "@mermaidchart/sdk": "0.2.1-alpha.1",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",

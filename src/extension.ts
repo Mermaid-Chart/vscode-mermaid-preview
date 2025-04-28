@@ -34,68 +34,46 @@ import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
 import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
-import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
+import { setPreviewBridge, registerTools, setValidationBridge,initializePlugin } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
-
-// --- Configuration for Conflict Check ---
-const MERMAID_CHART_EXTENSION_ID = 'MermaidChart.vscode-mermaid-chart'; // ID of the official extension
-const THIS_EXTENSION_ID = 'vstirbu.vscode-mermaid-preview'; // ID of this preview extension
-const DEACTIVATION_NOTIFIED_KEY = 'mermaidPreviewDeactivationNotifiedf'; // Key for global state
-const IS_ACTIVE_CONTEXT_KEY = 'mermaidPreview:isActive'; // Context key for conditional contributions
-// --- End Configuration ---
+import * as packageJson from '../package.json'; 
+import { DEACTIVATION_NOTIFIED_KEY, handleConflictingExtension, IS_ACTIVE_CONTEXT_KEY, MERMAID_CHART_EXTENSION_ID, THIS_EXTENSION_ID } from "./conflictHandle";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log(`Activating ${THIS_EXTENSION_ID}`);
+  console.log(`Activating ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
+  const pluginID = packageJson.name === "vscode-mermaid-chart" ?  "MERMAIDCHART_VS_CODE_PLUGIN" : "MERMAID_PREVIEW_VS_CODE_PLUGIN";
+  initializePlugin(pluginID);
 
-  // --- Conflict Check ---
+  // Check if the extension is already activated
   const mermaidChartExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
-
+  console.log(`Mermaid Chart Extension: ${mermaidChartExtension}`);
   if (mermaidChartExtension) {
-    // Mermaid Chart extension is installed. Deactivate this one.
-    console.log(`[${THIS_EXTENSION_ID}] Detected conflicting extension: ${MERMAID_CHART_EXTENSION_ID}. Deactivating.`);
-
-    // Ensure context key is false/unset so contributions are hidden
-    await vscode.commands.executeCommand('setContext', IS_ACTIVE_CONTEXT_KEY, false);
-
-    // --- Show notification only once ---
-    const alreadyNotified = context.globalState.get<boolean>(DEACTIVATION_NOTIFIED_KEY);
-    console.log(`[${THIS_EXTENSION_ID}] Already notified: ${alreadyNotified}`);
-    if (!alreadyNotified) {
-      vscode.window.showWarningMessage(
-        `The "Mermaid Preview" extension (${THIS_EXTENSION_ID}) is deactivated because the official "Mermaid Chart" extension (${MERMAID_CHART_EXTENSION_ID}) is installed. Please use the "Mermaid Chart" extension and consider uninstalling "Mermaid Preview".`
-      );
-      await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, true);
-    }
-    // --- End one-time notification ---
-
-    // Deactivate this extension by simply returning early
+    console.log(`INdisde mermaidChartExtension loop ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
+    await handleConflictingExtension(context);
     return;
   }
-  // --- End Conflict Check ---
+  const extensionWatcher = vscode.extensions.onDidChange(async () => {
+    const newMermaidChartExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
+    if (newMermaidChartExtension) {
+      await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
+      console.log(`INdisde mermaidChartExtension second loop ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
 
-  // --- Set Context Key for Active State ---
-  // If we reach here, the official extension is NOT installed.
-  console.log(`[${THIS_EXTENSION_ID}] No conflicting extension found. Setting context ${IS_ACTIVE_CONTEXT_KEY}=true.`);
+      await handleConflictingExtension(context);
+    }
+  });
+  context.subscriptions.push(extensionWatcher);
+  await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
+
   await vscode.commands.executeCommand('setContext', IS_ACTIVE_CONTEXT_KEY, true);
-  // --- End Set Context Key ---
-
-  // --- Reset notification flag if conflict is resolved ---
-  if (context.globalState.get<boolean>(DEACTIVATION_NOTIFIED_KEY)) {
-    console.log(`[${THIS_EXTENSION_ID}] Resetting deactivation notification flag.`);
-    await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined); // Or false
-  }
-  // --- End Reset ---
 
 
-  // --- Original Activation Logic ---
-  // This code will only run if the mermaidChartExtension was NOT found and context is set.
-  console.log(`[${THIS_EXTENSION_ID}] Proceeding with full activation.`);
   analytics.trackActivation();
   
   // Register AI tools first to ensure they're available
@@ -630,7 +608,7 @@ const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
   context.subscriptions.push(insertUuidIntoEditorDisposable);
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.refreshTreeView", () => {
+    vscode.commands.registerCommand("preview.extension.refreshTreeView", () => {
       mermaidChartProvider.refresh();
     })
   );
@@ -685,7 +663,7 @@ context.subscriptions.push(
   context.subscriptions.push(provider);
 
   const triggerCompletions = vscode.commands.registerCommand(
-    'mermaidChart.showCompletions',
+    'preview.mermaidChart.showCompletions',
     () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
@@ -709,7 +687,7 @@ context.subscriptions.push(
         );
   
         if (selection === installOption) {
-          await vscode.commands.executeCommand("extension.open", "GitHub.copilot-chat");
+          await vscode.commands.executeCommand("preview.extension.open", "GitHub.copilot-chat");
         }
         return;
       }
@@ -809,4 +787,6 @@ return {
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate(context: vscode.ExtensionContext) {
+  context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
+}

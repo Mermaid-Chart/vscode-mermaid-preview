@@ -107,7 +107,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
           codeLenses.push(
             new vscode.CodeLens(codeLensPosition, {
               title: "▷ Regenerate Diagram",
-              command: "mermaidChart.regenerateDiagram",
+              command: "preview.mermaidChart.regenerateDiagram",
               arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })
           );
