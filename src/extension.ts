@@ -34,47 +34,34 @@ import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
 import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
-import { setPreviewBridge, registerTools, setValidationBridge,initializePlugin } from '@mermaid-chart/vscode-utils';
+import { setPreviewBridge, registerTools, setValidationBridge } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
 import * as packageJson from '../package.json'; 
-import { DEACTIVATION_NOTIFIED_KEY, handleConflictingExtension, IS_ACTIVE_CONTEXT_KEY, MERMAID_CHART_EXTENSION_ID, THIS_EXTENSION_ID } from "./conflictHandle";
+import { IS_ACTIVE_CONTEXT_KEY, THIS_EXTENSION_ID, checkForOfficialExtension } from "./conflictHandle";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.log(`Activating ${THIS_EXTENSION_ID}`);
-  console.log(`Activating ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
-  const pluginID = packageJson.name === "vscode-mermaid-chart" ?  "MERMAIDCHART_VS_CODE_PLUGIN" : "MERMAID_PREVIEW_VS_CODE_PLUGIN";
-  initializePlugin(pluginID);
-
-  // Check if the extension is already activated
-  const mermaidChartExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
-  console.log(`Mermaid Chart Extension: ${mermaidChartExtension}`);
-  if (mermaidChartExtension) {
-    console.log(`INdisde mermaidChartExtension loop ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
-    await handleConflictingExtension(context);
+  // Check for official extension conflict
+  if (!(await checkForOfficialExtension(context))) {
     return;
   }
-  const extensionWatcher = vscode.extensions.onDidChange(async () => {
-    const newMermaidChartExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
-    if (newMermaidChartExtension) {
-      await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
-      console.log(`INdisde mermaidChartExtension second loop ${context.globalState.get(DEACTIVATION_NOTIFIED_KEY)}`);
-
-      await handleConflictingExtension(context);
-    }
-  });
-  context.subscriptions.push(extensionWatcher);
-  await context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
-
-  await vscode.commands.executeCommand('setContext', IS_ACTIVE_CONTEXT_KEY, true);
-
-
+  
+  // Continue with normal extension activation
+  console.log(`Activating ${THIS_EXTENSION_ID}`);
   analytics.trackActivation();
+  
+  // Listen for extension changes (install/uninstall) while VS Code is running
+  context.subscriptions.push(
+    vscode.extensions.onDidChange(async () => {
+      // Re-check for official extension conflicts
+      await checkForOfficialExtension(context);
+    })
+  );
   
   // Register AI tools first to ensure they're available
   console.log("[MermaidExtension] Registering AI tools...");
@@ -788,5 +775,4 @@ return {
 
 // This method is called when your extension is deactivated
 export function deactivate(context: vscode.ExtensionContext) {
-  context.globalState.update(DEACTIVATION_NOTIFIED_KEY, undefined);
 }
