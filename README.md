@@ -137,7 +137,7 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 2.0.0 -2025-04-22
+### 2.0.0 -2025-04-28
 New General Features
 - Real-Time Local Edit & Preview
 - Syntax Highlight for all Mermaid diagrams

@@ -15,7 +15,7 @@
     "vite": "^6.0.7"
   },
   "dependencies": {
-    "@mermaid-chart/mermaid": "11.6.0-b.6",
+    "@mermaid-chart/mermaid": "11.6.0-b.7",
     "@fortawesome/fontawesome-free": "6.7.2",
     "@iconify-json/fa6-regular": "^1.2.0",
     "@mermaid-chart/icons-aws": "^1.0.1",

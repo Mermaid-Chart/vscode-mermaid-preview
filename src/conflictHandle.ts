@@ -8,9 +8,6 @@ export async function checkForOfficialExtension(context: vscode.ExtensionContext
   const officialExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
   
   if (officialExtension) {
-    console.log(`[${THIS_EXTENSION_ID}] Detected official Mermaid Chart extension: ${MERMAID_CHART_EXTENSION_ID}`);
-    console.log(`[${THIS_EXTENSION_ID}] Automatically deactivating this extension.`);
-    
     // Set context key to indicate we're not active
     await vscode.commands.executeCommand('setContext', IS_ACTIVE_CONTEXT_KEY, false);
     
@@ -19,9 +16,9 @@ export async function checkForOfficialExtension(context: vscode.ExtensionContext
     
     // Only show the message if we haven't shown it before
     if (!hasShownDeactivationMessage) {
-      vscode.window.showWarningMessage(
-        `The deprecated "Mermaid Preview" extension has been deactivated because the official "Mermaid Chart" extension is installed. Please uninstall this extension and use "Mermaid Chart" instead.`
-      );
+      // vscode.window.showWarningMessage(
+      //   `The deprecated "Mermaid Preview" extension has been deactivated because the official "Mermaid Chart" extension is installed. Please uninstall this extension and use "Mermaid Chart" instead.`
+      // );
       
       // Mark that we've shown the message
       await context.globalState.update('hasShownDeactivationMessage', true);

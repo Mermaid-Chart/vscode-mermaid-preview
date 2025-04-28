@@ -591,7 +591,7 @@
       }
     ],
     "configuration": {
-      "title": "Mermaid Preview",
+      "title": "Mermaid Chart",
       "properties": {
         "preview.mermaidChart.baseUrl": {
           "type": "string",
@@ -625,7 +625,7 @@
           "default": "redux",
           "description": "Default mermaid theme used for light theme"
         },
-        "mermaidChart.ai_Vendor": {
+        "preview.mermaidChart.aiVendor": {
           "type": "string",
           "default": "copilot",
           "enum": [
@@ -638,7 +638,7 @@
           ],
           "description": "The AI vendor to use for diagram generation"
         },
-        "mermaidChart.ai_ModelFamily": {
+        "preview.mermaidChart.aiModelFamily": {
           "type": "string",
           "default": "gpt-4o",
           "enum": [
@@ -911,7 +911,11 @@
       {
         "name": "validate-mermaid-diagram",
         "tags": [
+          "editing",
+          "diagram",
           "mermaid",
+          "before-preview",
+          "before-visualization",
           "validation",
           "syntax",
           "errors",
@@ -1022,14 +1026,14 @@
     "@mermaid-chart/icons-aws": "^1.0.1",
     "@mermaid-chart/icons-azure": "^1.0.0",
     "@mermaid-chart/icons-gcp": "^1.0.0",
-    "@mermaid-chart/vscode-utils": "1.0.4",
+    "@mermaid-chart/vscode-utils": "1.0.6",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
     "@mermaidchart/sdk": "0.2.1-alpha.1",
     "@vscode/chat-extension-utils": "^0.0.0-alpha.1",
     "@vscode/prompt-tsx": "^0.3.0-alpha.12",
     "axios": "^1.7.9",
     "markdown-it": "^14.1.0",
-    "@mermaid-chart/mermaid": "11.6.0-b.6",
+    "@mermaid-chart/mermaid": "11.6.0-b.7",
     "uuid": "^9.0.0",
     "yaml": "^2.7.0"
   },

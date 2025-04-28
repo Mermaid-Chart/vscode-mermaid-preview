@@ -123,8 +123,8 @@ export class MermaidChartVSCode extends MermaidChart {
 
 
 export function getBaseUrl(): string | undefined {
-  const config = vscode.workspace.getConfiguration("mermaidChart");
-  const baseURL = config.get<string>("baseUrl");
+  const config = vscode.workspace.getConfiguration();
+  const baseURL = config.get<string>("preview.mermaidChart.baseUrl");
 
   if (baseURL) {
     return baseURL;
