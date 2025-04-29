@@ -6,7 +6,7 @@ import { DiagramRegenerator } from '@mermaid-chart/vscode-utils';
 
 export function registerRegenerateCommand(context: vscode.ExtensionContext, mcAPI: MermaidChartVSCode) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('mermaidChart.regenerateDiagram', 
+    vscode.commands.registerCommand('preview.mermaidChart.regenerateDiagram', 
       async (uri: vscode.Uri, originalQuery?: string, changedFiles?: string[], metadata?: any, isLoggedIn?: boolean) => {
         // Track regenerate command invocation
         analytics.trackRegenerateCommandInvoked();

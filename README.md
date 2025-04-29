@@ -131,13 +131,13 @@ Users now have the option to open and edit diagrams in the web view on www.merma
 ### Extension Settings
 
 This extension contributes the following settings:
-- `mermaidChart.baseUrl`: This points to the instance of the mermaid chart you are running, for the public service this is `https://www.mermaidchart.com/`.
-- `mermaid.vscode.dark`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
-- `mermaid.vscode.light`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
+- `preview.mermaidChart.baseUrl`: This points to the instance of the mermaid chart you are running, for the public service this is `https://www.mermaidchart.com/`.
+- `mermaid.vscode.dark_theme`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
+- `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
 
-### 2.0.0 -2025-04-22
+### 2.0.0 -2025-04-29
 New General Features
 - Real-Time Local Edit & Preview
 - Syntax Highlight for all Mermaid diagrams

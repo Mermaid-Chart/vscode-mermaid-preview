@@ -1,5 +1,5 @@
 # Change Log
-### 2.0.0 -2025-04-22
+### 2.0.0 -2025-04-29
 - **Now Maintained by the Creators of Mermaid.js**: This plugin is now under the expert care of the original creators of Mermaid.js, ensuring high-quality development, regular updates, and outstanding support for all users.
 
 New General Features

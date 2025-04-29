@@ -49,20 +49,20 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
     diagramId: string | undefined
   ) {
     if (session && !diagramId) {
-      codeLenses.push(this.createCodeLens(token, "Connect Diagram", "mermaid.connectDiagram", [token.uri, token.range]));
+      codeLenses.push(this.createCodeLens(token, "Connect Diagram", "preview.mermaid.connectDiagram", [token.uri, token.range]));
     } else if (session && diagramId) {
-      codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [diagramId]));
+      codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "preview.extension.editMermaidChart", [diagramId]));
     }
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaid.editAuxFile", [token.uri, token.range]));
+    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "preview.mermaid.editAuxFile", [token.uri, token.range]));
   }
   
   private addMainFileCodeLenses(
     codeLenses: vscode.CodeLens[],
     token: MermaidChartToken
   ) {
-    codeLenses.push(this.createCodeLens(token, "View Diagram", "mermaidChart.viewMermaidChart", [token.uuid]));
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "extension.editMermaidChart", [token.uuid]));
-    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "mermaidChart.editLocally", [token.uuid]));
+    codeLenses.push(this.createCodeLens(token, "View Diagram", "preview.mermaidChart.viewMermaidChart", [token.uuid]));
+    codeLenses.push(this.createCodeLens(token, "Edit Diagram in Mermaid Chart", "preview.extension.editMermaidChart", [token.uuid]));
+    codeLenses.push(this.createCodeLens(token, "Edit Diagram", "preview.mermaidChart.editLocally", [token.uuid]));
   }
   
   private createCodeLens(
@@ -107,7 +107,7 @@ export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
           codeLenses.push(
             new vscode.CodeLens(codeLensPosition, {
               title: "▷ Regenerate Diagram",
-              command: "mermaidChart.regenerateDiagram",
+              command: "preview.mermaidChart.regenerateDiagram",
               arguments: [document.uri, metadata.query, changedReferencesList, metadata, session ? true: false],
             })
           );

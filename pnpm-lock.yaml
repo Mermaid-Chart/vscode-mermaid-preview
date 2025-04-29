@@ -28,13 +28,16 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.6)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.6
-        version: 11.6.0-b.6
+        specifier: 11.6.0-b.7
+        version: 11.6.0-b.7
       '@mermaid-chart/vscode-utils':
-        specifier: 1.0.4
-        version: 1.0.4(vscode@1.1.37)
+        specifier: 1.0.7
+        version: 1.0.7(vscode@1.1.37)
+      '@mermaid-js/examples':
+        specifier: 0.0.1-beta.1
+        version: 0.0.1-beta.1
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
@@ -46,7 +49,7 @@ importers:
         version: 0.3.0-alpha.24
       axios:
         specifier: ^1.7.9
-        version: 1.8.4
+        version: 1.9.0
       markdown-it:
         specifier: ^14.1.0
         version: 14.1.0
@@ -71,7 +74,7 @@ importers:
         version: 10.0.10
       '@types/node':
         specifier: 18.x
-        version: 18.19.86
+        version: 18.19.87
       '@types/uuid':
         specifier: ^9.0.2
         version: 9.0.8
@@ -107,16 +110,16 @@ importers:
         version: 10.8.2
       ts-loader:
         specifier: ^9.5.2
-        version: 9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+        version: 9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
       webpack:
         specifier: ^5.99.5
-        version: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
+        version: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli:
         specifier: ^6.0.1
-        version: 6.0.1(webpack@5.99.6)
+        version: 6.0.1(webpack@5.99.7)
 
   webview:
     dependencies:
@@ -137,10 +140,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.6)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.6
-        version: 11.6.0-b.6
+        specifier: 11.6.0-b.7
+        version: 11.6.0-b.7
       '@panzoom/panzoom':
         specifier: ^4.5.1
         version: 4.6.0
@@ -150,7 +153,7 @@ importers:
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
-        version: 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))
+        version: 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
       '@types/vscode-webview':
         specifier: ^1.57.5
         version: 1.57.5
@@ -159,7 +162,7 @@ importers:
         version: 5.28.2
       vite:
         specifier: ^6.0.7
-        version: 6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)
+        version: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
 
 packages:
 
@@ -610,14 +613,17 @@ packages:
     peerDependencies:
       '@mermaid-chart/mermaid': ^11.0.0
 
-  '@mermaid-chart/mermaid@11.6.0-b.6':
-    resolution: {integrity: sha512-OkG6MWTui7PdgPSQwE7U2t2QEguV/hh171qE/7nYWhWUGejMsPRjulFNU0R3i7gG/HgNtIQzqC9igvZ4VzafZQ==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.6/7619ce80ce06fe9831efad9b439638f735a23af9}
+  '@mermaid-chart/mermaid@11.6.0-b.7':
+    resolution: {integrity: sha512-pKpD3MKSmQ6eG1d9mG8/64Knjpte5i9eRucbyPnHqZbGiMVS/76+PmC8Wx4e2CViYAIgbZOOF0NsltYrTS9xKA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.7/33a66a8f81d1121806554b7092e188b4d2329b6b}
 
-  '@mermaid-chart/vscode-utils@1.0.4':
-    resolution: {integrity: sha512-XINfi6X3VRt//n9H7xZILTAdioq68HVi5uVfKEeQ2O63XnYSONYekVsVPIMunbI7kOlanGvf/DKPhYZAfJup5A==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.4/24a4773c2f6bbbcb4e6cdf782479c31fb26333eb}
+  '@mermaid-chart/vscode-utils@1.0.7':
+    resolution: {integrity: sha512-GzZpAIs7oQ7iNlsYf/U0mFf8hSvKXPFl4Q9UxPFAS0b2ei7qkBSGx3T6DRsNrn/iLADufngrK79xJ4pVOMdQFA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.7/dd00f1a3be02c4381beaa921b2ea440248c952de}
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
+
+  '@mermaid-js/examples@0.0.1-beta.1':
+    resolution: {integrity: sha512-dJ8yhCOf9Xh7T6VJzAATtxfhjT+8ywxFWYVuEE8ffu3P5v6iuoP+T27LLJN5aAIgmsLo/wFshlRqZFz3s8OolA==}
 
   '@mermaid-js/parser@0.4.0':
     resolution: {integrity: sha512-wla8XOWvQAwuqy+gxiZqY+c7FokraOTHRWMsbB4AgRx9Sy7zKslNyejy7E+a77qHfey5GXw/ik3IXv/NHMJgaA==}
@@ -641,103 +647,103 @@ packages:
   '@panzoom/panzoom@4.6.0':
     resolution: {integrity: sha512-3KxkY1lNKFn98fW5ZFR6vV0YzsXj3I4EQDyFWSXME6/cic86eSS7VjuqIjrA3PEpySo0r5fFtlX8eYCt4JPUFQ==}
 
-  '@rollup/rollup-android-arm-eabi@4.40.0':
-    resolution: {integrity: sha512-+Fbls/diZ0RDerhE8kyC6hjADCXA1K4yVNlH0EYfd2XjyH0UGgzaQ8MlT0pCXAThfxv3QUAczHaL+qSv1E4/Cg==}
+  '@rollup/rollup-android-arm-eabi@4.40.1':
+    resolution: {integrity: sha512-kxz0YeeCrRUHz3zyqvd7n+TVRlNyTifBsmnmNPtk3hQURUyG9eAB+usz6DAwagMusjx/zb3AjvDUvhFGDAexGw==}
     cpu: [arm]
     os: [android]
 
-  '@rollup/rollup-android-arm64@4.40.0':
-    resolution: {integrity: sha512-PPA6aEEsTPRz+/4xxAmaoWDqh67N7wFbgFUJGMnanCFs0TV99M0M8QhhaSCks+n6EbQoFvLQgYOGXxlMGQe/6w==}
+  '@rollup/rollup-android-arm64@4.40.1':
+    resolution: {integrity: sha512-PPkxTOisoNC6TpnDKatjKkjRMsdaWIhyuMkA4UsBXT9WEZY4uHezBTjs6Vl4PbqQQeu6oION1w2voYZv9yquCw==}
     cpu: [arm64]
     os: [android]
 
-  '@rollup/rollup-darwin-arm64@4.40.0':
-    resolution: {integrity: sha512-GwYOcOakYHdfnjjKwqpTGgn5a6cUX7+Ra2HeNj/GdXvO2VJOOXCiYYlRFU4CubFM67EhbmzLOmACKEfvp3J1kQ==}
+  '@rollup/rollup-darwin-arm64@4.40.1':
+    resolution: {integrity: sha512-VWXGISWFY18v/0JyNUy4A46KCFCb9NVsH+1100XP31lud+TzlezBbz24CYzbnA4x6w4hx+NYCXDfnvDVO6lcAA==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.40.0':
-    resolution: {integrity: sha512-CoLEGJ+2eheqD9KBSxmma6ld01czS52Iw0e2qMZNpPDlf7Z9mj8xmMemxEucinev4LgHalDPczMyxzbq+Q+EtA==}
+  '@rollup/rollup-darwin-x64@4.40.1':
+    resolution: {integrity: sha512-nIwkXafAI1/QCS7pxSpv/ZtFW6TXcNUEHAIA9EIyw5OzxJZQ1YDrX+CL6JAIQgZ33CInl1R6mHet9Y/UZTg2Bw==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-freebsd-arm64@4.40.0':
-    resolution: {integrity: sha512-r7yGiS4HN/kibvESzmrOB/PxKMhPTlz+FcGvoUIKYoTyGd5toHp48g1uZy1o1xQvybwwpqpe010JrcGG2s5nkg==}
+  '@rollup/rollup-freebsd-arm64@4.40.1':
+    resolution: {integrity: sha512-BdrLJ2mHTrIYdaS2I99mriyJfGGenSaP+UwGi1kB9BLOCu9SR8ZpbkmmalKIALnRw24kM7qCN0IOm6L0S44iWw==}
     cpu: [arm64]
     os: [freebsd]
 
-  '@rollup/rollup-freebsd-x64@4.40.0':
-    resolution: {integrity: sha512-mVDxzlf0oLzV3oZOr0SMJ0lSDd3xC4CmnWJ8Val8isp9jRGl5Dq//LLDSPFrasS7pSm6m5xAcKaw3sHXhBjoRw==}
+  '@rollup/rollup-freebsd-x64@4.40.1':
+    resolution: {integrity: sha512-VXeo/puqvCG8JBPNZXZf5Dqq7BzElNJzHRRw3vjBE27WujdzuOPecDPc/+1DcdcTptNBep3861jNq0mYkT8Z6Q==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.40.0':
-    resolution: {integrity: sha512-y/qUMOpJxBMy8xCXD++jeu8t7kzjlOCkoxxajL58G62PJGBZVl/Gwpm7JK9+YvlB701rcQTzjUZ1JgUoPTnoQA==}
+  '@rollup/rollup-linux-arm-gnueabihf@4.40.1':
+    resolution: {integrity: sha512-ehSKrewwsESPt1TgSE/na9nIhWCosfGSFqv7vwEtjyAqZcvbGIg4JAcV7ZEh2tfj/IlfBeZjgOXm35iOOjadcg==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm-musleabihf@4.40.0':
-    resolution: {integrity: sha512-GoCsPibtVdJFPv/BOIvBKO/XmwZLwaNWdyD8TKlXuqp0veo2sHE+A/vpMQ5iSArRUz/uaoj4h5S6Pn0+PdhRjg==}
+  '@rollup/rollup-linux-arm-musleabihf@4.40.1':
+    resolution: {integrity: sha512-m39iO/aaurh5FVIu/F4/Zsl8xppd76S4qoID8E+dSRQvTyZTOI2gVk3T4oqzfq1PtcvOfAVlwLMK3KRQMaR8lg==}
     cpu: [arm]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-gnu@4.40.0':
-    resolution: {integrity: sha512-L5ZLphTjjAD9leJzSLI7rr8fNqJMlGDKlazW2tX4IUF9P7R5TMQPElpH82Q7eNIDQnQlAyiNVfRPfP2vM5Avvg==}
+  '@rollup/rollup-linux-arm64-gnu@4.40.1':
+    resolution: {integrity: sha512-Y+GHnGaku4aVLSgrT0uWe2o2Rq8te9hi+MwqGF9r9ORgXhmHK5Q71N757u0F8yU1OIwUIFy6YiJtKjtyktk5hg==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-musl@4.40.0':
-    resolution: {integrity: sha512-ATZvCRGCDtv1Y4gpDIXsS+wfFeFuLwVxyUBSLawjgXK2tRE6fnsQEkE4csQQYWlBlsFztRzCnBvWVfcae/1qxQ==}
+  '@rollup/rollup-linux-arm64-musl@4.40.1':
+    resolution: {integrity: sha512-jEwjn3jCA+tQGswK3aEWcD09/7M5wGwc6+flhva7dsQNRZZTe30vkalgIzV4tjkopsTS9Jd7Y1Bsj6a4lzz8gQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-loongarch64-gnu@4.40.0':
-    resolution: {integrity: sha512-wG9e2XtIhd++QugU5MD9i7OnpaVb08ji3P1y/hNbxrQ3sYEelKJOq1UJ5dXczeo6Hj2rfDEL5GdtkMSVLa/AOg==}
+  '@rollup/rollup-linux-loongarch64-gnu@4.40.1':
+    resolution: {integrity: sha512-ySyWikVhNzv+BV/IDCsrraOAZ3UaC8SZB67FZlqVwXwnFhPihOso9rPOxzZbjp81suB1O2Topw+6Ug3JNegejQ==}
     cpu: [loong64]
     os: [linux]
 
-  '@rollup/rollup-linux-powerpc64le-gnu@4.40.0':
-    resolution: {integrity: sha512-vgXfWmj0f3jAUvC7TZSU/m/cOE558ILWDzS7jBhiCAFpY2WEBn5jqgbqvmzlMjtp8KlLcBlXVD2mkTSEQE6Ixw==}
+  '@rollup/rollup-linux-powerpc64le-gnu@4.40.1':
+    resolution: {integrity: sha512-BvvA64QxZlh7WZWqDPPdt0GH4bznuL6uOO1pmgPnnv86rpUpc8ZxgZwcEgXvo02GRIZX1hQ0j0pAnhwkhwPqWg==}
     cpu: [ppc64]
     os: [linux]
 
-  '@rollup/rollup-linux-riscv64-gnu@4.40.0':
-    resolution: {integrity: sha512-uJkYTugqtPZBS3Z136arevt/FsKTF/J9dEMTX/cwR7lsAW4bShzI2R0pJVw+hcBTWF4dxVckYh72Hk3/hWNKvA==}
+  '@rollup/rollup-linux-riscv64-gnu@4.40.1':
+    resolution: {integrity: sha512-EQSP+8+1VuSulm9RKSMKitTav89fKbHymTf25n5+Yr6gAPZxYWpj3DzAsQqoaHAk9YX2lwEyAf9S4W8F4l3VBQ==}
     cpu: [riscv64]
     os: [linux]
 
-  '@rollup/rollup-linux-riscv64-musl@4.40.0':
-    resolution: {integrity: sha512-rKmSj6EXQRnhSkE22+WvrqOqRtk733x3p5sWpZilhmjnkHkpeCgWsFFo0dGnUGeA+OZjRl3+VYq+HyCOEuwcxQ==}
+  '@rollup/rollup-linux-riscv64-musl@4.40.1':
+    resolution: {integrity: sha512-n/vQ4xRZXKuIpqukkMXZt9RWdl+2zgGNx7Uda8NtmLJ06NL8jiHxUawbwC+hdSq1rrw/9CghCpEONor+l1e2gA==}
     cpu: [riscv64]
     os: [linux]
 
-  '@rollup/rollup-linux-s390x-gnu@4.40.0':
-    resolution: {integrity: sha512-SpnYlAfKPOoVsQqmTFJ0usx0z84bzGOS9anAC0AZ3rdSo3snecihbhFTlJZ8XMwzqAcodjFU4+/SM311dqE5Sw==}
+  '@rollup/rollup-linux-s390x-gnu@4.40.1':
+    resolution: {integrity: sha512-h8d28xzYb98fMQKUz0w2fMc1XuGzLLjdyxVIbhbil4ELfk5/orZlSTpF/xdI9C8K0I8lCkq+1En2RJsawZekkg==}
     cpu: [s390x]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-gnu@4.40.0':
-    resolution: {integrity: sha512-RcDGMtqF9EFN8i2RYN2W+64CdHruJ5rPqrlYw+cgM3uOVPSsnAQps7cpjXe9be/yDp8UC7VLoCoKC8J3Kn2FkQ==}
+  '@rollup/rollup-linux-x64-gnu@4.40.1':
+    resolution: {integrity: sha512-XiK5z70PEFEFqcNj3/zRSz/qX4bp4QIraTy9QjwJAb/Z8GM7kVUsD0Uk8maIPeTyPCP03ChdI+VVmJriKYbRHQ==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-linux-x64-musl@4.40.0':
-    resolution: {integrity: sha512-HZvjpiUmSNx5zFgwtQAV1GaGazT2RWvqeDi0hV+AtC8unqqDSsaFjPxfsO6qPtKRRg25SisACWnJ37Yio8ttaw==}
+  '@rollup/rollup-linux-x64-musl@4.40.1':
+    resolution: {integrity: sha512-2BRORitq5rQ4Da9blVovzNCMaUlyKrzMSvkVR0D4qPuOy/+pMCrh1d7o01RATwVy+6Fa1WBw+da7QPeLWU/1mQ==}
     cpu: [x64]
     os: [linux]
 
-  '@rollup/rollup-win32-arm64-msvc@4.40.0':
-    resolution: {integrity: sha512-UtZQQI5k/b8d7d3i9AZmA/t+Q4tk3hOC0tMOMSq2GlMYOfxbesxG4mJSeDp0EHs30N9bsfwUvs3zF4v/RzOeTQ==}
+  '@rollup/rollup-win32-arm64-msvc@4.40.1':
+    resolution: {integrity: sha512-b2bcNm9Kbde03H+q+Jjw9tSfhYkzrDUf2d5MAd1bOJuVplXvFhWz7tRtWvD8/ORZi7qSCy0idW6tf2HgxSXQSg==}
     cpu: [arm64]
     os: [win32]
 
-  '@rollup/rollup-win32-ia32-msvc@4.40.0':
-    resolution: {integrity: sha512-+m03kvI2f5syIqHXCZLPVYplP8pQch9JHyXKZ3AGMKlg8dCyr2PKHjwRLiW53LTrN/Nc3EqHOKxUxzoSPdKddA==}
+  '@rollup/rollup-win32-ia32-msvc@4.40.1':
+    resolution: {integrity: sha512-DfcogW8N7Zg7llVEfpqWMZcaErKfsj9VvmfSyRjCyo4BI3wPEfrzTtJkZG6gKP/Z92wFm6rz2aDO7/JfiR/whA==}
     cpu: [ia32]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-msvc@4.40.0':
-    resolution: {integrity: sha512-lpPE1cLfP5oPzVjKMx10pgBmKELQnFJXHgvtHCtuJWOv8MxqdEIMNtgHgBFf7Ea2/7EuVwa9fodWUfXAlXZLZQ==}
+  '@rollup/rollup-win32-x64-msvc@4.40.1':
+    resolution: {integrity: sha512-ECyOuDeH3C1I8jH2MK1RtBJW+YPMvSfT0a5NN0nHfQYnDSJ6tUiZH3gzwVP5/Kfh/+Tt7tpWVF9LXNTnhTJ3kA==}
     cpu: [x64]
     os: [win32]
 
@@ -895,8 +901,8 @@ packages:
   '@types/mocha@10.0.10':
     resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
 
-  '@types/node@18.19.86':
-    resolution: {integrity: sha512-fifKayi175wLyKyc5qUfyENhQ1dCNI1UNjp653d8kuYcPQN5JhX3dGuP/XmvPTg/xRBn1VTLpbmi+H/Mr7tLfQ==}
+  '@types/node@18.19.87':
+    resolution: {integrity: sha512-OIAAu6ypnVZHmsHCeJ+7CCSub38QNBS9uceMQeg7K5Ur0Jr+wG9wEOEvvMbhp09pxD5czIUy/jND7s7Tb6Nw7A==}
 
   '@types/semver@7.7.0':
     resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
@@ -1195,8 +1201,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.8.4:
-    resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
+  axios@1.9.0:
+    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -1671,8 +1677,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  electron-to-chromium@1.5.141:
-    resolution: {integrity: sha512-qS+qH9oqVYc1ooubTiB9l904WVyM6qNYxtOEEGReoZXw3xlqeYdFr5GclNzbkAufWgwWLEPoDi3d9MoRwwIjGw==}
+  electron-to-chromium@1.5.144:
+    resolution: {integrity: sha512-eJIaMRKeAzxfBSxtjYnoIAw/tdD6VIH6tHBZepZnAbE3Gyqqs5mGN87DvcldPUbVkIljTK8pY0CMcUljP64lfQ==}
 
   elkjs@0.9.3:
     resolution: {integrity: sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==}
@@ -2320,8 +2326,8 @@ packages:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
     hasBin: true
 
-  marked@15.0.10:
-    resolution: {integrity: sha512-BXzsfFiR2UqXFKRwpugWuCYi9mWd1aX/Yns/X52xWfvfen9lnGEDbJw9ZEjjvLZVqntqT2gX45eYvqb2dIokDw==}
+  marked@15.0.11:
+    resolution: {integrity: sha512-1BEXAU2euRCG3xwgLVT1y0xbJEld1XOrmRJpUwRCcy7rxhSCwMrmEu9LXoPhHSCJG41V7YcQ2mjKRr5BA3ITIA==}
     engines: {node: '>= 18'}
     hasBin: true
 
@@ -2674,8 +2680,8 @@ packages:
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
 
-  rollup@4.40.0:
-    resolution: {integrity: sha512-Noe455xmA96nnqH5piFtLobsGbCij7Tu+tb3c1vYjNbTkfzGqXqQXG3wJaYXkRZuQ0vEYN4bhwg7QnIrqB5B+w==}
+  rollup@4.40.1:
+    resolution: {integrity: sha512-C5VvvgCCyfyotVITIAv+4efVytl5F7wt+/I2i9q9GZcEXW9BP52YYOXC58igUi+LFZVHukErIIqQSWwv/M3WRw==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -3088,8 +3094,8 @@ packages:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
 
-  webpack@5.99.6:
-    resolution: {integrity: sha512-TJOLrJ6oeccsGWPl7ujCYuc0pIq2cNsuD6GZDma8i5o5Npvcco/z+NKvZSFsP0/x6SShVb0+X2JK/JHUjKY9dQ==}
+  webpack@5.99.7:
+    resolution: {integrity: sha512-CNqKBRMQjwcmKR0idID5va1qlhrqVUKpovi+Ec79ksW8ux7iS1+A6VqzfZXgVYCFRKl7XL5ap3ZoMpwBJxcg0w==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -3521,13 +3527,13 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.6)':
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)':
     dependencies:
-      '@mermaid-chart/mermaid': 11.6.0-b.6
+      '@mermaid-chart/mermaid': 11.6.0-b.7
       d3: 7.9.0
       elkjs: 0.9.3
 
-  '@mermaid-chart/mermaid@11.6.0-b.6':
+  '@mermaid-chart/mermaid@11.6.0-b.7':
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
@@ -3544,7 +3550,7 @@ snapshots:
       katex: 0.16.22
       khroma: 2.1.0
       lodash-es: 4.17.21
-      marked: 15.0.10
+      marked: 15.0.11
       roughjs: 4.6.6
       stylis: 4.3.6
       ts-dedent: 2.2.0
@@ -3552,16 +3558,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@1.0.4(vscode@1.1.37)':
+  '@mermaid-chart/vscode-utils@1.0.7(vscode@1.1.37)':
     dependencies:
       '@vscode/chat-extension-utils': 0.0.0-alpha.5
       '@vscode/prompt-tsx': 0.3.0-alpha.24
-      axios: 1.8.4
+      axios: 1.9.0
       uuid: 11.1.0
       vscode: 1.1.37
       yaml: 2.7.1
     transitivePeerDependencies:
       - debug
+
+  '@mermaid-js/examples@0.0.1-beta.1': {}
 
   '@mermaid-js/parser@0.4.0':
     dependencies:
@@ -3570,7 +3578,7 @@ snapshots:
   '@mermaidchart/sdk@0.2.1-alpha.1':
     dependencies:
       '@badgateway/oauth2-client': 2.4.2
-      axios: 1.8.4
+      axios: 1.9.0
       uuid: 9.0.1
     transitivePeerDependencies:
       - debug
@@ -3589,89 +3597,89 @@ snapshots:
 
   '@panzoom/panzoom@4.6.0': {}
 
-  '@rollup/rollup-android-arm-eabi@4.40.0':
+  '@rollup/rollup-android-arm-eabi@4.40.1':
     optional: true
 
-  '@rollup/rollup-android-arm64@4.40.0':
+  '@rollup/rollup-android-arm64@4.40.1':
     optional: true
 
-  '@rollup/rollup-darwin-arm64@4.40.0':
+  '@rollup/rollup-darwin-arm64@4.40.1':
     optional: true
 
-  '@rollup/rollup-darwin-x64@4.40.0':
+  '@rollup/rollup-darwin-x64@4.40.1':
     optional: true
 
-  '@rollup/rollup-freebsd-arm64@4.40.0':
+  '@rollup/rollup-freebsd-arm64@4.40.1':
     optional: true
 
-  '@rollup/rollup-freebsd-x64@4.40.0':
+  '@rollup/rollup-freebsd-x64@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.40.0':
+  '@rollup/rollup-linux-arm-gnueabihf@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-arm-musleabihf@4.40.0':
+  '@rollup/rollup-linux-arm-musleabihf@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-arm64-gnu@4.40.0':
+  '@rollup/rollup-linux-arm64-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-arm64-musl@4.40.0':
+  '@rollup/rollup-linux-arm64-musl@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-loongarch64-gnu@4.40.0':
+  '@rollup/rollup-linux-loongarch64-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-powerpc64le-gnu@4.40.0':
+  '@rollup/rollup-linux-powerpc64le-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-gnu@4.40.0':
+  '@rollup/rollup-linux-riscv64-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-musl@4.40.0':
+  '@rollup/rollup-linux-riscv64-musl@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-s390x-gnu@4.40.0':
+  '@rollup/rollup-linux-s390x-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.40.0':
+  '@rollup/rollup-linux-x64-gnu@4.40.1':
     optional: true
 
-  '@rollup/rollup-linux-x64-musl@4.40.0':
+  '@rollup/rollup-linux-x64-musl@4.40.1':
     optional: true
 
-  '@rollup/rollup-win32-arm64-msvc@4.40.0':
+  '@rollup/rollup-win32-arm64-msvc@4.40.1':
     optional: true
 
-  '@rollup/rollup-win32-ia32-msvc@4.40.0':
+  '@rollup/rollup-win32-ia32-msvc@4.40.1':
     optional: true
 
-  '@rollup/rollup-win32-x64-msvc@4.40.0':
+  '@rollup/rollup-win32-x64-msvc@4.40.1':
     optional: true
 
   '@sveltejs/acorn-typescript@1.0.5(acorn@8.14.1)':
     dependencies:
       acorn: 8.14.1
 
-  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
       debug: 4.4.0(supports-color@8.1.1)
       svelte: 5.28.2
-      vite: 6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
       debug: 4.4.0(supports-color@8.1.1)
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.17
       svelte: 5.28.2
-      vite: 6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)
-      vitefu: 1.0.6(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1))
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
+      vitefu: 1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -3679,7 +3687,7 @@ snapshots:
 
   '@types/axios@0.14.4':
     dependencies:
-      axios: 1.8.4
+      axios: 1.9.0
     transitivePeerDependencies:
       - debug
 
@@ -3817,7 +3825,7 @@ snapshots:
   '@types/glob@8.1.0':
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 18.19.86
+      '@types/node': 18.19.87
 
   '@types/json-schema@7.0.15': {}
 
@@ -3834,7 +3842,7 @@ snapshots:
 
   '@types/mocha@10.0.10': {}
 
-  '@types/node@18.19.86':
+  '@types/node@18.19.87':
     dependencies:
       undici-types: 5.26.5
 
@@ -4099,20 +4107,20 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.99.6)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.99.6)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
-      webpack-cli: 6.0.1(webpack@5.99.6)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack-cli: 6.0.1(webpack@5.99.7)
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -4186,7 +4194,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.8.4:
+  axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.2
@@ -4235,7 +4243,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001715
-      electron-to-chromium: 1.5.141
+      electron-to-chromium: 1.5.144
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -4700,7 +4708,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  electron-to-chromium@1.5.141: {}
+  electron-to-chromium@1.5.144: {}
 
   elkjs@0.9.3: {}
 
@@ -5231,7 +5239,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.19.86
+      '@types/node': 18.19.87
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -5406,7 +5414,7 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
-  marked@15.0.10: {}
+  marked@15.0.11: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -5783,30 +5791,30 @@ snapshots:
 
   robust-predicates@3.0.2: {}
 
-  rollup@4.40.0:
+  rollup@4.40.1:
     dependencies:
       '@types/estree': 1.0.7
     optionalDependencies:
-      '@rollup/rollup-android-arm-eabi': 4.40.0
-      '@rollup/rollup-android-arm64': 4.40.0
-      '@rollup/rollup-darwin-arm64': 4.40.0
-      '@rollup/rollup-darwin-x64': 4.40.0
-      '@rollup/rollup-freebsd-arm64': 4.40.0
-      '@rollup/rollup-freebsd-x64': 4.40.0
-      '@rollup/rollup-linux-arm-gnueabihf': 4.40.0
-      '@rollup/rollup-linux-arm-musleabihf': 4.40.0
-      '@rollup/rollup-linux-arm64-gnu': 4.40.0
-      '@rollup/rollup-linux-arm64-musl': 4.40.0
-      '@rollup/rollup-linux-loongarch64-gnu': 4.40.0
-      '@rollup/rollup-linux-powerpc64le-gnu': 4.40.0
-      '@rollup/rollup-linux-riscv64-gnu': 4.40.0
-      '@rollup/rollup-linux-riscv64-musl': 4.40.0
-      '@rollup/rollup-linux-s390x-gnu': 4.40.0
-      '@rollup/rollup-linux-x64-gnu': 4.40.0
-      '@rollup/rollup-linux-x64-musl': 4.40.0
-      '@rollup/rollup-win32-arm64-msvc': 4.40.0
-      '@rollup/rollup-win32-ia32-msvc': 4.40.0
-      '@rollup/rollup-win32-x64-msvc': 4.40.0
+      '@rollup/rollup-android-arm-eabi': 4.40.1
+      '@rollup/rollup-android-arm64': 4.40.1
+      '@rollup/rollup-darwin-arm64': 4.40.1
+      '@rollup/rollup-darwin-x64': 4.40.1
+      '@rollup/rollup-freebsd-arm64': 4.40.1
+      '@rollup/rollup-freebsd-x64': 4.40.1
+      '@rollup/rollup-linux-arm-gnueabihf': 4.40.1
+      '@rollup/rollup-linux-arm-musleabihf': 4.40.1
+      '@rollup/rollup-linux-arm64-gnu': 4.40.1
+      '@rollup/rollup-linux-arm64-musl': 4.40.1
+      '@rollup/rollup-linux-loongarch64-gnu': 4.40.1
+      '@rollup/rollup-linux-powerpc64le-gnu': 4.40.1
+      '@rollup/rollup-linux-riscv64-gnu': 4.40.1
+      '@rollup/rollup-linux-riscv64-musl': 4.40.1
+      '@rollup/rollup-linux-s390x-gnu': 4.40.1
+      '@rollup/rollup-linux-x64-gnu': 4.40.1
+      '@rollup/rollup-linux-x64-musl': 4.40.1
+      '@rollup/rollup-win32-arm64-msvc': 4.40.1
+      '@rollup/rollup-win32-ia32-msvc': 4.40.1
+      '@rollup/rollup-win32-x64-msvc': 4.40.1
       fsevents: 2.3.3
 
   roughjs@4.6.6:
@@ -6004,14 +6012,14 @@ snapshots:
       readable-stream: 3.6.2
     optional: true
 
-  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
       terser: 5.39.0
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
     optionalDependencies:
       esbuild: 0.18.20
 
@@ -6039,7 +6047,7 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -6047,7 +6055,7 @@ snapshots:
       semver: 7.7.1
       source-map: 0.7.4
       typescript: 4.9.5
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
 
   tslib@1.14.1: {}
 
@@ -6111,23 +6119,23 @@ snapshots:
 
   uuid@9.0.1: {}
 
-  vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1):
+  vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1):
     dependencies:
       esbuild: 0.25.3
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
       postcss: 8.5.3
-      rollup: 4.40.0
+      rollup: 4.40.1
       tinyglobby: 0.2.13
     optionalDependencies:
-      '@types/node': 18.19.86
+      '@types/node': 18.19.87
       fsevents: 2.3.3
       terser: 5.39.0
       yaml: 2.7.1
 
-  vitefu@1.0.6(vite@6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)):
+  vitefu@1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)):
     optionalDependencies:
-      vite: 6.3.3(@types/node@18.19.86)(terser@5.39.0)(yaml@2.7.1)
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
 
   vscode-jsonrpc@8.2.0: {}
 
@@ -6170,12 +6178,12 @@ snapshots:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
 
-  webpack-cli@6.0.1(webpack@5.99.6):
+  webpack-cli@6.0.1(webpack@5.99.7):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -6184,7 +6192,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
+      webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-merge: 6.0.1
 
   webpack-merge@6.0.1:
@@ -6195,10 +6203,11 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1):
+  webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.7
+      '@types/json-schema': 7.0.15
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
@@ -6217,11 +6226,11 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 6.0.1(webpack@5.99.6)
+      webpack-cli: 6.0.1(webpack@5.99.7)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild

@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "CommonJS",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
 		"jsx": "react",
 		"jsxFactory": "vscpp",
 		"jsxFragmentFactory": "vscppf",
@@ -14,6 +14,7 @@
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
+		"moduleResolution": "node",             /* Specify module resolution strategy: 'node', 'classic', 'node16', 'nodenext', or 'bundler'. */
 		
 		"rootDir": ".",
 		"strict": true   /* enable all strict type-checking options */

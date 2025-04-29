@@ -28,8 +28,8 @@ export function injectMermaidTheme(md: MarkdownIt) {
 
     md.renderer.render = function (...args) {
         const config = vscode.workspace.getConfiguration(configSection);
-        const darkModeTheme = sanitizeMermaidTheme(config.get<string>('vscode.dark'));
-        const lightModeTheme = sanitizeMermaidTheme(config.get<string>('vscode.light'));
+        const darkModeTheme = sanitizeMermaidTheme(config.get<string>('vscode.dark_theme'));
+        const lightModeTheme = sanitizeMermaidTheme(config.get<string>('vscode.light_theme'));
         const maxTextSize = config.get<number>('maxTextSize');
 
         return `<span id="${configSection}" aria-hidden="true"

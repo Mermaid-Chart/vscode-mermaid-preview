@@ -19,7 +19,7 @@ export class PreviewBridgeImpl implements PreviewBridge {
         
         if (!activeDocument || activeDocument.getText() !== code) {
           await vscode.commands.executeCommand(
-            "mermaidChart.openResponsePreview", 
+            "preview.mermaidChart.openResponsePreview", 
             code
           );
         } else {

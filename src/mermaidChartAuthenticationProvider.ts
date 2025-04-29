@@ -27,7 +27,7 @@ class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
 export class MermaidChartAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
-  static id = "mermaidchart";
+  static id = "preview_mermaidchart";
   static providerName = "MermaidChart";
   private sessionsKey = `${MermaidChartAuthenticationProvider.id}.sessions`;
   private _sessionChangeEmitter =

@@ -85,7 +85,7 @@ export class MermaidChartVSCode extends MermaidChart {
      * When the configuration is changed, we need to refresh the base URL.
      */
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration("mermaidChart.baseUrl")) {
+      if (event.affectsConfiguration("preview.mermaidChart.baseUrl")) {
         this.refreshBaseURL();
       }
     });
@@ -123,8 +123,8 @@ export class MermaidChartVSCode extends MermaidChart {
 
 
 export function getBaseUrl(): string | undefined {
-  const config = vscode.workspace.getConfiguration("mermaidChart");
-  const baseURL = config.get<string>("baseUrl");
+  const config = vscode.workspace.getConfiguration();
+  const baseURL = config.get<string>("preview.mermaidChart.baseUrl");
 
   if (baseURL) {
     return baseURL;
