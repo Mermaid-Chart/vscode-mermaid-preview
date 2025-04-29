@@ -8,7 +8,7 @@
   import Sidebar from './Sidebar.svelte';
   import { diagramContent as diagramData } from './diagramData';
 
-  let diagramContent: string = diagramData;
+  $: diagramContent = diagramData;
  
   let errorMessage = "";
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;

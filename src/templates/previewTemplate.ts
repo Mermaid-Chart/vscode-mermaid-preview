@@ -7,18 +7,18 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
   );
 
   // Make sure the panel retains state when hidden
-  panel.onDidChangeViewState((e) => {
-    // Rerender content when panel becomes visible again
-    if (e.webviewPanel.visible) {
-      panel.webview.postMessage({
-        type: "update",
-        content: initialContent,
-        currentTheme: currentTheme,
-        isFileChange: false,
-        validateOnly: validateOnly,
-      });
-    }
-  });
+  // panel.onDidChangeViewState((e) => {
+  //   // Rerender content when panel becomes visible again
+  //   if (e.webviewPanel.visible) {
+  //     panel.webview.postMessage({
+  //       type: "update",
+  //       content: initialContent,
+  //       currentTheme: currentTheme,
+  //       isFileChange: false,
+  //       validateOnly: validateOnly,
+  //     });
+  //   }
+  // });
   
   // Ensure panel doesn't close automatically
   panel.onDidDispose(() => {

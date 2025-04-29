@@ -16,7 +16,7 @@ export class PreviewPanel {
   private readonly disposables: vscode.Disposable[] = [];
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
-  private lastContent: string = " ";
+  private lastContent: string = "";
 
 
 
@@ -66,18 +66,11 @@ export class PreviewPanel {
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme ? darkTheme : lightTheme;
- 
-    const isPreviewable = activeEditor && !isAuxFile(activeEditor.document.fileName);
-
-    if (isPreviewable) {
       this.lastContent = this.document.getText() || " ";
-    }
-
 // Initial content to be used (defaults to a single space if empty)
     const initialContent = this.document.getText() || " ";
-  
     if (!this.panel.webview.html) {
-      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, initialContent, currentTheme, false);
+      this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, this.lastContent, currentTheme, false);
     }
 console.log("In Preview Panel",maxZoom);
     this.panel.webview.postMessage({
