@@ -621,6 +621,9 @@ context.subscriptions.push(
     {
         provideCompletionItems(document, position, token, context) {
             const languageId = document.languageId.toLowerCase();
+            if (document.getText().trim() === "") {
+              return;
+            }
 
             // Ensure the languageId is exactly "mermaid" or starts with "mermaid"
             if (!(languageId === 'mermaid' || languageId.startsWith('mermaid'))) {
@@ -648,17 +651,17 @@ context.subscriptions.push(
   );
   context.subscriptions.push(provider);
 
-  const triggerCompletions = vscode.commands.registerCommand(
-    'preview.mermaidChart.showCompletions',
-    () => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor) {
-            vscode.commands.executeCommand('editor.action.triggerSuggest');
-        }
-    }
-  );
+  // const triggerCompletions = vscode.commands.registerCommand(
+  //   'preview.mermaidChart.showCompletions',
+  //   () => {
+  //       const editor = vscode.window.activeTextEditor;
+  //       if (editor) {
+  //           vscode.commands.executeCommand('editor.action.triggerSuggest');
+  //       }
+  //   }
+  // );
 
-  context.subscriptions.push(provider, triggerCompletions);
+  // context.subscriptions.push(provider, triggerCompletions);
 
   console.log("Mermaid Charts view registered");
 
@@ -708,16 +711,16 @@ context.subscriptions.push(
       provideCompletionItems(document) {
         if (document.getText().trim() === "") {
           const templates = getDiagramTemplates();
+          const templateEntries = Object.entries(templates);
 
-          // Map templates to completion items
-          const suggestions = templates.map(template => {
+          const suggestions = templateEntries.map(([name, code]) => {
             const item = new vscode.CompletionItem(
-              template.name,
+              name,
               vscode.CompletionItemKind.Snippet
             );
-            item.insertText = new vscode.SnippetString(template.code);
+            item.insertText = new vscode.SnippetString(code);
             item.documentation = new vscode.MarkdownString(
-              `**${template.name}**\n\n\`\`\`mermaid\n${template.code}\n\`\`\``
+              `**${name}**\n\n\`\`\`mermaid\n${code}\n\`\`\``
             );
             return item;
           });

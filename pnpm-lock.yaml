@@ -35,6 +35,9 @@ importers:
       '@mermaid-chart/vscode-utils':
         specifier: 1.0.7
         version: 1.0.7(vscode@1.1.37)
+      '@mermaid-js/examples':
+        specifier: 0.0.1-beta.1
+        version: 0.0.1-beta.1
       '@mermaidchart/sdk':
         specifier: 0.2.1-alpha.1
         version: 0.2.1-alpha.1
@@ -107,7 +110,7 @@ importers:
         version: 10.8.2
       ts-loader:
         specifier: ^9.5.2
-        version: 9.5.2(typescript@4.9.5)(webpack@5.99.6)
+        version: 9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -618,6 +621,9 @@ packages:
     engines: {node: '>=14.0.0', vscode: ^1.77.0}
     peerDependencies:
       vscode: '*'
+
+  '@mermaid-js/examples@0.0.1-beta.1':
+    resolution: {integrity: sha512-dJ8yhCOf9Xh7T6VJzAATtxfhjT+8ywxFWYVuEE8ffu3P5v6iuoP+T27LLJN5aAIgmsLo/wFshlRqZFz3s8OolA==}
 
   '@mermaid-js/parser@0.4.0':
     resolution: {integrity: sha512-wla8XOWvQAwuqy+gxiZqY+c7FokraOTHRWMsbB4AgRx9Sy7zKslNyejy7E+a77qHfey5GXw/ik3IXv/NHMJgaA==}
@@ -3563,6 +3569,8 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@mermaid-js/examples@0.0.1-beta.1': {}
+
   '@mermaid-js/parser@0.4.0':
     dependencies:
       langium: 3.3.1
@@ -4099,17 +4107,17 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.6)
@@ -6004,7 +6012,7 @@ snapshots:
       readable-stream: 3.6.2
     optional: true
 
-  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.6):
+  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -6039,7 +6047,7 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.6):
+  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -6173,9 +6181,9 @@ snapshots:
   webpack-cli@6.0.1(webpack@5.99.6):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.6)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.6))(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -6217,7 +6225,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.6)
+      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.6(esbuild@0.18.20)(webpack-cli@6.0.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
