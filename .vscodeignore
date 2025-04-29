@@ -1,13 +1,13 @@
 .vscode/**
-typings/**
-test/**
-.github
+.vscode-test/**
+src/**
 .gitignore
-.envrc
-jsconfig.json
+.yarnrc
 vsc-extension-quickstart.md
-previewer/.cache
-previewer/actions
-previewer/dev
-previewer/node_modules
-previewer/src
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+!images/**  # ✅ Allow all images
+.npmrc
+webview/.npmrc

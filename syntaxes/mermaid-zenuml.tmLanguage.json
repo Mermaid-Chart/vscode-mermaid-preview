@@ -1,0 +1,94 @@
+{
+  "scopeName": "source.mermaid.zenuml",
+  "name": "zenuml",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#actors" },
+    { "include": "#messages" },
+    { "include": "#annotations" },
+    { "include": "#variables" },
+    { "include": "#functions" },
+    { "include": "#comments" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.directive.mermaid" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.directive.end.mermaid" }
+      },
+      "patterns": [{ "include": "#strings" }]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(zenuml)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(title|as|return)\\b"
+        }
+      ]
+    },
+    "actors": {
+      "patterns": [
+        {
+          "name": "entity.name.type.actor.mermaid",
+          "match": "@(Actor|Database|Service)\\b"
+        }
+      ]
+    },
+    "messages": {
+      "patterns": [
+        {
+          "name": "keyword.control.message.mermaid",
+          "match": "[a-zA-Z_]\\w*->\\w*"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "storage.type.annotation.mermaid",
+          "match": "@(return|reply)\\b"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.other.mermaid",
+          "match": "\\b[a-zA-Z_]\\w*\\b(?=\\s*=)"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.mermaid",
+          "match": "\\b[A-Z]\\w*\\.\\w+\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.mermaid",
+          "match": "//.*$"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

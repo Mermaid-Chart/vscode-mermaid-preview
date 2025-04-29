@@ -1,0 +1,107 @@
+{
+  "scopeName": "source.mermaid.gitGraph",
+  "name":"gitGraph",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#transitions" },
+    { "include": "#numbers" },
+    { "include": "#variables" },
+    { "include": "#delimiters" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(gitGraph)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(accTitle|accDescr|commit|cherry-pick|branch|merge|reset|checkout|LR|BT|id|msg|type|tag|NORMAL|REVERSE|HIGHLIGHT)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.unquoted.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "transition.mermaid",
+          "match": "(->|<-|-)"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.mermaid",
+          "match": "(\\d+\\.)*\\d+"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.mermaid",
+          "match": "[A-Za-z][\\w$]*"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": "[/:{}^]"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

@@ -1,0 +1,110 @@
+{
+  "scopeName": "source.mermaid.info",
+  "name":"info",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#infoStrings" },
+    { "include": "#variables" },
+    { "include": "#delimiters" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\binfo\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(showInfo)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "infoStrings": {
+      "patterns": [
+        {
+          "name": "string.info.mermaid",
+          "match": "[A-Za-z][\\w$]*",
+          "captures": {
+            "0": { "name": "string.unquoted.mermaid" }
+          }
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.name.mermaid",
+          "match": "\\b[A-Za-z][\\w$]*\\b"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": ":|,|\\$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.delimited.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

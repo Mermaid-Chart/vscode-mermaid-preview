@@ -1,0 +1,129 @@
+{
+  "scopeName": "source.mermaid.classDiagram",
+  "name":"classDiagram",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#variables" },
+    { "include": "#transitions" },
+    { "include": "#annotations" },
+    { "include": "#strings" },
+    { "include": "#delimiters" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(classDiagram|classDiagram-v2)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(class)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(link|click|callback|call|href|cssClass|direction|TB|BT|RL|LR|title|accDescription|order)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+   "variables": {
+      "patterns": [
+        {
+          "name": "support.type.mermaid",
+          "match": "[+]\\s*[A-Za-z_][\\w$]*\\s*(?!\\(\\))\\b"
+        },
+        {
+          "name": "variable.mermaid",
+          "match": "\\b[A-Za-z_][\\w$]*\\b"
+        }
+      ]
+    },
+   "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(\\*|<\\|\\?|o)?(--|\\.\\.)(\\*|\\|?>|o)?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(\\|\\||--|\\.\\.|\\|<|>\\|?|<|>)"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(\\|\\||--|\\.\\.|\\|)"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "annotation.mermaid",
+          "match": "(<<)(.+?)(>>)",
+          "captures": {
+            "1": { "name": "delimiter.bracket.mermaid" },
+            "2": { "name": "annotation.content.mermaid" },
+            "3": { "name": "delimiter.bracket.mermaid" }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": ":|\\+|-|#|~|\\*\\s*$|\\$\\s*$|\\(|\\)|\\{|\\}"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

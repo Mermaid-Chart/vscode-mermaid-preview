@@ -1,0 +1,61 @@
+{
+  "scopeName": "source.mermaid.gantt",
+  "name":"gantt",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#sections" },
+    { "include": "#tasks" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": { "0": { "name": "punctuation.definition.directive.mermaid" } },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.definition.directive.end.mermaid" } },
+      "patterns": [{ "name": "source.js.embedded.mermaid", "match": ".*" }]
+    },
+    "typeKeywords": {
+      "patterns": [{ "name": "keyword.control.type.mermaid", "match": "\\b(gantt|section)\\b" }]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.other.mermaid", "match": "\\b(title|dateFormat|axisFormat|todayMarker|excludes|inclusiveEndDates)\\b" }
+      ]
+    },
+    "comments": {
+      "patterns": [{ "name": "comment.line.double-percent.mermaid", "match": "%%.*$" }]
+    },
+    "sections": {
+      "patterns": [
+        {
+          "name": "keyword.control.section.mermaid",
+          "match": "^\\s*section\\s+.$"
+        }
+      ]
+    },
+    "tasks": {
+      "patterns": [
+        {
+          "name": "meta.task.line.mermaid",
+          "match": "^\\s*[^\\s:]+\\s*:.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.unquoted.mermaid", "match": "\".*?\"" },
+        { "name": "string.quoted.double.mermaid", "match": "\".*?\"" },
+        {
+          "name": "string.mermaid",
+          "match": "(?<=\\b(title|dateFormat|section)\\s+)([^\n\r]+)"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

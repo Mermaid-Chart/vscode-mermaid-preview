@@ -1,0 +1,128 @@
+{
+  "scopeName": "source.mermaid.stateDiagram",
+  "name":"stateDiagram",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#annotations" },
+    { "include": "#transitions" },
+    { "include": "#variables" },
+    { "include": "#delimiters" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(stateDiagram|stateDiagram-v2)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(state|note|end)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(state|as|hide empty description|direction|TB|BT|RL|LR)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.unquoted.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.brackets.mermaid",
+          "match": "(\\[\\[).*?(\\]\\])|\\[.*?\\]"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "annotation.mermaid",
+          "match": "(<<)(fork|join|choice)(>>)"
+        },
+        {
+          "name": "annotation.mermaid",
+          "match": "(\\[\\[)(fork|join|choice)(\\]\\])"
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(--?>?>|--?[)x])[+-]?"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.mermaid",
+          "match": "[A-Za-z][\\w$]*"
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": ":|,|\\+|\\$"
+        },
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": "{|}"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

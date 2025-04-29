@@ -1,0 +1,28 @@
+{
+  "name": "svelte-app-name",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/vscode-webview": "^1.57.5",
+    "svelte": "^5.17.3",
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "@mermaid-chart/mermaid": "11.6.0-b.7",
+    "@fortawesome/fontawesome-free": "6.7.2",
+    "@iconify-json/fa6-regular": "^1.2.0",
+    "@mermaid-chart/icons-aws": "^1.0.1",
+    "@mermaid-chart/icons-azure": "^1.0.0",
+    "@mermaid-chart/icons-gcp": "^1.0.0",
+    "@mermaid-chart/layout-elk": "0.1.7-b.2",
+    "@panzoom/panzoom": "^4.5.1",
+    "vscode": "^1.1.37"
+  }
+}

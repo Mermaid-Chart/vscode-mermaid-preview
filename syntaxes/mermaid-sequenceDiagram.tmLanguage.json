@@ -1,0 +1,126 @@
+{
+  "scopeName": "source.mermaid.sequenceDiagram",
+  "name":"sequenceDiagram",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#variables" },
+    { "include": "#transitions" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(sequenceDiagram)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(alt|par|loop|opt|else|end|rect)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(participant|actor|activate|deactivate|Note|note|as|right of|left of|over|autonumber|title|accDescription|link|links)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.after-colon.mermaid",
+          "match": "(:)([^\n]*)$",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "name": "string.quoted.mermaid"
+            }
+          }
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.special.mermaid",
+          "match": "\\|+[^\\|]+\\|+"
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.angle.mermaid",
+          "match": "<[^<>]+>"
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.name.mermaid",
+          "match": "\\b[A-Za-z][\\w$]*\\b"
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(--?>?>|--?[)x])[+-]?"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

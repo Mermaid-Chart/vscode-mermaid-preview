@@ -1,0 +1,27 @@
+{
+  "scopeName": "source.mermaid",
+  "patterns": [
+    {
+      "name": "keyword.control.mermaid",
+      "match": "\\b(flowchart|graph|sequenceDiagram|gantt)\\b"
+    },
+    {
+      "name": "comment.line.double-percent.mermaid",
+      "match": "%%.*$"
+    },
+    {
+      "name": "keyword.operator.transition.mermaid",
+      "match": "-\\.+->?"
+    },
+    {
+      "name": "string.quoted.double.mermaid",
+      "match": "\"[^\"]*\""
+    },
+    {
+      "name": "variable.parameter.node.mermaid",
+      "match": "\\b[A-Za-z0-9_-]+\\b"
+    }
+  ],
+  "fileTypes": ["mermaid", "mmd"],
+  "uuid": "123e4567-e89b-12d3-a456-426614174000"
+}

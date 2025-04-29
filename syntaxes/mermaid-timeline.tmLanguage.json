@@ -1,0 +1,121 @@
+{
+  "scopeName": "source.mermaid.timeline",
+  "name": "timeline",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#sectionKeywords" },
+    { "include": "#taskKeywords" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#transitions" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(timeline)\\b"
+        }
+      ]
+    },
+    "sectionKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.section.mermaid",
+          "match": "\\b(section|title)\\b"
+        }
+      ]
+    },
+    "taskKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.task.mermaid",
+          "match": "^([A-Za-z0-9 .-]+)(?=\\s*:)"
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "(?<=:)(.*)"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "[ox]?(--+|==+)[ox]?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "-\\.+->?"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(?<=--|==)([^>-]+?)(?=-->|==>)"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(-{3,}|-{2,}>|==+|={3,}|={2,}>|\\.\\-+>)"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": ":::|:|::"
+        },
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(\\|\\||--|\\.\\.|\\|<|>\\|?|<|>)"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

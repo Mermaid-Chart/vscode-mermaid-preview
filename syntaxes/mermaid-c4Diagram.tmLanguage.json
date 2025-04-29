@@ -1,0 +1,120 @@
+{
+  "scopeName": "source.mermaid.c4Diagram",
+  "name":"c4Diagram",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#blockKeywords" },
+    { "include": "#keywords" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#parenthesesContent" },
+    { "include": "#delimiters" },
+    { "include": "#variables" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)\\b"
+        }
+      ]
+    },
+    "blockKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.block.mermaid",
+          "match": "\\b(Boundary|Enterprise_Boundary|System_Boundary|Container_Boundary|Node|Node_L|Node_R)\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.other.mermaid",
+          "match": "\\b(title|accDescription|direction|TB|BT|RL|LR|Person_Ext|Person|SystemQueue_Ext|SystemDb_Ext|System_Ext|SystemQueue|SystemDb|System|ContainerQueue_Ext|ContainerDb_Ext|Container_Ext|ContainerQueue|ContainerDb|Container|ComponentQueue_Ext|ComponentDb_Ext|Component_Ext|ComponentQueue|ComponentDb|Component|Deployment_Node|Rel|BiRel|Rel_Up|Rel_U|Rel_Down|Rel_D|Rel_Left|Rel_L|Rel_Right|Rel_R|Rel_Back|RelIndex)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        }
+      ]
+    },
+    "parenthesesContent": {
+      "patterns": [
+        {
+          "name": "meta.parentheses.mermaid",
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": { "name": "punctuation.parenthesis.open.mermaid" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "punctuation.parenthesis.close.mermaid" }
+          },
+          "patterns": [
+            {
+              "name": "string.unquoted.mermaid",
+              "match": "[^(),]+"
+            },
+            {
+              "name": "delimiter.comma.mermaid",
+              "match": ","
+            }
+          ]
+        }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.bracket.mermaid",
+          "match": ":|\\+|\\$"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.mermaid",
+          "match": "\\b[A-Z_a-z-][\\w$]*\\b"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}

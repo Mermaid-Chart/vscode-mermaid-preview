@@ -1,0 +1,93 @@
+{
+  "scopeName": "source.mermaid.xychart",
+  "name": "xychart",
+  "patterns": [
+    { "include": "#configDirective" },
+    { "include": "#typeKeywords" },
+    { "include": "#title" },
+    { "include": "#axis" },
+    { "include": "#series" },
+    { "include": "#comments" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.directive.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.mermaid",
+          "match": ".*"
+        }
+      ]
+    },
+    "typeKeywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(xychart-beta)\\b"
+        }
+      ]
+    },
+    "title": {
+      "patterns": [
+        {
+          "name": "keyword.control.type.mermaid",
+          "match": "\\b(title)\\b"
+        },
+        {
+          "name": "keyword.other.title.mermaid",
+          "match": "\\bx-axis|y-axis|bar|line\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.color.mermaid",
+          "match": "#[A-Fa-f0-9]{6}|#[A-Fa-f0-9]{3}"
+        },
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.angle.mermaid",
+          "match": "<[^<>]+>"
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    }
+  },
+  "fileTypes": ["mmd", "mermaid"]
+}
