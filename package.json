@@ -905,11 +905,10 @@
           "required": [
             "file"
           ]
-        },
-        "when": "mermaidPreview:isActive"
+        }
       },
       {
-        "name": "validate-mermaid-diagram",
+        "name": "mermaid-diagram-validator",
         "tags": [
           "editing",
           "diagram",
@@ -943,8 +942,7 @@
           "required": [
             "code"
           ]
-        },
-        "when": "mermaidPreview:isActive"
+        }
       },
       {
         "name": "mermaid-diagram-preview",
@@ -981,8 +979,7 @@
               "default": true
             }
           }
-        },
-        "when": "mermaidPreview:isActive"
+        }
       }
     ]
   },
