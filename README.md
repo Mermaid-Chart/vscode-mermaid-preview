@@ -137,6 +137,9 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 2.0.1 -2025-04-30
+- Refined authentication behavior to remove unnecessary login prompts and Account badge indicators, ensuring a less intrusive experience.
+
 ### 2.0.0 -2025-04-29
 New General Features
 - Real-Time Local Edit & Preview

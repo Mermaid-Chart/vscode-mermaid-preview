@@ -27,7 +27,7 @@ export class MermaidChartVSCode extends MermaidChart {
     const session = await vscode.authentication.getSession(
       MermaidChartAuthenticationProvider.id,
       [],
-      { createIfNone: false }
+      { silent: true }
     );
   
     if (session) {
@@ -63,7 +63,7 @@ export class MermaidChartVSCode extends MermaidChart {
           const session = await vscode.authentication.getSession(
             MermaidChartAuthenticationProvider.id,
             [],
-            { createIfNone: false }
+            { silent: true }
           );
           if (session) {
             this.setAccessToken(session.accessToken);
@@ -96,7 +96,7 @@ export class MermaidChartVSCode extends MermaidChart {
       MermaidChartAuthenticationProvider.id,
       [],
       {
-        createIfNone: false,
+        silent: true,
       }
     );
     if (session) {
