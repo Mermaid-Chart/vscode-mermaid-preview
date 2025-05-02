@@ -18,6 +18,8 @@ import { PromiseAdapter, promiseFromEvent } from "./util";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import analytics from "./analytics";
 
+const utmSource = 'mermaid_preview_vs_code';
+const utmCampaign = "VSCode extension";
 class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   public handleUri(uri: Uri) {
     this.fire(uri);
@@ -181,7 +183,14 @@ export class MermaidChartAuthenticationProvider
         cancellable: true,
       },
       async (_, token) => {
-        const authData = await this.mcAPI.getAuthorizationData();
+        const authData = await this.mcAPI.getAuthorizationData({
+          scope: scopes,
+          trackingParams: {
+            utm_source: utmSource,
+            utm_medium: env.uriScheme,
+            utm_campaign: utmCampaign,
+          },
+        });
         const uri = Uri.parse(authData.url);
         await env.openExternal(uri);
 
