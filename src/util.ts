@@ -566,6 +566,20 @@ export function triggerSuggestIfEmpty(document: vscode.TextDocument) {
   }
 }
 
+export function flattenProjects(projects: MCTreeItem[]): MCTreeItem[] {
+  const flatList: MCTreeItem[] = [];
+
+  for (const project of projects) {
+    if (project.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed || project.children) {
+      flatList.push(project);
+      if (project.children && project.children.length > 0) {
+        flatList.push(...flattenProjects(project.children)); 
+      }
+    }
+  }
+  return flatList;
+}
+
 
 
 
