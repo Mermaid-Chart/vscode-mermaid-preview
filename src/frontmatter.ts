@@ -9,7 +9,7 @@ const FIRST_WORD_REGEX = /^\s*(\w+)/;
 
 export const anyCommentRegex = /\s*%%.*\n/gm;
 
-function parseFrontMatterYAML(frontMatterYaml: string): Document<YAMLMap, false> {
+export function parseFrontMatterYAML(frontMatterYaml: string): Document<YAMLMap, false> {
     const document: Document = parseDocument(frontMatterYaml);
     if (!isMap(document.contents)) {
       document.contents = new YAMLMap();
@@ -43,7 +43,6 @@ export function splitFrontMatter(text: string) {
         frontMatter: frontMatter,
     };
 }
-
 
 /**
  * Ensures the diagram code has an ID field in the frontmatter.
@@ -312,3 +311,52 @@ export function findDiagramContentStartPosition(text: string): number {
   // Return 0 if no content found
   return 0;
 }
+
+// /**
+//  * Extract theme, look, and layout settings from the frontmatter of a diagram
+//  * @param code The Mermaid diagram code with frontmatter
+//  * @returns Object containing theme, look, and layout if found
+//  */
+// export function extractConfigFromFrontmatter(code: string): {
+//   theme?: string;
+//   look?: string;
+//   layout?: string;
+// } {
+//   const { frontMatter } = splitFrontMatter(code);
+//   if (!frontMatter) {
+//     return {}; // No frontmatter present
+//   }
+
+//   const document = parseFrontMatterYAML(frontMatter);
+//   const result: {
+//     theme?: string;
+//     look?: string;
+//     layout?: string;
+//   } = {};
+//   // Look for config block which might contain these properties
+//   const config = document.contents.get('config');
+//   console.log("config", config);
+//   // Check if config exists and has the expected structure
+//   if (config && typeof config === 'object' && config !== null) {
+//     // Use type assertion to tell TypeScript this is a specific type
+//     const configObj = config as any;
+    
+//     if (configObj.items && Array.isArray(configObj.items)) {
+//       // Iterate through the items in the config object
+//       for (const item of configObj.items) {
+//         if (item && typeof item === 'object' && 'key' in item && 'value' in item) {
+//           const key = item.key.value;
+//           const value = item.value.value;
+//           if (key === 'theme' && typeof value === 'string' && !result.theme) {
+//             result.theme = value;
+//           } else if (key === 'look' && typeof value === 'string' && !result.look) {
+//             result.look = value;
+//           } else if (key === 'layout' && typeof value === 'string' && !result.layout) {
+//             result.layout = value;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return result;
+// }

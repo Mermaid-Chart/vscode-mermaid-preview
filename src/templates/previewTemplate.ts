@@ -5,6 +5,9 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
   const scriptUri = panel.webview.asWebviewUri(
     vscode.Uri.file(path.join(extensionPath, "out", "svelte", "bundle.js"))
   );
+  const fontUrl = panel.webview.asWebviewUri(
+    vscode.Uri.file(path.join(extensionPath, "media", "recursive-latin-full-normal.woff2"))
+  );
 
   // Make sure the panel retains state when hidden
   // panel.onDidChangeViewState((e) => {
@@ -38,8 +41,17 @@ export function getWebviewHTML(panel: vscode.WebviewPanel, extensionPath: string
       />
       <script type="module" src="${scriptUri}"></script>
       <style>
+        @font-face {
+          font-family: "Recursive";
+          src: url("${fontUrl}") format("woff2");
+          font-weight: 300 900;
+          font-style: normal;
+        }
         #app {
           height: 100vh;
+        }
+        body {
+          font-family: "Recursive", serif;
         }
       </style>
     </head>

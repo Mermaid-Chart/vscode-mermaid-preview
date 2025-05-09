@@ -96,7 +96,7 @@ export class MermaidChartVSCode extends MermaidChart {
       MermaidChartAuthenticationProvider.id,
       [],
       {
-        silent: true,
+        silent: true
       }
     );
     if (session) {
@@ -123,8 +123,8 @@ export class MermaidChartVSCode extends MermaidChart {
 
 
 export function getBaseUrl(): string | undefined {
-  const config = vscode.workspace.getConfiguration();
-  const baseURL = config.get<string>("preview.mermaidChart.baseUrl");
+  const config = vscode.workspace.getConfiguration("preview.mermaidChart");
+  const baseURL = config.get<string>("baseUrl");
 
   if (baseURL) {
     return baseURL;

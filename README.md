@@ -59,6 +59,16 @@ We now support Pan and Zoom for the diagram preview, where the user pan to a spe
 Users can of course use the reset option to resize the preview diagram to fit the screen.
 ![Pan & Zoom](https://docs.mermaidchart.com/img/plugins/vscode-plugin-pan.png)
 
+### Export Diagrams
+Export your diagrams easily in both SVG and PNG formats. This makes it simple to:
+- Include diagrams in documentation
+- Share with team members
+- Use in presentations
+- Version control your diagram assets
+
+The exported files maintain high quality and can be used across different platforms and tools.
+
+![Export Diagrams](https://docs.mermaidchart.com/img/plugins/vscode-plugin-export.png)
 
 ### Error Highlighting 
 While writing the mermaid code, if you encounter syntax errors, the extension highlights the syntax error with an error message, and also indicates which line in the code might be causing the error. This helps the user to locate and fix the error. 
@@ -136,6 +146,12 @@ This extension contributes the following settings:
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.0.2 -2025-05-09
+- Added export functionality for SVG and PNG formats
+- Performance improvements and bug fixes
+- Added configurable maximum zoom level setting
+- Added settings for maximum text size and edges in diagrams
 
 ### 2.0.1 -2025-04-30
 - Refined authentication behavior to remove unnecessary login prompts and Account badge indicators, ensuring a less intrusive experience.

@@ -577,10 +577,6 @@ export function flattenProjects(projects: MCTreeItem[]): MCTreeItem[] {
       }
     }
   }
+
   return flatList;
 }
-
-
-
-
-

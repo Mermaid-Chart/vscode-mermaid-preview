@@ -23,6 +23,7 @@
     "@mermaid-chart/icons-gcp": "^1.0.0",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
     "@panzoom/panzoom": "^4.5.1",
-    "vscode": "^1.1.37"
+    "vscode": "^1.1.37",
+    "js-base64": "^3.7.5"
   }
 }

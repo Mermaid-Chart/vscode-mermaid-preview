@@ -5,13 +5,13 @@
 
     export let panEnabled, iconBackgroundColor, shadowColor, sidebarBackgroundColor, svgColor, zoomLevel;
     export let togglePan, zoomOut, resetView, zoomIn;
-  </script>
+</script>
 
   <style>
     .sidebar {
         position: absolute;
         top: 5px;
-        right: 20px;
+        right: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -28,6 +28,7 @@
         font-weight: bold;
         padding: 6px 8px;
         border: 1px solid #ddd;
+        font-family: "Recursive", serif;
         border-radius: 4px;
         display: flex;
         align-items: center;
@@ -46,6 +47,7 @@
     .icon {
         cursor: pointer;
         border: none;
+        font-family: "Recursive", serif;
         background-color: var(--icon-bg);
         padding: 3px;
         border-radius: 6px;
@@ -93,7 +95,6 @@
     <button class="icon" style="--icon-bg: {iconBackgroundColor};" on:click={zoomIn} aria-label="Zoom In" title="Zoom In">
       <ZoomInIcon fill={svgColor} />
     </button>
-    
     <div class="zoom-level" style="--icon-bg: {iconBackgroundColor};">
       <span style="--icon-bg: {svgColor};" title="Zoom Level">Zoom: {zoomLevel}%</span>
     </div>

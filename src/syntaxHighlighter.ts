@@ -12,11 +12,22 @@ export function getDiagramTypeFromWord(firstWord: string, diagramMappings: Recor
   return null;
 }
 
-// Function to load the .tmLanguage file
+// Create a cache for loaded tmLanguage files
+const tmLanguageCache: Record<string, any> = {};
+
+// Function to load the .tmLanguage file with caching
 export function loadTmLanguage(filePath: string): any | null {
+  // Check if the file is already in cache
+  if (tmLanguageCache[filePath]) {
+    return tmLanguageCache[filePath];
+  }
+  
   try {
     const content = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+    // Store in cache for future use
+    tmLanguageCache[filePath] = parsed;
+    return parsed;
   } catch (error) {
     console.error(`Error loading tmLanguage file: ${filePath}`, error);
     return null;
@@ -39,4 +50,9 @@ export function applySyntaxHighlighting(document: vscode.TextDocument, tmLanguag
       }
     );
   }
+}
+
+// Function to clear the cache (useful if files are updated)
+export function clearTmLanguageCache(): void {
+  Object.keys(tmLanguageCache).forEach(key => delete tmLanguageCache[key]);
 }

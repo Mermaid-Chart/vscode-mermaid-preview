@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
   "license": "MIT",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -653,8 +653,19 @@
         "mermaid.vscode.max_Zoom": {
           "type": "number",
           "default": 5,
-          "description": "Set the maximum zoom level for diagrams."
+          "description": "Defines the maximum zoom level for diagrams, specified as a multiple of 100%. For example, a value of 5 means the maximum zoom is 500%."
+        },
+        "mermaid.vscode.max_CharLength": {
+          "type": "number",
+          "default": 90000,
+          "description": "Maximum number of characters allowed in a diagram's source"
+        },
+        "mermaid.vscode.max_Edges": {
+          "type": "number",
+          "default": 1000,
+          "description": "Maximum number of edges allowed in a diagram's source"
         }
+
       }
     },
     "viewsContainers": {
@@ -700,7 +711,7 @@
           "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
           "group": "navigation"
         }
-       
+
       ],
       "view/item/context": [
         {
@@ -771,12 +782,6 @@
         "when": "mermaidPreview:isActive"
       },
       {
-        "command": "preview.mermaidChart.viewMermaidChart",
-        "title": "View Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
-      },
-      {
         "command": "preview.mermaidChart.preview",
         "title": "Preview Diagram",
         "category": "Mermaid Preview",
@@ -828,12 +833,6 @@
       {
         "command": "preview.mermaidChart.openCopilotChat",
         "title": "Open AI Chat",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
-      },
-      {
-        "command": "preview.mermaidChart.insertMermaidTemplate",
-        "title": "Insert Mermaid Template",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       }
@@ -1009,7 +1008,8 @@
     "ts-loader": "^9.5.2",
     "typescript": "^4.9.5",
     "webpack": "^5.99.5",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "@types/express": "^5.0.0"
   },
   "dependencies": {
     "@fontsource-variable/recursive": "^5.1.1",
@@ -1026,9 +1026,10 @@
     "axios": "^1.7.9",
     "markdown-it": "^14.1.0",
     "@mermaid-chart/mermaid": "11.6.0-b.7",
-    "uuid": "^9.0.0",
     "@mermaid-js/examples": "0.0.1-beta.1",
-    "yaml": "^2.7.0"
+    "uuid": "^9.0.0",
+    "yaml": "^2.7.0",
+    "puppeteer": "^23.11.1"
   },
   "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247",
   "enabledApiProposals": [

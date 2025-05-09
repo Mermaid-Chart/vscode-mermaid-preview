@@ -22,12 +22,12 @@ export function generateWebviewContent(
 
     <style>
 
-@font-face {
-  font-family: "Recursive";
-  src: url("${fontUrl}") format("woff2");
-  font-weight: 300 900;
-  font-style: normal;
-}
+    @font-face {
+      font-family: "Recursive";
+      src: url("${fontUrl}") format("woff2");
+      font-weight: 300 900;
+      font-style: normal;
+    }
 
 
     :root {

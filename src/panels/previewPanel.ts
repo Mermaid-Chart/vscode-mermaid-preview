@@ -3,10 +3,13 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import { isAuxFile } from "../util";
 import * as packageJson from "../../package.json";
+import { exportDiagramAsSvg, handlePngExport } from "../services/renderService";
+import { closePuppeteer } from "../services/puppeteerService";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
-
+const MAX_CHAR_LENGTH = "mermaid.vscode.max_CharLength";
+const MAX_EDGES = "mermaid.vscode.max_Edges";
 
 
 export class PreviewPanel {
@@ -63,22 +66,27 @@ export class PreviewPanel {
     const darkTheme = config.get<string>(DARK_THEME_KEY, "redux-dark");
     const lightTheme = config.get<string>(LIGHT_THEME_KEY, "redux");
     const maxZoom = config.get<number>(MAX_ZOOM, 5);
+    const maxCharLength = config.get<number>(MAX_CHAR_LENGTH, 90000);
+    const maxEdges = config.get<number>(MAX_EDGES, 1000);
 
     // Determine the current theme based on the user's preference and the active color theme
     const currentTheme = isDarkTheme ? darkTheme : lightTheme;
       this.lastContent = this.document.getText() || " ";
+
 // Initial content to be used (defaults to a single space if empty)
     const initialContent = this.document.getText() || " ";
+  
     if (!this.panel.webview.html) {
       this.panel.webview.html = getWebviewHTML(this.panel, extensionPath, this.lastContent, currentTheme, false);
     }
-console.log("In Preview Panel",maxZoom);
     this.panel.webview.postMessage({
       type: "update",
       content:this.lastContent,
       currentTheme: currentTheme,
       isFileChange: this.isFileChange,
-      maxZoom: maxZoom
+      maxZoom: maxZoom,
+      maxCharLength: maxCharLength,
+      maxEdge: maxEdges,
     });
     this.isFileChange = false;
   }
@@ -105,12 +113,16 @@ console.log("In Preview Panel",maxZoom);
       this.update(); 
   }, this.disposables);
 
-    this.panel.webview. onDidReceiveMessage((message) => {
+    this.panel.webview.onDidReceiveMessage(async (message) => {
       if (message.type === "error" && message.message) {
         this.handleDiagramError(message.message);
       } else if (message.type === "clearError") {
         this.diagnosticsCollection.clear();
-    }
+      } else if (message.type === "exportPng") {
+        handlePngExport(this.document, message.svg, message.theme);
+      } else if (message.type === "exportSvg" && message.svgBase64) {
+        exportDiagramAsSvg(this.document, message.svgBase64);
+      }
     });
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
@@ -168,6 +180,7 @@ console.log("In Preview Panel",maxZoom);
     PreviewPanel.currentPanel = undefined;
     this.diagnosticsCollection.clear();
     this.diagnosticsCollection.dispose();
+    closePuppeteer().catch(console.error);
 
     while (this.disposables.length) {
       const disposable = this.disposables.pop();
