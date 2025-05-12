@@ -245,7 +245,7 @@
 </style>
 
 
-<div id="app-container">
+<div id="app-container" style="background: {theme?.includes('dark') ? '#1e1e1e' : 'white'}">
   <ErrorMessage {errorMessage} />
   <div id="mermaid-diagram"></div>
   <div class="sidebar-container">
