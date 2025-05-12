@@ -45,6 +45,14 @@
             name: 'gcp',
             loader: () => import('@mermaid-chart/icons-gcp').then((m) => m.icons),
           },
+          {
+            name: 'logos',
+            loader: () => import('@iconify-json/logos').then((module) => module.icons),
+          },
+          {
+            name: 'mdi',
+            loader: () => import('@iconify-json/mdi').then((module) => module.icons),
+          },
         ]);
         await mermaid.initialize({
           startOnLoad: false,
@@ -186,7 +194,7 @@
         diagramContent = content;
         theme = currentTheme;
         maxZoomLevel = maxZoom        
-        maxEdges = maxEdge;
+        maxEdges = maxEdge; 
         maxTextSize= maxCharLength;
         if (isFileChange) {
           panzoomInstance?.reset();
@@ -243,7 +251,7 @@
   <div id="mermaid-diagram"></div>
   <div class="sidebar-container">
     {#if !errorMessage}
-    <LeftSideBar {iconBackgroundColor} {sidebarBackgroundColor} {shadowColor} {svgColor} {theme} {diagramContent}/>
+    <LeftSideBar {iconBackgroundColor} {sidebarBackgroundColor} {shadowColor} {svgColor} {theme}/>
     <Sidebar {panEnabled} {iconBackgroundColor} {sidebarBackgroundColor} {shadowColor} {svgColor} {zoomLevel} {togglePan} {zoomOut} {resetView} {zoomIn} />
   {/if}
   </div>

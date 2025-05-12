@@ -165,16 +165,23 @@ export async function activate(context: vscode.ExtensionContext) {
           activeEditor.document,
           comments
         );
+        applyMermaidChartTokenHighlighting(
+          activeEditor,
+          mermaidChartTokens,
+          mermaidChartTokenDecoration,
+          mermaidChartGutterIconDecoration,
+          false
+        );
       } else {
         mermaidChartTokens = findMermaidChartTokensFromAuxFiles(activeEditor.document);
+        applyMermaidChartTokenHighlighting(
+          activeEditor,
+          mermaidChartTokens,
+          mermaidChartTokenDecoration,
+          mermaidChartGutterIconDecoration,
+          true
+        );
       }
-
-      applyMermaidChartTokenHighlighting(
-        activeEditor,
-        mermaidChartTokens,
-        mermaidChartTokenDecoration,
-        mermaidChartGutterIconDecoration
-      );
 
       if (!codeLensProvider) {
         codeLensProvider = new MermaidChartCodeLensProvider(mermaidChartTokens);

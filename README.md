@@ -54,6 +54,10 @@ We now support syntax highlighting for all Mermaid diagrams when writing the Mer
 
 ![Syntax Highlighting](https://docs.mermaidchart.com/img/plugins/vscode-plugin-highlighting-dark.png)
 
+The extension also provides syntax highlighting for Mermaid diagrams embedded in Markdown files, with specific highlighting based on diagram types.
+
+![Syntax Highlighting in Markdown](https://docs.mermaidchart.com/img/plugins/vscode-plugin-markdown-highlighting.png)
+
 ### Pan & Zoom 
 We now support Pan and Zoom for the diagram preview, where the user pan to a specific part of a large diagram, and also set different levels of zoom based on his preference. We implemented the zoom with stickiness, so that zoom levels are not changed when you edit your diagram
 Users can of course use the reset option to resize the preview diagram to fit the screen.
@@ -147,8 +151,12 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 2.0.2 -2025-05-09
+### 2.2.6 -2025-05-12
 - Added export functionality for SVG and PNG formats
+- Added support for additional icon packs:
+  - Logos (from iconify-json/logos)
+  - Material Design Icons (MDI)
+- Added syntax highlighting for markdown mermaid blocks based on diagram types
 - Performance improvements and bug fixes
 - Added configurable maximum zoom level setting
 - Added settings for maximum text size and edges in diagrams

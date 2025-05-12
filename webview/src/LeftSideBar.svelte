@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
   import { exportPng, exportSvg } from './services/exportService';
 
-  export let iconBackgroundColor, shadowColor, sidebarBackgroundColor, svgColor, theme, diagramContent;
+  export let iconBackgroundColor, shadowColor, sidebarBackgroundColor, svgColor, theme;
 
   let showExportOptions = false;
   let leftSidebarRef;
@@ -13,7 +13,7 @@
   }
 
   function handleExportPng() {
-    exportPng(diagramContent, theme);
+    exportPng(theme);
     showExportOptions = false;
   }
 

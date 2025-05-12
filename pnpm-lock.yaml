@@ -135,6 +135,12 @@ importers:
       '@iconify-json/fa6-regular':
         specifier: ^1.2.0
         version: 1.2.3
+      '@iconify-json/logos':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/mdi':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@mermaid-chart/icons-aws':
         specifier: ^1.0.1
         version: 1.0.1
@@ -146,10 +152,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.10)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.7
-        version: 11.6.0-b.7
+        specifier: 11.6.0-b.10
+        version: 11.6.0-b.10
       '@panzoom/panzoom':
         specifier: ^4.5.1
         version: 4.6.0
@@ -589,6 +595,12 @@ packages:
   '@iconify-json/fa6-regular@1.2.3':
     resolution: {integrity: sha512-NGV2j5mn4j49mpP7MABCljp1WPWKjwgfjN6NGwsmlFuQ7bdnz36nZB/5aRXLOcT36NXaBeCoT05G9aatdtMr3A==}
 
+  '@iconify-json/logos@1.2.4':
+    resolution: {integrity: sha512-XC4If5D/hbaZvUkTV8iaZuGlQCyG6CNOlaAaJaGa13V5QMYwYjgtKk3vPP8wz3wtTVNVEVk3LRx1fOJz+YnSMw==}
+
+  '@iconify-json/mdi@1.2.3':
+    resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
+
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -629,6 +641,9 @@ packages:
     resolution: {integrity: sha512-0D5dQYSqnD5CO8PajT983ap1PH+PnMKA+EMHY6CM5pcV6i8YtKb4cGv/p/IsjXOTRVzPioNKwueAY5RBE/pL8Q==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/layout-elk/0.1.7-b.2/713f820a9026a1e0593da973ae177c940cc89b19}
     peerDependencies:
       '@mermaid-chart/mermaid': ^11.0.0
+
+  '@mermaid-chart/mermaid@11.6.0-b.10':
+    resolution: {integrity: sha512-xYsLmxxbmNkDTk+q3x7pD3v1qVhdG8iN0CbDks+UjC7dk60/Df/m7fJ2NFwAOunc7IpdSx0TfExtRSobtn7qFw==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.10/2a44efe4b5c954c80543ec21ab9dc2c803d01f98}
 
   '@mermaid-chart/mermaid@11.6.0-b.7':
     resolution: {integrity: sha512-pKpD3MKSmQ6eG1d9mG8/64Knjpte5i9eRucbyPnHqZbGiMVS/76+PmC8Wx4e2CViYAIgbZOOF0NsltYrTS9xKA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.7/33a66a8f81d1121806554b7092e188b4d2329b6b}
@@ -3765,6 +3780,14 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@iconify-json/logos@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@2.3.0':
@@ -3814,11 +3837,42 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.10)':
+    dependencies:
+      '@mermaid-chart/mermaid': 11.6.0-b.10
+      d3: 7.9.0
+      elkjs: 0.9.3
+
   '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)':
     dependencies:
       '@mermaid-chart/mermaid': 11.6.0-b.7
       d3: 7.9.0
       elkjs: 0.9.3
+
+  '@mermaid-chart/mermaid@11.6.0-b.10':
+    dependencies:
+      '@braintree/sanitize-url': 7.1.1
+      '@iconify/utils': 2.3.0
+      '@mermaid-js/parser': 0.4.0
+      '@types/d3': 7.4.3
+      cytoscape: 3.31.2
+      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.31.2)
+      cytoscape-fcose: 2.2.0(cytoscape@3.31.2)
+      d3: 7.9.0
+      d3-sankey: 0.12.3
+      dagre-d3-es: 7.0.11
+      dayjs: 1.11.13
+      dompurify: 3.2.5
+      katex: 0.16.22
+      khroma: 2.1.0
+      lodash-es: 4.17.21
+      marked: 15.0.11
+      roughjs: 4.6.6
+      stylis: 4.3.6
+      ts-dedent: 2.2.0
+      uuid: 11.1.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@mermaid-chart/mermaid@11.6.0-b.7':
     dependencies:

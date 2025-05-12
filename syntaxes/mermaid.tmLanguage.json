@@ -1,27 +1,81 @@
 {
   "scopeName": "source.mermaid",
   "patterns": [
-    {
-      "name": "keyword.control.mermaid",
-      "match": "\\b(flowchart|graph|sequenceDiagram|gantt)\\b"
-    },
-    {
-      "name": "comment.line.double-percent.mermaid",
-      "match": "%%.*$"
-    },
-    {
-      "name": "keyword.operator.transition.mermaid",
-      "match": "-\\.+->?"
-    },
-    {
-      "name": "string.quoted.double.mermaid",
-      "match": "\"[^\"]*\""
-    },
-    {
-      "name": "variable.parameter.node.mermaid",
-      "match": "\\b[A-Za-z0-9_-]+\\b"
-    }
+    { "include": "#configDirective" },
+    { "include": "#diagramTypes" },
+    { "include": "#comments" },
+    { "include": "#transitions" },
+    { "include": "#strings" },
+    { "include": "#variables" }
   ],
+  "repository": {
+    "configDirective": {
+      "name": "meta.directive.config.mermaid",
+      "begin": "^\\s*%%(?=\\{)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.directive.mermaid" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.directive.end.mermaid" }
+      },
+      "patterns": [
+        { "name": "source.js.embedded.mermaid", "match": ".*" }
+      ]
+    },
+    "diagramTypes": {
+      "name": "keyword.control.diagram.mermaid",
+      "match": "\\b(flowchart|graph|sequenceDiagram|gantt|pie|mindmap|timeline|gitGraph|erDiagram|classDiagram|stateDiagram|journey|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment|requirement|requirementDiagram|sankey|sankeyDiagram|quadrantChart|xychart|zenuml|architecture|block|blockDiagram)\\b"
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "transitions": {
+      "patterns": [
+        {
+          "name": "keyword.control.transition.mermaid",
+          "match": "(-{2,}|-{1,}>|\\.{2,}|\\.->|==+|={1,}>)"
+        },
+        {
+          "name": "keyword.control.transition.mermaid", 
+          "match": "(--?>?>|--?[)x])[+-]?"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "match": "\".*?\""
+        },
+        {
+          "name": "string.quoted.curly.mermaid",
+          "match": "\\{[^{}]+\\}"
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "match": "\\[[^\\[\\]]+\\]"
+        },
+        {
+          "name": "string.quoted.parenthesis.mermaid",
+          "match": "\\([^()]+\\)"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.other.mermaid",
+          "match": "\\b[A-Za-z][\\w$]*\\b"
+        }
+      ]
+    }
+  },
   "fileTypes": ["mermaid", "mmd"],
   "uuid": "123e4567-e89b-12d3-a456-426614174000"
 }

@@ -583,6 +583,16 @@
         "language": "mermaid.radar",
         "scopeName": "source.mermaid.radar",
         "path": "./syntaxes/mermaid-radar.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.mermaid.embedded.markdown",
+        "path": "./syntaxes/mermaid-markdown.json",
+        "injectTo": ["text.html.markdown"]
+      },
+      {
+        "language": "mermaid",
+        "scopeName": "source.mermaid",
+        "path": "./syntaxes/mermaid.tmLanguage.json"
       }
     ],
     "configuration": {
