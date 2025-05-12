@@ -15,15 +15,17 @@
     "vite": "^6.0.7"
   },
   "dependencies": {
-    "@mermaid-chart/mermaid": "11.6.0-b.7",
     "@fortawesome/fontawesome-free": "6.7.2",
     "@iconify-json/fa6-regular": "^1.2.0",
+    "@iconify-json/logos": "^1.2.4",
+    "@iconify-json/mdi": "^1.2.3",
     "@mermaid-chart/icons-aws": "^1.0.1",
     "@mermaid-chart/icons-azure": "^1.0.0",
     "@mermaid-chart/icons-gcp": "^1.0.0",
     "@mermaid-chart/layout-elk": "0.1.7-b.2",
+    "@mermaid-chart/mermaid": "11.6.0-b.10",
     "@panzoom/panzoom": "^4.5.1",
-    "vscode": "^1.1.37",
-    "js-base64": "^3.7.5"
+    "js-base64": "^3.7.5",
+    "vscode": "^1.1.37"
   }
 }

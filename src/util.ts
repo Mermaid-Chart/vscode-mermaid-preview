@@ -174,15 +174,18 @@ export function applyMermaidChartTokenHighlighting(
   editor: vscode.TextEditor,
   mermaidChartTokens: MermaidChartToken[],
   mermaidChartTokenDecoration: vscode.TextEditorDecorationType,
-  mermaidChartGutterIconDecoration: vscode.TextEditorDecorationType
+  mermaidChartGutterIconDecoration: vscode.TextEditorDecorationType,
+  isAuxFile: boolean
 ) {
-  const fullBlockDecorations: vscode.DecorationOptions[] = mermaidChartTokens.map(token => ({
-    range: token.range, 
-  }));
+  if (!isAuxFile) {
+    const fullBlockDecorations: vscode.DecorationOptions[] = mermaidChartTokens.map(token => ({
+      range: token.range,
+    }));
+    editor.setDecorations(mermaidChartTokenDecoration, fullBlockDecorations);
+  }
   const gutterIconDecorations: vscode.DecorationOptions[] = mermaidChartTokens.map(token => ({
     range: new vscode.Range(token.range.start, token.range.start), // Only first line for gutter icon
   }));
-  editor.setDecorations(mermaidChartTokenDecoration, fullBlockDecorations);
   editor.setDecorations(mermaidChartGutterIconDecoration, gutterIconDecorations);
 }
 

@@ -1,10 +1,8 @@
 import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
-import { isAuxFile } from "../util";
 import * as packageJson from "../../package.json";
-import { exportDiagramAsSvg, handlePngExport } from "../services/renderService";
-import { closePuppeteer } from "../services/puppeteerService";
+import { exportDiagramAsPng, exportDiagramAsSvg } from "../services/renderService";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
@@ -113,17 +111,17 @@ export class PreviewPanel {
       this.update(); 
   }, this.disposables);
 
-    this.panel.webview.onDidReceiveMessage(async (message) => {
-      if (message.type === "error" && message.message) {
-        this.handleDiagramError(message.message);
-      } else if (message.type === "clearError") {
-        this.diagnosticsCollection.clear();
-      } else if (message.type === "exportPng") {
-        handlePngExport(this.document, message.svg, message.theme);
-      } else if (message.type === "exportSvg" && message.svgBase64) {
-        exportDiagramAsSvg(this.document, message.svgBase64);
-      }
-    });
+  this.panel.webview.onDidReceiveMessage(async (message) => {
+    if (message.type === "error" && message.message) {
+      this.handleDiagramError(message.message);
+    } else if (message.type === "clearError") {
+      this.diagnosticsCollection.clear();
+    } else if (message.type === "exportPng" && message.pngBase64) {
+      exportDiagramAsPng(this.document, message.pngBase64);
+    } else if (message.type === "exportSvg" && message.svgBase64) {
+      exportDiagramAsSvg(this.document, message.svgBase64);
+    }
+  });
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
   }
@@ -180,8 +178,6 @@ export class PreviewPanel {
     PreviewPanel.currentPanel = undefined;
     this.diagnosticsCollection.clear();
     this.diagnosticsCollection.dispose();
-    closePuppeteer().catch(console.error);
-
     while (this.disposables.length) {
       const disposable = this.disposables.pop();
       if (disposable) {
