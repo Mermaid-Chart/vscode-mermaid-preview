@@ -17,6 +17,12 @@ importers:
       '@iconify-json/fa6-regular':
         specifier: ^1.2.0
         version: 1.2.3
+      '@iconify-json/logos':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/mdi':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@mermaid-chart/icons-aws':
         specifier: ^1.0.1
         version: 1.0.1
