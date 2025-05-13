@@ -106,6 +106,33 @@
         }
 
         const svgElement = element.querySelector("svg");
+        
+        const nodes = svgElement.querySelectorAll('.node');
+        nodes.forEach(node => {
+          // For each node with an icon, ensure text has enough space
+          const labelGroup = node.querySelector('.label');
+          if (labelGroup) {
+            const iconElement = labelGroup.querySelector('.fa, .fas, .far, .fab');
+            if (iconElement) {
+              // Find the text element and ensure it has enough space
+              const foreignObject = labelGroup.querySelector('foreignObject');
+              if (foreignObject) {
+                // Make sure foreignObject is wide enough
+                const currentWidth = parseInt(foreignObject.getAttribute('width') || '0', 10);
+                if (currentWidth > 0) {
+                  foreignObject.setAttribute('width', `${currentWidth + 30}px`);
+                }
+                
+                // Ensure text doesn't wrap
+                const divs = foreignObject.querySelectorAll('div');
+                divs.forEach(div => {
+                  div.style.whiteSpace = 'nowrap';
+                  div.style.overflow = 'visible';
+                });
+              }
+            }
+          }
+        });
 
         if (svgElement) {
           svgElement.style.height = "100%";

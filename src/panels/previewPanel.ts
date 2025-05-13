@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import * as packageJson from "../../package.json";
-import { exportDiagramAsPng, exportDiagramAsSvg } from "../services/renderService";
+import { saveDiagramAsPng, saveDiagramAsSvg } from "../services/renderService";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
@@ -122,7 +122,7 @@ export class PreviewPanel {
         title: "Exporting PNG...",
         cancellable: false
       }, async () => {
-        await exportDiagramAsPng(this.document, message.pngBase64, this.lastContent);
+        await saveDiagramAsPng(this.document, message.pngBase64, this.lastContent);;
       });
     } else if (message.type === "exportSvg" && message.svgBase64) {
       await vscode.window.withProgress({
@@ -130,7 +130,7 @@ export class PreviewPanel {
         title: "Exporting SVG...",
         cancellable: false
       }, async () => {
-        await exportDiagramAsSvg(this.document, message.svgBase64, this.lastContent);
+        await saveDiagramAsSvg(this.document, message.svgBase64, this.lastContent);
       });
     }
   });
