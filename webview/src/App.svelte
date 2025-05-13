@@ -185,7 +185,7 @@
   function updateCursorStyle() {
     const element = document.getElementById("mermaid-diagram");
     if (element) {
-      element.style.cursor = panEnabled ? `pointer` : 'default';
+      element.style.cursor = panEnabled ? `grab` : 'default';
     }
   }
   function updateZoomLevel() {
