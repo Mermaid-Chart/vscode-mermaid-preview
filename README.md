@@ -151,7 +151,7 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 2.0.2 -2025-05-12
+### 2.0.2 -2025-05-13
 - Added export functionality for SVG and PNG formats
 - Added support for additional icon packs:
   - Logos (from iconify-json/logos)

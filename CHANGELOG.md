@@ -1,6 +1,6 @@
 # Change Log
 
-### 2.0.2 -2025-05-12
+### 2.0.2 -2025-05-13
 ### New Features
 - Added export functionality for SVG and PNG formats
 - Added new configurable settings:

@@ -1,34 +1,18 @@
 import * as vscode from 'vscode';
 import path from 'path';
+import os from 'os';
+import { getDefaultSaveUri } from './filenameService';
 
-function getDefaultSaveLocation(document: vscode.TextDocument, extension: string): vscode.Uri | undefined {
-    const baseName = path.basename(document.fileName || 'diagram', path.extname(document.fileName || ''));
-    
-    // If document has a URI, use its parent directory
-    if (document.uri && document.uri.scheme === 'file') {
-        return vscode.Uri.joinPath(document.uri, `../${baseName}.${extension}`);
-    }
-    
-    // For untitled documents, try to use:
-    // 1. Current workspace folder
-    // 2. First workspace folder
-    // 3. Last used directory from state
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (workspaceFolders && workspaceFolders.length > 0) {
-        // Use the first workspace folder
-        return vscode.Uri.joinPath(workspaceFolders[0].uri, `${baseName}.${extension}`);
-    }
-    
-    return undefined;
-}
-
-export async function exportDiagramAsSvg(document: vscode.TextDocument, svgcode: string): Promise<void> {
+export async function saveDiagramAsSvg(document: vscode.TextDocument, svgcode: string, diagramCode: string = ''): Promise<void> {
     try {
-        const defaultUri = getDefaultSaveLocation(document, 'svg');
+        const defaultUri = await getDefaultSaveUri(document, 'svg', diagramCode);
+        
+        // Final safety check - if defaultUri is undefined, create an emergency one
+        const safeUri = defaultUri || vscode.Uri.file(path.join(os.homedir(), 'untitled_diagram.svg'));
 
         // Ask user where to save the file
         const saveUri = await vscode.window.showSaveDialog({
-            defaultUri: defaultUri,
+            defaultUri: safeUri,
             filters: {
                 'SVG Image': ['svg']
             },
@@ -49,12 +33,15 @@ export async function exportDiagramAsSvg(document: vscode.TextDocument, svgcode:
     }
 }
 
-export async function exportDiagramAsPng(document: vscode.TextDocument, pngBase64: string): Promise<void> {
+export async function saveDiagramAsPng(document: vscode.TextDocument, pngBase64: string, diagramCode: string = ''): Promise<void> {
     try {
-        const defaultUri = getDefaultSaveLocation(document, 'png');
+        const defaultUri = await getDefaultSaveUri(document, 'png', diagramCode);
+        
+        // Final safety check - if defaultUri is undefined, create an emergency one
+        const safeUri = defaultUri || vscode.Uri.file(path.join(os.homedir(), 'untitled_diagram.png'));
 
         const saveUri = await vscode.window.showSaveDialog({
-            defaultUri: defaultUri,
+            defaultUri: safeUri,
             filters: {
                 'PNG Image': ['png']
             },
