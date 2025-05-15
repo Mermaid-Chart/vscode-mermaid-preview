@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
-import {  applyGutterIconDecoration, isAuxFile, MermaidChartToken } from "./util";
+import {  applyGutterIconDecoration, isAuxFile } from "./util";
 import { MermaidChartAuthenticationProvider } from "./mermaidChartAuthenticationProvider";
 import { extractIdFromCode, extractMetadataFromCode, checkReferencedFiles, findDiagramContentStartPosition } from "./frontmatter";
+import { MermaidChartToken } from "./types";
 
 export class MermaidChartCodeLensProvider implements vscode.CodeLensProvider {
   constructor(private mermaidChartTokens: MermaidChartToken[]) {}
