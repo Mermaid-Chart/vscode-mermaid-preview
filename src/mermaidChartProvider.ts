@@ -1,10 +1,6 @@
 import * as vscode from "vscode";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
-import { MCProject } from "./types";
-
-export const ITEM_TYPE_PROJECT = "project";
-export const ITEM_TYPE_DOCUMENT = "document";
-export const ITEM_TYPE_UNKNOWN = "unknown";
+import { ITEM_TYPE_DOCUMENT, ITEM_TYPE_PROJECT, ITEM_TYPE_UNKNOWN, MCProject } from "./types";
 
 let allTreeViewProjectsCache: Project[] = [];
 

@@ -1,12 +1,268 @@
 {
   "scopeName": "source.mermaid",
   "patterns": [
-    { "include": "#configDirective" },
-    { "include": "#diagramTypes" },
-    { "include": "#comments" },
-    { "include": "#transitions" },
-    { "include": "#strings" },
-    { "include": "#variables" }
+    {
+      "begin": "^\\s*---\\s*$",
+      "end": "^\\s*---\\s*$",
+      "name": "markup.raw.yaml.frontmatter.mermaid",
+      "patterns": [
+        { "include": "source.yaml" }
+      ]
+    },
+    {
+      "match": "^\\s*%%(?!{).*$",
+      "name": "comment.line.percentage.mermaid"
+    },
+    {
+      "begin": "^\\s*%%{",
+      "end": "}%%\\s*$",
+      "name": "comment.block.percentage.mermaid",
+      "patterns": [
+        {
+          "match": "\"(?:[^\"\\\\]|\\\\.)*\"",
+          "name": "string.quoted.double.json.mermaid"
+        },
+        {
+          "match": "\\b(?:true|false|null)\\b",
+          "name": "constant.language.json.mermaid"
+        },
+        {
+          "match": "\\b\\d+(?:\\.\\d+)?\\b",
+          "name": "constant.numeric.json.mermaid"
+        }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(flowchart|flowchart-v2|flowchart-elk|graph)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.flowchart",
+      "patterns": [
+        { "include": "source.mermaid.flowchart" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(sequenceDiagram)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.sequenceDiagram",
+      "patterns": [
+        { "include": "source.mermaid.sequenceDiagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(classDiagram|classDiagram-v2)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.classDiagram",
+      "patterns": [
+        { "include": "source.mermaid.classDiagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(stateDiagram|stateDiagram-v2)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.stateDiagram",
+      "patterns": [
+        { "include": "source.mermaid.stateDiagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(erDiagram)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.erDiagram",
+      "patterns": [
+        { "include": "source.mermaid.erDiagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(requirement|requirementDiagram)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.requirementDiagram",
+      "patterns": [
+        { "include": "source.mermaid.requirementDiagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(quadrantChart)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.quadrantChart",
+      "patterns": [
+        { "include": "source.mermaid.quadrantChart" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(mindmap)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.mindmap",
+      "patterns": [
+        { "include": "source.mermaid.mindmap" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(timeline)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.timeline",
+      "patterns": [
+        { "include": "source.mermaid.timeline" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(journey)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.journey",
+      "patterns": [
+        { "include": "source.mermaid.journey" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(gantt|section)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.gantt",
+      "patterns": [
+        { "include": "source.mermaid.gantt" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(info)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.info",
+      "patterns": [
+        { "include": "source.mermaid.info" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(pie)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.pie",
+      "patterns": [
+        { "include": "source.mermaid.pie" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(zenuml)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.zenuml",
+      "patterns": [
+        { "include": "source.mermaid.zenuml" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(radar|radar-beta)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.radar",
+      "patterns": [
+        { "include": "source.mermaid.radar" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(packet|packet-beta)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.packet",
+      "patterns": [
+        { "include": "source.mermaid.packet" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(architecture|architecture-beta)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.architecture",
+      "patterns": [
+        { "include": "source.mermaid.architecture" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(kanban)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.kanban",
+      "patterns": [
+        { "include": "source.mermaid.kanban" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(block|blockDiagram|block-beta)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.block",
+      "patterns": [
+        { "include": "source.mermaid.block" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(sankeyDiagram|sankey-beta|sankey)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.sankeyDiagram",
+      "patterns": [
+        { "include": "source.mermaid.sankey" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(xychart|xychart-beta)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.xychart",
+      "patterns": [
+        { "include": "source.mermaid.xychart" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+      "name": "meta.embedded.block.mermaid.c4Diagram",
+      "patterns": [
+        { "include": "source.mermaid.c4Diagram" }
+      ]
+    },
+    {
+      "begin": "^\\s*\\n?(\\s*)(gitGraph)\\b",
+      "beginCaptures": {
+        "2": { "name": "keyword.control.type.mermaid" }
+      },
+    
+      "name": "meta.embedded.block.mermaid.gitGraph",
+      "patterns": [
+        { "include": "source.mermaid.gitGraph" }
+      ]
+    }
   ],
   "repository": {
     "configDirective": {
