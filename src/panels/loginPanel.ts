@@ -1,8 +1,10 @@
 import * as vscode from "vscode";
 import { generateWebviewContent } from "../templates/loginTemplate";
+import * as path from "path";
+
 export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
-  private context: vscode.ExtensionContext;
   private _view?: vscode.WebviewView;
+  private context: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
@@ -15,21 +17,32 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [
         vscode.Uri.joinPath(this.context.extensionUri, "images"),
         vscode.Uri.joinPath(this.context.extensionUri, "media"),
+        vscode.Uri.joinPath(this.context.extensionUri, "docs"),
       ],
     };
     this.updateWebviewContent();
 
-
-
-   
     webviewView.webview.onDidReceiveMessage((message) => {
       if (message.command === "signIn") {
         vscode.commands.executeCommand("preview.mermaidChart.login");
       }
+      if (message.command === "getStarted") {
+        vscode.commands.executeCommand("preview.mermaidChart.createMermaidFile").then(() => {
+          vscode.commands.executeCommand('workbench.action.closePanel');
+        });
+      }
+      if (message.command === "showFeatures") {
+        const docPath = path.join(this.context.extensionPath, 'docs', message.type === 'local' ? 'mermaidpreview.md' : 'mermaid_preview.md');
+        vscode.workspace.openTextDocument(docPath).then(doc => {
+          vscode.commands.executeCommand('markdown.showPreview', doc.uri);
+        });
+      }
     });
-  
   }
-  refresh() {
+
+  
+  
+   refresh() {
     if (this._view) {
       this.updateWebviewContent();
     }
