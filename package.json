@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
   "license": "MIT",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -1037,7 +1037,7 @@
     "@vscode/prompt-tsx": "^0.3.0-alpha.12",
     "axios": "^1.7.9",
     "markdown-it": "^14.1.0",
-    "@mermaid-chart/mermaid": "11.6.0-b.7",
+    "@mermaid-chart/mermaid": "11.6.0-b.12",
     "@mermaid-js/examples": "0.0.1-beta.1",
     "uuid": "^9.0.0",
     "yaml": "^2.7.0",

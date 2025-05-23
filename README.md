@@ -150,6 +150,8 @@ This extension contributes the following settings:
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+### 2.1.1 -2025-05-23
+- Enhanced Sidebar Layout to Improve User Guidance
 
 ### 2.1.0 -2025-05-13
 - Added export functionality for SVG and PNG formats

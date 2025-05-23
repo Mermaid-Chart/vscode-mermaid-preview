@@ -34,10 +34,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.12)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.7
-        version: 11.6.0-b.7
+        specifier: 11.6.0-b.12
+        version: 11.6.0-b.12
       '@mermaid-chart/vscode-utils':
         specifier: 1.0.7
         version: 1.0.7(vscode@1.1.37)
@@ -122,7 +122,7 @@ importers:
         version: 10.8.2
       ts-loader:
         specifier: ^9.5.2
-        version: 9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+        version: 9.5.2(typescript@4.9.5)(webpack@5.99.7)
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -158,10 +158,10 @@ importers:
         version: 1.0.0
       '@mermaid-chart/layout-elk':
         specifier: 0.1.7-b.2
-        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.10)
+        version: 0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.12)
       '@mermaid-chart/mermaid':
-        specifier: 11.6.0-b.10
-        version: 11.6.0-b.10
+        specifier: 11.6.0-b.12
+        version: 11.6.0-b.12
       '@panzoom/panzoom':
         specifier: ^4.5.1
         version: 4.6.0
@@ -648,11 +648,8 @@ packages:
     peerDependencies:
       '@mermaid-chart/mermaid': ^11.0.0
 
-  '@mermaid-chart/mermaid@11.6.0-b.10':
-    resolution: {integrity: sha512-xYsLmxxbmNkDTk+q3x7pD3v1qVhdG8iN0CbDks+UjC7dk60/Df/m7fJ2NFwAOunc7IpdSx0TfExtRSobtn7qFw==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.10/2a44efe4b5c954c80543ec21ab9dc2c803d01f98}
-
-  '@mermaid-chart/mermaid@11.6.0-b.7':
-    resolution: {integrity: sha512-pKpD3MKSmQ6eG1d9mG8/64Knjpte5i9eRucbyPnHqZbGiMVS/76+PmC8Wx4e2CViYAIgbZOOF0NsltYrTS9xKA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.7/33a66a8f81d1121806554b7092e188b4d2329b6b}
+  '@mermaid-chart/mermaid@11.6.0-b.12':
+    resolution: {integrity: sha512-ASTD2nDK3yvHJcKyfTCWzHsnja8eK8L1rEdtPh8xvs8Rkej+Qjfi+jFxqKPW50iPHrE2XlzHtRyjl42YOBUNtg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.12/4b6f5ccc0fa82ea92ddeee86e57c444bb8046c3b}
 
   '@mermaid-chart/vscode-utils@1.0.7':
     resolution: {integrity: sha512-GzZpAIs7oQ7iNlsYf/U0mFf8hSvKXPFl4Q9UxPFAS0b2ei7qkBSGx3T6DRsNrn/iLADufngrK79xJ4pVOMdQFA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.7/dd00f1a3be02c4381beaa921b2ea440248c952de}
@@ -3843,44 +3840,13 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.10)':
+  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.12)':
     dependencies:
-      '@mermaid-chart/mermaid': 11.6.0-b.10
+      '@mermaid-chart/mermaid': 11.6.0-b.12
       d3: 7.9.0
       elkjs: 0.9.3
 
-  '@mermaid-chart/layout-elk@0.1.7-b.2(@mermaid-chart/mermaid@11.6.0-b.7)':
-    dependencies:
-      '@mermaid-chart/mermaid': 11.6.0-b.7
-      d3: 7.9.0
-      elkjs: 0.9.3
-
-  '@mermaid-chart/mermaid@11.6.0-b.10':
-    dependencies:
-      '@braintree/sanitize-url': 7.1.1
-      '@iconify/utils': 2.3.0
-      '@mermaid-js/parser': 0.4.0
-      '@types/d3': 7.4.3
-      cytoscape: 3.31.2
-      cytoscape-cose-bilkent: 4.1.0(cytoscape@3.31.2)
-      cytoscape-fcose: 2.2.0(cytoscape@3.31.2)
-      d3: 7.9.0
-      d3-sankey: 0.12.3
-      dagre-d3-es: 7.0.11
-      dayjs: 1.11.13
-      dompurify: 3.2.5
-      katex: 0.16.22
-      khroma: 2.1.0
-      lodash-es: 4.17.21
-      marked: 15.0.11
-      roughjs: 4.6.6
-      stylis: 4.3.6
-      ts-dedent: 2.2.0
-      uuid: 11.1.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@mermaid-chart/mermaid@11.6.0-b.7':
+  '@mermaid-chart/mermaid@11.6.0-b.12':
     dependencies:
       '@braintree/sanitize-url': 7.1.1
       '@iconify/utils': 2.3.0
@@ -4516,17 +4482,17 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
@@ -6650,7 +6616,7 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.22.0
 
-  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.7):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -6691,7 +6657,7 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
+  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.7):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -6832,9 +6798,9 @@ snapshots:
   webpack-cli@6.0.1(webpack@5.99.7):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -6877,7 +6843,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.7)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
