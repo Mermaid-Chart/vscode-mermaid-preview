@@ -630,14 +630,21 @@ const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
 context.subscriptions.push(
   vscode.commands.registerCommand("preview.mermaidChart.diagramHelp", () => {
       const activeEditor = vscode.window.activeTextEditor;
+      let helpUrl = 'https://mermaid.js.org/intro/';
+      
       if (activeEditor) {
-          const documentText = activeEditor.document.getText();
-          const firstWord = getFirstWordFromDiagram(documentText);
-          const helpUrl = getHelpUrl(firstWord);
-          vscode.env.openExternal(vscode.Uri.parse(helpUrl));
-      } else {
-          vscode.window.showWarningMessage("No active editor found.");
+          const fileExtension = activeEditor.document.fileName.split('.').pop()?.toLowerCase();
+          // Only process if it's a mermaid or markdown file
+          if (fileExtension === 'mmd' || fileExtension === 'md') {
+              const documentText = activeEditor.document.getText();
+              const firstWord = getFirstWordFromDiagram(documentText);
+              if (firstWord) {
+                  helpUrl = getHelpUrl(firstWord);
+              }
+          }
       }
+      
+      vscode.env.openExternal(vscode.Uri.parse(helpUrl));
   })
 );
 

@@ -34,14 +34,14 @@ export function generateWebviewContent(
     }
 
     body {
-     
-      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background-color: var(--vscode-bg);
        font-family: "Recursive", serif;
-       overflow: scroll;
+       overflow: auto;
+       padding: 20px 20px 0 20px;
+       height: 96vh
     }
 
     .container {
@@ -49,7 +49,8 @@ export function generateWebviewContent(
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
+       height: 96vh
     }
 
     .logo-container {
@@ -57,12 +58,12 @@ export function generateWebviewContent(
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 20px;
+      gap: 10px;
     }
 
     .logo {
-      width: 80px;
-      height: 80px  ;
+      width: 60px;
+      height: 60px  ;
     }
     .welcome-msg{
       margin: 0;
@@ -186,7 +187,6 @@ export function generateWebviewContent(
     .footer {
       font-size: 12px;
       text-align: center;
-      margin-top: 16px;
     }
 
     .vscode-light .footer {
