@@ -1,6 +1,0 @@
-.cache
-dev
-dist
-node_modules
-.npmrc
-webview/.npmrc

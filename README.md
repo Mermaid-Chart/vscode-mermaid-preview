@@ -135,11 +135,11 @@ Users now have the option to open and edit diagrams in the web view on www.merma
 
 | Command | Description |
 |---------|------------|
-| **MermaidChart: Create Diagram** | Creates a new Mermaid diagram in the editor. |
-| **MermaidChart: Login** | Logs in to the Mermaid Chart service to access and manage diagrams. |
-| **MermaidChart: Logout** | Logs out from the Mermaid Chart service.. |
-| **MermaidChart: Sync Diagram** | Synchronizes the current diagram with Mermaid Chart.. |
-| **MermaidChart: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |
+| **Mermaid Preview: Create Diagram** | Creates a new Mermaid diagram in the editor. |
+| **Mermaid Preview: Login** | Logs in to the Mermaid Chart service to access and manage diagrams. |
+| **Mermaid Preview: Logout** | Logs out from the Mermaid Chart service.. |
+| **Mermaid Preview: Sync Diagram** | Synchronizes the current diagram with Mermaid Chart.. |
+| **Mermaid Preview: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |
 
 
 ### Extension Settings
@@ -150,6 +150,8 @@ This extension contributes the following settings:
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+### 2.1.1 -2025-05-26
+- Enhanced Sidebar Layout to Improve User Guidance
 
 ### 2.1.0 -2025-05-13
 - Added export functionality for SVG and PNG formats
