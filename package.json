@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/vstirbu/vscode-mermaid-preview.git"
   },
-  "icon": "images/logo.png",
+  "icon": "images/favicon.png",
   "galleryBanner": {
     "color": "#5c2d91",
     "theme": "dark"
