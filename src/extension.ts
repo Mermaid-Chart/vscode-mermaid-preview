@@ -627,26 +627,33 @@ const insertUuidIntoEditorDisposable = vscode.commands.registerCommand(
     })
   );
 
-context.subscriptions.push(
-  vscode.commands.registerCommand("preview.mermaidChart.diagramHelp", () => {
-      const activeEditor = vscode.window.activeTextEditor;
+  context.subscriptions.push(
+    vscode.commands.registerCommand("preview.mermaidChart.diagramHelp", async() => {
+      const activeEditor = await vscode.window.activeTextEditor;
       let helpUrl = 'https://mermaid.js.org/intro/';
       
       if (activeEditor) {
-          const fileExtension = activeEditor.document.fileName.split('.').pop()?.toLowerCase();
-          // Only process if it's a mermaid or markdown file
-          if (fileExtension === 'mmd' || fileExtension === 'md') {
-              const documentText = activeEditor.document.getText();
-              const firstWord = getFirstWordFromDiagram(documentText);
-              if (firstWord) {
-                  helpUrl = getHelpUrl(firstWord);
+        if (activeEditor.document.languageId.includes('mermaid')) {
+          const documentText = activeEditor.document.getText();
+          const firstWord = getFirstWordFromDiagram(documentText);
+          if (firstWord) {
+            let foundDiagramType = '';
+            const firstWordLower = firstWord.toLowerCase();
+            for (const [diagramType, aliases] of Object.entries(diagramMappings)) {
+              if (aliases.some(alias => alias.toLowerCase() === firstWordLower)) {
+                foundDiagramType = firstWord;
+                break;
               }
+            }
+            if (foundDiagramType) {
+              helpUrl = getHelpUrl(foundDiagramType);
+            }
           }
+        }
       }
-      
       vscode.env.openExternal(vscode.Uri.parse(helpUrl));
-  })
-);
+    })
+  );
 
   const provider = vscode.languages.registerCompletionItemProvider(
     [
