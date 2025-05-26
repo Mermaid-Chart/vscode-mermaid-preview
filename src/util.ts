@@ -475,6 +475,11 @@ export const getHelpUrl = (diagramType: string) => {
 
       break;
     }
+        case 'graph': {
+      diagramType = 'flowchart';
+
+      break;
+    }
     case 'gitgraph': {
       diagramType = 'gitgraph';
 
@@ -501,6 +506,8 @@ export const getHelpUrl = (diagramType: string) => {
 
       break;
     }
+
+    case 'requirement':
     case 'requirementdiagram': {
       diagramType = 'requirementDiagram';
 
@@ -516,8 +523,23 @@ export const getHelpUrl = (diagramType: string) => {
 
       break;
     }
+    
+    case 'c4container':
+    case 'c4component':
+    case 'c4dynamic':
+    case 'c4deployment':
     case 'c4context':{
       diagramType = 'c4';
+
+      break;
+    }
+    case 'section': {
+      diagramType = 'gantt';
+
+      break;
+    }
+    case 'blockdiagram': {
+      diagramType = 'block';
 
       break;
     }
@@ -527,6 +549,7 @@ export const getHelpUrl = (diagramType: string) => {
     ? (`https://mermaid.js.org/syntax/${diagramType}.html` as const)
     : ('https://mermaid.js.org/intro/' as const);
 };
+
 
 
 export const findDiagramCode = (items: MCTreeItem[], uuid: string): string | undefined => {

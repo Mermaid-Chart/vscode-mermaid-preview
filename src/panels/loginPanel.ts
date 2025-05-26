@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import { generateWebviewContent } from "../templates/loginTemplate";
+import * as path from "path";
+
 export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
   private context: vscode.ExtensionContext;
   private _view?: vscode.WebviewView;
@@ -15,6 +17,7 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [
         vscode.Uri.joinPath(this.context.extensionUri, "images"),
         vscode.Uri.joinPath(this.context.extensionUri, "media"),
+        vscode.Uri.joinPath(this.context.extensionUri, "docs"),
       ],
     };
     this.updateWebviewContent();
@@ -26,10 +29,21 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       if (message.command === "signIn") {
         vscode.commands.executeCommand("preview.mermaidChart.login");
       }
+      if (message.command === "getStarted") {
+        vscode.commands.executeCommand("preview.mermaidChart.createMermaidFile");
+      }
+      if (message.command === "showFeatures") {
+        const docPath = path.join(this.context.extensionPath, 'docs', message.type === 'local' ? 'MermaidFreeFeatures.md' : 'MermaidAdvancedFeatures.md');
+        vscode.workspace.openTextDocument(docPath).then(doc => {
+          vscode.commands.executeCommand('markdown.showPreview', doc.uri);
+        });
+      }
     });
-  
   }
-  refresh() {
+
+  
+  
+   refresh() {
     if (this._view) {
       this.updateWebviewContent();
     }
