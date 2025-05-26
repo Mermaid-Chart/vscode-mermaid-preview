@@ -40,17 +40,19 @@ export function generateWebviewContent(
       background-color: var(--vscode-bg);
        font-family: "Recursive", serif;
        overflow: auto;
-       padding: 20px 20px 0 20px;
-       height: 96vh
+       padding: 20px;
+       min-height: 94vh;
     }
 
     .container {
       max-width: 340px; 
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 20px;
-       height: 96vh
+      min-height: calc(100vh - 40px);
+      justify-content: center;
     }
 
     .logo-container {
