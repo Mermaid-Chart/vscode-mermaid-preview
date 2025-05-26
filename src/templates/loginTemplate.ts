@@ -176,14 +176,23 @@ export function generateWebviewContent(
       color: white;
       border-radius: 12px;
     }
-
+   .get-started-btn:hover {
+      background: #FF257C;
+    }
+    
     .sign-in-btn {
       background: transparent;
       border: 2px solid var(--vscode-foreground);
       color: color: var(--vscode-bg);
       border-radius: 12px;
     }
-
+   .vscode-dark  .sign-in-btn:hover {
+      background: #2B2B2B;
+    }
+    
+     .vscode-light  .sign-in-btn:hover {
+      background: #E1E1E1;
+    }
     .footer {
       font-size: 12px;
       text-align: center;
