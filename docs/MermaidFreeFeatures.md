@@ -92,7 +92,7 @@ Leverage AI to turn code and ideas into diagrams:
 
 | Command | Description |
 |---------|------------|
-| **MermaidChart: Create Diagram** | Creates a new Mermaid diagram in the editor. |
-| **MermaidChart: Login** | Logs in to the Mermaid Chart service to access and manage diagrams. |
-| **MermaidChart: Logout** | Logs out from the Mermaid Chart service.. |
-| **MermaidChart: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |
+| **Mermaid Preview: Create Diagram** | Creates a new Mermaid diagram in the editor. |
+| **Mermaid Preview: Login** | Logs in to the Mermaid Chart service to access and manage diagrams. |
+| **Mermaid Preview: Logout** | Logs out from the Mermaid Chart service.. |
+| **Mermaid Preview: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |

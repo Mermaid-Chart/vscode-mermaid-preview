@@ -53,6 +53,6 @@ Keep your diagrams in sync with the latest updates:
 
 | Command | Description |
 |---------|------------|
-|  **Link Diagram**   | Inserts a linked MermaidChart diagram ID at the current cursor position. |
-| **Sync Diagram** | Syncs the edited diagram with the linked MermaidChart version. |
-| **Connect Diagram** | Connects the current diagram with an online MermaidChart project. |
+|  **Mermaid Preview: Link Diagram**   | Inserts a linked MermaidChart diagram ID at the current cursor position. |
+| **Mermaid Preview: Sync Diagram** | Syncs the edited diagram with the linked MermaidChart version. |
+| **Mermaid Preview: Connect Diagram** | Connects the current diagram with an online MermaidChart project. |
