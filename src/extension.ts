@@ -4,7 +4,6 @@ import { MermaidChartProvider, MCTreeItem, getAllTreeViewProjectsCache, getProje
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   applyMermaidChartTokenHighlighting,
-  configSection,
   editMermaidChart,
   findComments,
   findDiagramCode,
@@ -16,7 +15,6 @@ import {
   getMermaidChartTokenDecoration,
   insertMermaidChartToken,
   isAuxFile,
-  MermaidChartToken,
   syncAuxFile,
   triggerSuggestIfEmpty,
   updateViewVisibility,
@@ -24,12 +22,10 @@ import {
 } from "./util";
 import { MermaidChartCodeLensProvider } from "./mermaidChartCodeLensProvider";
 import { createMermaidFile, getPreview, openMermaidPreview } from "./commands/createFile";
-import { handleTextDocumentChange } from "./eventHandlers";
 import { TempFileCache } from "./cache/tempFileCache";
 import { PreviewPanel } from "./panels/previewPanel";
-import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
+import { getSnippetsBasedOnDiagram } from "./constants/codeSnippets";
 import { ensureIdField, extractIdFromCode, getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
-import { customErrorMessage } from "./constants/errorMessages";
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
@@ -42,11 +38,8 @@ import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
 import { checkForOfficialExtension } from "./conflictHandle";
 import * as packageJson from '../package.json'; 
-import { clearTmLanguageCache } from "./syntaxHighlighter";
+import { configSection, customErrorMessage, MermaidChartToken, pluginID } from "./types";
 
-const pluginID = packageJson.name === "vscode-mermaid-chart" ?  "MERMAIDCHART_VS_CODE_PLUGIN" : "MERMAID_PREVIEW_VS_CODE_PLUGIN";
-
-let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -109,12 +102,10 @@ export async function activate(context: vscode.ExtensionContext) {
   const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor && !isExtensionStarted) {
         isExtensionStarted = true;
-        handleTextDocumentChange(activeEditor, diagramMappings, true);
     }
 
   vscode.workspace.onDidChangeTextDocument((event) =>
     {
-      handleTextDocumentChange(event, diagramMappings, false);
       updateMermaidChartTokenHighlighting();
       triggerSuggestIfEmpty(event.document);
     },
@@ -124,7 +115,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.window.onDidChangeActiveTextEditor(
     (event) => {
-      handleTextDocumentChange(event, diagramMappings, true);
       updateMermaidChartTokenHighlighting();
     },
     null,
@@ -814,6 +804,4 @@ return {
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {
-  clearTmLanguageCache();
-}
+export function deactivate() {}
