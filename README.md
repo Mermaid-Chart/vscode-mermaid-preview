@@ -2,6 +2,15 @@
 
 ### 🚀 Now Proudly Maintained by the Creators of Mermaid.js 🚀
 
+## Now with AI-Powered Diagramming! ✨
+
+Transform ideas into diagrams instantly with our AI integration! Our extension now includes:
+- **AI Chat Participant**: Simply describe your diagram needs in natural language with `@mermaid-chart` and watch as beautiful diagrams materialize
+- **Smart Diagram Regeneration**: Auto-detect changes in your source files and instantly update referenced diagrams with one click
+- **AI-Powered ER Diagrams**: Generate entity relationship diagrams from your codebase with simple commands
+- **AI-Powered Cloud Architecture**: Visualize your cloud infrastructure automatically from configuration files
+- **AI-Powered Docker Diagrams**: Create Docker architecture diagrams from your containerized applications
+
 ## Features
 
 ### Works with Latest Mermaid Version
@@ -43,6 +52,33 @@ Let your code speak for itself — effortlessly.
 With Smart Diagram Regeneration, when your source code or requirements change, the extension can detect these changes and offer to update related diagrams with a single click.
 
 ![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/vscode-plugin-update-diagram.gif)
+
+### Visualize Cloud Infrastructure from Your Codebase
+- Instantly visualize your cloud infrastructure with our AI-powered diagram generator.<br>
+- Simply mention:  `@mermaid-chart /generate_cloud_architecture_diagram` in GitHub Copilot Chat or `MermaidChart: Generate Cloud Diagram` in command pallet.
+- it will scan your workspace, detect cloud configuration files, and generate a clear, accurate architecture diagram.<br>
+- Before generating, you can easily select the specific files you want to include, giving you full control over the output.<br>
+- Understand your cloud setup at a glance — no manual effort required.
+
+![vscode-plugin-cloud-diagram](https://docs.mermaidchart.com/img/plugins/vscode-plugin-cloud-diagram.gif)
+
+### Generate Entity Relationship Diagrams from Your Codebase
+- Automatically create entity relationship diagrams from your database schemas and code structures.<br>
+- Simply mention: `@mermaid-chart /generate_er_diagram` in GitHub Copilot Chat to generate comprehensive ER diagrams.<br>
+- The AI analyzes your codebase to identify entities, relationships, and database structures, creating clear visual representations.<br>
+- Perfect for documenting database designs, understanding data relationships, and onboarding new team members.<br>
+- Visualize your data architecture effortlessly — from code to diagram in seconds.
+
+![vscode-plugin-er-diagram](https://docs.mermaidchart.com/img/plugins/er-diagram-vscode-plugin.gif)
+
+### Generate Docker Architecture Diagrams
+- Visualize your containerized applications and Docker infrastructure with AI-powered diagram generation.<br>
+- Simply mention: `@mermaid-chart /generate_docker_diagram` in GitHub Copilot Chat to create detailed architecture diagrams.<br>
+- Automatically detects and analyzes Docker-related files including Dockerfiles, docker-compose.yml, and stack files.<br>
+- Before generating, you can select specific Docker configuration files to include in your diagram.<br>
+- Understand your containerized architecture at a glance — perfect for documentation and team collaboration.
+
+![vscode-plugin-docker-diagram](https://docs.mermaidchart.com/img/plugins/docker-diagram-vscode-plugin.gif)
 
 ### Real-Time local Edit & Preview 
 Now you get a side-by-side real time preview of the mermaid diagram while editing the diagram locally. This helps the user to see the true power of a mermaid's text-based diagram, where each change in text is reflected immediately on the diagram.
@@ -148,8 +184,21 @@ This extension contributes the following settings:
 - `preview.mermaidChart.baseUrl`: This points to the instance of the mermaid chart you are running, for the public service this is `https://www.mermaidchart.com/`.
 - `mermaid.vscode.dark_theme`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
+- `mermaid.vscode.max_Zoom`: Sets the maximum zoom level for diagram preview (default: 10).
+- `mermaid.vscode.max_CharLength`: Sets the maximum text size limit for diagrams.
+- `mermaid.vscode.max_Edges`: Sets the maximum number of edges allowed in a diagram.
+- `mermaid.vscode.ai_Export_Name`: Determines whether to use GitHub Copilot to generate a name for the exported diagram.
 
 ## Release Notes
+
+### 2.2.0 -2025-07-21
+- Added new AI feature **Generate Cloud Architecture Diagram**
+- Added new AI feature **Generate Entity Relationship Diagrams**
+- Added new AI feature **Generate Docker Architecture Diagrams**
+- Use `@mermaid-chart /generate_cloud_architecture_diagram` to generate cloud diagram or `MermaidChart: Generate Cloud Diagram`
+- Use `@mermaid-chart /generate_er_diagram` to generate ER diagrams from your codebase
+- Use `@mermaid-chart /generate_docker_diagram` to generate Docker architecture diagrams from Docker-related files
+
 ### 2.1.1 -2025-05-26
 - Enhanced Sidebar Layout to Improve User Guidance
 
