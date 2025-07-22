@@ -674,8 +674,12 @@
           "type": "number",
           "default": 1000,
           "description": "Maximum number of edges allowed in a diagram's source"
+        },
+        "mermaid.vscode.ai_Export_Name": {
+          "type": "boolean",
+          "default": "false", 
+          "description": "Automatic name suggestion for exported diagrams"
         }
-
       }
     },
     "viewsContainers": {
