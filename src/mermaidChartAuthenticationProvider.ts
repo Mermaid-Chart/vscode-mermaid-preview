@@ -17,9 +17,7 @@ import { v4 as uuid } from "uuid";
 import { PromiseAdapter, promiseFromEvent } from "./util";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import analytics from "./analytics";
-
-const utmSource = 'mermaid_preview_vs_code';
-const utmCampaign = "VSCode extension";
+import { utmCampaign, utmSource } from "./types";
 class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   public handleUri(uri: Uri) {
     this.fire(uri);

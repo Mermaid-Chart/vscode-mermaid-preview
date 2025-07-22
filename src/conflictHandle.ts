@@ -1,7 +1,5 @@
 import * as vscode from "vscode";
-export const MERMAID_CHART_EXTENSION_ID = 'MermaidChart.vscode-mermaid-chart';
-export const THIS_EXTENSION_ID = 'vstirbu.vscode-mermaid-preview';
-export const IS_ACTIVE_CONTEXT_KEY = 'mermaidPreview:isActive';
+import { IS_ACTIVE_CONTEXT_KEY, MERMAID_CHART_EXTENSION_ID } from "./types";
 
 export async function checkForOfficialExtension(context: vscode.ExtensionContext): Promise<boolean> {
   // Check if the official Mermaid Chart extension is installed

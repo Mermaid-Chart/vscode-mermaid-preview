@@ -3,12 +3,7 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import * as packageJson from "../../package.json";
 import { saveDiagramAsPng, saveDiagramAsSvg } from "../services/renderService";
-const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
-const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
-const MAX_ZOOM= "mermaid.vscode.max_Zoom";
-const MAX_CHAR_LENGTH = "mermaid.vscode.max_CharLength";
-const MAX_EDGES = "mermaid.vscode.max_Edges";
-
+import { DARK_THEME_KEY, LIGHT_THEME_KEY, MAX_CHAR_LENGTH, MAX_EDGES, MAX_ZOOM } from "../types";
 
 export class PreviewPanel {
   private static currentPanel: PreviewPanel | undefined;
@@ -18,8 +13,6 @@ export class PreviewPanel {
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
   private lastContent: string = "";
-
-
 
   private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
     this.panel = panel;

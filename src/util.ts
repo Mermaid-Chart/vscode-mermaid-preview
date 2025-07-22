@@ -4,33 +4,14 @@ import * as vscode from "vscode";
 import { MermaidChartVSCode } from "./mermaidChartVSCode";
 import {
   MermaidChartProvider,
-  ITEM_TYPE_DOCUMENT,
   MCTreeItem,
 } from "./mermaidChartProvider";
 import * as path from 'path';
 import { extractIdFromCode } from "./frontmatter";
 import * as packageJson from '../package.json';
-
-const activeListeners = new Map<string, vscode.Disposable>();
-const REOPEN_CHECK_DELAY_MS = 500; // Delay before checking if temp file is reopened
 import { MermaidWebviewProvider } from "./panels/loginPanel";
 import { getSampleDiagrams } from "./constants/diagramTemplates";
-const config = vscode.workspace.getConfiguration();
-export const defaultBaseURL = config.get<string>('preview.mermaidChart.baseUrl', 'https://www.mermaidchart.com');
-const DARK_BACKGROUND = "rgba(176, 19, 74, 0.5)"; // #B0134A with 50% opacity
-const LIGHT_BACKGROUND = "#FDE0EE";
-const DARK_COLOR = "#FFFFFF";
-const LIGHT_COLOR = "#1E1A2E";
-export const configSection = 'mermaid';
-
-
-export const pattern : Record<string, RegExp> = {
-  ".md": /```mermaid([\s\S]*?)```/g,
-  ".html": /<div class=["']mermaid["']>([\s\S]*?)<\/div>/g,
-  ".hugo": /{{<mermaid[^>]*>}}([\s\S]*?){{<\/mermaid>}}/g,
-  ".rst": /\.\. mermaid::(?:[ \t]*)?$(?:(?:\n[ \t]+:(?:(?:\\:\s)|[^:])+:[^\n]*$)+\n)?((?:\n(?:[ \t][^\n]*)?$)+)?/gm,
-};
-
+import { activeListeners, DARK_BACKGROUND, DARK_COLOR, ITEM_TYPE_DOCUMENT, LIGHT_BACKGROUND, LIGHT_COLOR, MermaidChartToken, pattern, REOPEN_CHECK_DELAY_MS } from "./types";
 export interface PromiseAdapter<T, U> {
   (
     value: T,
@@ -97,13 +78,7 @@ export const getEncodedSHA256Hash = (str: string) => {
     .replace(/=+$/, "");
 };
 
-export interface MermaidChartToken {
-  uuid: string;
-  title: string;
-  range: vscode.Range;
-  collapsibleState?: vscode.TreeItemCollapsibleState;
-  uri?: vscode.Uri
-}
+
 export function findMermaidChartTokens(
   document: vscode.TextDocument,
   comments: vscode.Range[]
