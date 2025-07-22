@@ -138,6 +138,10 @@ This extension contributes the following settings:
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.1.2 -2025-07-22
+- Bug fixes
+
 ### 2.1.1 -2025-05-26
 - Enhanced Sidebar Layout to Improve User Guidance
 
@@ -170,15 +174,6 @@ New General Features
 - Dependency Update
 - Upgraded to latest Mermaid version `v11.4.1`
 - Added OAuth support for the MermaidChart.
-- Added AI-powered diagramming capabilities
-- Introduced AI chat participant with `@mermaid-chart` command
-- Added smart diagram regeneration based on source file changes
-- Added three specialized AI tools for improved Mermaid diagramming:
-  - **Syntax Documentation Tool**: Provides instant access to detailed diagram syntax guides
-  - **Diagram Validation Tool**: Ensures correct syntax before rendering diagrams
-  - **Diagram Preview Tool**: Streamlined visualization of Mermaid diagrams
-- Enhanced **VS Code Agent Mode** with dedicated **Mermaid tools** for improved accuracy
-- Improved AI chat participant capabilities with documentation-powered responses
 - Better integration with GitHub Copilot Chat for more reliable diagram generation
 - Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
 - Added support for redux-color & redux-dark-color theme
