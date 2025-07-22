@@ -77,17 +77,6 @@ Access helpful resources right from your editor:
 
 ---
 
-## 🤖 AI-Powered Diagramming  
-Leverage AI to turn code and ideas into diagrams:
-- Use **@mermaid-chart** in GitHub Copilot Chat  
-- Auto-generate diagrams from source code  
-- Smart suggestions based on your context  
-- Convert natural language into diagram logic  
-- Access specialized AI tools directly in VS Code:
-  - **Syntax Documentation Tool**: Quickly access Mermaid syntax references for any diagram type
-  - **Diagram Validation Tool**: Automatically check and validate Mermaid syntax before rendering
-  - **Diagram Preview Tool**: Instantly visualize diagrams in a streamlined preview interface
-  
 ### Commands
 
 | Command | Description |
