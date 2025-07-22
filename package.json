@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
   "license": "MIT",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -611,7 +611,7 @@
             "redux-dark-color",
             "dark"
           ],
-          "default": "redux-dark",
+          "default": "redux-dark-color",
           "description": "Default mermaid theme used for dark theme"
         },
         "mermaid.vscode.light_theme": {
@@ -627,7 +627,7 @@
             "redux-color",
             "mc"
           ],
-          "default": "redux",
+          "default": "redux-color",
           "description": "Default mermaid theme used for light theme"
         },
         "preview.mermaidChart.aiVendor": {
@@ -770,220 +770,68 @@
       {
         "command": "preview.mermaidChart.diagramHelp",
         "title": "Diagram help",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.insertUuidIntoEditor",
         "title": "Link Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.downloadDiagram",
         "title": "Download",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.syncDiagramWithMermaid",
         "title": "Sync Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.preview",
         "title": "Preview Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.logout",
         "title": "Logout",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.login",
         "title": "Login",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.createMermaidFile",
         "title": "Create Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.focus",
         "title": "Focus on View",
         "icon": "images/mermaid-icon.svg",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.refresh",
         "title": "Refresh",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.connectDiagramToMermaidChart",
         "title": "Connect Diagram",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.showCompletions",
         "title": "Trigger Mermaid Completions",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
+        "category": "Mermaid Preview"
       },
       {
         "command": "preview.mermaidChart.openCopilotChat",
         "title": "Open AI Chat",
-        "category": "Mermaid Preview",
-        "when": "mermaidPreview:isActive"
-      }
-    ],
-    "chatParticipants": [
-      {
-        "id": "mermaid-chart",
-        "fullName": "Mermaid Chart AI Chat",
-        "name": "mermaid-chart",
-        "description": "Official VS Code Extension for AI Chat",
-        "isSticky": true,
-        "when": "mermaidPreview:isActive"
-      }
-    ],
-    "languageModelTools": [
-      {
-        "name": "get-syntax-docs-mermaid",
-        "tags": [
-          "mermaid",
-          "documentation",
-          "get_syntax_docs",
-          "mermaid-docs",
-          "validation",
-          "syntax",
-          "errors",
-          "essential",
-          "mandatory"
-        ],
-        "toolReferenceName": "get_syntax_docs",
-        "displayName": "Get Syntax Documentation",
-        "modelDescription": "ALWAYS use this tool Before creating, editing, or working with any Mermaid diagram. Get the syntax documentation for a specific diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart",
-        "icon": "$(files)",
-        "canBeReferencedInPrompt": true,
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "file": {
-              "type": "string",
-              "enum": [
-                "architecture.md",
-                "block.md",
-                "c4.md",
-                "classDiagram.md",
-                "entityRelationshipDiagram.md",
-                "flowchart.md",
-                "gantt.md",
-                "gitgraph.md",
-                "kanban.md",
-                "mindmap.md",
-                "packet.md",
-                "pie.md",
-                "quadrantChart.md",
-                "requirementDiagram.md",
-                "sankey.md",
-                "sequenceDiagram.md",
-                "stateDiagram.md",
-                "timeline.md",
-                "userJourney.md",
-                "xyChart.md"
-              ],
-              "description": "The filename of the diagram type.\n\nAvailable diagram types:\n- `architecture.md`: Cloud/CI/CD Architecture Diagram\n- `block.md`: Block Diagram\n- `c4.md`: C4 Diagram\n- `classDiagram.md`: Class Diagram\n- `entityRelationshipDiagram.md`: Entity Relationship Diagram\n- `flowchart.md`: Flowchart\n- `gantt.md`: Gantt Chart\n- `gitgraph.md`: Git Graph Diagram\n- `kanban.md`: Kanban Diagram\n- `mindmap.md`: Mindmap\n- `packet.md`: Packet Diagram\n- `pie.md`: Pie Chart\n- `quadrantChart.md`: Quadrant Chart\n- `requirementDiagram.md`: Requirement Diagram\n- `sankey.md`: Sankey Diagram\n- `sequenceDiagram.md`: Sequence Diagram\n- `stateDiagram.md`: State Diagram\n- `timeline.md`: Timeline\n- `userJourney.md`: User Journey Diagram\n- `xyChart.md`: XY Chart"
-            }
-          },
-          "required": [
-            "file"
-          ]
-        }
-      },
-      {
-        "name": "mermaid-diagram-validator",
-        "tags": [
-          "editing",
-          "diagram",
-          "mermaid",
-          "before-preview",
-          "before-visualization",
-          "validation",
-          "syntax",
-          "errors",
-          "essential",
-          "mandatory",
-          "pre-check",
-          "check",
-          "verify",
-          "test",
-          "debug"
-        ],
-        "displayName": "Mermaid Diagram Validator",
-        "toolReferenceName": "mermaid-diagram-validator",
-        "canBeReferencedInPrompt": true,
-        "modelDescription": "Validate a Mermaid diagram. ALWAYS use this tool after when creating, editing, or working with any Mermaid diagram and before preview. The Mermaid Diagram Validator is an ESSENTIAL tool for ensuring the accuracy and correctness of Mermaid diagrams. It MUST be used IMMEDIATELY AFTER CREATING, EDITING, or WORKING WITH any Mermaid diagram or BEFORE PREVIEWING it. This tool is CRUCIAL for checking, verifying, testing, and debugging any Mermaid diagram code for syntax errors or formatting issues. It ensures that diagrams are correctly formatted and free of errors before they are rendered or visualized. This includes diagrams created from any source file, such as TypeScript, Java, or any other programming language. By using this tool, you can prevent errors and ensure that your diagrams are accurate and reliable. ALWAYS validate your diagrams to maintain high-quality visualizations and avoid potential issues during rendering.",
-        "icon": "$(check)",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string",
-              "description": "The complete Mermaid diagram code to validate, including any YAML frontmatter blocks if present. This code should be thoroughly checked for any syntax errors or formatting issues to ensure it is ready for rendering."
-            }
-          },
-          "required": [
-            "code"
-          ]
-        }
-      },
-      {
-        "name": "mermaid-diagram-preview",
-        "tags": [
-          "editing",
-          "diagram",
-          "mermaid",
-          "preview",
-          "visualization",
-          "essential",
-          "mandatory",
-          "show",
-          "view"
-        ],
-        "displayName": "Mermaid Diagram Preview",
-        "toolReferenceName": "mermaid-diagram-preview",
-        "canBeReferencedInPrompt": true,
-        "modelDescription": "Preview a Mermaid diagram. ALWAYS use this tool after validation when creating, editing, or working with any Mermaid diagram. The code paramter of this MUST CONTAIN ONLY the Mermaid code block without any surrounding or other content. IMPORTANT USAGE PATTERN: For EXISTING Mermaid diagram files, ALWAYS pass the documentUri parameter (NOT the code). Only use the code parameter for NEW diagrams that don't exist in files yet or when you've extracted ONLY the Mermaid code block from markdown. This tool renders and visualizes diagrams including flowcharts, sequence diagrams, class diagrams, ER diagrams, and other chart types. The diagram code should include any YAML frontmatter blocks (like id, title, config) if present.",
-        "icon": "$(eye)",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "documentUri": {
-              "type": "string",
-              "description": "PREFERRED: The URI of an existing document to preview. For existing files, ALWAYS use this parameter instead of extracting code from the file."
-            },
-            "code": {
-              "type": "string",
-              "description": "The complete Mermaid diagram code to preview. This MUST BE ONLY the Mermaid code block syntax without any surrounding content. ONLY use this parameter for NEW diagrams"
-            },
-            "showSource": {
-              "type": "boolean",
-              "description": "Whether to also open the source code in an editor",
-              "default": true
-            }
-          }
-        }
+        "category": "Mermaid Preview"
       }
     ]
   },
@@ -1037,7 +885,7 @@
     "@vscode/prompt-tsx": "^0.3.0-alpha.12",
     "axios": "^1.7.9",
     "markdown-it": "^14.1.0",
-    "@mermaid-chart/mermaid": "11.6.0-b.12",
+    "@mermaid-chart/mermaid": "11.9.0-b.1",
     "@mermaid-js/examples": "0.0.1-beta.1",
     "uuid": "^9.0.0",
     "yaml": "^2.7.0",

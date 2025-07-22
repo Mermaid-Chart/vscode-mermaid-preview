@@ -32,18 +32,6 @@ Currently supported diagrams and charts:
 - Packet
 - Radar
 
-### Generate AI-powered diagrams directly from your code!
-Transform your ideas and source code into clear, insightful diagrams with our new AI integration in VS Code.<br>
-Just mention **@mermaid-chart** in any GitHub Copilot Chat and describe the diagram you want to create — even link specific source code files!<br>
- Whether it's a class diagram, sequence diagram, entity relationship diagram, or more — the AI assistant will analyze the code, generate the appropriate Mermaid syntax, and instantly show a live preview.<br>
-Let your code speak for itself — effortlessly.
-
-![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/ai-generate-diagram.gif)
-
-With Smart Diagram Regeneration, when your source code or requirements change, the extension can detect these changes and offer to update related diagrams with a single click.
-
-![Image illustrating accessible diagrams in explorer panel](https://docs.mermaidchart.com/img/plugins/vscode-plugin-update-diagram.gif)
-
 ### Real-Time local Edit & Preview 
 Now you get a side-by-side real time preview of the mermaid diagram while editing the diagram locally. This helps the user to see the true power of a mermaid's text-based diagram, where each change in text is reflected immediately on the diagram.
 
@@ -150,6 +138,10 @@ This extension contributes the following settings:
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
 ## Release Notes
+
+### 2.1.2 -2025-07-22
+- Bug fixes
+
 ### 2.1.1 -2025-05-26
 - Enhanced Sidebar Layout to Improve User Guidance
 
@@ -182,15 +174,6 @@ New General Features
 - Dependency Update
 - Upgraded to latest Mermaid version `v11.4.1`
 - Added OAuth support for the MermaidChart.
-- Added AI-powered diagramming capabilities
-- Introduced AI chat participant with `@mermaid-chart` command
-- Added smart diagram regeneration based on source file changes
-- Added three specialized AI tools for improved Mermaid diagramming:
-  - **Syntax Documentation Tool**: Provides instant access to detailed diagram syntax guides
-  - **Diagram Validation Tool**: Ensures correct syntax before rendering diagrams
-  - **Diagram Preview Tool**: Streamlined visualization of Mermaid diagrams
-- Enhanced **VS Code Agent Mode** with dedicated **Mermaid tools** for improved accuracy
-- Improved AI chat participant capabilities with documentation-powered responses
 - Better integration with GitHub Copilot Chat for more reliable diagram generation
 - Added support to render Mermaid diagrams directly in the VS Code Markdown preview, replacing the raw Mermaid code blocks
 - Added support for redux-color & redux-dark-color theme

@@ -34,7 +34,7 @@ import { MermaidWebviewProvider } from "./panels/loginPanel";
 import analytics from "./analytics";
 import { RemoteSyncHandler } from "./remoteSyncHandler";
 import { registerRegenerateCommand } from './commercial/sync/regenerateCommand';
-import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
+// import { initializeAIChatParticipant } from "./commercial/ai/chatParticipant";
 import { setPreviewBridge, registerTools, setValidationBridge,initializePlugin } from '@mermaid-chart/vscode-utils';
 import { PreviewBridgeImpl } from "./commercial/ai/tools/previewTool";
 import { ValidationBridgeImpl } from "./commercial/ai/tools/validationTool";
@@ -53,7 +53,7 @@ export async function activate(context: vscode.ExtensionContext) {
   initializePlugin(pluginID);
 
   if (!(await checkForOfficialExtension(context))) {
-    return;
+    // return;
   }
   // Listen for extension changes (install/uninstall) while VS Code is running
   context.subscriptions.push(
@@ -65,16 +65,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
   analytics.trackActivation();
 
-  // Register AI tools first to ensure they're available
-  console.log("[MermaidExtension] Registering AI tools...");
-  registerTools(context);
+  // // Register AI tools first to ensure they're available
+  // console.log("[MermaidExtension] Registering AI tools...");
+  // registerTools(context);
   
-  // Initialize the bridge for commercial tools
-  setPreviewBridge(new PreviewBridgeImpl());
-  setValidationBridge(new ValidationBridgeImpl());
+  // // Initialize the bridge for commercial tools
+  // setPreviewBridge(new PreviewBridgeImpl());
+  // setValidationBridge(new ValidationBridgeImpl());
   
   // Initialize AI chat participant after tools are registered
-  initializeAIChatParticipant(context);
+  // initializeAIChatParticipant(context);
 
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
 
