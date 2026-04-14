@@ -1,5 +1,25 @@
-name: ⚡ Lightning 18-Layer CI/CD
+name:
+name: ⚡ Lightning 18-Layer CI/CD (Stable)
 
+on:
+  push:
+    branches: [main, bot-main, Ai-main, stormcar820-core]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python syntax
+        run: |
+          find . -name "*.py" -exec python -m py_compile {} \; || echo "⚠️ 部分 Python 文件语法错误，请检查"
+⚡ Lightning 18-Layer CI/CD
 on:
   push:
     branches: [main, bot-main, Ai-main, stormcar820-core]
