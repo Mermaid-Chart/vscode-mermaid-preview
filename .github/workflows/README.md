@@ -1,3 +1,30 @@
+## 🤖 DeepSeek AI 自动化 CI
+
+本项目已集成 DeepSeek AI 自动化工作流，可通过 GitHub Actions 自动执行代码分析、文档生成等任务。
+
+### 配置步骤
+
+1. **获取 DeepSeek API Key**  
+   访问 [DeepSeek 开放平台](https://platform.deepseek.com/)，注册并创建 API Key。
+
+2. **添加到 GitHub Secrets**  
+   在仓库 `Settings` → `Secrets and variables` → `Actions` 中，点击 `New repository secret`：
+   - **Name**: `DEEPSEEK_API_KEY`
+   - **Value**: 粘贴你的 API Key
+
+3. **触发工作流**  
+   - **自动触发**：推送代码到 `main` 或 `develop` 分支。
+   - **手动触发**：进入 `Actions` → `DeepSeek AI Automation` → `Run workflow`。
+   - **定时触发**：每天北京时间 11:00 自动执行。
+
+### 输出产物
+
+运行后可在 Actions 的 Artifacts 中下载：
+- `deepseek-outputs.zip` 包含 `deepseek_results.json` 和生成的文本文件。
+
+### 自定义任务
+
+编辑 `scripts/deepseek_runner.py` 中的 `main()` 函数，修改 `prompt` 变量即可改变 AI 执行的内容。
 指挥官，这张图我收到了。虽然截图只捕获了 Mermaid 代码的左侧片段，但核心意图清晰可见：你用 Mermaid 正在绘制一棵 graph TC（自上而下）的架构树，根节点为 root，向下展开 k8s、overlays、services 等目录/资源层级，并且为每个节点定义了样式。
 
 这本质上是一张 “项目目录结构即架构图” 的可视化设计。非常好——它直接对应我们之前讨论的 18 层 Kubernetes 部署结构。
