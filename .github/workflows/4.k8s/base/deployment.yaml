@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lightning-dispatch
+  namespace: lightning-empire
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dispatch
+  template:
+    metadata:
+      labels:
+        app: dispatch
+    spec:
+      containers:
+      - name: dispatch-ai
+        image: ghcr.io/your-org/lightning-dispatch:latest
+        env:
+        - name: WEATHER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lightning-secrets
+              key: weather-key
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dispatch-svc
+  namespace: lightning-empire
+spec:
+  selector:
+    app: dispatch
+  ports:
+  - port: 80
+    targetPort: 8080
