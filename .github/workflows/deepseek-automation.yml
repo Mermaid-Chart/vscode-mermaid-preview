@@ -1,0 +1,42 @@
+name: 🤖 DeepSeek AI Automation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '**.py'
+      - '**.md'
+      - '**.txt'
+  workflow_dispatch:          # 允许手动触发
+  schedule:
+    - cron: '0 3 * * *'       # 每天 UTC 3:00 (北京时间 11:00) 自动运行
+
+jobs:
+  deepseek-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install openai>=1.0.0
+
+      - name: Run DeepSeek automation script
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python scripts/deepseek_runner.py
+
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepseek-outputs
+          path: |
+            output/
+            *.json
+            *.txt
