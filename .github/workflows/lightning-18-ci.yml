@@ -1,0 +1,37 @@
+name: ⚡ Lightning 18-Layer CI/CD
+
+on:
+  push:
+    branches: [main, bot-main, Ai-main, stormcar820-core]
+  schedule:
+    - cron: '0 */6 * * *'   # 每6小时执行一次天气与派单检查
+  workflow_dispatch:
+
+jobs:
+  weather-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_dispatch: ${{ steps.weather.outputs.DISPATCH }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run Weather AI Trigger
+        id: weather
+        run: python agents/weather_ai.py
+
+  dispatch-and-deploy:
+    needs: weather-trigger
+    if: needs.weather-trigger.outputs.should_dispatch == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Risk & Dispatch AI
+        run: |
+          python agents/risk_ai.py
+          python agents/dispatch_ai.py
+      - name: Build and Deploy to K8s
+        run: |
+          kubectl apply -f k8s/base/
