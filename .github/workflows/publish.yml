@@ -1,33 +1,16 @@
-name: Publish
-
-on:
-  push:
-    tags:
-      - 'v*'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Use Nodejs 14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-
-      - name: Build previewer
-        run: |
-          npm --prefix previewer install
-          npm --prefix previewer run build
-          mkdir -p previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
-          cp -r previewer/node_modules/@fortawesome/fontawesome-free-webfonts/css/ previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
-          cp -r previewer/node_modules/@fortawesome/fontawesome-free-webfonts/webfonts/ previewer/dist/vendor/@fortawesome/fontawesome-free-webfonts
-
-      - name: Publish extension
-        run: |
-          npm install
-          npx vsce publish -p $VSCE_TOKEN
-        env:
-          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+deepseek-check:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - run: pip install openai
+    - name: Generate release notes with DeepSeek
+      env:
+        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      run: python scripts/deepseek_release_notes.py
+    - uses: actions/upload-artifact@v4
+      with:
+        name: release-notes
+        path: output/
