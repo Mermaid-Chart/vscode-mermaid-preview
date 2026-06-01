@@ -705,6 +705,27 @@
       ]
     },
     "menus": {
+      "editor/title": [
+        {
+          "command": "preview.mermaidChart.preview",
+          "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
+          "group": "navigation@50"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "preview.mermaidChart.preview",
+          "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
+          "group": "navigation@50"
+        }
+      ],
+      "openEditors/context": [
+        {
+          "command": "preview.mermaidChart.preview",
+          "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
+          "group": "navigation@50"
+        }
+      ],
       "view/title": [
         {
           "command": "preview.mermaidChart.refresh",
@@ -794,6 +815,7 @@
       {
         "command": "preview.mermaidChart.preview",
         "title": "Preview Diagram",
+        "icon": "$(open-preview)",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },
