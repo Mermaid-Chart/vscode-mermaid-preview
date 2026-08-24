@@ -88,52 +88,17 @@ Now based on the diagram type auto suggestions for code snippets will be trigger
 If you get stuck with a diagram's syntax or want to learn about other features for a given diagram, now you can directly access the respective diagram's detailed documentation on the official mermaid.js docs. 
 ![Diagram Help](https://docs.mermaidchart.com/img/plugins/vscode-plugin-diagram-help.png)
 
-### Advanced Features when linking with MermaidChart
-When you connect the extension with the MermaidChart account to explore some of the advanced features. With the integration to the Mermaid Chart service, this extension allows users to attach diagrams to their code and to gain quick access to updating diagrams.
-
-You can explore all the these options by signing-up for a free account on www.mermaidchart.com 
-
-#### Fetch & Use existing diagrams in Side Panel
-Users can start login flow with their Mermaid Chart account and once logged-in, in the side panel all the projects and diagrams from your account will be loaded in the side panel.
-![Fetch & Use existing diagrams in Side Panel](https://docs.mermaidchart.com/img/plugins/vscode-plugin-activitybar.png)
-
-#### Link diagram directly in your code files
-For each diagram in the Side Panel, user will see two options:
-- Download: This will open the mermaid chart diagram locally for editing and will be connected to the Mermaid chart. Once the edited diagram is saved, or the user does a  ctrl+s, it will sync diagrams back to mermaid chart accounts as well
-![Download](https://docs.mermaidchart.com/img/plugins/vscode-plugin-download.png)
-- Link Diagram : When you click on a diagram, that diagram (its diagram id) will be inserted into the code editor as a comment at the position of the cursor. And users will get an option to preview or edit the diagram from this diagram id.
-![Link Diagrams](https://docs.mermaidchart.com/img/plugins/vscode-plugin-link-diagram.png)
-
-#### Smart Sync to promote collaboration
-When a  user modifies an existing diagram, before saving it to MermaidChart service, it smartly checks if any modification is made in the web view, and if found, it indicates to the user to resolve any conflicts, and then save the resolved diagram back. 
-![Smart Sync to promote collaboration 1](https://docs.mermaidchart.com/img/plugins/vscode-plugin-smart-indicator-view.png)
-
-![Smart Sync to promote collaboration 2](https://docs.mermaidchart.com/img/plugins/vscode-plugin-smart-indicator.png)
-
-#### Refresh 
-To get the latest changes of diagrams from Mermaid Chart, click on the button named Refresh at the top in the side panel.
-
-![Refresh ](https://docs.mermaidchart.com/img/plugins/vscode-plugin-refresh.png)
-
-#### Open in Web View 
-Users now have the option to open and edit diagrams in the web view on www.mermaidchart.com in the browser. This will enable them to use the best-in-class Visual Editor with drag and drop interface to modify the diagram, Mermaid AI, use diagrams in Presentations etc
-![Open in Web View](https://docs.mermaidchart.com/img/plugins/vscode-plugin-mermaidchart.png)
-
 ### Commands
 
 | Command | Description |
 |---------|------------|
 | **Mermaid Preview: Create Diagram** | Creates a new Mermaid diagram in the editor. |
-| **Mermaid Preview: Login** | Logs in to the Mermaid Chart service to access and manage diagrams. |
-| **Mermaid Preview: Logout** | Logs out from the Mermaid Chart service.. |
-| **Mermaid Preview: Sync Diagram** | Synchronizes the current diagram with Mermaid Chart.. |
 | **Mermaid Preview: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |
 
 
 ### Extension Settings
 
 This extension contributes the following settings:
-- `preview.mermaidChart.baseUrl`: This points to the instance of the mermaid chart you are running, for the public service this is `https://www.mermaidchart.com/`.
 - `mermaid.vscode.dark_theme`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
 
