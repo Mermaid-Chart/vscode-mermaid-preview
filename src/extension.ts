@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import type MarkdownIt from 'markdown-it';
 import {
   applyMermaidChartTokenHighlighting,
@@ -25,6 +26,25 @@ import { clearTmLanguageCache } from "./syntaxHighlighter";
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
 
+const movedFeatureMessage =
+  "Mermaid Preview Alert: This functionality has moved to the Mermaid Chart extension. Click Show more to understand more.";
+
+async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
+  const choice = await vscode.window.showInformationMessage(
+    movedFeatureMessage,
+    "Show more",
+    "Discard"
+  );
+
+  if (choice !== "Show more") {
+    return;
+  }
+
+  const docPath = path.join(context.extensionPath, "docs", "MermaidPreviewChanges.md");
+  const doc = await vscode.workspace.openTextDocument(docPath);
+  await vscode.commands.executeCommand("markdown.showPreview", doc.uri);
+}
+
 export async function activate(context: vscode.ExtensionContext) {
   if (!(await checkForOfficialExtension(context))) {
     return;
@@ -40,6 +60,24 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('preview.mermaidChart.preview', getPreview)
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "preview.mermaidChart.syncDiagramWithMermaid",
+      async () => {
+        void showMovedFeaturePopup(context);
+        await vscode.commands.executeCommand("workbench.action.files.save");
+      }
+    ),
+    vscode.commands.registerCommand(
+      "preview.mermaidChart.connectDiagramToMermaidChart",
+      () => showMovedFeaturePopup(context)
+    ),
+    vscode.commands.registerCommand(
+      "preview.mermaidChart.insertUuidIntoEditor",
+      () => showMovedFeaturePopup(context)
+    )
   );
 
   const activeEditor = vscode.window.activeTextEditor;

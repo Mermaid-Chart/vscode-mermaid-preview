@@ -669,14 +669,39 @@
       ]
     },
     "menus": {
+      "view/item/context": [
+        {
+          "command": "preview.mermaidChart.insertUuidIntoEditor",
+          "when": "viewItem == document && mermaidPreview:isActive",
+          "group": "inline@01"
+        }
+      ],
       "editor/context": [
         {
           "command": "preview.mermaidChart.preview",
           "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
           "group": "navigation"
+        },
+        {
+          "command": "preview.mermaidChart.connectDiagramToMermaidChart",
+          "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
+          "group": "navigation"
         }
       ]
     },
+    "keybindings": [
+      {
+        "key": "ctrl+s",
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
+        "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive"
+      },
+      {
+        "key": "cmd+s",
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
+        "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive",
+        "mac": "cmd+s"
+      }
+    ],
     "commands": [
       {
         "command": "preview.mermaidChart.diagramHelp",
@@ -693,6 +718,24 @@
       {
         "command": "preview.mermaidChart.createMermaidFile",
         "title": "Create Diagram",
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.syncDiagramWithMermaid",
+        "title": "Sync Diagram",
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.connectDiagramToMermaidChart",
+        "title": "Connect Diagram",
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.insertUuidIntoEditor",
+        "title": "Link Diagram",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       }
