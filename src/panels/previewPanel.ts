@@ -3,11 +3,14 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import * as packageJson from "../../package.json";
 import { saveDiagramAsPng, saveDiagramAsSvg } from "../services/renderService";
+import { getFirstWordFromDiagram } from "../frontmatter";
+import analytics from "../analytics";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
 const MAX_CHAR_LENGTH = "mermaid.vscode.max_CharLength";
 const MAX_EDGES = "mermaid.vscode.max_Edges";
+const MAX_ERROR_REASON_LENGTH = 300;
 
 
 export class PreviewPanel {
@@ -18,6 +21,7 @@ export class PreviewPanel {
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
   private lastContent: string = "";
+  private lastReportedError: string | undefined;
 
 
 
@@ -116,6 +120,7 @@ export class PreviewPanel {
       this.handleDiagramError(message.message);
     } else if (message.type === "clearError") {
       this.diagnosticsCollection.clear();
+      this.lastReportedError = undefined;
     } else if (message.type === "exportPng" && message.pngBase64) {
       await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
@@ -139,6 +144,8 @@ export class PreviewPanel {
   }
 
   private handleDiagramError(errorMessage: string) {
+    this.trackRenderFailure(errorMessage);
+
     const diagnostics: vscode.Diagnostic[] = [];
     const errorDetails = this.getErrorLine(errorMessage);
   
@@ -175,6 +182,33 @@ export class PreviewPanel {
     this.diagnosticsCollection.set(this.document.uri, diagnostics);
   }
   
+  private trackRenderFailure(errorMessage: string) {
+    const reason = this.toSafeErrorReason(errorMessage);
+
+    // The webview re-renders on theme changes and repeated edits, so only report a reason once.
+    if (reason === this.lastReportedError) {
+      return;
+    }
+    this.lastReportedError = reason;
+
+    analytics.trackPreviewRenderFailed(
+      reason,
+      getFirstWordFromDiagram(this.lastContent) || undefined
+    );
+  }
+
+  // Mermaid parse errors quote the offending diagram source under a caret line;
+  // keep only the summary and the parser expectation so no diagram code is sent.
+  private toSafeErrorReason(errorMessage: string): string {
+    const lines = errorMessage.split("\n").map((line) => line.trim());
+    const expectation = lines.find((line) => line.startsWith("Expecting"));
+
+    return [lines[0], expectation]
+      .filter(Boolean)
+      .join(" ")
+      .slice(0, MAX_ERROR_REASON_LENGTH);
+  }
+
   private getErrorLine(errorMessage: string): { line: number; message: string } | null {
   
     const match = errorMessage.match(/line (\d+):\s*([\s\S]+)/i); // Case-insensitive match for "line <number>: <message>"

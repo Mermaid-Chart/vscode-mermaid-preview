@@ -2,9 +2,18 @@ import httpClient from './httpClient';
 import * as vscode from "vscode";
 import * as packageJson from '../package.json';
 
+export interface PulseEventOptions {
+  errorMessage?: string;
+  diagramType?: string;
+  pluginSource?: 'vsCodePreview';
+}
+
 class Analytics {
 
-  public sendEvent(eventName: string, eventID:string, errorMessage?: string, diagramType?:string) {
+  public sendEvent(eventName: string, eventID: string, options?: PulseEventOptions) {
+    if (!vscode.env.isTelemetryEnabled) {
+      return;
+    }
     const analyticsID = vscode.env.machineId;
     const pluginID= packageJson.name === "vscode-mermaid-chart" ?  "MERMAIDCHART_VS_CODE_PLUGIN" : "MERMAID_PREVIEW_VS_CODE_PLUGIN";
     const payload = {
@@ -12,8 +21,8 @@ class Analytics {
       pluginID,
       eventName,
       eventID,
-      errorMessage,
-      diagramType
+      pluginSource: 'vsCodePreview' as const,
+      ...options,
     };
 
     httpClient.post('/rest-api/plugins/pulse', payload).catch((error: unknown) => {
@@ -23,12 +32,19 @@ class Analytics {
 
   public trackException(error: unknown) {
     if (error instanceof Error) {
-      this.sendEvent('VS Code Extension Exception', 'VS_CODE_PLUGIN_EXCEPTION', error.message);
+      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_PLUGIN_EXCEPTION', { errorMessage: error.message });
     } else {
-      this.sendEvent('VS Code Extension Exception','VS_CODE_PLUGIN_EXCEPTION', "Unknown error occurred");
+      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_PLUGIN_EXCEPTION', { errorMessage: "Unknown error occurred" });
     }
+  }
+
+  public trackPreviewRenderFailed(errorMessage: string, diagramType?: string) {
+    this.sendEvent('VS Code Preview Render Failed', 'VS_CODE_PLUGIN_PREVIEW_RENDER_FAILED', {
+      errorMessage,
+      diagramType,
+    });
   }
 }
 
 
-export default new Analytics(); 
+export default new Analytics();
