@@ -15,7 +15,7 @@
   let panzoomInstance: ReturnType<typeof Panzoom> | null = null;
   let panEnabled = false;
   let hasErrorOccured= false;
-  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'redux-color' | 'redux-dark-color' | 'mc' | 'null' = 'redux'; 
+  let theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'neo' | 'neo-dark' | 'redux' | 'redux-dark' | 'redux-color' | 'redux-dark-color' | 'mc' | 'null' = 'neo'; 
   $: zoomLevel = 100;
   let maxZoomLevel = 5;
   let maxTextSize = 90000;

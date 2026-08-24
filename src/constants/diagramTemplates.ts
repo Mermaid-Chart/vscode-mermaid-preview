@@ -67,5 +67,5 @@ export const getSampleDiagrams = () => {
       examples[diagram.name.replace(/ (Diagram|Chart|Graph)/, '')] = diagram.example.code;
     }
   }
-  return { ...examples } as const;
+  return { ...examples, ...extras } as const;
 };
