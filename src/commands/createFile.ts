@@ -1,13 +1,9 @@
 import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
-import { TempFileCache } from "../cache/tempFileCache";
 import analytics from "../analytics";
-import { normalizeMermaidText } from "../frontmatter";
 
 export async function createMermaidFile(
-  context: vscode.ExtensionContext,
-  diagramContent: string | null,
-  isTempFile: boolean
+  diagramContent: string | null
 ): Promise<vscode.TextEditor | null> {
   const exampleContent = `flowchart TD
     %% Nodes
@@ -48,13 +44,6 @@ export async function createMermaidFile(
       return null;
     }
 
-    const uri = editor.document.uri.toString();
-
-    if (isTempFile) {
-      TempFileCache.addTempUri(context, uri);
-    } else {
-      TempFileCache.removeTempUri(context, uri);
-    }
     PreviewPanel.createOrShow(editor.document);
     return editor;
   } catch (error) {
@@ -81,22 +70,4 @@ export function getPreview() {
     return;
   }
   PreviewPanel.createOrShow(document);
-}
-
-export async function openMermaidPreview(
-  context: vscode.ExtensionContext,
-  mermaidCode: string
-): Promise<vscode.TextEditor | null> {
-  try {
-    // Normalize the Mermaid code using the frontmatter utility
-    const normalizedCode = normalizeMermaidText(mermaidCode);
-    
-    // Create new file with the normalized code
-    return await createMermaidFile(context, normalizedCode, false);
-  } catch (error) {
-    console.error("Error opening Mermaid preview:", error);
-    analytics.trackException(error);
-    vscode.window.showErrorMessage("Failed to open Mermaid preview");
-    return null;
-  }
 }

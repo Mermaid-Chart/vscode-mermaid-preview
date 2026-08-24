@@ -38,21 +38,9 @@ importers:
       '@mermaid-chart/mermaid':
         specifier: 11.6.0-b.12
         version: 11.6.0-b.12
-      '@mermaid-chart/vscode-utils':
-        specifier: 1.0.7
-        version: 1.0.7(vscode@1.1.37)
       '@mermaid-js/examples':
         specifier: 0.0.1-beta.1
         version: 0.0.1-beta.1
-      '@mermaidchart/sdk':
-        specifier: 0.2.1
-        version: 0.2.1
-      '@vscode/chat-extension-utils':
-        specifier: ^0.0.0-alpha.1
-        version: 0.0.0-alpha.5
-      '@vscode/prompt-tsx':
-        specifier: ^0.3.0-alpha.12
-        version: 0.3.0-alpha.24
       axios:
         specifier: ^1.7.9
         version: 1.9.0
@@ -62,12 +50,9 @@ importers:
       puppeteer:
         specifier: ^23.11.1
         version: 23.11.1(typescript@4.9.5)
-      uuid:
-        specifier: ^9.0.0
-        version: 9.0.1
       yaml:
         specifier: ^2.7.0
-        version: 2.7.1
+        version: 2.9.0
     devDependencies:
       '@types/axios':
         specifier: ^0.14.4
@@ -87,9 +72,6 @@ importers:
       '@types/node':
         specifier: 18.x
         version: 18.19.87
-      '@types/uuid':
-        specifier: ^9.0.2
-        version: 9.0.8
       '@types/vscode':
         specifier: ^1.77.0
         version: 1.99.1
@@ -122,7 +104,7 @@ importers:
         version: 10.8.2
       ts-loader:
         specifier: ^9.5.2
-        version: 9.5.2(typescript@4.9.5)(webpack@5.99.7)
+        version: 9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -174,7 +156,7 @@ importers:
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
-        version: 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
+        version: 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))
       '@types/vscode-webview':
         specifier: ^1.57.5
         version: 1.57.5
@@ -183,7 +165,7 @@ importers:
         version: 5.28.2
       vite:
         specifier: ^6.0.7
-        version: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
+        version: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)
 
 packages:
 
@@ -248,10 +230,6 @@ packages:
   '@babel/helper-validator-identifier@7.27.1':
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
-
-  '@badgateway/oauth2-client@2.4.2':
-    resolution: {integrity: sha512-70Fmzlmn8EfCjjssls8N6E94quBUWnLhu4inPZU2pkwpc6ZvbErkLRvtkYl81KFCvVcuVC0X10QPZVNwjXo2KA==}
-    engines: {node: '>= 14'}
 
   '@braintree/sanitize-url@7.1.1':
     resolution: {integrity: sha512-i1L7noDNxtFyL5DmZafWy1wRVhGehQmzZaz1HiN5e7iylJMSZR7ekOV7NsIqa5qBldlLrsKv4HbgFUVlQrz8Mw==}
@@ -651,21 +629,11 @@ packages:
   '@mermaid-chart/mermaid@11.6.0-b.12':
     resolution: {integrity: sha512-ASTD2nDK3yvHJcKyfTCWzHsnja8eK8L1rEdtPh8xvs8Rkej+Qjfi+jFxqKPW50iPHrE2XlzHtRyjl42YOBUNtg==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/mermaid/11.6.0-b.12/4b6f5ccc0fa82ea92ddeee86e57c444bb8046c3b}
 
-  '@mermaid-chart/vscode-utils@1.0.7':
-    resolution: {integrity: sha512-GzZpAIs7oQ7iNlsYf/U0mFf8hSvKXPFl4Q9UxPFAS0b2ei7qkBSGx3T6DRsNrn/iLADufngrK79xJ4pVOMdQFA==, tarball: https://npm.pkg.github.com/download/@mermaid-chart/vscode-utils/1.0.7/dd00f1a3be02c4381beaa921b2ea440248c952de}
-    engines: {node: '>=14.0.0', vscode: ^1.77.0}
-    peerDependencies:
-      vscode: '*'
-
   '@mermaid-js/examples@0.0.1-beta.1':
     resolution: {integrity: sha512-dJ8yhCOf9Xh7T6VJzAATtxfhjT+8ywxFWYVuEE8ffu3P5v6iuoP+T27LLJN5aAIgmsLo/wFshlRqZFz3s8OolA==}
 
   '@mermaid-js/parser@0.4.0':
     resolution: {integrity: sha512-wla8XOWvQAwuqy+gxiZqY+c7FokraOTHRWMsbB4AgRx9Sy7zKslNyejy7E+a77qHfey5GXw/ik3IXv/NHMJgaA==}
-
-  '@mermaidchart/sdk@0.2.1':
-    resolution: {integrity: sha512-TnYemSeT01qAwHyqx11hbzouEMpP3AfRJe3LcR2YwqpMP1hUz2rfyfsUCXvGAf5ZQJbESjIZ2nEas3gwn6OviQ==}
-    engines: {node: ^18.18.0 || >= 20.0.0}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -983,9 +951,6 @@ packages:
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
-  '@types/uuid@9.0.8':
-    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-
   '@types/vscode-notebook-renderer@1.72.3':
     resolution: {integrity: sha512-MfmEI3A2McbUV2WaijoTgLOAs9chwHN4WmqOedl3jdtlbzJBWIQ9ZFmQdzPa3lYr5j8DJhRg3KB5AIM/BBfg9Q==}
 
@@ -1058,12 +1023,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
-
-  '@vscode/chat-extension-utils@0.0.0-alpha.5':
-    resolution: {integrity: sha512-EkfetTIGMDyClZkIx8oMOhprlXufnj0b/G1W4QGg4jhkWVUBE7kLRZsqEnpNjmtxHTugzc61gPQwT3zgH3HXgA==}
-
-  '@vscode/prompt-tsx@0.3.0-alpha.24':
-    resolution: {integrity: sha512-WUz6rPLcN6F64WxxwTiLzHOuhUcdLKBWMckppn43DBC1Ba67Lvd9RV+2LOxj938YzvEVOKGoAY/qgRtXd77I7Q==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   '@vscode/test-electron@2.5.2':
     resolution: {integrity: sha512-8ukpxv4wYe0iWMRQU18jhzJOHkeGKbnw7xWRX3Zw1WJA4cEKbHcmmLPdPrPtL6rhDcrlCZN+xKRpv09n4gRHYg==}
@@ -1333,6 +1293,7 @@ packages:
   basic-ftp@5.0.5:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.1, please upgrade
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -2120,16 +2081,16 @@ packages:
 
   glob@7.1.2:
     resolution: {integrity: sha512-MJTUg1kjuLeQCJ+ccE4Vpa6kKVXkPYJ2mOCQyUuKLcLQsdrMCpBPUi8qVE6+YuaJkozeA9NusTAw3hLr8Xe5EQ==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@13.24.0:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
@@ -2801,6 +2762,7 @@ packages:
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
+    deprecated: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
     hasBin: true
 
   prelude-ls@1.2.1:
@@ -2839,6 +2801,7 @@ packages:
   puppeteer@23.11.1:
     resolution: {integrity: sha512-53uIX3KR5en8l7Vd8n5DUv90Ae9QDQsyIthaUFVzwV6yU750RjqRznEtNMBT20VthqAdemnJN+hxVdmMHKt7Zw==}
     engines: {node: '>=18'}
+    deprecated: < 24.15.0 is no longer supported
     hasBin: true
 
   qs@6.14.0:
@@ -3257,10 +3220,7 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-
-  uuid@9.0.1:
-    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   vite@6.3.3:
@@ -3381,6 +3341,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -3435,9 +3396,9 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
-  yaml@2.7.1:
-    resolution: {integrity: sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==}
-    engines: {node: '>= 14'}
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+    engines: {node: '>= 14.6'}
     hasBin: true
 
   yargs-parser@20.2.9:
@@ -3573,8 +3534,6 @@ snapshots:
       picocolors: 1.1.1
 
   '@babel/helper-validator-identifier@7.27.1': {}
-
-  '@badgateway/oauth2-client@2.4.2': {}
 
   '@braintree/sanitize-url@7.1.1': {}
 
@@ -3871,30 +3830,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mermaid-chart/vscode-utils@1.0.7(vscode@1.1.37)':
-    dependencies:
-      '@vscode/chat-extension-utils': 0.0.0-alpha.5
-      '@vscode/prompt-tsx': 0.3.0-alpha.24
-      axios: 1.9.0
-      uuid: 11.1.0
-      vscode: 1.1.37
-      yaml: 2.7.1
-    transitivePeerDependencies:
-      - debug
-
   '@mermaid-js/examples@0.0.1-beta.1': {}
 
   '@mermaid-js/parser@0.4.0':
     dependencies:
       langium: 3.3.1
-
-  '@mermaidchart/sdk@0.2.1':
-    dependencies:
-      '@badgateway/oauth2-client': 2.4.2
-      axios: 1.9.0
-      uuid: 9.0.1
-    transitivePeerDependencies:
-      - debug
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -3988,25 +3928,25 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
-  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))
       debug: 4.4.0(supports-color@8.1.1)
       svelte: 5.28.2
-      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)))(svelte@5.28.2)(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))
       debug: 4.4.0(supports-color@8.1.1)
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.17
       svelte: 5.28.2
-      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
-      vitefu: 1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1))
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)
+      vitefu: 1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -4221,8 +4161,6 @@ snapshots:
   '@types/trusted-types@2.0.7':
     optional: true
 
-  '@types/uuid@9.0.8': {}
-
   '@types/vscode-notebook-renderer@1.72.3': {}
 
   '@types/vscode-webview@1.57.5': {}
@@ -4319,12 +4257,6 @@ snapshots:
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.3.0': {}
-
-  '@vscode/chat-extension-utils@0.0.0-alpha.5':
-    dependencies:
-      '@vscode/prompt-tsx': 0.3.0-alpha.24
-
-  '@vscode/prompt-tsx@0.3.0-alpha.24': {}
 
   '@vscode/test-electron@2.5.2':
     dependencies:
@@ -4482,17 +4414,17 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/configtest@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/info@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
 
-  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)':
+  '@webpack-cli/serve@3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))':
     dependencies:
       webpack: 5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)
       webpack-cli: 6.0.1(webpack@5.99.7)
@@ -6616,7 +6548,7 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.22.0
 
-  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.7):
+  terser-webpack-plugin@5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -6657,7 +6589,7 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.7):
+  ts-loader@9.5.2(typescript@4.9.5)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.18.1
@@ -6734,9 +6666,7 @@ snapshots:
 
   uuid@8.3.2: {}
 
-  uuid@9.0.1: {}
-
-  vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1):
+  vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0):
     dependencies:
       esbuild: 0.25.3
       fdir: 6.4.4(picomatch@4.0.2)
@@ -6748,11 +6678,11 @@ snapshots:
       '@types/node': 18.19.87
       fsevents: 2.3.3
       terser: 5.39.0
-      yaml: 2.7.1
+      yaml: 2.9.0
 
-  vitefu@1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)):
+  vitefu@1.0.6(vite@6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)):
     optionalDependencies:
-      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.7.1)
+      vite: 6.3.3(@types/node@18.19.87)(terser@5.39.0)(yaml@2.9.0)
 
   vscode-jsonrpc@8.2.0: {}
 
@@ -6798,9 +6728,9 @@ snapshots:
   webpack-cli@6.0.1(webpack@5.99.7):
     dependencies:
       '@discoveryjs/json-ext': 0.6.3
-      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
-      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
-      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack@5.99.7)
+      '@webpack-cli/configtest': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/info': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
+      '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1(webpack@5.99.7))(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       colorette: 2.0.20
       commander: 12.1.0
       cross-spawn: 7.0.6
@@ -6843,7 +6773,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.7)
+      terser-webpack-plugin: 5.3.14(esbuild@0.18.20)(webpack@5.99.7(esbuild@0.18.20)(webpack-cli@6.0.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     optionalDependencies:
@@ -6890,7 +6820,7 @@ snapshots:
 
   yallist@4.0.0: {}
 
-  yaml@2.7.1: {}
+  yaml@2.9.0: {}
 
   yargs-parser@20.2.9: {}
 
