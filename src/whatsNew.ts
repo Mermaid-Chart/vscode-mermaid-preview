@@ -2,7 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 
 /** Set to false before release so each user sees the notes once for this version. */
-const whatsNewAlwaysShowForTesting = true;
+const whatsNewAlwaysShowForTesting = false;
 
 const whatsNewVersion = "2.2.0";
 const whatsNewStateKey = "mermaidPreview.whatsNewVersion";
