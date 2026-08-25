@@ -639,6 +639,16 @@
           "type": "string",
           "default": "https://www.mermaid.ai",
           "description": "Base URL used for extension usage analytics"
+        },
+        "preview.mermaid.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow Mermaid Preview to send anonymous preview failure analytics. Turn this off to stop all analytics. VS Code's telemetry setting must also be enabled."
+        },
+        "preview.mermaid.showFeaturePopups": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show notifications when a feature has moved to the Mermaid Chart extension."
         }
       }
     },
@@ -673,6 +683,11 @@
           "command": "preview.mermaidChart.reloadSidebar",
           "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
           "group": "navigation@2"
+        },
+        {
+          "command": "preview.mermaidChart.openSettings",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
+          "group": "navigation@3"
         }
       ],
       "view/item/context": [
@@ -725,6 +740,16 @@
         "icon": {
           "light": "images/icons/refresh-light.svg",
           "dark": "images/icons/refresh-dark.svg"
+        },
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.openSettings",
+        "title": "Settings",
+        "icon": {
+          "light": "images/icons/settings-light.svg",
+          "dark": "images/icons/settings-dark.svg"
         },
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"

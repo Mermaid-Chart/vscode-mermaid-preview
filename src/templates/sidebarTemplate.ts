@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 
+export type SidebarView = "home" | "settings";
+
 export function generateWebviewContent(
   webview: vscode.Webview,
   extensionUri: vscode.Uri
@@ -9,6 +11,12 @@ export function generateWebviewContent(
   );
   const fontUrl = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "media","recursive-latin-full-normal.woff2")
+  );
+  const settingsIconDark = webview.asWebviewUri(
+    vscode.Uri.joinPath(extensionUri, "images", "icons", "settings-dark.svg")
+  );
+  const settingsIconLight = webview.asWebviewUri(
+    vscode.Uri.joinPath(extensionUri, "images", "icons", "settings-light.svg")
   );
   
 
@@ -53,13 +61,20 @@ export function generateWebviewContent(
       --card-bg: rgba(0, 0, 0, 0.03);
     }
 
-    #view-home {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    .view {
+      display: none;
       padding: 16px;
       box-sizing: border-box;
+    }
+
+    .view.is-active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #view-home {
+      align-items: center;
+      text-align: center;
     }
 
     .logo {
@@ -111,7 +126,7 @@ export function generateWebviewContent(
 
     /* The bundled Recursive subset has no arrow glyphs, so without this the
        arrow falls back to a thin, undersized serif glyph. */
-    .upsell-link .arrow {
+    .arrow {
       font-family: var(--vscode-font-family, system-ui);
       font-size: 14px;
       line-height: 1;
@@ -137,10 +152,92 @@ export function generateWebviewContent(
     .split-note p {
       margin: 0;
     }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .section-header .glyph {
+      width: 14px;
+      height: 14px;
+    }
+
+    .vscode-light .dark-icon,
+    .vscode-dark .light-icon,
+    .vscode-high-contrast .light-icon {
+      display: none;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .setting-label {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .setting-description {
+      margin: 2px 0 0 0;
+      color: var(--text-color);
+      font-size: 11px;
+      line-height: 15px;
+    }
+
+    .toggle {
+      position: relative;
+      flex: 0 0 auto;
+      width: 32px;
+      height: 16px;
+      margin-top: 2px;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #4A4A55;
+      cursor: pointer;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #E9E9EF;
+      transition: left 120ms ease-in-out;
+    }
+
+    .toggle[aria-checked="true"] {
+      background: var(--pink-color);
+    }
+
+    .toggle[aria-checked="true"]::after {
+      left: 18px;
+    }
+
+    .settings-link {
+      align-self: flex-start;
+      margin-top: 8px;
+      color: inherit;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
     </style>
 </head>
 <body>
-    <section id="view-home">
+    <section id="view-home" class="view is-active">
         <img class="logo" src="${logoSrc}" alt="Mermaid Preview logo">
         <p class="intro">Generate, edit, and preview diagrams right in your editor for free.</p>
         <button id="openPreview" class="open-preview-btn">Open preview</button>
@@ -156,8 +253,36 @@ export function generateWebviewContent(
         </div>
     </section>
 
+    <section id="view-settings" class="view">
+        <div class="section-header">
+            <img class="glyph dark-icon" src="${settingsIconDark}" alt="">
+            <img class="glyph light-icon" src="${settingsIconLight}" alt="">
+            <span>Settings</span>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <p class="setting-label">Share usage analytics</p>
+                <p id="telemetryDescription" class="setting-description">On by default. Render bugs only.</p>
+            </div>
+            <button id="telemetryToggle" class="toggle" role="switch" aria-checked="true" aria-label="Share usage analytics"></button>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <p class="setting-label">"Feature moved" popups</p>
+                <p class="setting-description">Notices when a feature moved to Mermaid Chart.</p>
+            </div>
+            <button id="featurePopupsToggle" class="toggle" role="switch" aria-checked="true" aria-label="Feature moved popups"></button>
+        </div>
+
+        <a id="openSettings" class="settings-link">Open VS code Mermaid settings <span class="arrow">&#10132;</span></a>
+    </section>
+
     <script>
         const vscode = acquireVsCodeApi();
+        const telemetryToggle = document.getElementById('telemetryToggle');
+        const featurePopupsToggle = document.getElementById('featurePopupsToggle');
 
         document.getElementById('openPreview').addEventListener('click', () => {
             vscode.postMessage({ command: 'openPreview' });
@@ -166,6 +291,43 @@ export function generateWebviewContent(
         document.getElementById('getExtension').addEventListener('click', () => {
             vscode.postMessage({ command: 'getExtension' });
         });
+
+        telemetryToggle.addEventListener('click', () => {
+            vscode.postMessage({
+                command: 'setTelemetry',
+                enabled: telemetryToggle.getAttribute('aria-checked') !== 'true'
+            });
+        });
+
+        featurePopupsToggle.addEventListener('click', () => {
+            vscode.postMessage({
+                command: 'setFeaturePopups',
+                enabled: featurePopupsToggle.getAttribute('aria-checked') !== 'true'
+            });
+        });
+
+        document.getElementById('openSettings').addEventListener('click', () => {
+            vscode.postMessage({ command: 'openSettings' });
+        });
+
+        window.addEventListener('message', (event) => {
+            if (event.data?.command === 'showView') {
+                document.querySelectorAll('.view').forEach((section) => {
+                    section.classList.toggle('is-active', section.id === 'view-' + event.data.view);
+                });
+            }
+
+            if (event.data?.command === 'settingsChanged') {
+                telemetryToggle.setAttribute('aria-checked', String(event.data.enableTelemetry));
+                featurePopupsToggle.setAttribute('aria-checked', String(event.data.showFeaturePopups));
+                document.getElementById('telemetryDescription').textContent =
+                    event.data.vscodeTelemetryEnabled
+                        ? 'On by default. Render bugs only.'
+                        : 'Disabled by VS Code telemetry settings.';
+            }
+        });
+
+        vscode.postMessage({ command: 'ready' });
     </script>
 </body>
 </html>`;
