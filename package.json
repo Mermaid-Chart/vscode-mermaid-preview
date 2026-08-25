@@ -646,7 +646,7 @@
       "activitybar": [
         {
           "id": "mermaidActivityBar",
-          "title": "Mermaid Chart",
+          "title": "Mermaid Preview",
           "icon": "images/mermaid-icon-32-preview.svg",
           "when": "mermaidPreview:isActive"
         }
@@ -655,20 +655,26 @@
     "views": {
       "mermaidActivityBar": [
         {
-          "id": "preview_mermaidChart",
-          "name": "",
-          "contextualOnly": false,
-          "when": "mermaid.showChart && mermaidPreview:isActive"
-        },
-        {
           "id": "preview_mermaidWebview",
-          "name": "Mermaid Chart",
+          "name": "Mermaid Preview",
           "type": "webview",
-          "when": "mermaidPreview:isActive && mermaid.showWebview"
+          "when": "mermaidPreview:isActive"
         }
       ]
     },
     "menus": {
+      "view/title": [
+        {
+          "command": "preview.mermaidChart.diagramHelp",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
+          "group": "navigation@1"
+        },
+        {
+          "command": "preview.mermaidChart.reloadSidebar",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
+          "group": "navigation@2"
+        }
+      ],
       "view/item/context": [
         {
           "command": "preview.mermaidChart.insertUuidIntoEditor",
@@ -706,6 +712,20 @@
       {
         "command": "preview.mermaidChart.diagramHelp",
         "title": "Diagram help",
+        "icon": {
+          "light": "images/icons/help-light.svg",
+          "dark": "images/icons/help-dark.svg"
+        },
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.reloadSidebar",
+        "title": "Reload",
+        "icon": {
+          "light": "images/icons/refresh-light.svg",
+          "dark": "images/icons/refresh-dark.svg"
+        },
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },

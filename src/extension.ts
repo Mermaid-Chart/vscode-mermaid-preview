@@ -22,6 +22,7 @@ import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
 import { checkForOfficialExtension } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
+import { MermaidWebviewProvider } from "./panels/sidebarPanel";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -60,6 +61,14 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('preview.mermaidChart.preview', getPreview)
+  );
+
+  const mermaidWebviewProvider = new MermaidWebviewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider("preview_mermaidWebview", mermaidWebviewProvider),
+    vscode.commands.registerCommand("preview.mermaidChart.reloadSidebar", () => {
+      mermaidWebviewProvider.refresh();
+    })
   );
 
   context.subscriptions.push(
