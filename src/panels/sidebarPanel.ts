@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { generateWebviewContent } from "../templates/sidebarTemplate";
+import { MERMAID_CHART_EXTENSION_ID } from "../conflictHandle";
 
 export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
   private context: vscode.ExtensionContext;
@@ -19,6 +20,18 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       ],
     };
     this.updateWebviewContent();
+
+    webviewView.webview.onDidReceiveMessage((message) => {
+      if (message.command === "openPreview") {
+        vscode.commands.executeCommand("preview.mermaidChart.createMermaidFile");
+      }
+      if (message.command === "getExtension") {
+        vscode.commands.executeCommand(
+          "workbench.extensions.search",
+          `@id:${MERMAID_CHART_EXTENSION_ID}`
+        );
+      }
+    });
   }
 
   refresh() {

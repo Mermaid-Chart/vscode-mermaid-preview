@@ -109,6 +109,15 @@ export function generateWebviewContent(
       color: inherit;
     }
 
+    /* The bundled Recursive subset has no arrow glyphs, so without this the
+       arrow falls back to a thin, undersized serif glyph. */
+    .upsell-link .arrow {
+      font-family: var(--vscode-font-family, system-ui);
+      font-size: 14px;
+      line-height: 1;
+      vertical-align: -1px;
+    }
+
     .split-note {
       margin: 56px -16px 0 -16px;
       padding: 16px;
@@ -138,7 +147,7 @@ export function generateWebviewContent(
 
         <p class="upsell">
             Want to sync your account or AI features?<br>
-            <a id="getExtension" class="upsell-link">Get the Mermaid Chart extension &rarr;</a>
+            <a id="getExtension" class="upsell-link">Get the Mermaid Chart extension <span class="arrow">&#10132;</span></a>
         </p>
 
         <div class="split-note">
@@ -146,6 +155,18 @@ export function generateWebviewContent(
             <p>AI and cloud sync cost money to run. The paid extension funds Mermaid's open-source work and keeps this one free.</p>
         </div>
     </section>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        document.getElementById('openPreview').addEventListener('click', () => {
+            vscode.postMessage({ command: 'openPreview' });
+        });
+
+        document.getElementById('getExtension').addEventListener('click', () => {
+            vscode.postMessage({ command: 'getExtension' });
+        });
+    </script>
 </body>
 </html>`;
 }
