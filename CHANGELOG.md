@@ -1,5 +1,26 @@
 # Change Log
 
+### 2.2.0 
+
+Mermaid Preview is now focused on free, local diagram previewing.
+
+#### What remains in Preview
+
+- Live Mermaid preview with pan, zoom, and reset
+- PNG and SVG export
+- Mermaid rendering in Markdown preview
+- Syntax highlighting, snippets, diagram templates, and Diagram help
+- Local sidebar home and settings
+
+#### What moved to Mermaid Chart
+
+- Login and logout
+- Cloud Sync, Connect, and Link Diagram workflows
+- Mermaid Chart project and diagram browsing
+- AI chat and diagram regeneration
+
+The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+
 ### 2.1.0 -2025-05-13
 ### New Features
 - Added export functionality for SVG and PNG formats

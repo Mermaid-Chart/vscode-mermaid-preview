@@ -1,5 +1,7 @@
 # 🔔 What Changed in Mermaid Preview
 
+## Mermaid Preview 2.2.0
+
 **Mermaid Preview is now a local-only preview extension.**
 
 Everything that needed a Mermaid Chart account has moved to the **[Mermaid Chart](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart)** extension. Install it to keep using those features.
@@ -14,7 +16,7 @@ These features are no longer part of Mermaid Preview:
 - **Connect Diagram** — attaching a local diagram to a Mermaid Chart project
 - **Link Diagram** — inserting a Mermaid Chart diagram ID into your code
 - **Login / Logout** — Mermaid Chart accounts and sign-in
-- **Side panel** — browsing your Mermaid Chart projects and diagrams
+- **Cloud diagram browser** — browsing Mermaid Chart projects and diagrams in the side panel
 - **Download diagram** — pulling a cloud diagram into your editor
 - **Refresh** — re-syncing the cloud diagram list
 - **Smart sync & conflict detection** — comparing local and remote versions
@@ -35,6 +37,7 @@ Mermaid Preview keeps everything that works without an account:
 - Syntax highlighting for `.mmd` and `.mermaid` files
 - Diagram templates on an empty file, plus snippets while you type
 - **Create Diagram** and **Diagram help**
+- Local sidebar home and settings for Preview
 - Theme, max zoom, max text size, and max edges settings
 
 ---
@@ -45,7 +48,6 @@ Mermaid Preview keeps everything that works without an account:
 2. Sign in with your Mermaid Chart account.
 3. Sync, Connect, Link, and the cloud side panel work there as before.
 
-You can keep both extensions installed — Mermaid Preview stays your local previewer.
 
 ---
 

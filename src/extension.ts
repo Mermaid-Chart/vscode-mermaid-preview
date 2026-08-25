@@ -24,6 +24,7 @@ import { checkForOfficialExtension } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
 import { MermaidWebviewProvider } from "./panels/sidebarPanel";
 import { shouldShowFeaturePopups } from "./settings";
+import { showWhatsNew } from "./whatsNew";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -303,6 +304,12 @@ context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
       vscode.commands.executeCommand('markdown.preview.refresh');
   }
 }));
+
+// Not awaited: activate must return the markdown-it plugin below first, otherwise
+// markdown.showPreview waits on the Markdown extension while it waits on us.
+void showWhatsNew(context).catch((error) => {
+  console.error({ error }, "Failed to show Mermaid Preview release notes");
+});
 
 return {
   extendMarkdownIt(md: MarkdownIt) {
