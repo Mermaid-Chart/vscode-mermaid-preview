@@ -1,6 +1,7 @@
 import httpClient from './httpClient';
 import * as vscode from "vscode";
 import * as packageJson from '../package.json';
+import { isPreviewTelemetryEnabled } from "./settings";
 
 export interface PulseEventOptions {
   errorMessage?: string;
@@ -11,7 +12,7 @@ export interface PulseEventOptions {
 class Analytics {
 
   public sendEvent(eventName: string, eventID: string, options?: PulseEventOptions) {
-    if (!vscode.env.isTelemetryEnabled) {
+    if (!isPreviewTelemetryEnabled()) {
       return;
     }
     const analyticsID = vscode.env.machineId;

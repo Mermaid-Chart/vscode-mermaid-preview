@@ -23,6 +23,7 @@ import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid
 import { checkForOfficialExtension } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
 import { MermaidWebviewProvider } from "./panels/sidebarPanel";
+import { shouldShowFeaturePopups } from "./settings";
 
 let diagramMappings: { [key: string]: string[] } = require('../src/diagramTypeWords.json');
 let isExtensionStarted = false;
@@ -31,6 +32,10 @@ const movedFeatureMessage =
   "Mermaid Preview Alert: This functionality has moved to the Mermaid Chart extension. Click Show more to understand more.";
 
 async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
+  if (!shouldShowFeaturePopups()) {
+    return;
+  }
+
   const choice = await vscode.window.showInformationMessage(
     movedFeatureMessage,
     "Show more",
@@ -68,6 +73,9 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewViewProvider("preview_mermaidWebview", mermaidWebviewProvider),
     vscode.commands.registerCommand("preview.mermaidChart.reloadSidebar", () => {
       mermaidWebviewProvider.refresh();
+    }),
+    vscode.commands.registerCommand("preview.mermaidChart.openSettings", () => {
+      mermaidWebviewProvider.toggleView("settings");
     })
   );
 
