@@ -7,7 +7,7 @@
 import mermaid, { MermaidConfig } from "@mermaid-chart/mermaid";
 import { registerMermaidAddons, renderMermaidBlocksInElement } from '../shared-mermaid';
 
-function init() { 
+async function init() { 
     const configSpan = document.getElementById('markdown-mermaid');
     const darkModeTheme = configSpan?.dataset.darkModeTheme;
     const lightModeTheme = configSpan?.dataset.lightModeTheme;
@@ -22,9 +22,9 @@ function init() {
     };
 
     mermaid.initialize(config);
-    registerMermaidAddons();
-    
-    renderMermaidBlocksInElement(document.body, (mermaidContainer, content) => {
+    await registerMermaidAddons();
+
+    await renderMermaidBlocksInElement(document.body, (mermaidContainer, content) => {
         mermaidContainer.innerHTML = content;
     });
 }

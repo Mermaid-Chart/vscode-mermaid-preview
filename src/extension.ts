@@ -82,10 +82,7 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "preview.mermaidChart.syncDiagramWithMermaid",
-      async () => {
-        void showMovedFeaturePopup(context);
-        await vscode.commands.executeCommand("workbench.action.files.save");
-      }
+      () => showMovedFeaturePopup(context)
     ),
     vscode.commands.registerCommand(
       "preview.mermaidChart.connectDiagramToMermaidChart",
