@@ -14,9 +14,10 @@ export function shouldShowFeaturePopups(): boolean {
   return vscode.workspace.getConfiguration(configSection).get<boolean>("showFeaturePopups", true);
 }
 
+// Passing undefined clears the override so the setting falls back to its default.
 export async function updatePreviewSetting(
   setting: "enableTelemetry" | "showFeaturePopups",
-  value: boolean
+  value: boolean | undefined
 ): Promise<void> {
   await vscode.workspace
     .getConfiguration(configSection)

@@ -71,11 +71,21 @@ export async function activate(context: vscode.ExtensionContext) {
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("preview_mermaidWebview", mermaidWebviewProvider),
-    vscode.commands.registerCommand("preview.mermaidChart.reloadSidebar", () => {
-      mermaidWebviewProvider.refresh();
-    }),
+    vscode.commands.registerCommand("preview.mermaidChart.reloadSidebar", () =>
+      mermaidWebviewProvider.refresh()
+    ),
     vscode.commands.registerCommand("preview.mermaidChart.openSettings", () => {
       mermaidWebviewProvider.toggleView("settings");
+    }),
+    vscode.commands.registerCommand("preview.mermaidChart.openFeedback", () => {
+      mermaidWebviewProvider.toggleView("feedback");
+    }),
+    // Selected-state twins: same toggle, shown by package.json when their section is open.
+    vscode.commands.registerCommand("preview.mermaidChart.openSettingsActive", () => {
+      mermaidWebviewProvider.toggleView("settings");
+    }),
+    vscode.commands.registerCommand("preview.mermaidChart.openFeedbackActive", () => {
+      mermaidWebviewProvider.toggleView("feedback");
     })
   );
 

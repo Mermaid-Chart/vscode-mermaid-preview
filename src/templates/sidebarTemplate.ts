@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export type SidebarView = "home" | "settings";
+export type SidebarView = "home" | "settings" | "feedback";
 
 export function generateWebviewContent(
   webview: vscode.Webview,
@@ -17,6 +17,12 @@ export function generateWebviewContent(
   );
   const settingsIconLight = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "images", "icons", "settings-light.svg")
+  );
+  const feedbackIconDark = webview.asWebviewUri(
+    vscode.Uri.joinPath(extensionUri, "images", "icons", "feedback-dark.svg")
+  );
+  const feedbackIconLight = webview.asWebviewUri(
+    vscode.Uri.joinPath(extensionUri, "images", "icons", "feedback-light.svg")
   );
   
 
@@ -234,6 +240,91 @@ export function generateWebviewContent(
       text-decoration: underline;
       cursor: pointer;
     }
+
+    .feedback-intro {
+      margin: 0;
+      color: var(--text-color);
+      font-size: 12px;
+      line-height: 17px;
+    }
+
+    .open-form-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 10px 0;
+      border: none;
+      border-radius: 4px;
+      background: var(--pink-color);
+      color: #FFFFFF;
+      font-family: "Recursive", serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .open-form-btn:hover {
+      background: #FF257C;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .field select,
+    .field input,
+    .field textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      border: 1px solid var(--vscode-input-border, #3D3D46);
+      border-radius: 4px;
+      outline: none;
+      background: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      font-family: "Recursive", serif;
+      font-size: 12px;
+    }
+
+    .field select:focus,
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--vscode-focusBorder);
+    }
+
+    .field textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .field select:invalid,
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--vscode-input-placeholderForeground, var(--text-color));
+    }
+
+    .send-btn {
+      width: 100%;
+      padding: 10px 0;
+      border: none;
+      border-radius: 4px;
+      background: #453C6D;
+      color: #FFFFFF;
+      font-family: "Recursive", serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .send-btn:hover {
+      background: #524877;
+    }
     </style>
 </head>
 <body>
@@ -279,6 +370,60 @@ export function generateWebviewContent(
         <a id="openSettings" class="settings-link">Open VS code Mermaid settings <span class="arrow">&#10132;</span></a>
     </section>
 
+    <section id="view-feedback" class="view">
+        <div class="section-header">
+            <img class="glyph dark-icon" src="${feedbackIconDark}" alt="">
+            <img class="glyph light-icon" src="${feedbackIconLight}" alt="">
+            <span>Send us feedback</span>
+        </div>
+
+        <p class="feedback-intro">Opens a short form in your browser. Takes a minute, no account needed.</p>
+        <button id="openFeedbackForm" class="open-form-btn">Open feedback form</button>
+    </section>
+
+    <section id="view-feedback-form" class="view">
+        <div class="section-header">
+            <img class="glyph dark-icon" src="${feedbackIconDark}" alt="">
+            <img class="glyph light-icon" src="${feedbackIconLight}" alt="">
+            <span>Send us feedback</span>
+        </div>
+
+        <div class="field">
+            <label class="field-label" for="feedbackActivity">What were you doing?</label>
+            <select id="feedbackActivity" required>
+                <option value="" selected disabled hidden>Previewing a diagram</option>
+                <option>Previewing a diagram</option>
+                <option>Editing a diagram</option>
+                <option>Exporting a diagram</option>
+                <option>Previewing a markdown file</option>
+                <option>Something else</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label class="field-label" for="feedbackFrequency">How often?</label>
+            <select id="feedbackFrequency" required>
+                <option value="" selected disabled hidden>Every time</option>
+                <option>Every time</option>
+                <option>Often</option>
+                <option>Sometimes</option>
+                <option>Only once</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label class="field-label" for="feedbackDetails">What blocked or bothered you?</label>
+            <textarea id="feedbackDetails" placeholder="Tell us what happened"></textarea>
+        </div>
+
+        <div class="field">
+            <label class="field-label" for="feedbackEmail">Email (optional)</label>
+            <input id="feedbackEmail" type="email" placeholder="you@example.com">
+        </div>
+
+        <button class="send-btn" type="button">Send feedback</button>
+    </section>
+
     <script>
         const vscode = acquireVsCodeApi();
         const telemetryToggle = document.getElementById('telemetryToggle');
@@ -308,6 +453,12 @@ export function generateWebviewContent(
 
         document.getElementById('openSettings').addEventListener('click', () => {
             vscode.postMessage({ command: 'openSettings' });
+        });
+
+        document.getElementById('openFeedbackForm').addEventListener('click', () => {
+            document.querySelectorAll('.view').forEach((section) => {
+                section.classList.toggle('is-active', section.id === 'view-feedback-form');
+            });
         });
 
         window.addEventListener('message', (event) => {
