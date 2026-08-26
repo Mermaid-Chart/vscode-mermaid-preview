@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
   "license": "MIT",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -55,7 +55,8 @@
     "virtualWorkspaces": true
   },
   "activationEvents": [
-    "onLanguage"
+    "onLanguage",
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {

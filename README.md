@@ -2,6 +2,8 @@
 
 ### 🚀 Now Proudly Maintained by the Creators of Mermaid.js 🚀
 
+Mermaid Preview is focused on free, local diagram previewing. Account login, cloud sync, and AI features now live in the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+
 ## Features
 
 ### Works with Latest Mermaid Version
@@ -60,7 +62,7 @@ Export your diagrams easily in both SVG and PNG formats. This makes it simple to
 
 The exported files maintain high quality and can be used across different platforms and tools.
 
-![Export Diagrams](https://docs.mermaidchart.com/img/plugins/vscode-plugin-export.png)
+![Export Diagrams](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-export.png)
 
 ### Error Highlighting 
 While writing the mermaid code, if you encounter syntax errors, the extension highlights the syntax error with an error message, and also indicates which line in the code might be causing the error. This helps the user to locate and fix the error. 
@@ -86,7 +88,8 @@ Now based on the diagram type auto suggestions for code snippets will be trigger
 
 ### Diagram Help
 If you get stuck with a diagram's syntax or want to learn about other features for a given diagram, now you can directly access the respective diagram's detailed documentation on the official mermaid.js docs. 
-![Diagram Help](https://docs.mermaidchart.com/img/plugins/vscode-plugin-diagram-help.png)
+
+![Diagram Help](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-diagram-help.png)
 
 ### Commands
 
@@ -94,6 +97,9 @@ If you get stuck with a diagram's syntax or want to learn about other features f
 |---------|------------|
 | **Mermaid Preview: Create Diagram** | Creates a new Mermaid diagram in the editor. |
 | **Mermaid Preview: Preview Diagram** | Opens a preview of the selected Mermaid diagram within the editor. |
+| **Mermaid Preview: Diagram help** | Opens the official Mermaid documentation for the current diagram type. |
+| **Mermaid Preview: Settings** | Opens the settings section in the Mermaid Preview sidebar. |
+| **Mermaid Preview: Reload** | Reloads the Mermaid Preview sidebar. |
 
 
 ### Extension Settings
@@ -101,8 +107,34 @@ If you get stuck with a diagram's syntax or want to learn about other features f
 This extension contributes the following settings:
 - `mermaid.vscode.dark_theme`: Defines the theme used for Mermaid diagrams when VS Code is in dark mode.
 - `mermaid.vscode.light_theme`: Defines the theme used for Mermaid diagrams when VS Code is in light mode.
+- `mermaid.vscode.max_Zoom`: Maximum zoom level for diagrams, as a multiple of 100%. A value of `5` means 500%.
+- `mermaid.vscode.max_CharLength`: Maximum number of characters allowed in a diagram's source.
+- `mermaid.vscode.max_Edges`: Maximum number of edges allowed in a diagram's source.
+- `preview.mermaid.enableTelemetry`: Allow Mermaid Preview to send anonymous preview failure analytics. Turn this off to stop all analytics. VS Code's own telemetry setting must also be enabled.
+- `preview.mermaid.showFeaturePopups`: Show notifications when a feature has moved to the Mermaid Chart extension.
+- `preview.mermaid.baseUrl`: Base URL used for extension usage analytics.
 
 ## Release Notes
+### 2.2.0
+Mermaid Preview is now focused on free, local diagram previewing.
+
+#### What remains in Preview
+
+- Live Mermaid preview with pan, zoom, and reset
+- PNG and SVG export
+- Mermaid rendering in Markdown preview
+- Syntax highlighting, snippets, diagram templates, and Diagram help
+- Local sidebar home and settings
+
+#### What moved to Mermaid Chart
+
+- Login and logout
+- Cloud Sync, Connect, and Link Diagram workflows
+- Mermaid Chart project and diagram browsing
+- AI chat and diagram regeneration
+
+The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+
 ### 2.1.1 -2025-05-26
 - Enhanced Sidebar Layout to Improve User Guidance
 
