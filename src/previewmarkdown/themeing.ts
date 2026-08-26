@@ -1,6 +1,7 @@
 import type MarkdownIt from 'markdown-it';
 import * as vscode from 'vscode';
 import { configSection } from '../util';
+import { prepareMermaidPreviewHtml } from './shared-md-mermaid';
 
 const defaultMermaidTheme = 'default';
 const validMermaidThemes = [
@@ -32,11 +33,12 @@ export function injectMermaidTheme(md: MarkdownIt) {
         const lightModeTheme = sanitizeMermaidTheme(config.get<string>('vscode.light_theme'));
         const maxTextSize = config.get<number>('maxTextSize');
 
-        return `<span id="${configSection}" aria-hidden="true"
+        const html = `<span id="markdown-mermaid" aria-hidden="true"
                     data-dark-mode-theme="${darkModeTheme}"
                     data-light-mode-theme="${lightModeTheme}"
                     data-max-text-size="${maxTextSize}"></span>
                 ${render.apply(md.renderer, args)}`;
+        return prepareMermaidPreviewHtml(html);
     };
 
     return md;

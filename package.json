@@ -711,19 +711,6 @@
         }
       ]
     },
-    "keybindings": [
-      {
-        "key": "ctrl+s",
-        "command": "preview.mermaidChart.syncDiagramWithMermaid",
-        "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive"
-      },
-      {
-        "key": "cmd+s",
-        "command": "preview.mermaidChart.syncDiagramWithMermaid",
-        "when": "editorLangId =~ /^mermaid/ && mermaidPreview:isActive",
-        "mac": "cmd+s"
-      }
-    ],
     "commands": [
       {
         "command": "preview.mermaidChart.diagramHelp",
