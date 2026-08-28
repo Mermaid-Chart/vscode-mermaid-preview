@@ -687,8 +687,33 @@
         },
         {
           "command": "preview.mermaidChart.openSettings",
-          "when": "view == preview_mermaidWebview && mermaidPreview:isActive",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive && mermaidPreview:sidebarView != settings",
           "group": "navigation@3"
+        },
+        {
+          "command": "preview.mermaidChart.openSettingsActive",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive && mermaidPreview:sidebarView == settings",
+          "group": "navigation@3"
+        },
+        {
+          "command": "preview.mermaidChart.openFeedback",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive && mermaidPreview:sidebarView != feedback",
+          "group": "navigation@4"
+        },
+        {
+          "command": "preview.mermaidChart.openFeedbackActive",
+          "when": "view == preview_mermaidWebview && mermaidPreview:isActive && mermaidPreview:sidebarView == feedback",
+          "group": "navigation@4"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "preview.mermaidChart.openSettingsActive",
+          "when": "false"
+        },
+        {
+          "command": "preview.mermaidChart.openFeedbackActive",
+          "when": "false"
         }
       ],
       "view/item/context": [
@@ -739,6 +764,30 @@
           "light": "images/icons/settings-light.svg",
           "dark": "images/icons/settings-dark.svg"
         },
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.openFeedback",
+        "title": "Send feedback",
+        "icon": {
+          "light": "images/icons/feedback-light.svg",
+          "dark": "images/icons/feedback-dark.svg"
+        },
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.openSettingsActive",
+        "title": "Settings",
+        "icon": "images/icons/settings-active.svg",
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
+        "command": "preview.mermaidChart.openFeedbackActive",
+        "title": "Send feedback",
+        "icon": "images/icons/feedback-active.svg",
         "category": "Mermaid Preview",
         "when": "mermaidPreview:isActive"
       },

@@ -7,6 +7,9 @@ import {
   updatePreviewSetting,
 } from "../settings";
 
+// Drives which title-bar icon variant is shown, so the open section reads as selected.
+const SIDEBAR_VIEW_CONTEXT_KEY = "mermaidPreview:sidebarView";
+
 export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
   private context: vscode.ExtensionContext;
   private _view?: vscode.WebviewView;
@@ -37,8 +40,20 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       ],
     };
     this.updateWebviewContent();
+    void this.setCurrentView(this.currentView);
     this.postCurrentView();
     this.postSettings();
+
+    // Collapsing the view is the only signal VS Code gives us for a click on the
+    // "Mermaid Preview" title, so re-expanding always lands back on home.
+    webviewView.onDidChangeVisibility(() => {
+      if (webviewView.visible) {
+        this.postCurrentView();
+        this.postSettings();
+      } else {
+        void this.setCurrentView("home");
+      }
+    });
 
     webviewView.webview.onDidReceiveMessage(async (message) => {
       if (message.command === "openPreview") {
@@ -69,19 +84,31 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  refresh() {
-    if (this._view) {
-      this.updateWebviewContent();
-      this.postCurrentView();
-      this.postSettings();
+  async refresh() {
+    if (!this._view) {
+      return;
     }
+    // Reloading the settings view restores the defaults, the same way reloading
+    // the feedback view clears the form and returns to its first page.
+    if (this.currentView === "settings") {
+      await updatePreviewSetting("enableTelemetry", undefined);
+      await updatePreviewSetting("showFeaturePopups", undefined);
+    }
+    this.updateWebviewContent();
+    this.postCurrentView();
+    this.postSettings();
   }
 
   async toggleView(view: SidebarView) {
-    this.currentView = this.currentView === view ? "home" : view;
+    await this.setCurrentView(this.currentView === view ? "home" : view);
     await vscode.commands.executeCommand("preview_mermaidWebview.focus");
     this.postCurrentView();
     this.postSettings();
+  }
+
+  private async setCurrentView(view: SidebarView) {
+    this.currentView = view;
+    await vscode.commands.executeCommand("setContext", SIDEBAR_VIEW_CONTEXT_KEY, view);
   }
 
   private updateWebviewContent() {
