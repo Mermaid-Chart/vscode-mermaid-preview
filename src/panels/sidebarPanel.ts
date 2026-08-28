@@ -1,4 +1,7 @@
+import axios from "axios";
 import * as vscode from "vscode";
+import * as packageJson from "../../package.json";
+import httpClient from "../httpClient";
 import { generateWebviewContent, SidebarView } from "../templates/sidebarTemplate";
 import { MERMAID_CHART_EXTENSION_ID, THIS_EXTENSION_ID } from "../conflictHandle";
 import {
@@ -9,6 +12,21 @@ import {
 
 // Drives which title-bar icon variant is shown, so the open section reads as selected.
 const SIDEBAR_VIEW_CONTEXT_KEY = "mermaidPreview:sidebarView";
+const LAST_FEEDBACK_SUBMITTED_AT_KEY = "mermaidPreview.lastFeedbackSubmittedAt";
+const FEEDBACK_RATE_LIMIT_MS = 24 * 60 * 60 * 1000;
+
+/** Set to true only while testing the extension-side feedback flow locally. It will skip the rate limit check. */
+/**
+ * @todo Remove this once the feedback flow is fully tested.
+ */
+const feedbackRateLimitDisabledForTesting = true;
+
+interface FeedbackSubmission {
+  activity: string;
+  frequency: string;
+  details: string;
+  email: string;
+}
 
 export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
   private context: vscode.ExtensionContext;
@@ -77,6 +95,9 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
           `@ext:${THIS_EXTENSION_ID}`
         );
       }
+      if (message.command === "submitFeedback") {
+        await this.submitFeedback(message.feedback);
+      }
       if (message.command === "ready") {
         this.postCurrentView();
         this.postSettings();
@@ -129,5 +150,72 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       showFeaturePopups: configuration.get<boolean>("showFeaturePopups", true),
       vscodeTelemetryEnabled: vscode.env.isTelemetryEnabled,
     });
+  }
+
+  private async submitFeedback(feedback: FeedbackSubmission | undefined) {
+    if (
+      !feedback ||
+      !feedback.activity ||
+      !feedback.frequency ||
+      !feedback.details?.trim() ||
+      !feedback.email?.trim()
+    ) {
+      this.postFeedbackResult("error", "Please complete all feedback fields.");
+      return;
+    }
+
+    const lastSubmittedAt = feedbackRateLimitDisabledForTesting
+      ? undefined
+      : this.context.globalState.get<number>(LAST_FEEDBACK_SUBMITTED_AT_KEY);
+    if (
+      lastSubmittedAt !== undefined &&
+      Date.now() - lastSubmittedAt < FEEDBACK_RATE_LIMIT_MS
+    ) {
+      const message = "You can only send one feedback submission every 24 hours.";
+      void vscode.window.showWarningMessage(message);
+      this.postFeedbackResult("rateLimited", message);
+      return;
+    }
+
+    try {
+      await httpClient.post("/rest-api/plugins/feedback", {
+        // The server applies the same daily limit per analyticsID, so testing mode needs a
+        // fresh one each time or every retry comes back as 429.
+        analyticsID: feedbackRateLimitDisabledForTesting
+          ? `${vscode.env.machineId}-test-${Date.now()}`
+          : vscode.env.machineId,
+        activity: feedback.activity,
+        frequency: feedback.frequency,
+        details: feedback.details.trim(),
+        email: feedback.email.trim(),
+        pluginSource: "vsCodePreview",
+        extensionVersion: packageJson.version,
+      });
+      await this.context.globalState.update(
+        LAST_FEEDBACK_SUBMITTED_AT_KEY,
+        // Storing nothing in testing mode keeps a stale timestamp from blocking the next
+        // real send once the flag goes back to false.
+        feedbackRateLimitDisabledForTesting ? undefined : Date.now()
+      );
+
+      const message = "Thank you. Your feedback was sent.";
+      void vscode.window.showInformationMessage(message);
+      this.postFeedbackResult("success", message);
+    } catch (error: unknown) {
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+      const message =
+        status === 429
+          ? "You can only send one feedback submission every 24 hours."
+          : "Unable to send feedback. Please try again.";
+      void vscode.window.showWarningMessage(message);
+      this.postFeedbackResult(status === 429 ? "rateLimited" : "error", message);
+    }
+  }
+
+  private postFeedbackResult(
+    status: "success" | "error" | "rateLimited",
+    message: string
+  ) {
+    void this._view?.webview.postMessage({ command: "feedbackResult", status, message });
   }
 }
