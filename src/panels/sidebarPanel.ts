@@ -179,11 +179,6 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
 
     try {
       await httpClient.post("/rest-api/plugins/feedback", {
-        // The server applies the same daily limit per analyticsID, so testing mode needs a
-        // fresh one each time or every retry comes back as 429.
-        analyticsID: feedbackRateLimitDisabledForTesting
-          ? `${vscode.env.machineId}-test-${Date.now()}`
-          : vscode.env.machineId,
         activity: feedback.activity,
         frequency: feedback.frequency,
         details: feedback.details.trim(),
