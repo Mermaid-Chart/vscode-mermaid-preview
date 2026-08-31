@@ -94,8 +94,10 @@
 
     const element = document.getElementById("mermaid-diagram");
     if (element && diagramContent) {
+      let diagramType;
       try {
         const parsed = await mermaid.parse(diagramContent || 'info')
+        diagramType = parsed?.diagram?.type;
         if (parsed?.config?.theme && 
             ['default', 'base', 'dark' , 'forest' , 'neutral' , 'neo' , 'neo-dark' , 'redux' , 'redux-dark' , 'redux-color' , 'redux-dark-color' , 'mc' , 'null'].includes(parsed.config.theme)) {
           theme = parsed.config.theme;
@@ -162,6 +164,10 @@
 
           updateCursorStyle();
         }
+        vscode.postMessage({
+          type: "renderSuccess",
+          diagramType,
+        });
         if(hasErrorOccured){
           vscode.postMessage({
             type: "clearError", 
@@ -173,6 +179,7 @@
         vscode.postMessage({
           type: "error",
           message: errorMessage,
+          diagramType,
         });
         hasErrorOccured = true
         element.innerHTML = "";

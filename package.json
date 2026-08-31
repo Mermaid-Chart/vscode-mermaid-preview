@@ -708,6 +708,10 @@
       ],
       "commandPalette": [
         {
+          "command": "preview.mermaidChart.previewFromContextMenu",
+          "when": "false"
+        },
+        {
           "command": "preview.mermaidChart.openSettingsActive",
           "when": "false"
         },
@@ -725,7 +729,7 @@
       ],
       "editor/context": [
         {
-          "command": "preview.mermaidChart.preview",
+          "command": "preview.mermaidChart.previewFromContextMenu",
           "when": "(resourceExtname =~ /^\\.(mmd|mermaid)$/ || resourceLangId =~ /^mermaid/) && mermaidPreview:isActive",
           "group": "navigation"
         },
@@ -798,6 +802,12 @@
         "when": "mermaidPreview:isActive"
       },
       {
+        "command": "preview.mermaidChart.previewFromContextMenu",
+        "title": "Preview Diagram",
+        "category": "Mermaid Preview",
+        "when": "mermaidPreview:isActive"
+      },
+      {
         "command": "preview.mermaidChart.createMermaidFile",
         "title": "Create Diagram",
         "category": "Mermaid Preview",
@@ -825,7 +835,7 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm compile",
-    "precompile": "pnpm --filter ./webview build && webpack --mode=production --config ./build/markdownPreview.webpack.config.js",
+    "precompile": "node ./build/generateMermaidDiagramTypes.mjs && pnpm --filter ./webview build && webpack --mode=production --config ./build/markdownPreview.webpack.config.js",
     "compile": "tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "tsc -p ./ --noEmit --watch",
     "pretest": "pnpm compile && pnpm lint",

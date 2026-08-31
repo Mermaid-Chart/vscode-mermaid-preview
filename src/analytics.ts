@@ -3,13 +3,40 @@ import * as vscode from "vscode";
 import * as packageJson from '../package.json';
 import { isPreviewTelemetryEnabled } from "./settings";
 
+/** Where the user started the action.
+ *  commandPalette     — Command Palette (Preview Diagram / Create Diagram)
+ *  contextMenu        — right-click in the editor (Preview Diagram)
+ *  sidebar            — Open preview on the Mermaid Preview sidebar
+ *  markdownCodeBlock  — a mermaid block in Markdown, via the Edit Diagram CodeLens
+ *                       or the VS Code Markdown preview
+ */
+export type PreviewEntryPoint =
+  | "commandPalette"
+  | "contextMenu"
+  | "markdownCodeBlock"
+  | "sidebar";
+
+export type PreviewRenderErrorType =
+  | "maxTextSizeExceeded"
+  | "maxEdgesExceeded"
+  | "unknownDiagramType"
+  | "syntaxError";
+
 export interface PulseEventOptions {
-  errorMessage?: string;
+  action?: "PNG" | "SVG";
+  creationMethod?: "command" | "sidebarAdd" | "markdownCodeBlock";
   diagramType?: string;
+  entryPoint?: PreviewEntryPoint;
+  errorMessage?: string;
+  errorType?: PreviewRenderErrorType;
+  isFirstPreviewOfSession?: boolean;
   pluginSource?: 'vsCodePreview';
+  renderStatus?: "success" | "error";
+  status?: "success" | "error";
 }
 
 class Analytics {
+  private hasPreviewedInSession = false;
 
   public sendEvent(eventName: string, eventID: string, options?: PulseEventOptions) {
     if (!isPreviewTelemetryEnabled()) {
@@ -23,6 +50,8 @@ class Analytics {
       eventName,
       eventID,
       pluginSource: 'vsCodePreview' as const,
+      extensionVersion: packageJson.version,
+      vscodeVersion: vscode.version,
       ...options,
     };
 
@@ -39,11 +68,47 @@ class Analytics {
     }
   }
 
-  public trackPreviewRenderFailed(errorMessage: string, diagramType?: string) {
-    this.sendEvent('VS Code Preview Render Failed', 'VS_CODE_PLUGIN_PREVIEW_RENDER_FAILED', {
-      errorMessage,
-      diagramType,
-    });
+  // The diagram type is only known once mermaid has parsed the source in the webview,
+  // which has not happened yet at creation time.
+  public trackDiagramCreated(
+    creationMethod: "command" | "sidebarAdd" | "markdownCodeBlock",
+    entryPoint: PreviewEntryPoint,
+    status: "success" | "error"
+  ) {
+    this.sendEvent(
+      "VS Code Preview Diagram Created",
+      "VS_CODE_PREVIEW_PLUGIN_DIAGRAM_CREATED",
+      { creationMethod, entryPoint, status }
+    );
+  }
+
+  /** `renderStatus` and `diagramType` are omitted for the Markdown preview, where mermaid
+   *  runs in a webview owned by the built-in Markdown extension and cannot report back. */
+  public trackDiagramPreviewed(
+    entryPoint: PreviewEntryPoint,
+    details: {
+      renderStatus?: "success" | "error";
+      diagramType?: string;
+      errorType?: PreviewRenderErrorType;
+      errorMessage?: string;
+    } = {}
+  ) {
+    const isFirstPreviewOfSession = !this.hasPreviewedInSession;
+    this.hasPreviewedInSession = true;
+
+    this.sendEvent(
+      "VS Code Preview Diagram Previewed",
+      "VS_CODE_PREVIEW_PLUGIN_DIAGRAM_PREVIEWED",
+      { entryPoint, isFirstPreviewOfSession, ...details }
+    );
+  }
+
+  public trackPreviewExportAction(action: "PNG" | "SVG", diagramType?: string) {
+    this.sendEvent(
+      "VS Code Preview Export Action",
+      "VS_CODE_PREVIEW_PLUGIN_EXPORT_ACTION",
+      { action, diagramType }
+    );
   }
 }
 

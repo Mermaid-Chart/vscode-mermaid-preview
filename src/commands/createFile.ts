@@ -1,9 +1,18 @@
 import * as vscode from "vscode";
 import { PreviewPanel } from "../panels/previewPanel";
-import analytics from "../analytics";
+import analytics, { PreviewEntryPoint } from "../analytics";
+
+interface CreateMermaidFileOptions {
+  creationMethod: "command" | "sidebarAdd" | "markdownCodeBlock";
+  entryPoint: PreviewEntryPoint;
+}
 
 export async function createMermaidFile(
-  diagramContent: string | null
+  diagramContent: string | null,
+  options: CreateMermaidFileOptions = {
+    creationMethod: "command",
+    entryPoint: "commandPalette",
+  }
 ): Promise<vscode.TextEditor | null> {
   const exampleContent = `flowchart TD
     %% Nodes
@@ -41,19 +50,22 @@ export async function createMermaidFile(
 
     const editor = await vscode.window.showTextDocument(document);
     if (!editor?.document) {
+      analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "error");
       return null;
     }
 
-    PreviewPanel.createOrShow(editor.document);
+    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "success");
+    PreviewPanel.createOrShow(editor.document, options.entryPoint);
     return editor;
   } catch (error) {
     console.error("Error creating Mermaid file:", error);
+    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "error");
     analytics.trackException(error);
     return null;
   }
 }
 
-export function getPreview() {
+export function getPreview(entryPoint: PreviewEntryPoint = "commandPalette") {
   const activeEditor = vscode.window.activeTextEditor;
   
   if (!activeEditor) {
@@ -69,5 +81,5 @@ export function getPreview() {
     vscode.window.showErrorMessage("Mermaid Preview is only available for mermaid files.");
     return;
   }
-  PreviewPanel.createOrShow(document);
+  PreviewPanel.createOrShow(document, entryPoint);
 }
