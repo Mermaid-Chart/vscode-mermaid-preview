@@ -1,5 +1,4 @@
 const mermaidExamples = require('@mermaid-js/examples');
-console.log(mermaidExamples.diagramData);
 
 interface MermaidExample {
   code: string;

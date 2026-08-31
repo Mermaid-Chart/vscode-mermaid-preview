@@ -3,14 +3,28 @@ import { debounce } from "../utils/debounce";
 import { getWebviewHTML } from "../templates/previewTemplate";
 import * as packageJson from "../../package.json";
 import { saveDiagramAsPng, saveDiagramAsSvg } from "../services/renderService";
-import { getFirstWordFromDiagram } from "../frontmatter";
-import analytics from "../analytics";
+import analytics, { PreviewEntryPoint, PreviewRenderErrorType } from "../analytics";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
 const MAX_CHAR_LENGTH = "mermaid.vscode.max_CharLength";
 const MAX_EDGES = "mermaid.vscode.max_Edges";
 const MAX_ERROR_REASON_LENGTH = 300;
+
+// Mermaid raises the size limits and an unknown-type error through the same channel as
+// parser errors, so the message is the only thing that separates them.
+function toErrorType(errorMessage: string): PreviewRenderErrorType {
+  if (errorMessage.includes("Maximum text size in diagram exceeded")) {
+    return "maxTextSizeExceeded";
+  }
+  if (errorMessage.includes("Edge limit exceeded")) {
+    return "maxEdgesExceeded";
+  }
+  if (errorMessage.includes("No diagram type detected")) {
+    return "unknownDiagramType";
+  }
+  return "syntaxError";
+}
 
 
 export class PreviewPanel {
@@ -21,13 +35,20 @@ export class PreviewPanel {
   private isFileChange = false;
   private readonly diagnosticsCollection: vscode.DiagnosticCollection;
   private lastContent: string = "";
-  private lastReportedError: string | undefined;
+  private hasTrackedPreview = false;
+  private lastDiagramType: string | undefined;
+  private readonly entryPoint: PreviewEntryPoint;
 
 
 
-  private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    document: vscode.TextDocument,
+    entryPoint: PreviewEntryPoint
+  ) {
     this.panel = panel;
     this.document = document;
+    this.entryPoint = entryPoint;
     this.diagnosticsCollection = vscode.languages.createDiagnosticCollection("mermaid");
 
 
@@ -35,7 +56,10 @@ export class PreviewPanel {
     this.setupListeners();
   }
 
-  public static createOrShow(document: vscode.TextDocument) {
+  public static createOrShow(
+    document: vscode.TextDocument,
+    entryPoint: PreviewEntryPoint = "commandPalette"
+  ) {
     if (PreviewPanel.currentPanel) {
       PreviewPanel.currentPanel.panel.reveal();
       return;
@@ -47,7 +71,7 @@ export class PreviewPanel {
       vscode.ViewColumn.Beside,
       { enableScripts: true }
     );
-    PreviewPanel.currentPanel = new PreviewPanel(panel, document);
+    PreviewPanel.currentPanel = new PreviewPanel(panel, document, entryPoint);
   }
 
   private update() {
@@ -117,11 +141,14 @@ export class PreviewPanel {
 
   this.panel.webview.onDidReceiveMessage(async (message) => {
     if (message.type === "error" && message.message) {
-      this.handleDiagramError(message.message);
+      this.handleDiagramError(message.message, message.diagramType);
+    } else if (message.type === "renderSuccess") {
+      this.lastDiagramType = message.diagramType;
+      this.trackRender("success");
     } else if (message.type === "clearError") {
       this.diagnosticsCollection.clear();
-      this.lastReportedError = undefined;
     } else if (message.type === "exportPng" && message.pngBase64) {
+      analytics.trackPreviewExportAction("PNG", this.lastDiagramType);
       await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         title: "Exporting PNG...",
@@ -130,6 +157,7 @@ export class PreviewPanel {
         await saveDiagramAsPng(this.document, message.pngBase64, this.lastContent);;
       });
     } else if (message.type === "exportSvg" && message.svgBase64) {
+      analytics.trackPreviewExportAction("SVG", this.lastDiagramType);
       await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         title: "Exporting SVG...",
@@ -143,8 +171,9 @@ export class PreviewPanel {
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
   }
 
-  private handleDiagramError(errorMessage: string) {
-    this.trackRenderFailure(errorMessage);
+  private handleDiagramError(errorMessage: string, diagramType?: string) {
+    this.lastDiagramType = diagramType;
+    this.trackRender("error", errorMessage);
 
     const diagnostics: vscode.Diagnostic[] = [];
     const errorDetails = this.getErrorLine(errorMessage);
@@ -182,19 +211,24 @@ export class PreviewPanel {
     this.diagnosticsCollection.set(this.document.uri, diagnostics);
   }
   
-  private trackRenderFailure(errorMessage: string) {
-    const reason = this.toSafeErrorReason(errorMessage);
-
-    // The webview re-renders on theme changes and repeated edits, so only report a reason once.
-    if (reason === this.lastReportedError) {
+  private trackRender(status: "success" | "error", errorMessage?: string) {
+    // Only the first render of this panel is recorded. Later renders come from keystrokes,
+    // theme changes, or switching files, and would mostly report half-typed diagrams.
+    if (this.hasTrackedPreview) {
       return;
     }
-    this.lastReportedError = reason;
+    this.hasTrackedPreview = true;
 
-    analytics.trackPreviewRenderFailed(
-      reason,
-      getFirstWordFromDiagram(this.lastContent) || undefined
-    );
+    analytics.trackDiagramPreviewed(this.entryPoint, {
+      renderStatus: status,
+      diagramType: this.lastDiagramType,
+      ...(errorMessage
+        ? {
+            errorType: toErrorType(errorMessage),
+            errorMessage: this.toSafeErrorReason(errorMessage),
+          }
+        : {}),
+    });
   }
 
   // Mermaid parse errors quote the offending diagram source under a caret line;

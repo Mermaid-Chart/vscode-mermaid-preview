@@ -75,7 +75,10 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (message) => {
       if (message.command === "openPreview") {
-        await vscode.commands.executeCommand("preview.mermaidChart.createMermaidFile");
+        await vscode.commands.executeCommand(
+          "preview.mermaidChart.createMermaidFile",
+          "sidebar"
+        );
       }
       if (message.command === "getExtension") {
         await vscode.commands.executeCommand(
