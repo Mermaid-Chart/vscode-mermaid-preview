@@ -50,16 +50,16 @@ export async function createMermaidFile(
 
     const editor = await vscode.window.showTextDocument(document);
     if (!editor?.document) {
-      analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "error");
+      analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "failed");
       return null;
     }
 
-    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "success");
+    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "ok");
     PreviewPanel.createOrShow(editor.document, options.entryPoint);
     return editor;
   } catch (error) {
     console.error("Error creating Mermaid file:", error);
-    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "error");
+    analytics.trackDiagramCreated(options.creationMethod, options.entryPoint, "failed");
     analytics.trackException(error);
     return null;
   }
