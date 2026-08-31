@@ -144,7 +144,7 @@ export class PreviewPanel {
       this.handleDiagramError(message.message, message.diagramType);
     } else if (message.type === "renderSuccess") {
       this.lastDiagramType = message.diagramType;
-      this.trackRender("success");
+      this.trackRender("ok");
     } else if (message.type === "clearError") {
       this.diagnosticsCollection.clear();
     } else if (message.type === "exportPng" && message.pngBase64) {
@@ -173,7 +173,7 @@ export class PreviewPanel {
 
   private handleDiagramError(errorMessage: string, diagramType?: string) {
     this.lastDiagramType = diagramType;
-    this.trackRender("error", errorMessage);
+    this.trackRender("failed", errorMessage);
 
     const diagnostics: vscode.Diagnostic[] = [];
     const errorDetails = this.getErrorLine(errorMessage);
@@ -211,7 +211,7 @@ export class PreviewPanel {
     this.diagnosticsCollection.set(this.document.uri, diagnostics);
   }
   
-  private trackRender(status: "success" | "error", errorMessage?: string) {
+  private trackRender(status: "ok" | "failed", errorMessage?: string) {
     // Only the first render of this panel is recorded. Later renders come from keystrokes,
     // theme changes, or switching files, and would mostly report half-typed diagrams.
     if (this.hasTrackedPreview) {
@@ -220,7 +220,7 @@ export class PreviewPanel {
     this.hasTrackedPreview = true;
 
     analytics.trackDiagramPreviewed(this.entryPoint, {
-      renderStatus: status,
+      status,
       diagramType: this.lastDiagramType,
       ...(errorMessage
         ? {

@@ -31,8 +31,7 @@ export interface PulseEventOptions {
   errorType?: PreviewRenderErrorType;
   isFirstPreviewOfSession?: boolean;
   pluginSource?: 'vsCodePreview';
-  renderStatus?: "success" | "error";
-  status?: "success" | "error";
+  status?: "ok" | "failed";
 }
 
 class Analytics {
@@ -73,7 +72,7 @@ class Analytics {
   public trackDiagramCreated(
     creationMethod: "command" | "sidebarAdd" | "markdownCodeBlock",
     entryPoint: PreviewEntryPoint,
-    status: "success" | "error"
+    status: "ok" | "failed"
   ) {
     this.sendEvent(
       "VS Code Preview Diagram Created",
@@ -82,12 +81,12 @@ class Analytics {
     );
   }
 
-  /** `renderStatus` is omitted for the Markdown preview, where mermaid runs in a webview owned
+  /** `status` is omitted for the Markdown preview, where mermaid runs in a webview owned
    *  by the built-in Markdown extension that cannot report the outcome back to us. */
   public trackDiagramPreviewed(
     entryPoint: PreviewEntryPoint,
     details: {
-      renderStatus?: "success" | "error";
+      status?: "ok" | "failed";
       diagramType?: string;
       errorType?: PreviewRenderErrorType;
       errorMessage?: string;
