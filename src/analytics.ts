@@ -82,8 +82,8 @@ class Analytics {
     );
   }
 
-  /** `renderStatus` and `diagramType` are omitted for the Markdown preview, where mermaid
-   *  runs in a webview owned by the built-in Markdown extension and cannot report back. */
+  /** `renderStatus` is omitted for the Markdown preview, where mermaid runs in a webview owned
+   *  by the built-in Markdown extension that cannot report the outcome back to us. */
   public trackDiagramPreviewed(
     entryPoint: PreviewEntryPoint,
     details: {
