@@ -19,7 +19,7 @@ const FEEDBACK_RATE_LIMIT_MS = 24 * 60 * 60 * 1000;
 /**
  * @todo Remove this once the feedback flow is fully tested.
  */
-const feedbackRateLimitDisabledForTesting = true;
+const feedbackRateLimitDisabledForTesting = false;
 
 interface FeedbackSubmission {
   activity: string;
