@@ -17,10 +17,10 @@ import { createMermaidFile, getPreview } from "./commands/createFile";
 import { handleTextDocumentChange } from "./eventHandlers";
 import { getSnippetsBasedOnDiagram } from "./constants/condSnippets";
 import { getDiagramKeyword, getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
-import analytics from "./analytics";
+import analytics, { PreviewEntryPoint } from "./analytics";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
-import { checkForOfficialExtension } from "./conflictHandle";
+import { checkForOfficialExtension, MERMAID_CHART_EXTENSION_ID } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
 import { MermaidWebviewProvider } from "./panels/sidebarPanel";
 import { shouldShowFeaturePopups } from "./settings";
@@ -118,12 +118,23 @@ async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
   const choice = await vscode.window.showInformationMessage(
     movedFeatureMessage,
     "Show more",
+    "Get the extension",
     "Discard"
   );
+
+  if (choice === "Get the extension") {
+    await vscode.commands.executeCommand(
+      "preview.mermaidChart.getChartExtension",
+      "featureMovedPopup"
+    );
+    return;
+  }
 
   if (choice !== "Show more") {
     return;
   }
+
+  analytics.trackShowMoreClick();
 
   const docPath = path.join(context.extensionPath, "docs", "MermaidPreviewChanges.md");
   const doc = await vscode.workspace.openTextDocument(docPath);
@@ -159,6 +170,18 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewViewProvider("preview_mermaidWebview", mermaidWebviewProvider),
     vscode.commands.registerCommand("preview.mermaidChart.reloadSidebar", () =>
       mermaidWebviewProvider.refresh()
+    ),
+    // Shared by the sidebar call to action and the moved-feature notification, so both
+    // record the same event and land on the same Marketplace search.
+    vscode.commands.registerCommand(
+      "preview.mermaidChart.getChartExtension",
+      async (entryPoint: PreviewEntryPoint = "sidebar") => {
+        analytics.trackInstallationClick(entryPoint);
+        await vscode.commands.executeCommand(
+          "workbench.extensions.search",
+          `@id:${MERMAID_CHART_EXTENSION_ID}`
+        );
+      }
     ),
     vscode.commands.registerCommand("preview.mermaidChart.openSettings", () => {
       mermaidWebviewProvider.toggleView("settings");

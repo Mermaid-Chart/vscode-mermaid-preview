@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import * as packageJson from "../../package.json";
 import httpClient from "../httpClient";
 import { generateWebviewContent, SidebarView } from "../templates/sidebarTemplate";
-import { MERMAID_CHART_EXTENSION_ID, THIS_EXTENSION_ID } from "../conflictHandle";
+import { THIS_EXTENSION_ID } from "../conflictHandle";
 import {
   enableTelemetrySetting,
   showFeaturePopupsSetting,
@@ -82,8 +82,8 @@ export class MermaidWebviewProvider implements vscode.WebviewViewProvider {
       }
       if (message.command === "getExtension") {
         await vscode.commands.executeCommand(
-          "workbench.extensions.search",
-          `@id:${MERMAID_CHART_EXTENSION_ID}`
+          "preview.mermaidChart.getChartExtension",
+          "sidebar"
         );
       }
       if (message.command === "setTelemetry" && typeof message.enabled === "boolean") {
