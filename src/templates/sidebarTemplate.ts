@@ -348,7 +348,7 @@ export function generateWebviewContent(
 
         <p class="upsell">
             Want to sync your account or AI features?<br>
-            <a id="getExtension" class="upsell-link">Get the Mermaid Chart extension <span class="arrow">&#10132;</span></a>
+            <a id="getExtension" class="upsell-link">Get the Mermaid extension <span class="arrow">&#10132;</span></a>
         </p>
 
         <div class="split-note">
@@ -375,7 +375,7 @@ export function generateWebviewContent(
         <div class="setting-row">
             <div>
                 <p class="setting-label">"Feature moved" popups</p>
-                <p class="setting-description">Notices when a feature moved to Mermaid Chart.</p>
+                <p class="setting-description">Notices when a feature moved to Mermaid.</p>
             </div>
             <button id="featurePopupsToggle" class="toggle" role="switch" aria-checked="true" aria-label="Feature moved popups"></button>
         </div>

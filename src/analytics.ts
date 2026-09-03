@@ -9,7 +9,7 @@ import { isPreviewTelemetryEnabled } from "./settings";
  *  sidebar            — Open preview or the Chart call to action on the sidebar
  *  markdownCodeBlock  — a mermaid block in Markdown, via the Edit Diagram CodeLens
  *                       or the VS Code Markdown preview
- *  featureMovedPopup  — the "feature moved to Mermaid Chart" notification
+ *  featureMovedPopup  — the "feature moved to Mermaid" notification
  */
 export type PreviewEntryPoint =
   | "commandPalette"
@@ -104,7 +104,7 @@ class Analytics {
     );
   }
 
-  /** A call to action that opens the Mermaid Chart extension in the Marketplace. */
+  /** A call to action that opens the Mermaid extension in the Marketplace. */
   public trackInstallationClick(entryPoint: PreviewEntryPoint) {
     this.sendEvent(
       "VS Code Preview Installation Click",

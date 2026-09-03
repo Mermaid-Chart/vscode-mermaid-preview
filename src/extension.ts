@@ -108,7 +108,7 @@ function trackMarkdownMermaidPreview(md: MarkdownIt) {
 }
 
 const movedFeatureMessage =
-  "Mermaid Preview Alert: This functionality has moved to the Mermaid Chart extension. Click Show more to understand more.";
+  "Mermaid Preview Alert: This functionality has moved to the Mermaid extension. Click Show more to understand more.";
 
 async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
   if (!shouldShowFeaturePopups()) {

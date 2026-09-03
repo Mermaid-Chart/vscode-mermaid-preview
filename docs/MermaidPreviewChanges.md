@@ -4,19 +4,19 @@
 
 **Mermaid Preview is now a local-only preview extension.**
 
-Everything that needed a Mermaid Chart account has moved to the **[Mermaid Chart](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart)** extension. Install it to keep using those features.
+Everything that needed a Mermaid account has moved to the **[Mermaid](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart)** extension. Install it to keep using those features.
 
 ---
 
-## 📦 Moved to the Mermaid Chart extension
+## 📦 Moved to the Mermaid extension
 
 These features are no longer part of Mermaid Preview:
 
-- **Sync Diagram** — saving a diagram back to your Mermaid Chart account
-- **Connect Diagram** — attaching a local diagram to a Mermaid Chart project
-- **Link Diagram** — inserting a Mermaid Chart diagram ID into your code
-- **Login / Logout** — Mermaid Chart accounts and sign-in
-- **Cloud diagram browser** — browsing Mermaid Chart projects and diagrams in the side panel
+- **Sync Diagram** — saving a diagram back to your Mermaid account
+- **Connect Diagram** — attaching a local diagram to a Mermaid project
+- **Link Diagram** — inserting a Mermaid diagram ID into your code
+- **Login / Logout** — Mermaid accounts and sign-in
+- **Cloud diagram browser** — browsing Mermaid projects and diagrams in the side panel
 - **Download diagram** — pulling a cloud diagram into your editor
 - **Refresh** — re-syncing the cloud diagram list
 - **Smart sync & conflict detection** — comparing local and remote versions
@@ -44,8 +44,8 @@ Mermaid Preview keeps everything that works without an account:
 
 ## 🚀 Keep using the moved features
 
-1. Install the **Mermaid Chart** extension from the VS Code Marketplace.
-2. Sign in with your Mermaid Chart account.
+1. Install the **Mermaid** extension from the VS Code Marketplace.
+2. Sign in with your Mermaid account.
 3. Sync, Connect, Link, and the cloud side panel work there as before.
 
 
@@ -55,6 +55,6 @@ Mermaid Preview keeps everything that works without an account:
 
 | Command | Where it moved |
 |---------|----------------|
-| **Mermaid Preview: Sync Diagram** | Mermaid Chart extension |
-| **Mermaid Preview: Connect Diagram** | Mermaid Chart extension |
-| **Mermaid Preview: Link Diagram** | Mermaid Chart extension |
+| **Mermaid Preview: Sync Diagram** | Mermaid extension |
+| **Mermaid Preview: Connect Diagram** | Mermaid extension |
+| **Mermaid Preview: Link Diagram** | Mermaid extension |

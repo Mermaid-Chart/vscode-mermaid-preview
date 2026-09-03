@@ -649,7 +649,7 @@
         "preview.mermaid.showFeaturePopups": {
           "type": "boolean",
           "default": true,
-          "description": "Show notifications when a feature has moved to the Mermaid Chart extension."
+          "description": "Show notifications when a feature has moved to the Mermaid extension."
         }
       }
     },
