@@ -4,6 +4,7 @@ import { getWebviewHTML } from "../templates/previewTemplate";
 import * as packageJson from "../../package.json";
 import { saveDiagramAsPng, saveDiagramAsSvg } from "../services/renderService";
 import analytics, { PreviewEntryPoint, PreviewRenderErrorType } from "../analytics";
+import { getFirstWordFromDiagram } from "../frontmatter";
 const DARK_THEME_KEY = "mermaid.vscode.dark_theme";
 const LIGHT_THEME_KEY = "mermaid.vscode.light_theme";
 const MAX_ZOOM= "mermaid.vscode.max_Zoom";
@@ -141,9 +142,10 @@ export class PreviewPanel {
 
   this.panel.webview.onDidReceiveMessage(async (message) => {
     if (message.type === "error" && message.message) {
-      this.handleDiagramError(message.message, message.diagramType);
+      this.handleDiagramError(message.message);
     } else if (message.type === "renderSuccess") {
-      this.lastDiagramType = message.diagramType;
+      // Parse still decides success/failure in the webview; analytics type is the source keyword.
+      this.lastDiagramType = getFirstWordFromDiagram(this.lastContent) || undefined;
       this.trackRender("ok");
     } else if (message.type === "clearError") {
       this.diagnosticsCollection.clear();
@@ -171,8 +173,8 @@ export class PreviewPanel {
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
   }
 
-  private handleDiagramError(errorMessage: string, diagramType?: string) {
-    this.lastDiagramType = diagramType;
+  private handleDiagramError(errorMessage: string) {
+    this.lastDiagramType = getFirstWordFromDiagram(this.lastContent) || undefined;
     this.trackRender("failed", errorMessage);
 
     const diagnostics: vscode.Diagnostic[] = [];
