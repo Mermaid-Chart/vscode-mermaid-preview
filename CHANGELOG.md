@@ -1,6 +1,6 @@
 # Change Log
 
-### 2.2.0 - 2026-09-03
+### 2.2.0 - 2026-09-04
 
 Mermaid Preview is now focused on free, local diagram previewing.
 
