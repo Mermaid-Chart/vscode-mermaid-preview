@@ -6,13 +6,15 @@ import { isPreviewTelemetryEnabled } from "./settings";
 /** Where the user started the action.
  *  commandPalette     — Command Palette (Preview Diagram / Create Diagram)
  *  contextMenu        — right-click in the editor (Preview Diagram)
- *  sidebar            — Open preview on the Mermaid Preview sidebar
+ *  sidebar            — Open preview or the Chart call to action on the sidebar
  *  markdownCodeBlock  — a mermaid block in Markdown, via the Edit Diagram CodeLens
  *                       or the VS Code Markdown preview
+ *  featureMovedPopup  — the "feature moved to Mermaid" notification
  */
 export type PreviewEntryPoint =
   | "commandPalette"
   | "contextMenu"
+  | "featureMovedPopup"
   | "markdownCodeBlock"
   | "sidebar";
 
@@ -61,9 +63,9 @@ class Analytics {
 
   public trackException(error: unknown) {
     if (error instanceof Error) {
-      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_PLUGIN_EXCEPTION', { errorMessage: error.message });
+      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_EXCEPTION', { errorMessage: error.message });
     } else {
-      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_PLUGIN_EXCEPTION', { errorMessage: "Unknown error occurred" });
+      this.sendEvent('VS Code Preview Extension Exception', 'VS_CODE_PREVIEW_EXCEPTION', { errorMessage: "Unknown error occurred" });
     }
   }
 
@@ -76,7 +78,7 @@ class Analytics {
   ) {
     this.sendEvent(
       "VS Code Preview Diagram Created",
-      "VS_CODE_PREVIEW_PLUGIN_DIAGRAM_CREATED",
+      "VS_CODE_PREVIEW_DIAGRAM_CREATED",
       { creationMethod, entryPoint, status }
     );
   }
@@ -97,15 +99,32 @@ class Analytics {
 
     this.sendEvent(
       "VS Code Preview Diagram Previewed",
-      "VS_CODE_PREVIEW_PLUGIN_DIAGRAM_PREVIEWED",
+      "VS_CODE_PREVIEW_DIAGRAM_PREVIEWED",
       { entryPoint, isFirstPreviewOfSession, ...details }
+    );
+  }
+
+  /** A call to action that opens the Mermaid extension in the Marketplace. */
+  public trackInstallationClick(entryPoint: PreviewEntryPoint) {
+    this.sendEvent(
+      "VS Code Preview Installation Click",
+      "VS_CODE_PREVIEW_INSTALLATION_CLICK",
+      { entryPoint }
+    );
+  }
+
+  public trackShowMoreClick() {
+    this.sendEvent(
+      "VS Code Preview Show More Click",
+      "VS_CODE_PREVIEW_SHOW_MORE_CLICK",
+      { entryPoint: "featureMovedPopup" }
     );
   }
 
   public trackPreviewExportAction(action: "PNG" | "SVG", diagramType?: string) {
     this.sendEvent(
       "VS Code Preview Export Action",
-      "VS_CODE_PREVIEW_PLUGIN_EXPORT_ACTION",
+      "VS_CODE_PREVIEW_EXPORT_ACTION",
       { action, diagramType }
     );
   }

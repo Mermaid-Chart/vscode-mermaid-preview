@@ -1,6 +1,6 @@
 # Change Log
 
-### 2.2.0 
+### 2.2.0 - 2026-09-04
 
 Mermaid Preview is now focused on free, local diagram previewing.
 
@@ -12,14 +12,14 @@ Mermaid Preview is now focused on free, local diagram previewing.
 - Syntax highlighting, snippets, diagram templates, and Diagram help
 - Local sidebar home and settings
 
-#### What moved to Mermaid Chart
+#### What moved to the Mermaid extension
 
 - Login and logout
 - Cloud Sync, Connect, and Link Diagram workflows
-- Mermaid Chart project and diagram browsing
+- Mermaid project and diagram browsing
 - AI chat and diagram regeneration
 
-The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
 
 ### 2.1.0 -2025-05-13
 ### New Features
@@ -53,7 +53,7 @@ New General Features
 - Refresh diagram
 - Dependency Update
 - Upgraded to latest Mermaid version `v11.4.1`
-- Added OAuth support for the MermaidChart.
+- Added OAuth support for Mermaid.
 - Added AI-powered diagramming capabilities
 - Introduced AI chat participant with `@mermaid-chart` command
 - Added smart diagram regeneration based on source file changes

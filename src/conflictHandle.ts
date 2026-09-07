@@ -4,7 +4,7 @@ export const THIS_EXTENSION_ID = 'vstirbu.vscode-mermaid-preview';
 export const IS_ACTIVE_CONTEXT_KEY = 'mermaidPreview:isActive';
 
 export async function checkForOfficialExtension(context: vscode.ExtensionContext): Promise<boolean> {
-  // Check if the official Mermaid Chart extension is installed
+  // Check if the official Mermaid extension is installed
   const officialExtension = vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
   
   if (officialExtension) {
@@ -17,7 +17,7 @@ export async function checkForOfficialExtension(context: vscode.ExtensionContext
     // Only show the message if we haven't shown it before
     if (!hasShownDeactivationMessage) {
       vscode.window.showWarningMessage(
-        'The Mermaid Chart extension is installed. Please refresh VS Code for changes to take effect.',
+        'The Mermaid extension is installed. Please refresh VS Code for changes to take effect.',
         'Refresh VS Code'
       ).then(selection => {
         if (selection === 'Refresh VS Code') {

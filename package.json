@@ -649,7 +649,7 @@
         "preview.mermaid.showFeaturePopups": {
           "type": "boolean",
           "default": true,
-          "description": "Show notifications when a feature has moved to the Mermaid Chart extension."
+          "description": "Show notifications when a feature has moved to the Mermaid extension."
         }
       }
     },
@@ -835,7 +835,7 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm compile",
-    "precompile": "node ./build/generateMermaidDiagramTypes.mjs && pnpm --filter ./webview build && webpack --mode=production --config ./build/markdownPreview.webpack.config.js",
+    "precompile": "pnpm --filter ./webview build && webpack --mode=production --config ./build/markdownPreview.webpack.config.js",
     "compile": "tsc -p ./ --noEmit && esbuild ./src/extension.ts --sourcemap --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "tsc -p ./ --noEmit --watch",
     "pretest": "pnpm compile && pnpm lint",

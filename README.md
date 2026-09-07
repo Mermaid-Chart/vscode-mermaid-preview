@@ -2,7 +2,7 @@
 
 ### 🚀 Now Proudly Maintained by the Creators of Mermaid.js 🚀
 
-Mermaid Preview is focused on free, local diagram previewing. Account login, cloud sync, and AI features now live in the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+Mermaid Preview is focused on free, local diagram previewing. Account login, cloud sync, and AI features now live in the [Mermaid extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
 
 ## Features
 
@@ -33,6 +33,32 @@ Currently supported diagrams and charts:
 - Architecture
 - Packet
 - Radar
+
+### Mermaid Preview Sidebar
+There is no login in Mermaid Preview anymore, because everything in this extension is free. Open the Mermaid icon in the activity bar and you can start a new diagram right away with **Open preview** — no account, no sign-up, no trial. If you also want AI diagramming and cloud save, those features live in the [Mermaid extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart), and the sidebar links straight to it.
+
+The icons in the sidebar title bar give you diagram help, a reload of the panel, settings, and the feedback form.
+
+![Mermaid Preview Sidebar](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-sidebar.png)
+
+### Settings
+The settings section has two toggles, and both are on by default.
+
+- **Share usage analytics** — when you turn this off, the extension stops recording and sending any analytics or logs, including preview failure reports. VS Code's own telemetry setting is still respected on top of this, so turning telemetry off in VS Code also disables ours.
+- **"Feature moved" popups** — some commands moved to the Mermaid extension, and Sync Diagram, Connect Diagram, and Link Diagram now show a notice saying so instead of running. Turn this off if you do not want those notices anymore.
+
+Use **Open VS code Mermaid settings** for the full list of extension settings, such as diagram themes and zoom limits. The reload icon in the title bar puts both toggles back to their defaults.
+
+![Settings](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-settings.png)
+
+### Send us feedback
+If something does not work or gets in your way, you can report it from the sidebar without leaving the editor and without an account. Open the feedback section and click **Open feedback form**.
+
+![Send us feedback](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-feedback.png)
+
+Tell us what you were doing, how often it happens, and describe the problem. Your email is required so we can reply to you there once we have looked into it. You can send one feedback submission per day, and the reload icon clears the form if you want to start over.
+
+![Feedback form](https://docs.mermaidchart.com/img/plugins/vscode-preview-plugin-feedback-form.png)
 
 ### Real-Time local Edit & Preview 
 Now you get a side-by-side real time preview of the mermaid diagram while editing the diagram locally. This helps the user to see the true power of a mermaid's text-based diagram, where each change in text is reflected immediately on the diagram.
@@ -111,11 +137,11 @@ This extension contributes the following settings:
 - `mermaid.vscode.max_CharLength`: Maximum number of characters allowed in a diagram's source.
 - `mermaid.vscode.max_Edges`: Maximum number of edges allowed in a diagram's source.
 - `preview.mermaid.enableTelemetry`: Allow Mermaid Preview to send anonymous preview failure analytics. Turn this off to stop all analytics. VS Code's own telemetry setting must also be enabled.
-- `preview.mermaid.showFeaturePopups`: Show notifications when a feature has moved to the Mermaid Chart extension.
+- `preview.mermaid.showFeaturePopups`: Show notifications when a feature has moved to the Mermaid extension.
 - `preview.mermaid.baseUrl`: Base URL used for extension usage analytics.
 
 ## Release Notes
-### 2.2.0
+### 2.2.0 - 2026-09-04
 Mermaid Preview is now focused on free, local diagram previewing.
 
 #### What remains in Preview
@@ -126,14 +152,14 @@ Mermaid Preview is now focused on free, local diagram previewing.
 - Syntax highlighting, snippets, diagram templates, and Diagram help
 - Local sidebar home and settings
 
-#### What moved to Mermaid Chart
+#### What moved to the Mermaid extension
 
 - Login and logout
 - Cloud Sync, Connect, and Link Diagram workflows
-- Mermaid Chart project and diagram browsing
+- Mermaid project and diagram browsing
 - AI chat and diagram regeneration
 
-The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid Chart extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
+The removed commands now show a notice instead of running their old cloud flows. Users who need account, cloud, or AI features can install the [Mermaid extension](https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart).
 
 ### 2.1.1 -2025-05-26
 - Enhanced Sidebar Layout to Improve User Guidance
@@ -166,7 +192,7 @@ New General Features
 - Refresh diagram
 - Dependency Update
 - Upgraded to latest Mermaid version `v11.4.1`
-- Added OAuth support for the MermaidChart.
+- Added OAuth support for Mermaid.
 - Added AI-powered diagramming capabilities
 - Introduced AI chat participant with `@mermaid-chart` command
 - Added smart diagram regeneration based on source file changes

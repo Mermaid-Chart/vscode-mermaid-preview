@@ -325,6 +325,19 @@ export function generateWebviewContent(
     .send-btn:hover {
       background: #524877;
     }
+
+    .send-btn:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+
+    .feedback-status {
+      min-height: 18px;
+      margin: 8px 0 0;
+      color: var(--text-color);
+      font-size: 11px;
+      line-height: 15px;
+    }
     </style>
 </head>
 <body>
@@ -335,7 +348,7 @@ export function generateWebviewContent(
 
         <p class="upsell">
             Want to sync your account or AI features?<br>
-            <a id="getExtension" class="upsell-link">Get the Mermaid Chart extension <span class="arrow">&#10132;</span></a>
+            <a id="getExtension" class="upsell-link">Get the Mermaid extension <span class="arrow">&#10132;</span></a>
         </p>
 
         <div class="split-note">
@@ -362,7 +375,7 @@ export function generateWebviewContent(
         <div class="setting-row">
             <div>
                 <p class="setting-label">"Feature moved" popups</p>
-                <p class="setting-description">Notices when a feature moved to Mermaid Chart.</p>
+                <p class="setting-description">Notices when a feature moved to Mermaid.</p>
             </div>
             <button id="featurePopupsToggle" class="toggle" role="switch" aria-checked="true" aria-label="Feature moved popups"></button>
         </div>
@@ -377,7 +390,7 @@ export function generateWebviewContent(
             <span>Send us feedback</span>
         </div>
 
-        <p class="feedback-intro">Opens a short form in your browser. Takes a minute, no account needed.</p>
+        <p class="feedback-intro">Share feedback with the Mermaid team. Takes a minute, no account needed.</p>
         <button id="openFeedbackForm" class="open-form-btn">Open feedback form</button>
     </section>
 
@@ -388,46 +401,52 @@ export function generateWebviewContent(
             <span>Send us feedback</span>
         </div>
 
-        <div class="field">
-            <label class="field-label" for="feedbackActivity">What were you doing?</label>
-            <select id="feedbackActivity" required>
-                <option value="" selected disabled hidden>Previewing a diagram</option>
-                <option>Previewing a diagram</option>
-                <option>Editing a diagram</option>
-                <option>Exporting a diagram</option>
-                <option>Previewing a markdown file</option>
-                <option>Something else</option>
-            </select>
-        </div>
+        <form id="feedbackForm">
+            <div class="field">
+                <label class="field-label" for="feedbackActivity">What were you doing?</label>
+                <select id="feedbackActivity" required>
+                    <option value="" selected disabled hidden>Choose an activity</option>
+                    <option>Previewing a diagram</option>
+                    <option>Editing a diagram</option>
+                    <option>Exporting a diagram</option>
+                    <option>Previewing a markdown file</option>
+                    <option>Something else</option>
+                </select>
+            </div>
 
-        <div class="field">
-            <label class="field-label" for="feedbackFrequency">How often?</label>
-            <select id="feedbackFrequency" required>
-                <option value="" selected disabled hidden>Every time</option>
-                <option>Every time</option>
-                <option>Often</option>
-                <option>Sometimes</option>
-                <option>Only once</option>
-            </select>
-        </div>
+            <div class="field">
+                <label class="field-label" for="feedbackFrequency">How often?</label>
+                <select id="feedbackFrequency" required>
+                    <option value="" selected disabled hidden>Choose a frequency</option>
+                    <option>Every time</option>
+                    <option>Often</option>
+                    <option>Sometimes</option>
+                    <option>Only once</option>
+                </select>
+            </div>
 
-        <div class="field">
-            <label class="field-label" for="feedbackDetails">What blocked or bothered you?</label>
-            <textarea id="feedbackDetails" placeholder="Tell us what happened"></textarea>
-        </div>
+            <div class="field">
+                <label class="field-label" for="feedbackDetails">What blocked or bothered you?</label>
+                <textarea id="feedbackDetails" required maxlength="4000" placeholder="Tell us what happened"></textarea>
+            </div>
 
-        <div class="field">
-            <label class="field-label" for="feedbackEmail">Email (optional)</label>
-            <input id="feedbackEmail" type="email" placeholder="you@example.com">
-        </div>
+            <div class="field">
+                <label class="field-label" for="feedbackEmail">Email</label>
+                <input id="feedbackEmail" type="email" required maxlength="320" placeholder="you@example.com">
+            </div>
 
-        <button class="send-btn" type="button">Send feedback</button>
+            <button id="sendFeedback" class="send-btn" type="submit">Send feedback</button>
+            <p id="feedbackStatus" class="feedback-status" role="status" aria-live="polite"></p>
+        </form>
     </section>
 
     <script>
         const vscode = acquireVsCodeApi();
         const telemetryToggle = document.getElementById('telemetryToggle');
         const featurePopupsToggle = document.getElementById('featurePopupsToggle');
+        const feedbackForm = document.getElementById('feedbackForm');
+        const sendFeedback = document.getElementById('sendFeedback');
+        const feedbackStatus = document.getElementById('feedbackStatus');
 
         document.getElementById('openPreview').addEventListener('click', () => {
             vscode.postMessage({ command: 'openPreview' });
@@ -461,6 +480,26 @@ export function generateWebviewContent(
             });
         });
 
+        feedbackForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!feedbackForm.reportValidity()) {
+                return;
+            }
+
+            sendFeedback.disabled = true;
+            sendFeedback.textContent = 'Sending...';
+            feedbackStatus.textContent = '';
+            vscode.postMessage({
+                command: 'submitFeedback',
+                feedback: {
+                    activity: document.getElementById('feedbackActivity').value,
+                    frequency: document.getElementById('feedbackFrequency').value,
+                    details: document.getElementById('feedbackDetails').value,
+                    email: document.getElementById('feedbackEmail').value
+                }
+            });
+        });
+
         window.addEventListener('message', (event) => {
             if (event.data?.command === 'showView') {
                 document.querySelectorAll('.view').forEach((section) => {
@@ -475,6 +514,15 @@ export function generateWebviewContent(
                     event.data.vscodeTelemetryEnabled
                         ? 'On by default. Render bugs only.'
                         : 'Disabled by VS Code telemetry settings.';
+            }
+
+            if (event.data?.command === 'feedbackResult') {
+                feedbackStatus.textContent = event.data.message;
+                sendFeedback.disabled = false;
+                sendFeedback.textContent = 'Send feedback';
+                if (event.data.status === 'success') {
+                    feedbackForm.reset();
+                }
             }
         });
 
