@@ -141,6 +141,9 @@ This extension contributes the following settings:
 - `preview.mermaid.baseUrl`: Base URL used for extension usage analytics.
 
 ## Release Notes
+### 2.2.1
+- Fixed a conflict so Mermaid Preview and Mermaid can be installed together and work without overlapping commands or UI.
+
 ### 2.2.0 - 2026-09-04
 Mermaid Preview is now focused on free, local diagram previewing.
 

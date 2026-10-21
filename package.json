@@ -3,7 +3,7 @@
   "displayName": "Mermaid Preview",
   "description": "Mermaid diagram previewer for Visual Studio Code, now maintained by the creators of Mermaid.js",
   "license": "MIT",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "publisher": "vstirbu",
   "bugs": {
     "url": "https://github.com/vstirbu/vscode-mermaid-preview/issues"
@@ -656,20 +656,18 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mermaidActivityBar",
+          "id": "mermaidPreviewActivityBar",
           "title": "Mermaid Preview",
-          "icon": "images/mermaid-icon-32-preview.svg",
-          "when": "mermaidPreview:isActive"
+          "icon": "images/mermaid-preview-activitybar.svg"
         }
       ]
     },
     "views": {
-      "mermaidActivityBar": [
+      "mermaidPreviewActivityBar": [
         {
           "id": "preview_mermaidWebview",
           "name": "Mermaid Preview",
-          "type": "webview",
-          "when": "mermaidPreview:isActive"
+          "type": "webview"
         }
       ]
     },

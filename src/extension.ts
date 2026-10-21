@@ -20,7 +20,7 @@ import { getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
 import analytics, { PreviewEntryPoint } from "./analytics";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
-import { checkForOfficialExtension, MERMAID_CHART_EXTENSION_ID } from "./conflictHandle";
+import { syncPreviewActiveContext, MERMAID_CHART_EXTENSION_ID } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
 import { MermaidWebviewProvider } from "./panels/sidebarPanel";
 import { shouldShowFeaturePopups } from "./settings";
@@ -118,27 +118,35 @@ async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  if (!(await checkForOfficialExtension(context))) {
-    return;
-  }
-  // Listen for extension changes (install/uninstall) while VS Code is running
+  // Full activate always: visibility is toggled via mermaidPreview:isActive
+  // (Preview when Chart absent or Chart signed out; Chart when signed in).
+  await syncPreviewActiveContext();
+
+  let codeLensProvider: MermaidChartCodeLensProvider | undefined;
+
   context.subscriptions.push(
     vscode.extensions.onDidChange(async () => {
-      // Re-check for official extension conflicts
-      await checkForOfficialExtension(context);
-    })
+      await syncPreviewActiveContext();
+      codeLensProvider?.refresh();
+    }),
+    vscode.authentication.onDidChangeSessions(async (e) => {
+      if (e.provider.id === "mermaidchart") {
+        await syncPreviewActiveContext();
+        codeLensProvider?.refresh();
+      }
+    }),
   );
 
-
   context.subscriptions.push(
-    vscode.commands.registerCommand('preview.mermaidChart.preview', () =>
-      getPreview("commandPalette")
+    vscode.commands.registerCommand("preview.mermaidChart.preview", () =>
+      getPreview("commandPalette"),
     ),
     // VS Code does not tell a handler which menu invoked it, so the editor context menu
     // gets its own command id purely to keep the two entry points apart in analytics.
-    vscode.commands.registerCommand('preview.mermaidChart.previewFromContextMenu', () =>
-      getPreview("contextMenu")
-    )
+    vscode.commands.registerCommand(
+      "preview.mermaidChart.previewFromContextMenu",
+      () => getPreview("contextMenu"),
+    ),
   );
 
   const mermaidWebviewProvider = new MermaidWebviewProvider(context);
@@ -218,7 +226,6 @@ export async function activate(context: vscode.ExtensionContext) {
     gutterIconPath: vscode.Uri.file(context.asAbsolutePath("images/mermaid-icon.svg")),
     gutterIconSize: "8x8",
   });
-  let codeLensProvider: MermaidChartCodeLensProvider | undefined;
 
   function updateMermaidChartTokenHighlighting() {
     const activeEditor = vscode.window.activeTextEditor;
