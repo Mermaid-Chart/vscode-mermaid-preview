@@ -450,18 +450,6 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "themes": [
-      {
-        "label": "Mermaid Dark",
-        "uiTheme": "vs-dark",
-        "path": "./themes/mermaid-dark-color-theme.json"
-      },
-      {
-        "label": "Mermaid Light",
-        "uiTheme": "vs",
-        "path": "./themes/mermaid-light-color-theme.json"
-      }
-    ],
     "grammars": [
       {
         "language": "mermaid.flowchart",
@@ -597,10 +585,19 @@
         "mermaid.vscode.dark_theme": {
           "type": "string",
           "enum": [
+            "mc",
+            "neo",
             "neo-dark",
+            "default",
+            "forest",
+            "base",
+            "dark",
+            "neutral",
+            "null",
+            "redux",
             "redux-dark",
-            "redux-dark-color",
-            "dark"
+            "redux-color",
+            "redux-dark-color"
           ],
           "default": "neo-dark",
           "description": "Default mermaid theme used for dark theme"
@@ -608,15 +605,19 @@
         "mermaid.vscode.light_theme": {
           "type": "string",
           "enum": [
+            "mc",
             "neo",
-            "redux",
-            "null",
+            "neo-dark",
             "default",
-            "base",
             "forest",
+            "base",
+            "dark",
             "neutral",
+            "null",
+            "redux",
+            "redux-dark",
             "redux-color",
-            "mc"
+            "redux-dark-color"
           ],
           "default": "neo",
           "description": "Default mermaid theme used for light theme"
@@ -716,6 +717,42 @@
         {
           "command": "preview.mermaidChart.openFeedbackActive",
           "when": "false"
+        },
+        {
+          "command": "preview.mermaidChart.diagramHelp",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.reloadSidebar",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.openSettings",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.openFeedback",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.preview",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.createMermaidFile",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.syncDiagramWithMermaid",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.connectDiagramToMermaidChart",
+          "when": "mermaidPreview:isActive"
+        },
+        {
+          "command": "preview.mermaidChart.insertUuidIntoEditor",
+          "when": "mermaidPreview:isActive"
         }
       ],
       "view/item/context": [

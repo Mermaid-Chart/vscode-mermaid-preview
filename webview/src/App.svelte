@@ -8,6 +8,7 @@
   import Sidebar from './Sidebar.svelte';
   import { diagramContent as diagramData } from './diagramData';
   import LeftSideBar from './LeftSideBar.svelte';
+  import { prepareLogosIcons } from '../../src/previewmarkdown/shared-mermaid/prepareLogosIcons';
 
   $: diagramContent = diagramData;
  
@@ -53,7 +54,7 @@
           },
           {
             name: 'logos',
-            loader: () => import('@iconify-json/logos').then((module) => module.icons),
+            loader: () => import('@iconify-json/logos').then((module) => prepareLogosIcons(module.icons)),
           },
           {
             name: 'mdi',
