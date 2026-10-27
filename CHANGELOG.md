@@ -1,7 +1,11 @@
 # Change Log
 
-### 2.2.1
+### 2.2.1 - 2026-10-26
 - Fixed a conflict so Mermaid Preview and Mermaid can be installed together and work without overlapping commands or UI.
+- Markdown `mermaid` diagrams render when both Mermaid Preview and Mermaid are installed.
+- Sign-in and sign-out hand-off with Mermaid updates immediately, without a window reload.
+- Preview theme settings now offer the same theme list as Mermaid.
+- Architecture diagrams now render `logos:google-cloud-functions` and `logos:nextjs-icon` instead of blank icons.
 
 ### 2.2.0 - 2026-09-04
 

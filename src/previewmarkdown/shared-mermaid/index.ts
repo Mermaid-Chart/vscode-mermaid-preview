@@ -1,6 +1,7 @@
 import layouts from '@mermaid-chart/layout-elk';
 import mermaid, { MermaidConfig } from '@mermaid-chart/mermaid';
 import { mermaidPreviewContainerSelector } from '../shared-md-mermaid';
+import { prepareLogosIcons } from './prepareLogosIcons';
 
 
 
@@ -89,7 +90,7 @@ export async function registerMermaidAddons() {
         },
         {
             name: 'logos',
-            loader: () => import('@iconify-json/logos').then((module) => module.icons),
+            loader: () => import('@iconify-json/logos').then((module) => prepareLogosIcons(module.icons)),
         },
         {
             name: 'mdi',

@@ -4,7 +4,8 @@ export type SidebarView = "home" | "settings" | "feedback";
 
 export function generateWebviewContent(
   webview: vscode.Webview,
-  extensionUri: vscode.Uri
+  extensionUri: vscode.Uri,
+  chartInstalled = false,
 ): string {
   const logoSrc = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "images", "panel.svg")
@@ -347,8 +348,10 @@ export function generateWebviewContent(
         <button id="openPreview" class="open-preview-btn">Open preview</button>
 
         <p class="upsell">
-            Want to sync your account or AI features?<br>
-            <a id="getExtension" class="upsell-link">Get the Mermaid extension <span class="arrow">&#10132;</span></a>
+            ${chartInstalled
+              ? 'The Mermaid extension is already installed. Sign in there for AI and cloud sync.'
+              : `Want to sync your account or AI features?<br>
+            <a id="getExtension" class="upsell-link">Get the Mermaid extension <span class="arrow">&#10132;</span></a>`}
         </p>
 
         <div class="split-note">
@@ -452,7 +455,7 @@ export function generateWebviewContent(
             vscode.postMessage({ command: 'openPreview' });
         });
 
-        document.getElementById('getExtension').addEventListener('click', () => {
+        document.getElementById('getExtension')?.addEventListener('click', () => {
             vscode.postMessage({ command: 'getExtension' });
         });
 

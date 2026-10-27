@@ -20,7 +20,7 @@ import { getFirstWordFromDiagram, normalizeMermaidText } from "./frontmatter";
 import analytics, { PreviewEntryPoint } from "./analytics";
 import { injectMermaidTheme } from "./previewmarkdown/themeing";
 import { extendMarkdownItWithMermaid } from "./previewmarkdown/shared-md-mermaid";
-import { syncPreviewActiveContext, MERMAID_CHART_EXTENSION_ID } from "./conflictHandle";
+import { bindChartSignInListener, syncPreviewActiveContext, MERMAID_CHART_EXTENSION_ID, shouldPreviewHandleMarkdownPreview } from "./conflictHandle";
 import { clearTmLanguageCache } from "./syntaxHighlighter";
 import { MermaidWebviewProvider } from "./panels/sidebarPanel";
 import { shouldShowFeaturePopups } from "./settings";
@@ -91,11 +91,13 @@ async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
     return;
   }
 
+  const chartInstalled = !!vscode.extensions.getExtension(MERMAID_CHART_EXTENSION_ID);
+  const actions = chartInstalled
+    ? (["Show more", "Discard"] as const)
+    : (["Show more", "Get the extension", "Discard"] as const);
   const choice = await vscode.window.showInformationMessage(
     movedFeatureMessage,
-    "Show more",
-    "Get the extension",
-    "Discard"
+    ...actions,
   );
 
   if (choice === "Get the extension") {
@@ -120,20 +122,21 @@ async function showMovedFeaturePopup(context: vscode.ExtensionContext) {
 export async function activate(context: vscode.ExtensionContext) {
   // Full activate always: visibility is toggled via mermaidPreview:isActive
   // (Preview when Chart absent or Chart signed out; Chart when signed in).
-  await syncPreviewActiveContext();
-
   let codeLensProvider: MermaidChartCodeLensProvider | undefined;
+
+  const onChartSignInChanged = async () => {
+    await syncPreviewActiveContext();
+    codeLensProvider?.refresh();
+    void vscode.commands.executeCommand("markdown.preview.refresh");
+  };
+
+  await bindChartSignInListener(context, onChartSignInChanged);
+  await syncPreviewActiveContext();
 
   context.subscriptions.push(
     vscode.extensions.onDidChange(async () => {
-      await syncPreviewActiveContext();
-      codeLensProvider?.refresh();
-    }),
-    vscode.authentication.onDidChangeSessions(async (e) => {
-      if (e.provider.id === "mermaidchart") {
-        await syncPreviewActiveContext();
-        codeLensProvider?.refresh();
-      }
+      await bindChartSignInListener(context, onChartSignInChanged);
+      await onChartSignInChanged();
     }),
   );
 
@@ -420,7 +423,8 @@ return {
       extendMarkdownItWithMermaid(md, {
           languageIds: () => {
               return vscode.workspace.getConfiguration(configSection).get<string[]>('languages', ['mermaid']);
-          }
+          },
+          shouldHandle: shouldPreviewHandleMarkdownPreview,
       });
       md.use(injectMermaidTheme);
       md.use(trackMarkdownMermaidPreview);

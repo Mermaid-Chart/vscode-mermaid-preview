@@ -18,11 +18,14 @@ const marker_len = marker_str.length;
  * block syntax is properly parsed by markdown-it. All actual mermaid rendering happens in the webview
  * where the markdown is rendered.
  */
-export function extendMarkdownItWithMermaid(md: MarkdownIt, config: { languageIds(): readonly string[] }) {
+export function extendMarkdownItWithMermaid(md: MarkdownIt, config: { languageIds(): readonly string[]; shouldHandle?: () => boolean }) {
     // Code forked from markdown-it-container
     // Fork was done as we want to get the raw text inside container instead of treating it as markdown
     md.use((md: MarkdownIt) => {
         function container(state: MarkdownIt.StateBlock, startLine: number, endLine: number, silent: boolean) {
+            if (config.shouldHandle && !config.shouldHandle()) {
+                return false;
+            }
             let pos: number;
             let auto_closed = false;
             let start = state.bMarks[startLine] + state.tShift[startLine];
@@ -141,6 +144,9 @@ export function extendMarkdownItWithMermaid(md: MarkdownIt, config: { languageId
 
     const highlight = md.options.highlight;
     md.options.highlight = (code: string, lang: string, attrs: string) => {
+        if (config.shouldHandle && !config.shouldHandle()) {
+            return highlight?.(code, lang, attrs) ?? code;
+        }
         const reg = new RegExp('\\b(' + config.languageIds().map(escapeRegExp).join('|') + ')\\b', 'i');
         if (lang && reg.test(lang)) {
             return `<pre style="all:unset;"><div class="${mermaidPreviewContainerClass}">${preProcess(code)}</div></pre>`;
@@ -168,10 +174,15 @@ export function prepareMermaidPreviewHtml(html: string): string {
     return html.replace(
         /<div\b([^>]*\bclass=")([^"]*)"([^>]*)>/gi,
         (full, before: string, classes: string, after: string) => {
-            if (!/\bmermaid\b/.test(classes) || classes.includes(mermaidPreviewContainerClass)) {
+            const classList = classes.split(/\s+/);
+            // Only rewrite the built-in `mermaid` token. `\bmermaid\b` also matches
+            // `mermaid-chart`, which mangles the class when both extensions run.
+            if (!classList.includes('mermaid') || classList.includes(mermaidPreviewContainerClass)) {
                 return full;
             }
-            const newClasses = classes.replace(/\bmermaid\b/, mermaidPreviewContainerClass);
+            const newClasses = classList
+                .map((cls) => (cls === 'mermaid' ? mermaidPreviewContainerClass : cls))
+                .join(' ');
             return `<div${before}${newClasses}"${after}>`;
         }
     );
